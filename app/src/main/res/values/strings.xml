@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DemoSet</string>
+    <string name="label_wellcome_to_demo">Wellcome to Demo</string>
+    <string name="title_activity_demo_service">DemoServiceAct</string>
+    <string name="label_demo_service">Demo service</string>
+    <string name="label_no_data">No data</string>
+    <string name="label_target_local_service">Target: local service</string>
+    <string name="label_target_remote_service">Target: remote service</string>
+    <string name="label_exit">Exit</string>
+</resources>
