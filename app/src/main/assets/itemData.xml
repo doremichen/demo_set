@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <List>
     <data title="Demo Service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo job service" clsname="com.adam.app.demoset.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
 </List>

@@ -7,4 +7,7 @@
     <string name="label_target_local_service">Target: local service</string>
     <string name="label_target_remote_service">Target: remote service</string>
     <string name="label_exit">Exit</string>
+    <string name="label_permission_label">direct use the service</string>
+    <string name="label_permission_descript">this is demo permission</string>
+    <string name="label_permission_group_descript">test permission group</string>
 </resources>

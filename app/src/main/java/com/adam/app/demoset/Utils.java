@@ -23,6 +23,7 @@ public abstract class Utils {
     public static final String ITEM_BIND_SERVICE = "bind service";
     public static final String ITEM_UNBIND_SERVICE = "unbind service";
     public static final String ITEM_SERVICE_REQUEST = "service request";
+    public static final String ITEM_EXIT = "exit";
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
     public static final String KEY_MSG = "service status";
     private static final String TAG = "DemoSet";
