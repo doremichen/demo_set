@@ -10,4 +10,9 @@
     <string name="label_permission_label">direct use the service</string>
     <string name="label_permission_descript">this is demo permission</string>
     <string name="label_permission_group_descript">test permission group</string>
+    <string name="label_popup_info">Floating pop up window</string>
+    <string name="label_ok_btn">Ok</string>
+    <string name="label_click">Click</string>
+    <string name="title_activity_demo_popup_window">DemoPopupWindowAct</string>
+    <string name="label_hello_floating_dialog">Hello floating dialog</string>
 </resources>

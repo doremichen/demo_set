@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adam.app.demoset">
-<!--
-    <permission-group
-        android:name="com.adam.app.demoset.permission.DEMO_SET"
-        android:label="@string/label_permission_group_descript" />
--->
 
-<!--
-<permission
-        android:name="com.adam.app.permission.SECUR_SERVICE"
-        android:description="@string/label_permission_descript"
-        android:label="@string/label_permission_label"
-        android:protectionLevel="dangerous" />
--->
     <permission
         android:name="com.adam.app.permission.SECUR_SERVICE"
         android:description="@string/label_permission_descript"
@@ -21,7 +9,7 @@
         android:protectionLevel="dangerous" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:allowBackup="true"
@@ -40,8 +28,9 @@
         <activity
             android:name=".DemoServiceAct"
             android:label="@string/title_activity_demo_service" />
-        <activity android:name=".DemoJobSvrAct"
-            android:label="DemoJobSvrAct"/>
+        <activity
+            android:name=".DemoJobSvrAct"
+            android:label="DemoJobSvrAct" />
 
         <service
             android:name=".LocalService"
@@ -52,24 +41,27 @@
             android:enabled="true"
             android:exported="true"
             android:process=":remote" />
-
         <service
             android:name=".SecurService"
             android:enabled="true"
             android:exported="true"
             android:permission="com.adam.app.permission.SECUR_SERVICE">
             <intent-filter>
-                <action android:name = "com.adam.app.demo.start.secur_servcie"/>
+                <action android:name="com.adam.app.demo.start.secur_servcie" />
             </intent-filter>
-
         </service>
         <service
             android:name=".SecurJobService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
-        </service>
+        <activity
+            android:name=".DemoFloatingDialogAct"
+            android:label="DemoFloatingDialogAct">
+
+        </activity>
+
     </application>
 
 </manifest>

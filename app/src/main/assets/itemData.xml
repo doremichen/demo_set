@@ -2,4 +2,5 @@
 <List>
     <data title="Demo Service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo job service" clsname="com.adam.app.demoset.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo floating alert dialog" clsname="com.adam.app.demoset.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
 </List>
