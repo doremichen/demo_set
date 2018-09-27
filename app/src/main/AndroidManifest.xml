@@ -8,8 +8,8 @@
         android:label="@string/label_permission_label"
         android:protectionLevel="dangerous" />
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -54,14 +54,16 @@
             android:name=".SecurJobService"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".DemoFloatingDialogAct"
-            android:label="DemoFloatingDialogAct">
+            android:label="DemoFloatingDialogAct"></activity>
 
-        </activity>
-
+        <service
+            android:name=".FloatingDialogSvr"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

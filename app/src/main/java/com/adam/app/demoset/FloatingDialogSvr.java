@@ -1,0 +1,65 @@
+package com.adam.app.demoset;
+
+import android.app.AlertDialog;
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.IBinder;
+import android.view.WindowManager;
+
+public class FloatingDialogSvr extends Service {
+
+    public static final String ACTION_SHOW_FLOATING_DIALOG = "show floating dialog";
+    private AlertDialog mDialog;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Utils.inFo(this, "onCreate");
+        // set system alert window type
+        mDialog = this.floatingDialog(this.getApplicationContext());
+        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Utils.inFo(this, "onStartCommand 11");
+        if (ACTION_SHOW_FLOATING_DIALOG.equals(intent.getAction())) {
+            mDialog.show();
+        }
+
+        return Service.START_REDELIVER_INTENT;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Utils.inFo(this, "onDestroy");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private AlertDialog floatingDialog(Context context) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("System dialog");
+        builder.setMessage("Click the button to dismiss dialog ");
+        builder.setCancelable(false);
+        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog sysDialog = builder.create();
+
+        return sysDialog;
+
+    }
+}

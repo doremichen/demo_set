@@ -1,8 +1,5 @@
 package com.adam.app.demoset;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +7,6 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
 
 /**
  * TODO: Descript the information of this file
@@ -25,24 +20,28 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
 
     private static final int REQUEST_ALTER_WINDOW = 0;
 
-    private LinearLayout mLayout;
-    private AlertDialog mDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_demo_floating_dialog);
 
-        mLayout = (LinearLayout) this.findViewById(R.id.demo_fd_layout);
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+            this.startActivityForResult(intent, REQUEST_ALTER_WINDOW);
+        }
 
-        // set system alert window type
-        mDialog = this.floatingDialog(this.getApplicationContext());
-        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(this, FloatingDialogSvr.class);
+        this.stopService(intent);
     }
 
     public void onStartFlaotingDialog(View v) {
 
-        requestPermission();
+        triggerDialog();
 
     }
 
@@ -51,38 +50,34 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
         this.finish();
     }
 
-    private void requestPermission() {
+    private void triggerDialog() {
 
-        //Guide user to open permission in the settings
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
-            this.startActivityForResult(intent, REQUEST_ALTER_WINDOW);
-        } else {
-            mDialog.show();
+        Intent intent = new Intent(this, FloatingDialogSvr.class);
+        intent.setAction(FloatingDialogSvr.ACTION_SHOW_FLOATING_DIALOG);
+        this.startService(intent);
 
-            //Delay 5 second and Close the current UI automatically
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+        //Delay 3 second and Close the current UI automatically
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                    try {
-                        Thread.sleep(5000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } finally {
-                        DemoFloatingDialogAct.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                DemoFloatingDialogAct.this.finish();
-                            }
-                        });
-                    }
-
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    DemoFloatingDialogAct.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DemoFloatingDialogAct.this.finish();
+                        }
+                    });
                 }
-            }).start();
-        }
 
-    }
+            }
+        }).start();
+
+}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -97,24 +92,5 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
         }
     }
 
-
-    private AlertDialog floatingDialog(Context context) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("System dialog");
-        builder.setMessage("Click the button to dismiss dialog ");
-        builder.setCancelable(false);
-        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        AlertDialog sysDialog = builder.create();
-
-        return sysDialog;
-
-    }
 
 }
