@@ -41,7 +41,9 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
 
     public void onStartFlaotingDialog(View v) {
 
-        triggerDialog();
+        if (Settings.canDrawOverlays(this)) {
+            triggerDialog();
+        }
 
     }
 
