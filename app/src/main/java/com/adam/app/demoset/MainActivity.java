@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 ItemContent data = (ItemContent)parent.getItemAtPosition(position);
 
                 Toast.makeText(MainActivity.this, "the istem: " + data.getTitle(), Toast.LENGTH_SHORT).show();
+                Utils.inFo(this, "the istem: " + data.getTitle());
 
                 Intent it = new Intent();
                 it.setClassName(data.getPkgName(), data.getClassName());

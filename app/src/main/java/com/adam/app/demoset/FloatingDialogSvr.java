@@ -20,6 +20,7 @@ public class FloatingDialogSvr extends Service {
         // set system alert window type
         mDialog = this.floatingDialog(this.getApplicationContext());
         mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        mDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
     }
 
     @Override

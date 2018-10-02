@@ -10,6 +10,9 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -58,12 +61,16 @@
 
         <activity
             android:name=".DemoFloatingDialogAct"
-            android:label="DemoFloatingDialogAct"></activity>
+            android:label="Demo floation dialog activity" />
 
         <service
             android:name=".FloatingDialogSvr"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".bluetooth.DemoBTAct"
+            android:label="Demo bt activity" />
     </application>
 
 </manifest>

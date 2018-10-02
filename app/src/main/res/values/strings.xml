@@ -15,4 +15,8 @@
     <string name="label_click">Click</string>
     <string name="title_activity_demo_popup_window">DemoPopupWindowAct</string>
     <string name="label_hello_floating_dialog">Hello floating dialog</string>
+    <string name="label_hello_bt">Hello BT</string>
+    <string name="label_bt_on_off">BT on/off</string>
+    <string name="label_scan_list">Scan list: </string>
+    <string name="label_paired_list">Paired list: </string>
 </resources>
