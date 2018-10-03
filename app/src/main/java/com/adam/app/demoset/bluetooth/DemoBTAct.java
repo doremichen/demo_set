@@ -4,6 +4,7 @@ package com.adam.app.demoset.bluetooth;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,9 +30,11 @@ import android.widget.TextView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Set;
+
 
 public class DemoBTAct extends AppCompatActivity {
 
@@ -44,6 +47,37 @@ public class DemoBTAct extends AppCompatActivity {
     private BluetoothAdapter mBTAdapter;
     private ArrayList<BluetoothDevice> mScanDevices;
     private ArrayList<BluetoothDevice> mPairedDevices;
+
+
+    /**
+     * Callback for the name pressed of the item in paired list
+     */
+    private class PairedItemNameClickListener implements BTDeviceListAdapter.OnItemNameClickListener {
+        private ArrayList<BluetoothDevice> mDevices;
+
+        private ConnectTask mTask;
+
+
+        public PairedItemNameClickListener(ArrayList<BluetoothDevice> devices) {
+            mDevices = devices;
+        }
+
+        @Override
+        public void onClick(int position) {
+            Utils.inFo(this, "the item button " + position + " is pressed");
+            BluetoothDevice device = this.mDevices.get(position);
+
+            if (mTask == null) {
+                mTask = new ConnectTask(DemoBTAct.this, (device));
+                new Thread(mTask).start();
+            } else {
+                // disconnect
+                mTask.cancel();
+                mTask = null;
+            }
+            Utils.inFo(this, "connect down....");
+        }
+    }
 
     /**
      * Callback for the button pressed of the item in list
@@ -137,6 +171,12 @@ public class DemoBTAct extends AppCompatActivity {
                 // Update list
                 mScanAdapter.notifyDataSetChanged();
                 mPairedAdapter.notifyDataSetChanged();
+            } else if(ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
+                // Update list
+                boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
+                Utils.inFo(this, "got connect status: " + isConnect);
+                mPairedAdapter.updateAdressContent(isConnect);
+                mPairedAdapter.notifyDataSetChanged();
             }
 
         }
@@ -162,14 +202,14 @@ public class DemoBTAct extends AppCompatActivity {
         mPairedList = (ListView)this.findViewById(R.id.paired_list);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
-
+        //Set empty vliew
+        TextView emptyView = (TextView)this.findViewById(android.R.id.empty);
+        mScanList.setEmptyView(emptyView);
+        mPairedList.setEmptyView(emptyView);
 
         mBTReceiver = new BTReceiver(this);
 
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
-
-        updatePairedList();
 
 
         // Register snack listener
@@ -177,6 +217,7 @@ public class DemoBTAct extends AppCompatActivity {
         uiFilter.addAction(Utils.ACTION_SHOW_SNACKBAR);
         uiFilter.addAction(BTReceiver.ACTION_FOUND_BT_DEVICE);
         uiFilter.addAction(BTReceiver.ACTION_UPDATE_BT_BOUND_STATE);
+        uiFilter.addAction(ConnectTask.ACTION_UPDATE_CONNECT_INFO);
         registerReceiver(mUIReceiver, uiFilter);
 
         // Register switch listener
@@ -239,6 +280,8 @@ public class DemoBTAct extends AppCompatActivity {
 
         mPairedAdapter.setData(mPairedDevices);
         mPairedAdapter.setButtonListener(new PairedItemButtonClick(mPairedDevices));
+        mPairedAdapter.setNameListner(new PairedItemNameClickListener(mPairedDevices));
+
 
         mPairedList.setAdapter(mPairedAdapter);
     }
@@ -363,6 +406,7 @@ public class DemoBTAct extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
 
 }

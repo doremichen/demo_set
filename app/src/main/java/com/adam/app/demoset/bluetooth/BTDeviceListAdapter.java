@@ -17,7 +17,10 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private ArrayList<BluetoothDevice> mDevices;
-    private OnItemButtonClickListener mListener;
+    private OnItemButtonClickListener mButtonListener;
+    private OnItemNameClickListener mNameListener;
+    private ViewHolder mHolder;
+    private boolean mConnect;
 
     public BTDeviceListAdapter(Context context) {
 
@@ -30,7 +33,16 @@ public class BTDeviceListAdapter extends BaseAdapter {
     }
 
     public void setButtonListener (OnItemButtonClickListener listener) {
-        mListener = listener;
+        mButtonListener = listener;
+    }
+
+    public void setNameListner(OnItemNameClickListener listener) {mNameListener = listener; }
+
+    public void updateAdressContent(boolean isConnect) {
+
+        mConnect = isConnect;
+
+
     }
 
     @Override
@@ -50,32 +62,33 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
 
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_bt_scan_layout, null);
-            holder = new ViewHolder();
+            mHolder = new ViewHolder();
 
             // get View handler
-            holder.mName = (TextView)convertView.findViewById(R.id.tv_bt_name);
-            holder.mAddress = (TextView)convertView.findViewById(R.id.tv_bt_address);
-            holder.mAction = (Button)convertView.findViewById(R.id.btn_bt_pair);
+            mHolder.mName = (TextView)convertView.findViewById(R.id.tv_bt_name);
+            mHolder.mAddress = (TextView)convertView.findViewById(R.id.tv_bt_address);
+            mHolder.mAction = (Button)convertView.findViewById(R.id.btn_bt_pair);
 
-            convertView.setTag(holder);
+            convertView.setTag(mHolder);
 
         } else {
 
-            holder = (ViewHolder) convertView.getTag();
+            mHolder = (ViewHolder) convertView.getTag();
         }
 
         BluetoothDevice device = mDevices.get(position);
 
-        holder.mName.setText(device.getName());
-        holder.mAddress.setText(device.getAddress());
-        holder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED)? "Unpair": "Pair");
+        mHolder.mName.setText(device.getName());
+//        mHolder.mAddress.setText(device.getAddress());
+        mHolder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED)? "Unpair": "Pair");
+        mHolder.mAddress.setText((mConnect == true)? "Connect...": "Disconnect...");
         // register button click
-        holder.mAction.setOnClickListener(new ItemButtonListener(position));
-
+        mHolder.mAction.setOnClickListener(new ItemButtonListener(position));
+        // register name item click
+        mHolder.mName.setOnClickListener(new ItemNameClickListener(position));
 
         return convertView;
     }
@@ -91,6 +104,28 @@ public class BTDeviceListAdapter extends BaseAdapter {
         void onClick(int position);
     }
 
+    interface OnItemNameClickListener {
+        void onClick(int position);
+    }
+
+    /**
+     * Name Click CallBack
+     */
+    private class ItemNameClickListener implements View.OnClickListener {
+        private int mPosition;
+
+        public ItemNameClickListener(int position) {
+            mPosition = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mNameListener != null) {
+                mNameListener.onClick(mPosition);
+            }
+        }
+    }
+
     /**
      * Button CallBack
      */
@@ -103,8 +138,8 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            if (mListener != null) {
-                mListener.onClick(mPosition);
+            if (mButtonListener != null) {
+                mButtonListener.onClick(mPosition);
             }
         }
     }
