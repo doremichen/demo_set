@@ -8,13 +8,25 @@
  */
 package com.adam.app.demoset;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Messenger;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import com.adam.app.demoset.bluetooth.DemoBTAct;
 
 public abstract class Utils {
 
@@ -42,6 +54,44 @@ public abstract class Utils {
     public static void inFo(Class<?> clazz, String str) {
         Log.i(TAG, clazz.getSimpleName() + ": " + str);
     }
+
+    public static boolean askPermission(final Activity context, @NonNull final String permission, final int requestcode) {
+        boolean ret = false;
+        if (ContextCompat.checkSelfPermission(context,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Utils.inFo(Utils.class, "Not granted");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                    permission)) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Rational permission request");
+                builder.setMessage("Please press ok to request permission.");
+                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(context,
+                                        new String[]{permission},
+                                        requestcode);
+                    }
+                });
+
+                builder.create().show();
+
+
+            } else {
+                ActivityCompat.requestPermissions(context,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        requestcode);
+            }
+        } else {
+            ret = true;
+            // Permission granted
+        }
+
+        return ret;
+    }
+
 
 
     public static void showSnackBar(Context context, String message) {

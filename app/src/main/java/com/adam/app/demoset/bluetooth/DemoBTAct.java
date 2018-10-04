@@ -227,7 +227,12 @@ public class DemoBTAct extends AppCompatActivity {
                 mBTResult.setText("BT is " + (isChecked? "enable":"disable"));
 
                 if (isChecked) {
-                    askPermission();
+//                    askPermission();
+                    if (Utils.askPermission(DemoBTAct.this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
+                        enableBT();
+                    }
                 } else {
 
                     // Check bt discovery status
@@ -330,35 +335,35 @@ public class DemoBTAct extends AppCompatActivity {
      * Bluetooth permission must declare is either ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION
      * because Bluetooth scans can be used to gather information about the location of the user.
      */
-    private void askPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Utils.inFo(this, "ACCESS_COARSE_LOCATION is not granted");
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                Snackbar.make(mLayout, "permission request rational",
-                        Snackbar.LENGTH_INDEFINITE)
-                        .setAction("ok", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ActivityCompat.requestPermissions(DemoBTAct.this,
-                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                        REQUEST_ACCESS_COARSE_PERMISSION_CODE);
-                            }
-                        })
-                        .show();
-
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        REQUEST_ACCESS_COARSE_PERMISSION_CODE);
-            }
-        } else {
-            // Permission granted and enable bt
-            enableBT();
-        }
-    }
+//    private void askPermission() {
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_COARSE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            Utils.inFo(this, "ACCESS_COARSE_LOCATION is not granted");
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+//                Snackbar.make(mLayout, "permission request rational",
+//                        Snackbar.LENGTH_INDEFINITE)
+//                        .setAction("ok", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                ActivityCompat.requestPermissions(DemoBTAct.this,
+//                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                                        REQUEST_ACCESS_COARSE_PERMISSION_CODE);
+//                            }
+//                        })
+//                        .show();
+//
+//            } else {
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        REQUEST_ACCESS_COARSE_PERMISSION_CODE);
+//            }
+//        } else {
+//            // Permission granted and enable bt
+//            enableBT();
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
