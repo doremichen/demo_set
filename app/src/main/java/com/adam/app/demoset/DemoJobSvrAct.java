@@ -4,9 +4,8 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,8 +37,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_job_svr);
 
-        mList = (ListView)this.findViewById(R.id.list_demo_permission);
-        mShow = (TextView)this.findViewById(R.id.show_permission_result);
+        mList = (ListView) this.findViewById(R.id.list_demo_permission);
+        mShow = (TextView) this.findViewById(R.id.show_permission_result);
 
         mMap.put(Utils.ITEM_START_SERVICE, new StartSvrItem());
         mMap.put(Utils.ITEM_STOP_SERVICE, new StopSvrItem());
@@ -53,7 +52,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemName = (String)parent.getItemAtPosition(position);
+                String itemName = (String) parent.getItemAtPosition(position);
                 ItemType item = mMap.get(itemName);
                 if (item != null) {
                     item.execute();
@@ -93,7 +92,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
 //            builder.setPersisted(true);
 
             //Schedule job
-            JobScheduler jobService = (JobScheduler)DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             jobService.schedule(builder.build());
 
 
@@ -105,7 +104,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         @Override
         public void execute() {
             //cancel all job
-            JobScheduler jobService = (JobScheduler)DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             jobService.cancelAll();
 
 

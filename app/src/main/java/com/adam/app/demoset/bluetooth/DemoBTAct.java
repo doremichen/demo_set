@@ -4,23 +4,18 @@ package com.adam.app.demoset.bluetooth;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,7 +24,6 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -139,7 +133,7 @@ public class DemoBTAct extends AppCompatActivity {
 
                 Snackbar.make(mLayout, "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
 
-            } else if(BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
+            } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
                 Utils.inFo(this, "Get ACTION_FOUND_BT_DEVICE....");
                 mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
 
@@ -151,7 +145,7 @@ public class DemoBTAct extends AppCompatActivity {
                 // Update paired list
                 updatePairedList();
 
-            } else if(BTReceiver.ACTION_UPDATE_BT_BOUND_STATE.equals(action)) {
+            } else if (BTReceiver.ACTION_UPDATE_BT_BOUND_STATE.equals(action)) {
                 Utils.inFo(this, "Update bt information....");
 
                 Bundle bundle = intent.getBundleExtra(BTReceiver.KEY_BUNDLE_DEVICE);
@@ -171,7 +165,7 @@ public class DemoBTAct extends AppCompatActivity {
                 // Update list
                 mScanAdapter.notifyDataSetChanged();
                 mPairedAdapter.notifyDataSetChanged();
-            } else if(ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
+            } else if (ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
                 // Update list
                 boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
                 Utils.inFo(this, "got connect status: " + isConnect);
@@ -194,16 +188,16 @@ public class DemoBTAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_demo_bluetooth);
 
-        mLayout = (LinearLayout)this.findViewById(R.id.btdemo_layout);
-        mBTSwitch = (Switch)this.findViewById(R.id.switch_bt);
-        mBTResult = (TextView)this.findViewById(R.id.tv_bt_status);
-        mScanList = (ListView)this.findViewById(R.id.scan_list);
+        mLayout = (LinearLayout) this.findViewById(R.id.btdemo_layout);
+        mBTSwitch = (Switch) this.findViewById(R.id.switch_bt);
+        mBTResult = (TextView) this.findViewById(R.id.tv_bt_status);
+        mScanList = (ListView) this.findViewById(R.id.scan_list);
         mScanAdapter = new BTDeviceListAdapter(this);
-        mPairedList = (ListView)this.findViewById(R.id.paired_list);
+        mPairedList = (ListView) this.findViewById(R.id.paired_list);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
         //Set empty vliew
-        TextView emptyView = (TextView)this.findViewById(android.R.id.empty);
+        TextView emptyView = (TextView) this.findViewById(android.R.id.empty);
         mScanList.setEmptyView(emptyView);
         mPairedList.setEmptyView(emptyView);
 
@@ -224,7 +218,7 @@ public class DemoBTAct extends AppCompatActivity {
         mBTSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mBTResult.setText("BT is " + (isChecked? "enable":"disable"));
+                mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
 
                 if (isChecked) {
 //                    askPermission();
@@ -300,7 +294,7 @@ public class DemoBTAct extends AppCompatActivity {
             Utils.inFo(this, "resultCode = " + resultCode);
 
             // Reject to enable bt
-            if (resultCode == RESULT_CANCELED ) {
+            if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(false);
             }
         }
@@ -315,7 +309,7 @@ public class DemoBTAct extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_bt_menu, menu);
+        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
 
         return true;
     }
@@ -364,19 +358,18 @@ public class DemoBTAct extends AppCompatActivity {
 //            enableBT();
 //        }
 //    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_ACCESS_COARSE_PERMISSION_CODE) {
-             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                 // Permission granted and enable bt
-                 enableBT();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted and enable bt
+                enableBT();
 
-             } else {
-                 // Permission denied
-             }
+            } else {
+                // Permission denied
+            }
         }
     }
 
@@ -390,6 +383,7 @@ public class DemoBTAct extends AppCompatActivity {
 
     /**
      * Paired BT device
+     *
      * @param device
      */
     private void pairDevice(BluetoothDevice device) {
@@ -399,6 +393,7 @@ public class DemoBTAct extends AppCompatActivity {
 
     /**
      * Unpaired BT device
+     *
      * @param device
      */
     private void unpairDevice(BluetoothDevice device) {
@@ -411,7 +406,6 @@ public class DemoBTAct extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
 
 }

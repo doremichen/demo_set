@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
@@ -106,7 +105,7 @@ public class BTReceiver extends BroadcastReceiver {
             BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             // Bt device bound state
-            int state =  device.getBondState();
+            int state = device.getBondState();
             if (state == BluetoothDevice.BOND_NONE) {
                 mBTDevices.add(device);
             }
@@ -124,7 +123,7 @@ public class BTReceiver extends BroadcastReceiver {
 
                 // update bt information
                 Intent it = new Intent();
-                Bundle bundle =  new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putParcelable(KEY_BT_DEVICE, device);
                 it.putExtra(KEY_BUNDLE_DEVICE, bundle);
                 it.setAction(ACTION_UPDATE_BT_BOUND_STATE);

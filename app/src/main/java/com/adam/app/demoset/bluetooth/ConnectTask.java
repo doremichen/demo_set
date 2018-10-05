@@ -10,7 +10,6 @@ import android.os.ParcelUuid;
 import com.adam.app.demoset.Utils;
 
 import java.io.IOException;
-
 import java.util.UUID;
 
 public class ConnectTask implements Runnable {
@@ -86,7 +85,7 @@ public class ConnectTask implements Runnable {
         try {
             mSocket.close();
         } catch (IOException e) {
-            Utils.inFo(this,"Could not close the client socket");
+            Utils.inFo(this, "Could not close the client socket");
         }
 
         sendConnectInfo();

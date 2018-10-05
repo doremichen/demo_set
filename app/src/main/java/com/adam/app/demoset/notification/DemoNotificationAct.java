@@ -93,7 +93,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_bt_menu, menu);
+        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
 
         return true;
     }

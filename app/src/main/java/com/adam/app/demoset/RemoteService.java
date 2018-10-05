@@ -25,7 +25,7 @@ public class RemoteService extends Service {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            switch(msg.what) {
+            switch (msg.what) {
                 case ACTION_ONE:
                     Utils.showToast(RemoteService.this, "action one....");
                     break;

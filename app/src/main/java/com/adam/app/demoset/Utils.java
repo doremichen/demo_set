@@ -18,15 +18,11 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Messenger;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-
-import com.adam.app.demoset.bluetooth.DemoBTAct;
 
 public abstract class Utils {
 
@@ -71,8 +67,8 @@ public abstract class Utils {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(context,
-                                        new String[]{permission},
-                                        requestcode);
+                                new String[]{permission},
+                                requestcode);
                     }
                 });
 
@@ -91,7 +87,6 @@ public abstract class Utils {
 
         return ret;
     }
-
 
 
     public static void showSnackBar(Context context, String message) {

@@ -32,11 +32,13 @@ public class BTDeviceListAdapter extends BaseAdapter {
         mDevices = devices;
     }
 
-    public void setButtonListener (OnItemButtonClickListener listener) {
+    public void setButtonListener(OnItemButtonClickListener listener) {
         mButtonListener = listener;
     }
 
-    public void setNameListner(OnItemNameClickListener listener) {mNameListener = listener; }
+    public void setNameListner(OnItemNameClickListener listener) {
+        mNameListener = listener;
+    }
 
     public void updateAdressContent(boolean isConnect) {
 
@@ -47,17 +49,17 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return (mDevices == null)? 0 : mDevices.size();
+        return (mDevices == null) ? 0 : mDevices.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return (mDevices == null)? null : mDevices.get(position);
+        return (mDevices == null) ? null : mDevices.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return (mDevices == null)? 0: position;
+        return (mDevices == null) ? 0 : position;
     }
 
     @Override
@@ -68,9 +70,9 @@ public class BTDeviceListAdapter extends BaseAdapter {
             mHolder = new ViewHolder();
 
             // get View handler
-            mHolder.mName = (TextView)convertView.findViewById(R.id.tv_bt_name);
-            mHolder.mAddress = (TextView)convertView.findViewById(R.id.tv_bt_address);
-            mHolder.mAction = (Button)convertView.findViewById(R.id.btn_bt_pair);
+            mHolder.mName = (TextView) convertView.findViewById(R.id.tv_bt_name);
+            mHolder.mAddress = (TextView) convertView.findViewById(R.id.tv_bt_address);
+            mHolder.mAction = (Button) convertView.findViewById(R.id.btn_bt_pair);
 
             convertView.setTag(mHolder);
 
@@ -83,8 +85,8 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
         mHolder.mName.setText(device.getName());
 //        mHolder.mAddress.setText(device.getAddress());
-        mHolder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED)? "Unpair": "Pair");
-        mHolder.mAddress.setText((mConnect == true)? "Connect...": "Disconnect...");
+        mHolder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
+        mHolder.mAddress.setText((mConnect == true) ? "Connect..." : "Disconnect...");
         // register button click
         mHolder.mAction.setOnClickListener(new ItemButtonListener(position));
         // register name item click
@@ -129,7 +131,7 @@ public class BTDeviceListAdapter extends BaseAdapter {
     /**
      * Button CallBack
      */
-    private class ItemButtonListener implements View.OnClickListener{
+    private class ItemButtonListener implements View.OnClickListener {
         private int mPosition;
 
         public ItemButtonListener(int position) {

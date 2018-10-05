@@ -10,8 +10,8 @@
 package com.adam.app.demoset;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.mList = (ListView)this.findViewById(R.id.list_view);
+        this.mList = (ListView) this.findViewById(R.id.list_view);
 
         // prepare item list
         List<ItemContent> itemDatas = new ArrayList<>();
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemContent data = (ItemContent)parent.getItemAtPosition(position);
+                ItemContent data = (ItemContent) parent.getItemAtPosition(position);
 
                 Toast.makeText(MainActivity.this, "the istem: " + data.getTitle(), Toast.LENGTH_SHORT).show();
                 Utils.inFo(this, "the istem: " + data.getTitle());

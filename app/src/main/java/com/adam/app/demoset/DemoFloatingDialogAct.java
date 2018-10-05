@@ -79,7 +79,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
             }
         }).start();
 
-}
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
