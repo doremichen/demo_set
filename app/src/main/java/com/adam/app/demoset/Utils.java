@@ -51,6 +51,14 @@ public abstract class Utils {
         Log.i(TAG, clazz.getSimpleName() + ": " + str);
     }
 
+    /**
+     * When the activity use this method, it must override onRequestPermissionsResult method that
+     * would receive the response of the client request permission.
+     * @param context
+     * @param permission
+     * @param requestcode
+     * @return
+     */
     public static boolean askPermission(final Activity context, @NonNull final String permission, final int requestcode) {
         boolean ret = false;
         if (ContextCompat.checkSelfPermission(context,
