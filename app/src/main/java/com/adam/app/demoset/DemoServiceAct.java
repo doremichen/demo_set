@@ -77,7 +77,13 @@ public class DemoServiceAct extends AppCompatActivity {
         mListView = (ListView) this.findViewById(R.id.list_action);
         mLayout = (RelativeLayout) this.findViewById(R.id.content_view);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mItems.toArray());
+        // Covert arrayList to array string
+        String[] itemDatas = new String[mItems.size()];
+        for (int i = 0; i < mItems.size(); i++) {
+            itemDatas[i] = (String)mItems.get(i);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemDatas);
 
         mListView.setAdapter(adapter);
 

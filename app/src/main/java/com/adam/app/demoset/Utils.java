@@ -54,6 +54,7 @@ public abstract class Utils {
     /**
      * When the activity use this method, it must override onRequestPermissionsResult method that
      * would receive the response of the client request permission.
+     *
      * @param context
      * @param permission
      * @param requestcode

@@ -27,6 +27,7 @@ public class DemoNotificationAct extends AppCompatActivity {
     private NotificationManager mManager;
     private Notification mNotify;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +98,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

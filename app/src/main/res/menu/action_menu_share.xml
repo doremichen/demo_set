@@ -2,7 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_shared"
+        android:title="shared"
+        android:icon="@drawable/ic_action_shared"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="always"/>
+    <item
         android:title="@string/label_exit"
         android:id="@+id/demo_bt_exit"
         app:showAsAction="never"/>
+
 </menu>

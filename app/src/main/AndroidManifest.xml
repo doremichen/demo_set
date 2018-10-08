@@ -74,12 +74,11 @@
             android:label="Demo bt activity" />
         <activity
             android:name=".notification.DemoNotificationAct"
-            android:label="Demo notification"></activity>
+            android:label="Demo notification" />
         <activity
             android:name=".notification.NotifyResultAct"
-            android:label="Notify result UI">
-
-        </activity>
+            android:label="Notify result UI" />
+        <activity android:name=".DemoShareProvidAct"></activity>
     </application>
 
 </manifest>
