@@ -78,7 +78,12 @@
         <activity
             android:name=".notification.NotifyResultAct"
             android:label="Notify result UI" />
-        <activity android:name=".DemoShareProvidAct"></activity>
+        <activity
+            android:name=".DemoShareProvidAct"
+            android:label="Demo share action provider"/>
+        <activity
+            android:name=".jnidemo.DemoJNIAct"
+            android:label="Demo hello jni"></activity>
     </application>
 
 </manifest>
