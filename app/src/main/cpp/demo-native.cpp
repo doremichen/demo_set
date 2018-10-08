@@ -9,6 +9,8 @@
 #include <assert.h>
 #include "jni.h"
 #include <android/log.h>
+#include <signal.h>
+#include <sys/time.h>
 
 #define __DEBUG__
 
@@ -26,10 +28,63 @@
 #define LOGE(...)
 #endif
 
+struct javadata_t {
+    jclass class_demo;
+    JNIEnv* env_demo;
+    jfieldID fid_data;
+    jmethodID mid_method;
+} javadata;
+
+
 static const char* const classPath = "com/adam/app/demoset/jnidemo/NativeUtils";
 
 static
-jstring _sayHello(JNIEnv* env, jobject clazz) {
+void sigImp(int sigId)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+//    LOGI("CallBack to java layer");
+//    // CallBack to java layer
+//    jstring strInfo_data = javadata.env_demo->NewStringUTF("data changed");
+//    javadata.env_demo->SetObjectField(javadata.class_demo, javadata.fid_data, strInfo_data);
+//
+//    jstring strInfo_method = javadata.env_demo->NewStringUTF("Changed by native layer");
+//    javadata.env_demo->CallVoidMethod(javadata.class_demo, javadata.mid_method, strInfo_method);
+    LOGI("[%s] exit\n", __FUNCTION__);
+}
+
+static
+void configTimer()
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    struct itimerval value;
+
+    signal(SIGALRM, sigImp);
+
+    value.it_value.tv_sec = 2; // After 3 sec it start alarm
+    value.it_value.tv_usec = 100000;
+    value.it_interval.tv_sec = 0; // Every 1 sec it execute Alarm body
+    value.it_interval.tv_usec = 0;
+
+    setitimer(ITIMER_REAL, &value, NULL);
+}
+
+static
+jstring _sayHello(JNIEnv* env, jobject clazz)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    // Start alarm to call back
+    configTimer();
+
+    LOGI("CallBack to java layer");
+    // CallBack to java layer
+    jstring strInfo_data = env->NewStringUTF("data changed");
+    env->SetObjectField(clazz, javadata.fid_data, strInfo_data);
+    env->DeleteLocalRef(strInfo_data);
+
+    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
+    env->CallVoidMethod(clazz, javadata.mid_method, strInfo_method);
+    env->DeleteLocalRef(strInfo_method);
+
     return env->NewStringUTF("This string is from JNI");
 }
 
@@ -41,7 +96,9 @@ static const JNINativeMethod gMethods[] = {
         {"sayHello", "()Ljava/lang/String;", (void*)_sayHello},
 };
 
-static int registerNative(JNIEnv* env) {
+static
+int registerNative(JNIEnv* env)
+{
     jclass clazz = env->FindClass(classPath);
 
     if (clazz == NULL) {
@@ -54,11 +111,20 @@ static int registerNative(JNIEnv* env) {
         return -1;
     }
 
+//    javadata.class_demo = clazz;
+//    javadata.env_demo = env;
+
+    // Get java member id
+    javadata.fid_data = env->GetFieldID(clazz, "dataFromNative", "Ljava/lang/String;");
+    javadata.mid_method = env->GetMethodID(clazz, "notify", "(Ljava/lang/String;)V");
+
+
     return 0;
 }
 
 
-JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved) {
+JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved)
+{
     JNIEnv* env;
     if (vm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_6) != JNI_OK) {
         LOGE("Can not get jni env");
