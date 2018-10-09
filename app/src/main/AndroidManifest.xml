@@ -8,12 +8,17 @@
         android:label="@string/label_permission_label"
         android:protectionLevel="dangerous" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
         android:allowBackup="true"
@@ -80,10 +85,11 @@
             android:label="Notify result UI" />
         <activity
             android:name=".DemoShareProvidAct"
-            android:label="Demo share action provider"/>
+            android:label="Demo share action provider" />
         <activity
             android:name=".jnidemo.DemoJNIAct"
-            android:label="Demo hello jni"></activity>
+            android:label="Demo hello jni" />
+        <activity android:name=".DemoFlashLightAct"></activity>
     </application>
 
 </manifest>

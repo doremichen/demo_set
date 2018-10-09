@@ -86,7 +86,7 @@ public abstract class Utils {
 
             } else {
                 ActivityCompat.requestPermissions(context,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        new String[]{permission},
                         requestcode);
             }
         } else {

@@ -27,4 +27,7 @@
     <string name="action_jni_sayhello">Invoke JNI to say hello</string>
     <string name="action_test_inst_cb">Test: Object CallBack</string>
     <string name="action_test_class_cb">Test: Class CallBack</string>
+    <string name="label_demo_flashlight">Welcome to demo flash light</string>
+    <string name="label_on">On</string>
+    <string name="label_off">Off</string>
 </resources>
