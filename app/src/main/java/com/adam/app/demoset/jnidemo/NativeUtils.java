@@ -1,60 +1,58 @@
+/**
+ * Native utils
+ */
 package com.adam.app.demoset.jnidemo;
-
-import android.support.annotation.NonNull;
 
 import com.adam.app.demoset.Utils;
 
 public class NativeUtils {
 
+    // Load the jni shared lib
     static {
         System.loadLibrary("demo-jni");
     }
 
-    private INative mNativeInterface;
 
     private NativeUtils() {}
 
-    public static class Helper {
+    /**
+     * Singleton Bill Pugh
+     */
+    private static class Helper {
 
-        private static NativeUtils sInstance;
-
-        public static NativeUtils getInstance() {
-            if (sInstance == null) {
-                sInstance = new NativeUtils();
-            }
-            return sInstance;
-        }
+        public static final NativeUtils INSTANCE = new NativeUtils();
     }
 
-    public void setNativeInterface(@NonNull INative native_int) {
-        mNativeInterface = native_int;
+    public static NativeUtils getInstance() {
+        return Helper.INSTANCE;
     }
 
-    public String getData() {
-        return dataFromNative;
-    }
 
     /**
      * As following information are triggered by native layer
      */
-    String dataFromNative = "unChange";
+    private String mDataFromNative = "unChange";
+    public static boolean sDataFromNative = false;
 
-    public void notify(String message) {
+    private void notifyObj(String message) {
         Utils.inFo(this, "notify is called and message: " + message);
-
-        if (mNativeInterface != null) {
-            mNativeInterface.onNotify(message);
-        }
+        DemoJNIAct.notifyUI(mDataFromNative, message);
 
     }
 
-    /**
-     * For Activity
-     * @return
-     */
-    interface INative {
-        void onNotify(String str);
+    private static void notifyClazz(String message) {
+        Utils.inFo(NativeUtils.class, "notify is called and message: " + message);
+        DemoJNIAct.notifyUI(sDataFromNative, message);
+
     }
 
     public native String sayHello();
+
+    public native void objectCallBack();
+
+    public native void clearObjData();
+
+    public static native void clearClazzData();
+
+    public static native void classCallBack();
 }

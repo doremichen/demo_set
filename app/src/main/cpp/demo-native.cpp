@@ -28,77 +28,88 @@
 #define LOGE(...)
 #endif
 
+/**
+ * java data context
+ */
 struct javadata_t {
     jclass class_demo;
-    JNIEnv* env_demo;
-    jfieldID fid_data;
-    jmethodID mid_method;
+    jfieldID fid_Objdata;
+    jmethodID mid_Objmethod;
+    jfieldID fid_Clazzdata;
+    jmethodID mid_Clazzmethod;
 } javadata;
 
-
+// The java class path
 static const char* const classPath = "com/adam/app/demoset/jnidemo/NativeUtils";
 
+/**==============================================================================
+ *
+ * As the following method are the native method implementation.
+ *
+ */
 static
-void sigImp(int sigId)
+jstring _sayHello(JNIEnv* env, jobject thiz)
 {
     LOGI("[%s] enter\n", __FUNCTION__);
-//    LOGI("CallBack to java layer");
-//    // CallBack to java layer
-//    jstring strInfo_data = javadata.env_demo->NewStringUTF("data changed");
-//    javadata.env_demo->SetObjectField(javadata.class_demo, javadata.fid_data, strInfo_data);
-//
-//    jstring strInfo_method = javadata.env_demo->NewStringUTF("Changed by native layer");
-//    javadata.env_demo->CallVoidMethod(javadata.class_demo, javadata.mid_method, strInfo_method);
-    LOGI("[%s] exit\n", __FUNCTION__);
-}
-
-static
-void configTimer()
-{
-    LOGI("[%s] enter\n", __FUNCTION__);
-    struct itimerval value;
-
-    signal(SIGALRM, sigImp);
-
-    value.it_value.tv_sec = 2; // After 3 sec it start alarm
-    value.it_value.tv_usec = 100000;
-    value.it_interval.tv_sec = 0; // Every 1 sec it execute Alarm body
-    value.it_interval.tv_usec = 0;
-
-    setitimer(ITIMER_REAL, &value, NULL);
-}
-
-static
-jstring _sayHello(JNIEnv* env, jobject clazz)
-{
-    LOGI("[%s] enter\n", __FUNCTION__);
-    // Start alarm to call back
-    configTimer();
-
-    LOGI("CallBack to java layer");
-    // CallBack to java layer
-    jstring strInfo_data = env->NewStringUTF("data changed");
-    env->SetObjectField(clazz, javadata.fid_data, strInfo_data);
-    env->DeleteLocalRef(strInfo_data);
-
-    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
-    env->CallVoidMethod(clazz, javadata.mid_method, strInfo_method);
-    env->DeleteLocalRef(strInfo_method);
-
     return env->NewStringUTF("This string is from JNI");
 }
 
+static
+void _objectCallBack(JNIEnv* env, jobject thiz)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    LOGI("CallBack to java layer");
+    // CallBack to java layer
+    jstring strInfo_data = env->NewStringUTF("data changed");
+    env->SetObjectField(thiz, javadata.fid_Objdata, strInfo_data);
+    env->DeleteLocalRef(strInfo_data);
 
+    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
+    env->CallVoidMethod(thiz, javadata.mid_Objmethod, strInfo_method);
+    env->DeleteLocalRef(strInfo_method);
+}
+
+static
+void _classCallBack(JNIEnv* env, jobject thiz)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    LOGI("CallBack to java layer");
+    env->SetStaticBooleanField(javadata.class_demo, javadata.fid_Clazzdata, true);
+    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
+    env->CallStaticVoidMethod(javadata.class_demo, javadata.mid_Clazzmethod, strInfo_method);
+    env->DeleteLocalRef(strInfo_method);
+}
+
+static
+void _clearObjData(JNIEnv* env, jobject thiz)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    jstring strInfo_data = env->NewStringUTF("unChange");
+    env->SetObjectField(thiz, javadata.fid_Objdata, strInfo_data);
+    env->DeleteLocalRef(strInfo_data);
+}
+
+static
+void _clearClazzData(JNIEnv* env, jobject thiz)
+{
+    LOGI("[%s] enter\n", __FUNCTION__);
+    env->SetStaticBooleanField(javadata.class_demo, javadata.fid_Clazzdata, false);
+}
 /**
  * Jni native method
  */
 static const JNINativeMethod gMethods[] = {
         {"sayHello", "()Ljava/lang/String;", (void*)_sayHello},
+        {"objectCallBack", "()V", (void*)_objectCallBack},
+        {"classCallBack", "()V", (void*)_classCallBack},
+        {"clearObjData", "()V", (void*)_clearObjData},
+        {"clearClazzData", "()V", (void*)_clearClazzData},
 };
 
 static
 int registerNative(JNIEnv* env)
 {
+    LOGI("[%s] enter\n", __FUNCTION__);
     jclass clazz = env->FindClass(classPath);
 
     if (clazz == NULL) {
@@ -111,18 +122,24 @@ int registerNative(JNIEnv* env)
         return -1;
     }
 
-//    javadata.class_demo = clazz;
-//    javadata.env_demo = env;
+    // Get global reference
+    javadata.class_demo = (jclass) env->NewGlobalRef(clazz);
 
-    // Get java member id
-    javadata.fid_data = env->GetFieldID(clazz, "dataFromNative", "Ljava/lang/String;");
-    javadata.mid_method = env->GetMethodID(clazz, "notify", "(Ljava/lang/String;)V");
+    // Get java object member id
+    javadata.fid_Objdata = env->GetFieldID(clazz, "mDataFromNative", "Ljava/lang/String;");
+    javadata.mid_Objmethod = env->GetMethodID(clazz, "notifyObj", "(Ljava/lang/String;)V");
 
+    // Get java class member id
+    javadata.fid_Clazzdata = env->GetStaticFieldID(clazz, "sDataFromNative", "Z");
+    javadata.mid_Clazzmethod = env->GetStaticMethodID(clazz, "notifyClazz", "(Ljava/lang/String;)V");
 
+    LOGI("[%s] exit\n", __FUNCTION__);
     return 0;
 }
 
-
+/**
+ * The load function of jni
+ */
 JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved)
 {
     JNIEnv* env;

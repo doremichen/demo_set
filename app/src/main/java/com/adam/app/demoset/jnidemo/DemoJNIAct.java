@@ -1,62 +1,79 @@
+/**
+ * This is JNI demo UI
+ */
 package com.adam.app.demoset.jnidemo;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
 
-public class DemoJNIAct extends AppCompatActivity implements NativeUtils.INative {
+import java.lang.ref.WeakReference;
+
+public class DemoJNIAct extends AppCompatActivity {
 
     private TextView mShow;
     private ConstraintLayout mLayout;
+
+    private static final int ACTION_UPDATE_OBJECTCALLBACK = 0;
+    private static final int ACTION_UPDATE_CLAZZCALLBACK = 1;
+
+
+    /**
+     * Ui handler
+     */
+    private static class UIHanlder extends Handler {
+
+        private WeakReference<DemoJNIAct> mReference;
+
+        public UIHanlder(@NonNull DemoJNIAct act) {
+            mReference = new WeakReference<DemoJNIAct>(act);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case ACTION_UPDATE_OBJECTCALLBACK: {
+                    Bundle bundle = msg.getData();
+                    String data = bundle.getString(KEY_DATA);
+                    String method = bundle.getString(KEY_METHOD);
+                    mReference.get().showDialog(data, method);
+                }
+                break;
+                case ACTION_UPDATE_CLAZZCALLBACK: {
+                    Bundle bundle = msg.getData();
+                    boolean data = bundle.getBoolean(KEY_DATA);
+                    String method = bundle.getString(KEY_METHOD);
+                    mReference.get().showDialog(data, method);
+                }
+                break;
+            }
+        }
+    }
+
+    private static UIHanlder mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_jni);
-        mLayout = (ConstraintLayout)findViewById(R.id.demo_jni_layout);
-        mShow = (TextView)this.findViewById(R.id.tv_show_jni);
+        mLayout = (ConstraintLayout) findViewById(R.id.demo_jni_layout);
+        mShow = (TextView) this.findViewById(R.id.tv_show_jni);
 
-        NativeUtils instance = NativeUtils.Helper.getInstance();
-        instance.setNativeInterface(this);
+        mHandler = new UIHanlder(this);
 
-        // Start thread to check update status
-        new Thread(new Runnable() {
-
-            private NativeUtils instance = NativeUtils.Helper.getInstance();
-
-            @Override
-            public void run() {
-                while (instance.getData().equals("unChange")) {
-                    ;
-                }
-
-                // Show update data stats
-                DemoJNIAct.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Snackbar.make(mLayout, "dataFromNative: " + instance.getData(),
-                                Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Ok", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        ;
-                                    }
-                                })
-                                .show();
-                    }
-                });
-            }
-        }).start();
     }
 
     @Override
@@ -71,6 +88,10 @@ public class DemoJNIAct extends AppCompatActivity implements NativeUtils.INative
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.demo_bt_exit:
+                // clear data
+                NativeUtils.getInstance().clearObjData();
+                NativeUtils.clearClazzData();
+
                 this.finish();
                 return true;
         }
@@ -78,19 +99,47 @@ public class DemoJNIAct extends AppCompatActivity implements NativeUtils.INative
         return false;
     }
 
+    /**
+     * The button call back method
+     * @param v
+     */
     public void onInvokeJNI(View v) {
-        String info = NativeUtils.Helper.getInstance().sayHello();
+        String info = NativeUtils.getInstance().sayHello();
         mShow.setText("JNI info: " + info);
 
 
     }
 
-    @Override
-    public void onNotify(String str) {
-        Utils.inFo(this, "onNotify enter");
+    /**
+     * The button call back method
+     * @param v
+     */
+    public void onObjectCB(View v) {
+        NativeUtils.getInstance().objectCallBack();
+    }
+
+    /**
+     * The button call back method
+     * @param v
+     */
+    public void onClazzCB(View v) {
+        NativeUtils.classCallBack();
+    }
+
+    /**
+     * Alert dialog for object call back
+     * @param data
+     * @param str
+     */
+    public void showDialog(String data, String str) {
+        // Show alertDialog
+        StringBuilder stb = new StringBuilder();
+        stb.append("Data: " + data + "\n");
+        stb.append("Method: " + str + "\n");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Jni Demo");
-        builder.setMessage("Info: " + str);
+        builder.setTitle("Object CallBack");
+        builder.setMessage(stb.toString());
         builder.setCancelable(false);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
@@ -100,7 +149,70 @@ public class DemoJNIAct extends AppCompatActivity implements NativeUtils.INative
         });
 
         builder.create().show();
-
-
     }
+
+    /**
+     * Alert dialog for clazz call back
+     * @param data
+     * @param str
+     */
+    public void showDialog(boolean data, String str) {
+        // Show alertDialog
+        StringBuilder stb = new StringBuilder();
+        stb.append("Data: " + String.valueOf(data) + "\n");
+        stb.append("Method: " + str + "\n");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Clazz CallBack");
+        builder.setMessage(stb.toString());
+        builder.setCancelable(false);
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.create().show();
+    }
+
+    /**
+     * Bundle key
+     */
+    private static final String KEY_DATA = "key.data";
+    private static final String KEY_METHOD = "key.method";
+
+    /**
+     * Put data in the ui message queue
+     * @param data
+     * @param str
+     */
+    public static void notifyUI(String data, String str) {
+        Message message = mHandler.obtainMessage();
+        message.what = ACTION_UPDATE_OBJECTCALLBACK;
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_DATA, data);
+        bundle.putString(KEY_METHOD, str);
+        message.setData(bundle);
+        // Put message in ui queue
+        mHandler.sendMessage(message);
+    }
+
+    /**
+     * Put data in the ui message queue
+     * @param data
+     * @param str
+     */
+    public static void notifyUI(boolean data, String str) {
+        Message message = mHandler.obtainMessage();
+        message.what = ACTION_UPDATE_CLAZZCALLBACK;
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_DATA, data);
+        bundle.putString(KEY_METHOD, str);
+        message.setData(bundle);
+        // Put message in ui queue
+        mHandler.sendMessage(message);
+    }
+
+
 }

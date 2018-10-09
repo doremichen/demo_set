@@ -25,4 +25,6 @@
     <string name="label_memnu_sahred">Sahred</string>
     <string name="label_jni_info">Welcom to demo jni</string>
     <string name="action_jni_sayhello">Invoke JNI to say hello</string>
+    <string name="action_test_inst_cb">Test: Object CallBack</string>
+    <string name="action_test_class_cb">Test: Class CallBack</string>
 </resources>
