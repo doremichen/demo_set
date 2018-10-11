@@ -30,4 +30,5 @@
     <string name="label_demo_flashlight">Welcome to demo flash light</string>
     <string name="label_on">On</string>
     <string name="label_off">Off</string>
+    <string name="label_flash_light_on_off">Flash light on/off</string>
 </resources>

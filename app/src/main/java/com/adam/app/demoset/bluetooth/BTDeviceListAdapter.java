@@ -86,7 +86,7 @@ public class BTDeviceListAdapter extends BaseAdapter {
         mHolder.mName.setText(device.getName());
 //        mHolder.mAddress.setText(device.getAddress());
         mHolder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
-        mHolder.mAddress.setText((mConnect == true) ? "Connect..." : "Disconnect...");
+        mHolder.mAddress.setText((mConnect == true) ? "Connect..." : device.getAddress());
         // register button click
         mHolder.mAction.setOnClickListener(new ItemButtonListener(position));
         // register name item click

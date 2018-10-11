@@ -13,7 +13,8 @@ public class NativeUtils {
     }
 
 
-    private NativeUtils() {}
+    private NativeUtils() {
+    }
 
     /**
      * Singleton Bill Pugh

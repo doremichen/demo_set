@@ -101,6 +101,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * The button call back method
+     *
      * @param v
      */
     public void onInvokeJNI(View v) {
@@ -112,6 +113,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * The button call back method
+     *
      * @param v
      */
     public void onObjectCB(View v) {
@@ -120,6 +122,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * The button call back method
+     *
      * @param v
      */
     public void onClazzCB(View v) {
@@ -128,6 +131,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * Alert dialog for object call back
+     *
      * @param data
      * @param str
      */
@@ -153,6 +157,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * Alert dialog for clazz call back
+     *
      * @param data
      * @param str
      */
@@ -184,6 +189,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * Put data in the ui message queue
+     *
      * @param data
      * @param str
      */
@@ -200,6 +206,7 @@ public class DemoJNIAct extends AppCompatActivity {
 
     /**
      * Put data in the ui message queue
+     *
      * @param data
      * @param str
      */

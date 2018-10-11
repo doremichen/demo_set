@@ -89,7 +89,14 @@
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:label="Demo hello jni" />
-        <activity android:name=".DemoFlashLightAct"></activity>
+        <activity
+            android:name=".flashlight.DemoFlashLightAct"
+            android:label="Demo flash light">
+        </activity>
+        <service
+            android:name=".flashlight.FlashLightService"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+        </service>
     </application>
 
 </manifest>
