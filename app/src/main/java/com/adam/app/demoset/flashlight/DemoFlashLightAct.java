@@ -33,7 +33,7 @@ public class DemoFlashLightAct extends AppCompatActivity {
         if (isFlash) {
             Utils.showToast(this, "the flash light is available");
 
-            mTButton = (ToggleButton) this.findViewById(R.id.toggleButton_flashlight);
+            mTButton = this.findViewById(R.id.toggleButton_flashlight);
 
             // Check flash light status
             String status = System.getProperty(PROP_FLASH_LIGHT_ENABLE);

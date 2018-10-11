@@ -9,7 +9,7 @@
         android:protectionLevel="dangerous" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -91,12 +91,29 @@
             android:label="Demo hello jni" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
-            android:label="Demo flash light">
-        </activity>
+            android:label="Demo flash light"></activity>
+
         <service
             android:name=".flashlight.FlashLightService"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+
+        <receiver
+            android:name=".lockscreen.MyAdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/policies" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".lockscreen.DemoDeviceAdminAct"
+            android:label="Demo Device admin">
+
+        </activity>
     </application>
 
 </manifest>

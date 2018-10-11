@@ -8,4 +8,5 @@
     <data title="Demo Share provide action" clsname="com.adam.app.demoset.DemoShareProvidAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Hello jni" clsname="com.adam.app.demoset.jnidemo.DemoJNIAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Flash Light" clsname="com.adam.app.demoset.flashlight.DemoFlashLightAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Device admin" clsname="com.adam.app.demoset.lockscreen.DemoDeviceAdminAct" pkgname="com.adam.app.demoset"/>
 </List>
