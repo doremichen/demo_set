@@ -6,9 +6,9 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,23 +47,23 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_device_admin);
 
-        mDevPolicyManager = (DevicePolicyManager)this.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        mDevPolicyManager = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mCompName = new ComponentName(this, MyAdminReceiver.class);
 
-        mKeygaurdManager = (KeyguardManager)this.getSystemService(Context.KEYGUARD_SERVICE);
+        mKeygaurdManager = (KeyguardManager) this.getSystemService(Context.KEYGUARD_SERVICE);
 
         mList = this.findViewById(R.id.list_demo_admin);
 
-        ArrayAdapter<String> adatper = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, mItems);
 
-        mList.setAdapter(adatper);
+        mList.setAdapter(adapter);
 
 
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = (String)parent.getItemAtPosition(position);
+                String item = (String) parent.getItemAtPosition(position);
                 Utils.showToast(DemoDeviceAdminAct.this, "item: " + item);
 
                 if (ITEM_EXIT.equals(item)) {

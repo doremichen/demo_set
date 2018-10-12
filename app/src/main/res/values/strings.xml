@@ -32,4 +32,5 @@
     <string name="label_off">Off</string>
     <string name="label_flash_light_on_off">Flash light on/off</string>
     <string name="label_demo_admin_info">Welcome to demo device admin</string>
+    <string name="action_take_picture">Take picture</string>
 </resources>

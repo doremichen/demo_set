@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Front lens" android:id="@+id/front_lens" app:showAsAction="never"/>
+    <item android:title="Rear lens" android:id="@+id/rear_lens" app:showAsAction="never"/>
+    <item android:title="@string/label_exit" android:id="@+id/exit_camera" app:showAsAction="never"/>
+
+</menu>

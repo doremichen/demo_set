@@ -1,4 +1,4 @@
-package com.adam.app.demoset;
+package com.adam.app.demoset.floatingDlg;
 
 import android.app.AlertDialog;
 import android.app.Service;
@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
 import android.view.WindowManager;
+
+import com.adam.app.demoset.Utils;
 
 public class FloatingDialogSvr extends Service {
 

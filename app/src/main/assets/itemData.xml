@@ -2,11 +2,12 @@
 <List>
     <data title="Demo Service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo job service" clsname="com.adam.app.demoset.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
-    <data title="Demo floating alert dialog" clsname="com.adam.app.demoset.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo floating alert dialog" clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo BlueTooth" clsname="com.adam.app.demoset.bluetooth.DemoBTAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Notification" clsname="com.adam.app.demoset.notification.DemoNotificationAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Share provide action" clsname="com.adam.app.demoset.DemoShareProvidAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Hello jni" clsname="com.adam.app.demoset.jnidemo.DemoJNIAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Flash Light" clsname="com.adam.app.demoset.flashlight.DemoFlashLightAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Device admin" clsname="com.adam.app.demoset.lockscreen.DemoDeviceAdminAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Camera" clsname="com.adam.app.demoset.camera2.DemoCamera2Act" pkgname="com.adam.app.demoset"/>
 </List>

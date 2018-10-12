@@ -62,7 +62,7 @@ public abstract class Utils {
     public static boolean askPermission(final Activity context, @NonNull final String permission, final int requestcode) {
         boolean ret = false;
         if (ContextCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                permission)
                 != PackageManager.PERMISSION_GRANTED) {
             Utils.inFo(Utils.class, "Not granted");
             if (ActivityCompat.shouldShowRequestPermissionRationale(context,

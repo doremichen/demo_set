@@ -10,6 +10,7 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera2.full" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -18,6 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
@@ -66,11 +68,11 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
-            android:name=".DemoFloatingDialogAct"
+            android:name=".floatingDlg.DemoFloatingDialogAct"
             android:label="Demo floation dialog activity" />
 
         <service
-            android:name=".FloatingDialogSvr"
+            android:name=".floatingDlg.FloatingDialogSvr"
             android:enabled="true"
             android:exported="true" />
 
@@ -91,11 +93,11 @@
             android:label="Demo hello jni" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
-            android:label="Demo flash light"></activity>
+            android:label="Demo flash light" />
 
         <service
             android:name=".flashlight.FlashLightService"
-            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
             android:name=".lockscreen.MyAdminReceiver"
@@ -111,7 +113,11 @@
 
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
-            android:label="Demo Device admin">
+            android:label="Demo Device admin"></activity>
+        <activity
+            android:name=".camera2.DemoCamera2Act"
+            android:label="Demo Camera"
+            android:screenOrientation="nosensor">
 
         </activity>
     </application>
