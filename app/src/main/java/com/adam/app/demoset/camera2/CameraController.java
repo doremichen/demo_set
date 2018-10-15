@@ -261,11 +261,15 @@ public class CameraController {
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
             Utils.inFo(this, "onDisconnected");
+            camera.close();
+            mCameraDevice = null;
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
             Utils.inFo(this, "onError error: " + error);
+            camera.close();
+            mCameraDevice = null;
         }
     }
 
