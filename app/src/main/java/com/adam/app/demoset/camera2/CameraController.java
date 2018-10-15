@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -11,9 +12,12 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
+import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
+import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -24,7 +28,7 @@ import android.view.TextureView;
 
 import com.adam.app.demoset.Utils;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,9 +40,12 @@ public class CameraController {
 
     private CameraDevice mCameraDevice;
     private TextureView mTexture;
-    private Size mVewDimension;
+    private Size mPreviewSize;
+
+    private SoftReference<Activity> mRef_act;
 
     private CaptureRequest.Builder mRequestBuilder;
+    private ImageReader mImageReader;
 
     private CameraController() {
     }
@@ -47,30 +54,46 @@ public class CameraController {
         public static final CameraController INSTANCE = new CameraController();
     }
 
-    public static CameraController create() {
+    public static CameraController newInstance() {
         return Builder.INSTANCE;
     }
 
 
-    public void openCamera(Activity act, int index, TextureView textView) {
+    public void registerContext(Activity act) {
+        this.mRef_act = new SoftReference<Activity>(act);
+    }
+
+    public void openCamera(int index, TextureView textView) {
         Utils.inFo(this, "openCamera enter");
         mTexture = textView;
-        WeakReference<Activity> ref_act = new WeakReference<Activity>(act);
 
-        if (ActivityCompat.checkSelfPermission(ref_act.get(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(ref_act.get(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(ref_act.get(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, DemoCamera2Act.REQUEST_PERMISSION_CODE);
+
+        if (ActivityCompat.checkSelfPermission(mRef_act.get(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mRef_act.get(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(mRef_act.get(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, DemoCamera2Act.REQUEST_PERMISSION_CODE);
 
         } else {
             // Camera service proxy
-            CameraManager cameraService = (CameraManager) ref_act.get().getSystemService(Context.CAMERA_SERVICE);
+            CameraManager cameraService = (CameraManager) mRef_act.get().getSystemService(Context.CAMERA_SERVICE);
             try {
-                String camearId = cameraService.getCameraIdList()[index];
+                String cameraId = cameraService.getCameraIdList()[index];
 
-                CameraCharacteristics cameraChar = cameraService.getCameraCharacteristics(camearId);
+                // Set up camera output
+                CameraCharacteristics cameraChar = cameraService.getCameraCharacteristics(cameraId);
                 StreamConfigurationMap map = cameraChar.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                this.mVewDimension = map.getOutputSizes(SurfaceTexture.class)[0];
-                cameraService.openCamera(camearId, new MyOpenCameraStateCallback(), mWorkHandler);
+                this.mPreviewSize = map.getOutputSizes(ImageFormat.JPEG)[0];
+                int width = (mPreviewSize == null) ? textView.getWidth() : mPreviewSize.getWidth();
+                int height = (mPreviewSize == null) ? textView.getHeight() : mPreviewSize.getHeight();
+                mImageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 2);
+                mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                    @Override
+                    public void onImageAvailable(ImageReader reader) {
+
+                    }
+                }, mWorkHandler);
+
+
+                cameraService.openCamera(cameraId, new MyOpenCameraStateCallback(), mWorkHandler);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
@@ -87,17 +110,16 @@ public class CameraController {
         mWorkThread = new HandlerThread("Demo camera2 work task");
         mWorkThread.start();
         mWorkHandler = new Handler(mWorkThread.getLooper());
-        Utils.inFo(this, "startWorkThread enter: mWorkHandler = " + mWorkHandler );
+        Utils.inFo(this, "startWorkThread enter: mWorkHandler = " + mWorkHandler);
     }
 
     /**
      * Stop camera work thread
      */
     public void stopWorkThread() {
-        Utils.inFo(this, "stopWorkThread enter: mWorkHandler = " + mWorkHandler );
+        Utils.inFo(this, "stopWorkThread enter: mWorkHandler = " + mWorkHandler);
         if (mWorkThread != null) {
             mWorkThread.quitSafely();
-
             try {
                 mWorkThread.join();
                 mWorkThread = null;
@@ -113,10 +135,11 @@ public class CameraController {
         Utils.inFo(this, "capture");
         ArrayList<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(new Surface(mTexture.getSurfaceTexture()));
+        surfaces.add(this.mImageReader.getSurface());
 
         try {
             mRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            mRequestBuilder.addTarget(new Surface(mTexture.getSurfaceTexture()));
+            mRequestBuilder.addTarget(this.mImageReader.getSurface());
             mRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
 
             this.mCameraDevice.createCaptureSession(surfaces, new MyCaptureStateCallback(), this.mWorkHandler);
@@ -131,6 +154,11 @@ public class CameraController {
             this.mCameraDevice.close();
             this.mCameraDevice = null;
         }
+
+        if (this.mImageReader != null) {
+            this.mImageReader.close();
+            this.mImageReader = null;
+        }
     }
 
 
@@ -138,7 +166,7 @@ public class CameraController {
         Utils.inFo(this, "startPreview");
         // Get Surface
         SurfaceTexture surfaceText = this.mTexture.getSurfaceTexture();
-        surfaceText.setDefaultBufferSize(this.mVewDimension.getWidth(), this.mVewDimension.getHeight());
+        surfaceText.setDefaultBufferSize(this.mPreviewSize.getWidth(), this.mPreviewSize.getHeight());
         Surface surface = new Surface((surfaceText));
 
         // Add surface to camera device
@@ -146,7 +174,7 @@ public class CameraController {
             mRequestBuilder = this.mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mRequestBuilder.addTarget(surface);
 
-            this.mCameraDevice.createCaptureSession(Arrays.asList(surface), new MyPreviewStateCallback(), this.mWorkHandler);
+            this.mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()), new MyPreviewStateCallback(), this.mWorkHandler);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -179,6 +207,36 @@ public class CameraController {
             public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
                 super.onCaptureStarted(session, request, timestamp, frameNumber);
                 Utils.inFo(this, "onCaptureStarted");
+            }
+
+            @Override
+            public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
+                super.onCaptureProgressed(session, request, partialResult);
+                Utils.inFo(this, "onCaptureProgressed");
+            }
+
+            @Override
+            public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
+                super.onCaptureFailed(session, request, failure);
+                Utils.inFo(this, "onCaptureFailed");
+            }
+
+            @Override
+            public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session, int sequenceId, long frameNumber) {
+                super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
+                Utils.inFo(this, "onCaptureSequenceCompleted");
+            }
+
+            @Override
+            public void onCaptureSequenceAborted(@NonNull CameraCaptureSession session, int sequenceId) {
+                super.onCaptureSequenceAborted(session, sequenceId);
+                Utils.inFo(this, "onCaptureSequenceAborted");
+            }
+
+            @Override
+            public void onCaptureBufferLost(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull Surface target, long frameNumber) {
+                super.onCaptureBufferLost(session, request, target, frameNumber);
+                Utils.inFo(this, "onCaptureBufferLost");
             }
 
             @Override
@@ -231,6 +289,7 @@ public class CameraController {
         @Override
         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
             Utils.inFo(this, "onConfigureFailed");
+
         }
 
 

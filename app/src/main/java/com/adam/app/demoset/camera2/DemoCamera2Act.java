@@ -2,6 +2,7 @@ package com.adam.app.demoset.camera2;
 
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraCharacteristics;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,16 +13,19 @@ import android.view.View;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.jnidemo.NativeUtils;
 
 public class DemoCamera2Act extends AppCompatActivity {
 
     public static final int REQUEST_PERMISSION_CODE = 0x1357;
+
+
     private TextureView mSureView;
     private MySurfaceTextureListener mTexturelistener;
 
     // Control lens
     private int mIndex;
+    private CameraController mCameraController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,12 @@ public class DemoCamera2Act extends AppCompatActivity {
         mTexturelistener = new MySurfaceTextureListener();
         mSureView.setSurfaceTextureListener(mTexturelistener);
 
+        // Get camera controller
+        mCameraController = CameraController.newInstance();
+        mCameraController.registerContext(this);
+
         // Start work thread
-        CameraController controller = CameraController.create();
-        controller.startWorkThread();
+        mCameraController.startWorkThread();
 
     }
 
@@ -47,7 +54,7 @@ public class DemoCamera2Act extends AppCompatActivity {
         Utils.inFo(this, "onResume enter");
         // open camera
         if (this.mSureView.isAvailable()) {
-            CameraController.create().openCamera(this, mIndex, this.mSureView);
+            mCameraController.openCamera(mIndex, this.mSureView);
         } else {
             this.mSureView.setSurfaceTextureListener(mTexturelistener);
         }
@@ -65,7 +72,8 @@ public class DemoCamera2Act extends AppCompatActivity {
         super.onDestroy();
         Utils.inFo(this, "onDestroy enter");
         // close camera
-        CameraController.create().stopWorkThread();
+        mCameraController.stopWorkThread();
+        mCameraController.closeCamera();
     }
 
     @Override
@@ -80,18 +88,18 @@ public class DemoCamera2Act extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.front_lens:
-                mIndex = 1;
+                mIndex = CameraCharacteristics.LENS_FACING_BACK;
                 // Close camera
-                CameraController.create().closeCamera();
+                mCameraController.closeCamera();
                 // Open camera
-                CameraController.create().openCamera(this, mIndex, this.mSureView);
+                mCameraController.openCamera(mIndex, this.mSureView);
                 return true;
             case R.id.rear_lens:
-                mIndex = 0;
+                mIndex = CameraCharacteristics.LENS_FACING_FRONT;
                 // Close camera
-                CameraController.create().closeCamera();
+                mCameraController.closeCamera();
                 // Open camera
-                CameraController.create().openCamera(this, mIndex, this.mSureView);
+                mCameraController.openCamera(mIndex, this.mSureView);
                 return true;
             case R.id.exit_camera:
                 this.finish();
@@ -120,7 +128,7 @@ public class DemoCamera2Act extends AppCompatActivity {
      */
     public void onTakePic(View v) {
         Utils.inFo(this, "onTakePic enter");
-        CameraController.create().capture();
+        mCameraController.capture();
 
 
     }
@@ -129,7 +137,7 @@ public class DemoCamera2Act extends AppCompatActivity {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             Utils.inFo(this, "onSurfaceTextureAvailable enter");
-            CameraController.create().openCamera(DemoCamera2Act.this, 0, mSureView);
+            mCameraController.openCamera(0, mSureView);
         }
 
         @Override
