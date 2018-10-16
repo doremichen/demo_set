@@ -33,7 +33,7 @@ public class DemoCamera2Act extends AppCompatActivity {
         Utils.inFo(this, "onCreate enter");
         setContentView(R.layout.activity_demo_camera2);
 
-        mSureView = this.findViewById(R.id.textureView);
+        mSureView = this.findViewById(R.id.textureView_act2);
 
         // register surface listener
         mTexturelistener = new MySurfaceTextureListener();

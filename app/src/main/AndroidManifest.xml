@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
@@ -113,13 +113,16 @@
 
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
-            android:label="Demo Device admin"></activity>
+            android:label="Demo Device admin" />
         <activity
             android:name=".camera2.DemoCamera2Act"
             android:label="Demo Camera"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"></activity>
 
-        </activity>
+        <activity
+            android:name=".camera2.DemoCamera2Act2"
+            android:label="Demo Camera 2"
+            android:screenOrientation="nosensor"></activity>
     </application>
 
 </manifest>

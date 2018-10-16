@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".camera2.DemoCamera2Act">
-
+    tools:context=".camera2.DemoCamera2Act2">
     <TextureView
         android:id="@+id/textureView_act2"
         android:layout_width="match_parent"
