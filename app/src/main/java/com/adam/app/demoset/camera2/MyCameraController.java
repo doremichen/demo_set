@@ -71,7 +71,7 @@ public final class MyCameraController {
     private Size mPreviewSize;
     private ImageReader mReader;
     private boolean mCanFalsh;
-    private CaptureRequest.Builder mPreviewRequest;
+    private CaptureRequest.Builder mPreviewReqBuilder;
     private CameraCaptureSession mCaptureSession;
 
     private CameraCaptureSession.CaptureCallback mCaptureCallBack = new CameraCaptureSession.CaptureCallback() {
@@ -92,6 +92,7 @@ public final class MyCameraController {
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
                             CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
+                        Utils.inFo(this, "aeState = " + afState);
                         if (aeState == null ||
                                 aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
                             mState = STATE.PICTURE_TAKEN;
@@ -174,6 +175,7 @@ public final class MyCameraController {
             super.onCaptureBufferLost(session, request, target, frameNumber);
         }
     };
+    private CaptureRequest mPreviewReq;
 
     private MyCameraController() {
     }
@@ -263,8 +265,8 @@ public final class MyCameraController {
 
         try {
             // Set up CaptureRequest.Builder
-            mPreviewRequest = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPreviewRequest.addTarget(surface);
+            mPreviewReqBuilder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewReqBuilder.addTarget(surface);
 
             // Create capture session to display preview
             mDevice.createCaptureSession(Arrays.asList(surface, mReader.getSurface()), new CameraCaptureSession.StateCallback() {
@@ -275,16 +277,17 @@ public final class MyCameraController {
                     mCaptureSession = session;
 
                     // Auto focus mode
-                    mPreviewRequest.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                    mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
                     // Flash mode
                     if (mCanFalsh) {
-                        mPreviewRequest.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                        mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                     }
 
                     try {
                         // Start to display the previewing
-                        session.setRepeatingRequest(mPreviewRequest.build(), mCaptureCallBack, mBgHandler);
+                        mPreviewReq = mPreviewReqBuilder.build();
+                        session.setRepeatingRequest(mPreviewReq, mCaptureCallBack, mBgHandler);
                     } catch (CameraAccessException e) {
                         e.printStackTrace();
                     }
@@ -324,13 +327,19 @@ public final class MyCameraController {
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
                     Utils.inFo(this, "captureCallBack: onCaptureCompleted");
+
+                    // Tell UI
+                    if (mCallBack != null) {
+                        mCallBack.onCaptureDone();
+                    }
+
                     restartPreview();
                 }
             };
 
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
-            mCaptureSession.capture(builder.build(), captureCallBack, mBgHandler);
+            mCaptureSession.capture(builder.build(), captureCallBack, null);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -341,11 +350,11 @@ public final class MyCameraController {
         Utils.inFo(this, "runPrecaptureSequence");
         try {
             // This is how to tell the camera to trigger.
-            mPreviewRequest.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
+            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
                     CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the precapture sequence to be set.
             mState = STATE.WATING_PRECAPTURE;
-            mCaptureSession.capture(mPreviewRequest.build(), mCaptureCallBack,
+            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack,
                     mBgHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -355,12 +364,13 @@ public final class MyCameraController {
     private void restartPreview() {
         Utils.inFo(this, "restartPreview");
         try {
-            mPreviewRequest.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             if (mCanFalsh) {
-                mPreviewRequest.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+                mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             }
+            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack, mBgHandler);
             mState = STATE.PREVIEW;
-            mCaptureSession.setRepeatingRequest(mPreviewRequest.build(), mCaptureCallBack, mBgHandler);
+            mCaptureSession.setRepeatingRequest(mPreviewReq, mCaptureCallBack, mBgHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -404,10 +414,10 @@ public final class MyCameraController {
 
         try {
             // This is how to tell the camera to lock focus.
-            mPreviewRequest.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
+            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
             // Tell mCaptureCallBack to waiting lock state.
             mState = STATE.WAITING_LOCK;
-            mCaptureSession.capture(mPreviewRequest.build(), mCaptureCallBack, mBgHandler);
+            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack, mBgHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -417,6 +427,7 @@ public final class MyCameraController {
      * CallBack to UI
      */
     public interface MyCameraCallBack {
+        void onCaptureDone();
         void onDeviceStateError(int code);
     }
 

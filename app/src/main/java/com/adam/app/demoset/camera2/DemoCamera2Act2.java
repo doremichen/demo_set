@@ -28,6 +28,11 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     private MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
         @Override
+        public void onCaptureDone() {
+            Utils.showToast(DemoCamera2Act2.this, "Capture Done...");
+        }
+
+        @Override
         public void onDeviceStateError(int code) {
             // Finish UI
             DemoCamera2Act2.this.finish();
