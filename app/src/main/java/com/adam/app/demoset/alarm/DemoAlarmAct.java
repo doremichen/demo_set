@@ -1,11 +1,18 @@
 package com.adam.app.demoset.alarm;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +28,7 @@ import com.adam.app.demoset.jnidemo.NativeUtils;
 public class DemoAlarmAct extends AppCompatActivity {
 
     public static final String ACTION_UPDATE_INFO = "update alarm info";
+    private static final String NOTIFY_CHANNEL_ID = "notify channel";
 
 
     private boolean mNeedAlarm;
@@ -29,6 +37,9 @@ public class DemoAlarmAct extends AppCompatActivity {
     private TextView mAlarmInfo;
 
     private AlarmManager mAlarmManager;
+    private NotificationManager mNotifyManager;
+
+    private Notification mNotify;
 
     private int mCount;
 
@@ -46,6 +57,8 @@ public class DemoAlarmAct extends AppCompatActivity {
                 // Update alarm info
                 mAlarmInfo.setText("Alarm count: " + String.valueOf(mCount));
 
+                mNotifyManager.notify(0X0316, mNotify);
+
             }
         }
     }
@@ -62,6 +75,9 @@ public class DemoAlarmAct extends AppCompatActivity {
 
         // Alarm service
         mAlarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        // Notification manager
+        mNotifyManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotify = buildNotification();
 
         mUIRecv = new UIReceiver();
         IntentFilter filter = new IntentFilter(ACTION_UPDATE_INFO);
@@ -119,7 +135,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent,0);
         // Start alarm
-        this.mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000L, alarmIntent);
+        this.mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
 
     }
 
@@ -130,6 +146,39 @@ public class DemoAlarmAct extends AppCompatActivity {
         // Cancel alarm
         this.mAlarmManager.cancel(alarmIntent);
 
+    }
+
+    private Notification buildNotification() {
+        // Create Notification channel <Android 8.0>
+        NotificationChannel channel = new NotificationChannel(NOTIFY_CHANNEL_ID,
+                "my test notification",
+                NotificationManager.IMPORTANCE_HIGH);
+
+        channel.setDescription("This is notification demo");
+        channel.enableLights(true);
+        channel.setLightColor(Color.GREEN);
+
+        channel.enableVibration(true);
+        channel.setVibrationPattern(new long[]{100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L});
+
+        mNotifyManager.createNotificationChannel(channel);
+
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_notification_test);
+
+        // Create Notification builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFY_CHANNEL_ID);
+
+        // Config notification
+        builder.setSmallIcon(R.drawable.ic_notification_test);
+        builder.setContentTitle("Alarm Notification");
+        builder.setContentInfo("Alarm info");
+        builder.setContentText("This is Alarm info");
+        builder.setLargeIcon(largeIcon);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setAutoCancel(true);
+
+        return builder.build();
     }
 
 
