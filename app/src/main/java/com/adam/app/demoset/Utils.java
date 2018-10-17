@@ -97,6 +97,11 @@ public abstract class Utils {
     }
 
 
+    /**
+     * There must be create receiver in the owner activity and show snack info
+     * @param context
+     * @param message
+     */
     public static void showSnackBar(Context context, String message) {
         Intent intent = new Intent(ACTION_SHOW_SNACKBAR);
         if (!TextUtils.isEmpty(message)) {
@@ -115,13 +120,8 @@ public abstract class Utils {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Info:");
         builder.setMessage(msg);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
+        builder.setPositiveButton(context.getResources().getString(R.string.label_ok_btn),
+                null);
 
         builder.create().show();
     }

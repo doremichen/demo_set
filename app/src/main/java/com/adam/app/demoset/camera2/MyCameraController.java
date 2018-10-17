@@ -381,6 +381,11 @@ public final class MyCameraController {
      */
     public void closeCamera() {
         Utils.inFo(this, "closeCamera enter");
+        if (mCaptureSession != null) {
+            mCaptureSession.close();
+            mCaptureSession = null;
+        }
+
         if (this.mDevice != null) {
             this.mDevice.close();
             this.mDevice = null;
