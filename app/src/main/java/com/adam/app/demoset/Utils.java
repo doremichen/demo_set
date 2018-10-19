@@ -64,7 +64,7 @@ public abstract class Utils {
         if (ContextCompat.checkSelfPermission(context,
                 permission)
                 != PackageManager.PERMISSION_GRANTED) {
-            Utils.inFo(Utils.class, "Not granted");
+
             if (ActivityCompat.shouldShowRequestPermissionRationale(context,
                     permission)) {
 
@@ -82,7 +82,6 @@ public abstract class Utils {
 
                 builder.create().show();
 
-
             } else {
                 ActivityCompat.requestPermissions(context,
                         new String[]{permission},
@@ -97,8 +96,59 @@ public abstract class Utils {
     }
 
 
+    public static boolean askPermission(final Activity context, @NonNull final String[] permissions, final int requestcode) {
+        Utils.inFo(Utils.class, "askPermission enter");
+        boolean ret = false;
+        int allowNum = 0;
+        boolean showDlg = false;
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(context,
+                    permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                        permission)) {
+                    showDlg = true;
+                    break;
+                }
+            } else {
+                allowNum++;
+            }
+        }
+
+        if (allowNum == permissions.length) {
+            // Permission granted
+            ret = true;
+        } else {
+            if (showDlg) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Rational permission request");
+                builder.setMessage("Please press ok to request permission.");
+                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(context,
+                                permissions,
+                                requestcode);
+                    }
+                });
+                builder.create().show();
+            } else {
+                ActivityCompat.requestPermissions(context,
+                        permissions,
+                        requestcode);
+            }
+
+        }
+        Utils.inFo(Utils.class, "ret = " + ret);
+
+        return ret;
+    }
+
+
     /**
      * There must be create receiver in the owner activity and show snack info
+     *
      * @param context
      * @param message
      */
@@ -116,12 +166,12 @@ public abstract class Utils {
         Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void showAlertDialog(Context context, String msg) {
+    public static void showAlertDialog(Context context, String msg, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Info:");
         builder.setMessage(msg);
         builder.setPositiveButton(context.getResources().getString(R.string.label_ok_btn),
-                null);
+                listener);
 
         builder.create().show();
     }

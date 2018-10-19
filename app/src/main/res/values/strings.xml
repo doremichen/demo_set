@@ -36,4 +36,7 @@
     <string name="label_alram_info">Alarm count: 0</string>
     <string name="action_start_alarm">Start</string>
     <string name="action_stop_alarm">Stop</string>
+    <string name="action_start_record">Start record</string>
+    <string name="action_stop_record">Stop record</string>
+    <string name="action_play">Play</string>
 </resources>

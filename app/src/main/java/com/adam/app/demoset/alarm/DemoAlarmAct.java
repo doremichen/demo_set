@@ -12,9 +12,9 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,9 +74,9 @@ public class DemoAlarmAct extends AppCompatActivity {
         mAlarmInfo = this.findViewById(R.id.tv_alarm_info);
 
         // Alarm service
-        mAlarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         // Notification manager
-        mNotifyManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotifyManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotify = buildNotification();
 
         mUIRecv = new UIReceiver();
@@ -133,7 +133,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     private void startAlarm() {
         Utils.inFo(this, "startAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent,0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         // Start alarm
         this.mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
 
@@ -142,7 +142,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     private void stopAlarm() {
         Utils.inFo(this, "stopAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent,0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         // Cancel alarm
         this.mAlarmManager.cancel(alarmIntent);
 

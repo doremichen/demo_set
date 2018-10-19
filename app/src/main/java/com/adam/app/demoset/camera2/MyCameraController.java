@@ -433,6 +433,7 @@ public final class MyCameraController {
      */
     public interface MyCameraCallBack {
         void onCaptureDone();
+
         void onDeviceStateError(int code);
     }
 

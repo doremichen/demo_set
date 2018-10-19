@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:allowBackup="true"
@@ -130,7 +131,22 @@
 
         <activity
             android:name=".alarm.DemoAlarmAct"
-            android:label="Demo alarm"></activity>
+            android:label="Demo alarm" />
+        <activity
+            android:name=".video.DemoVideoRecordAct"
+            android:label="Demo record video"
+            android:screenOrientation="nosensor">
+
+        </activity>
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.adam.app.demoset.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_file"/>
+        </provider>
     </application>
 
 </manifest>

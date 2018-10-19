@@ -10,5 +10,6 @@
     <data title="Demo Flash Light" clsname="com.adam.app.demoset.flashlight.DemoFlashLightAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Device admin" clsname="com.adam.app.demoset.lockscreen.DemoDeviceAdminAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Camera" clsname="com.adam.app.demoset.camera2.DemoCamera2Act2" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Video record" clsname="com.adam.app.demoset.video.DemoVideoRecordAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Alarm" clsname="com.adam.app.demoset.alarm.DemoAlarmAct" pkgname="com.adam.app.demoset"/>
 </List>
