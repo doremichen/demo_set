@@ -42,7 +42,6 @@ public class MyMessengerService extends Service {
                     e.printStackTrace();
                 }
 
-
             }
         }
     };

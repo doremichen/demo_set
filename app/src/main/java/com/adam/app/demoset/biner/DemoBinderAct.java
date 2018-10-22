@@ -179,39 +179,48 @@ public class DemoBinderAct extends AppCompatActivity {
         // Hide soft keyboard
         Utils.hideSoftKeyBoardFrom(this, v);
 
-        // Get value from edit text
-        int a = Integer.parseInt(mETInputA.getText().toString());
-        int b = Integer.parseInt(mETInputB.getText().toString());
-        Utils.inFo(this,"a = " + a);
-        Utils.inFo(this,"b = " + b);
+        try {
+            // Get value from edit text
+            int a = Integer.parseInt(mETInputA.getText().toString());
+            int b = Integer.parseInt(mETInputB.getText().toString());
+            Utils.inFo(this,"a = " + a);
+            Utils.inFo(this,"b = " + b);
 
-        if (isMessenger) {
-            Utils.showToast(this, "Messenger binder call");
-            Utils.inFo(this, "Messenger binder call");
-            try {
-                // Get message
-                Message msg = Message.obtain();
-                msg.what = MyMessengerService.ACTION_ADD;
-                msg.arg1 = a;
-                msg.arg2 = b;
-                msg.replyTo = mUIMessenger;
-                // Send message to the remote service by service proxy
-                mMessenger.send(msg);
-            } catch (RemoteException e) {
-                e.printStackTrace();
+            if (isMessenger) {
+                Utils.showToast(this, "Messenger binder call");
+                Utils.inFo(this, "Messenger binder call");
+                try {
+                    // Get message
+                    Message msg = Message.obtain();
+                    msg.what = MyMessengerService.ACTION_ADD;
+                    msg.arg1 = a;
+                    msg.arg2 = b;
+                    msg.replyTo = mUIMessenger;
+                    // Send message to the remote service by service proxy
+                    mMessenger.send(msg);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                Utils.showToast(this, "AIDL binder call");
+                Utils.inFo(this, "AIDL binder call");
+                try {
+                    mProxyAidl.add(a, b);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
             }
+        } catch (NumberFormatException ex) {
 
+            Utils.showToast(this, "please input the value between the integer range!!!");
 
-        } else {
-            Utils.showToast(this, "AIDL binder call");
-            Utils.inFo(this, "AIDL binder call");
-            try {
-                mProxyAidl.add(a, b);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+        } finally {
 
         }
+
     }
 
     public void showResult(int value) {
