@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -135,9 +135,8 @@
         <activity
             android:name=".video.DemoVideoRecordAct"
             android:label="Demo record video"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor" />
 
-        </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.adam.app.demoset.fileprovider"
@@ -145,8 +144,23 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/share_file"/>
+                android:resource="@xml/share_file" />
         </provider>
+
+        <activity
+            android:name=".biner.DemoBinderAct"
+            android:label="Demo binder call" />
+
+        <service
+            android:name=".biner.MyAidlService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Remote_aidl" />
+        <service
+            android:name=".biner.MyMessengerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Remote_messenger"></service>
     </application>
 
 </manifest>

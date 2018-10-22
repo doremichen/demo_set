@@ -33,10 +33,14 @@
     <string name="label_flash_light_on_off">Flash light on/off</string>
     <string name="label_demo_admin_info">Welcome to demo device admin</string>
     <string name="action_take_picture">Take picture</string>
-    <string name="label_alram_info">Alarm count: 0</string>
+    <string name="label_alarm_info">Alarm count: 0</string>
     <string name="action_start_alarm">Start</string>
     <string name="action_stop_alarm">Stop</string>
     <string name="action_start_record">Start record</string>
     <string name="action_stop_record">Stop record</string>
     <string name="action_play">Play</string>
+    <string name="label_input_a">a:</string>
+    <string name="label_input_b">b:</string>
+    <string name="label_output_c">c:</string>
+    <string name="action_binder_call">Execute Binder call (c=a+b)</string>
 </resources>
