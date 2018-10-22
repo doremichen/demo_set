@@ -176,6 +176,9 @@ public class DemoBinderAct extends AppCompatActivity {
             return;
         }
 
+        // Hide soft keyboard
+        Utils.hideSoftKeyBoardFrom(this, v);
+
         // Get value from edit text
         int a = Integer.parseInt(mETInputA.getText().toString());
         int b = Integer.parseInt(mETInputB.getText().toString());
