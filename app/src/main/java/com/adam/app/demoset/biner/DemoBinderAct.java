@@ -225,6 +225,10 @@ public class DemoBinderAct extends AppCompatActivity {
 
     public void showResult(int value) {
         Utils.inFo(this, "showResult");
+        if (value == -1) {
+            Utils.showToast(this, "The result is overflow!!!");
+        }
+
         mTVOutputC.setText("c: " + String.valueOf(value));
     }
 

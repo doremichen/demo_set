@@ -27,7 +27,14 @@ public class MyMessengerService extends Service {
                 int a = msg.arg1;
                 int b = msg.arg2;
                 // Service operation
-                int c = a + b;
+                int c = 0;
+
+                // Overflow check
+                if (a > 0 && b > 0 && a > Integer.MAX_VALUE - b) {
+                    c = -1;
+                } else {
+                    c = a + b;
+                }
 
                 try {
                     // Get UI messenger
