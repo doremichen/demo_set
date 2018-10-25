@@ -70,21 +70,15 @@ public class SchedulerController {
 
         mService.shutdown();
 
-        boolean isDone = false;
-
-        do {
-
-            try {
-                // Non block function
-                isDone = mService.awaitTermination(5L, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                isDone = true;
-            } finally {
-
-            }
-
-        } while (!isDone);
+        try {
+            /**
+             * Blocks until all tasks have completed execution after a shutdown request,
+             * or the timeout occurs, or the current thread is interrupted, whichever happens first.
+             */
+            mService.awaitTermination(5L, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Utils.inFo(this, "finishTask exit");
         if (mListener != null) {
