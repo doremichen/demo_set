@@ -70,17 +70,14 @@ public abstract class Utils {
             if (ActivityCompat.shouldShowRequestPermissionRationale(context,
                     permission)) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Rational permission request");
-                builder.setMessage("Please press ok to request permission.");
-                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(context,
-                                new String[]{permission},
-                                requestcode);
-                    }
-                });
+                AlertDialog.Builder builder = buildAlertDialog(context,new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(context,
+                                        new String[]{permission},
+                                        requestcode);
+                            }
+                        });
 
                 builder.create().show();
 
@@ -123,10 +120,8 @@ public abstract class Utils {
             ret = true;
         } else {
             if (showDlg) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Rational permission request");
-                builder.setMessage("Please press ok to request permission.");
-                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+
+                AlertDialog.Builder builder = buildAlertDialog(context, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions(context,
@@ -134,6 +129,7 @@ public abstract class Utils {
                                 requestcode);
                     }
                 });
+
                 builder.create().show();
             } else {
                 ActivityCompat.requestPermissions(context,
@@ -145,6 +141,16 @@ public abstract class Utils {
         Utils.inFo(Utils.class, "ret = " + ret);
 
         return ret;
+    }
+
+    private static AlertDialog.Builder buildAlertDialog(Context context, DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Rational permission request");
+        builder.setMessage("Please press ok to request permission.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("ok", listener);
+
+        return builder;
     }
 
 

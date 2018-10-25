@@ -43,4 +43,7 @@
     <string name="label_input_b">b:</string>
     <string name="label_output_c">c:</string>
     <string name="action_binder_call">Execute Binder call (c=a+b)</string>
+    <string name="label_show_counter">Counter:</string>
+    <string name="action_start_counter">Start counter</string>
+    <string name="action_stop_counter">Stop counter</string>
 </resources>

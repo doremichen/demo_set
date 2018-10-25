@@ -28,6 +28,7 @@ public class DemoFlashLightAct extends AppCompatActivity {
 
         boolean isFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
 
+        // Ask permission
         Utils.askPermission(this, Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_CODE);
 
         if (isFlash) {
@@ -72,6 +73,8 @@ public class DemoFlashLightAct extends AppCompatActivity {
                 Utils.showToast(this, "Permission granted");
             } else {
                 Utils.showToast(this, "Permission not granted");
+                // Finish UI
+                this.finish();
             }
         }
     }

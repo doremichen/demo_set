@@ -17,7 +17,10 @@ import android.widget.ListView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
+
+
 public class DemoDeviceAdminAct extends AppCompatActivity {
+
 
     private static final String ITEM_ENABLE_ADMIN = "Enale admin";
     private static final String ITEM_DISABLE_ADMIN = "Disale admin";

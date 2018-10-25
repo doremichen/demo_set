@@ -160,7 +160,11 @@
             android:name=".biner.MyMessengerService"
             android:enabled="true"
             android:exported="true"
-            android:process=":Remote_messenger"></service>
+            android:process=":Remote_messenger" />
+
+        <activity
+            android:name=".scheduler.DemoScheduleServiceAct"
+            android:label="Demo scheduler counter"></activity>
     </application>
 
 </manifest>

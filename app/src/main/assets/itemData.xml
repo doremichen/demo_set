@@ -13,4 +13,5 @@
     <data title="Demo Video record" clsname="com.adam.app.demoset.video.DemoVideoRecordAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Alarm" clsname="com.adam.app.demoset.alarm.DemoAlarmAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Binder Call" clsname="com.adam.app.demoset.biner.DemoBinderAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Scheduler service" clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct" pkgname="com.adam.app.demoset"/>
 </List>
