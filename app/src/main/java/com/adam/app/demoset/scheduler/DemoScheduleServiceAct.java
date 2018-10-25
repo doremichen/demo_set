@@ -82,7 +82,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         mShowCounter = this.findViewById(R.id.tv_show_counter);
         mCounterAction = this.findViewById(R.id.btn_action_counter);
 
-        mController = SchedulerController.newInstance();
+        mController = new SchedulerController();
         mController.registeronControllerListener(new SchedulerController.onControllerListener() {
             @Override
             public void TimeArrive(long millisecond) {
@@ -96,6 +96,12 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
                 mUIHander.sendMessage(msg);
 
             }
+
+            @Override
+            public void finishUI() {
+                Utils.inFo(this, "finishUI");
+                finish();
+            }
         });
 
 
@@ -105,8 +111,6 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Utils.inFo(this, "onDestroty enter");
-        mController.stopCount();
-        mController.finishTask();
     }
 
     @Override
@@ -121,7 +125,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.demo_bt_exit:
-                this.finish();
+                mController.finishTask();
                 return true;
         }
 

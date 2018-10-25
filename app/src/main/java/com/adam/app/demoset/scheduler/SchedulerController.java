@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SchedulerController {
 
-    private ScheduledExecutorService mService;
+    private ScheduledExecutorService mService = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> mFuture;
 
     private onControllerListener mListener;
@@ -19,21 +19,10 @@ public class SchedulerController {
 
     private Runnable mScheduleTask;
 
-    private SchedulerController() {
-        mService = Executors.newSingleThreadScheduledExecutor();
+    public SchedulerController() {
+
     }
 
-    private static class Helper {
-        public static final SchedulerController INSTANCE = new SchedulerController();
-    }
-
-    /**
-     * SingleTone
-     * @return
-     */
-    public static SchedulerController newInstance() {
-        return Helper.INSTANCE;
-    }
 
     /**
      * Register callback
@@ -77,6 +66,8 @@ public class SchedulerController {
      */
     public void finishTask() {
         Utils.inFo(this, "finishTask enter");
+        cancelTask();
+
         mService.shutdown();
 
         boolean isDone = false;
@@ -84,14 +75,22 @@ public class SchedulerController {
         do {
 
             try {
-                isDone = mService.awaitTermination(3L, TimeUnit.SECONDS);
+                // Non block function
+                isDone = mService.awaitTermination(5L, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            } finally {
                 isDone = true;
+            } finally {
+
             }
 
         } while (!isDone);
+
+        Utils.inFo(this, "finishTask exit");
+        if (mListener != null) {
+            mListener.finishUI();
+        }
+
     }
 
     /**
@@ -124,6 +123,8 @@ public class SchedulerController {
      */
     interface onControllerListener {
         void TimeArrive(long millisecond);
+
+        void finishUI();
     }
 
 }
