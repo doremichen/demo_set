@@ -1,4 +1,4 @@
-package com.adam.app.demoset;
+package com.adam.app.demoset.jobService;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -12,9 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
+
 import java.util.HashMap;
 
 public class DemoJobSvrAct extends AppCompatActivity {
+
+    private static final String PACKAGE_NAME = "com.adam.app.demoset";
+    private static final String CLASS_NAME = "com.adam.app.demoset.jobService.SecurJobService";
 
     private ListView mList;
     private TextView mShow;
@@ -72,21 +78,24 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
         @Override
         public void execute() {
-
+            Utils.inFo(this, "execute enter");
             //Prepare jobinfo
-            JobInfo.Builder builder = new JobInfo.Builder(mJobId++, new ComponentName(DemoJobSvrAct.this, SecurJobService.class));
+            JobInfo.Builder builder = new JobInfo.Builder(mJobId++,
+                    new ComponentName(PACKAGE_NAME, CLASS_NAME));
 
             //set latency time
-            builder.setMinimumLatency(10L);
+            builder.setMinimumLatency(1000L);
 
             //set dead line time
-            builder.setOverrideDeadline(100L);
+//            builder.setOverrideDeadline(100L);
+
+//            builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
 
 //            //set required
 //            builder.setRequiresDeviceIdle(false);
 //
 //            //set required
-//            builder.setRequiresCharging(false);
+//            builder.setRequiresCharging(true);
 //
 //            //set persist
 //            builder.setPersisted(true);
@@ -94,6 +103,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
             //Schedule job
             JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             jobService.schedule(builder.build());
+            Utils.inFo(this, "execute exit");
 
 
         }
@@ -103,9 +113,11 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
         @Override
         public void execute() {
+            Utils.inFo(this, "execute enter");
             //cancel all job
             JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             jobService.cancelAll();
+            Utils.inFo(this, "execute exit");
 
 
         }

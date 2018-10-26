@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <List>
     <data title="Demo Service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
-    <data title="Demo job service" clsname="com.adam.app.demoset.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo job service" clsname="com.adam.app.demoset.jobService.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo floating alert dialog" clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo BlueTooth" clsname="com.adam.app.demoset.bluetooth.DemoBTAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Notification" clsname="com.adam.app.demoset.notification.DemoNotificationAct" pkgname="com.adam.app.demoset"/>

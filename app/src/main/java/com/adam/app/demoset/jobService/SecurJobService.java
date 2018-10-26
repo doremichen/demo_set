@@ -1,9 +1,11 @@
-package com.adam.app.demoset;
+package com.adam.app.demoset.jobService;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Handler;
 import android.os.Message;
+
+import com.adam.app.demoset.Utils;
 
 /**
  * This is service that would enter to scheduler
@@ -44,6 +46,7 @@ public class SecurJobService extends JobService {
     @Override
     public boolean onStartJob(JobParameters params) {
         Utils.inFo(this, "onStartJob");
+        Utils.showToast(this, "onStartJob");
         Message msg = Message.obtain(mJobH, 1, params);
         mJobH.sendMessage(msg);
         return true;
@@ -52,6 +55,7 @@ public class SecurJobService extends JobService {
     @Override
     public boolean onStopJob(JobParameters params) {
         Utils.inFo(this, "onSopJob");
+        Utils.showToast(this, "onStopJob");
         mJobH.removeMessages(1);
         return false;
     }

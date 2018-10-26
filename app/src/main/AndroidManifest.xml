@@ -41,7 +41,7 @@
             android:name=".DemoServiceAct"
             android:label="@string/title_activity_demo_service" />
         <activity
-            android:name=".DemoJobSvrAct"
+            android:name=".jobService.DemoJobSvrAct"
             android:label="DemoJobSvrAct" />
 
         <service
@@ -63,7 +63,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".SecurJobService"
+            android:name=".jobService.SecurJobService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />

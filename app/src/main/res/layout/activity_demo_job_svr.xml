@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DemoJobSvrAct">
+    tools:context=".jobService.DemoJobSvrAct">
 
     <TextView
         android:id="@+id/show_permission_result"
