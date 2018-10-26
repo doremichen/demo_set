@@ -68,7 +68,7 @@ public class DemoNotificationAct extends AppCompatActivity {
         builder.setContentText("This is Demo text");
         builder.setLargeIcon(largeIcon);
         builder.setWhen(System.currentTimeMillis());
-        builder.setAutoCancel(true);
+        builder.setOngoing(true);  // Not removable
 
         // Config result activity to notification
         Intent resultIntent = new Intent(this, NotifyResultAct.class);

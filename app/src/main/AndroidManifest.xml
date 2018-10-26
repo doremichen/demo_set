@@ -164,7 +164,10 @@
 
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
-            android:label="Demo scheduler counter"></activity>
+            android:label="Demo scheduler counter" />
+        <activity
+            android:name=".tablelayout.DemoTableAct"
+            android:label="Demo table layout"></activity>
     </application>
 
 </manifest>
