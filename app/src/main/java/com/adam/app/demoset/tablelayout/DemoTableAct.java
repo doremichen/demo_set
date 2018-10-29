@@ -106,16 +106,14 @@ public class DemoTableAct extends AppCompatActivity {
 
     private String updateInfo() {
         Utils.inFo(this, "updateInfo enter");
-        String ret = null;
+
         if (mIsCircle) {
             mIsCircle = false;
-            ret = "O";
+            return "O";
         } else {
             mIsCircle = true;
-            ret = "X";
+            return "X";
         }
-
-        return ret;
     }
 
     private void resetButton() {
