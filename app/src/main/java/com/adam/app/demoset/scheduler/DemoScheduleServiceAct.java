@@ -1,9 +1,9 @@
 package com.adam.app.demoset.scheduler;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,15 +32,15 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
             // Update counter
             UpdateCounter(spendTime);
-            
+
         }
 
         private void UpdateCounter(long millisecond) {
             Utils.inFo(this, "UpdateCounter");
-            long second = millisecond/1000L;
-            long minute = second/60L;
-            long hour = minute/60L;
-            long day = hour/24L;
+            long second = millisecond / 1000L;
+            long minute = second / 60L;
+            long hour = minute / 60L;
+            long day = hour / 24L;
 
             if (second >= 60L)
                 second %= 60L;

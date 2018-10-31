@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="timestamp_color">#c2c2f9</color>
+    <color name="note_color">#c2c2f9</color>
+    <color name="empty_notes_view_color">#5f6870</color>
 </resources>

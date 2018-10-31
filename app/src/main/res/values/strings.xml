@@ -47,4 +47,11 @@
     <string name="action_start_counter">Start counter</string>
     <string name="action_stop_counter">Stop counter</string>
     <string name="action_reset">Reset</string>
+    <string name="title_activity_demo_database_">Demo_database_Act</string>
+    <string name="title_activity_demo_database">DemoDatabaseAct</string>
+    <string name="permission_read_label">Read permission</string>
+    <string name="permission_read_description">This is used to read adam database</string>
+    <string name="permission_write_label">Write permission</string>
+    <string name="permission_write_description">This is used to write adam database</string>
+    <string name="label_no_note">No note</string>
 </resources>

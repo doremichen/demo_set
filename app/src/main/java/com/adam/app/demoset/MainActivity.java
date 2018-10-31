@@ -36,7 +36,6 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MainActivity extends AppCompatActivity {
 
 
-
     private ListView mList;
 
 

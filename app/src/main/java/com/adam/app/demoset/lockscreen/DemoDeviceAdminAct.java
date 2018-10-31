@@ -18,7 +18,6 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 
-
 public class DemoDeviceAdminAct extends AppCompatActivity {
 
 

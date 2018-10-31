@@ -49,11 +49,12 @@ public class MyAidlService extends Service {
     }
 
     private ServiceStub mSvrStub = new ServiceStub(this);
+
     private static class ServiceStub extends IMyAidlInterface.Stub {
 
         private WeakReference<MyAidlService> mRef_svr;
 
-        private RemoteCallbackList<IMyAidlCBInterface> mCallbacks =  new RemoteCallbackList<IMyAidlCBInterface>();
+        private RemoteCallbackList<IMyAidlCBInterface> mCallbacks = new RemoteCallbackList<IMyAidlCBInterface>();
 
         public ServiceStub(MyAidlService svr) {
             Utils.inFo(this, "constructor enter");

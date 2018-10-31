@@ -8,6 +8,19 @@
         android:label="@string/label_permission_label"
         android:protectionLevel="dangerous" />
 
+    <permission
+        android:name="com.adam.app.database.READ_DB"
+        android:description="@string/permission_read_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal">
+    </permission>
+    <permission
+        android:name="com.adam.app.database.WRITE_DB"
+        android:description="@string/permission_write_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal">
+    </permission>
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera2.full" />
@@ -167,7 +180,18 @@
             android:label="Demo scheduler counter" />
         <activity
             android:name=".tablelayout.DemoTableAct"
-            android:label="Demo table layout"></activity>
+            android:label="Demo table layout" />
+        <activity
+            android:name=".database.DemoDatabaseAct"
+            android:label="@string/title_activity_demo_database"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <provider
+            android:authorities="com.adam.app.demoset.provider.MyNote"
+            android:name="com.adam.app.demoset.database.provider.MyDBProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.adam.app.database.READ_DB"
+            android:writePermission="com.adam.app.database.WRITE_DB"/>
     </application>
 
 </manifest>

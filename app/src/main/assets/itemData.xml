@@ -15,4 +15,5 @@
     <data title="Demo Binder Call" clsname="com.adam.app.demoset.biner.DemoBinderAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Scheduler service" clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Tayble layout" clsname="com.adam.app.demoset.tablelayout.DemoTableAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Database" clsname="com.adam.app.demoset.database.DemoDatabaseAct" pkgname="com.adam.app.demoset"/>
 </List>

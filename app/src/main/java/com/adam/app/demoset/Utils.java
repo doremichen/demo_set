@@ -70,14 +70,14 @@ public abstract class Utils {
             if (ActivityCompat.shouldShowRequestPermissionRationale(context,
                     permission)) {
 
-                AlertDialog.Builder builder = buildAlertDialog(context,new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(context,
-                                        new String[]{permission},
-                                        requestcode);
-                            }
-                        });
+                AlertDialog.Builder builder = buildAlertDialog(context, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(context,
+                                new String[]{permission},
+                                requestcode);
+                    }
+                });
 
                 builder.create().show();
 
@@ -185,7 +185,7 @@ public abstract class Utils {
     }
 
     public static void hideSoftKeyBoardFrom(Context context, View v) {
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }

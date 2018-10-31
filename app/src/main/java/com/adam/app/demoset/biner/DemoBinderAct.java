@@ -4,13 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -171,7 +171,7 @@ public class DemoBinderAct extends AppCompatActivity {
         }
 
         // Check if the text is valid
-        if (mETInputA.getText().toString().equals("")|| mETInputB.getText().toString().equals("")) {
+        if (mETInputA.getText().toString().equals("") || mETInputB.getText().toString().equals("")) {
             Utils.showToast(this, "please input the valid number.");
             return;
         }
@@ -183,8 +183,8 @@ public class DemoBinderAct extends AppCompatActivity {
             // Get value from edit text
             int a = Integer.parseInt(mETInputA.getText().toString());
             int b = Integer.parseInt(mETInputB.getText().toString());
-            Utils.inFo(this,"a = " + a);
-            Utils.inFo(this,"b = " + b);
+            Utils.inFo(this, "a = " + a);
+            Utils.inFo(this, "b = " + b);
 
             if (isMessenger) {
                 Utils.showToast(this, "Messenger binder call");
@@ -236,6 +236,7 @@ public class DemoBinderAct extends AppCompatActivity {
      * This is aidl callback
      */
     private AidlServiceCB mAidlCB = new AidlServiceCB(this);
+
     private static class AidlServiceCB extends IMyAidlCBInterface.Stub {
 
         private WeakReference<DemoBinderAct> mRef_act;
@@ -256,6 +257,7 @@ public class DemoBinderAct extends AppCompatActivity {
      * This is messenger callback
      */
     private Messenger mUIMessenger = new Messenger(new CallBackHandler(this));
+
     private static class CallBackHandler extends Handler {
 
         private WeakReference<DemoBinderAct> mRef_act;
