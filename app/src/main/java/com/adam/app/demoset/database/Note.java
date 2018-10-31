@@ -19,6 +19,10 @@ public class Note {
         mNote = note;
     }
 
+    public void updateTimeStamp(String time) {
+        mTimeStamp = time;
+    }
+
     public String getId() {
         Utils.inFo(this, "getId enter");
         return this.mId;

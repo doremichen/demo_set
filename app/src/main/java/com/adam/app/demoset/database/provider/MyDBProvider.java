@@ -50,7 +50,7 @@ public class MyDBProvider extends ContentProvider {
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
+                    + COLUMN_TIMESTAMP + " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP, "
                     + COLUMN_NOTE + " TEXT"
                     + ")";
 

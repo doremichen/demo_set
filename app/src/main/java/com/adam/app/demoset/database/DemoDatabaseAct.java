@@ -263,8 +263,10 @@ public class DemoDatabaseAct extends AppCompatActivity {
                 if (c != null) {
                     c.moveToFirst();
                     String strNote = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
+                    String strTime = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
                     // Update note content
                     note.updateNote(strNote);
+                    note.updateTimeStamp(strTime);
                     mNotes.set(position, note);
 
                     // Notify list adapter

@@ -10,6 +10,9 @@ import android.text.TextUtils;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.database.provider.MyDBProvider;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public enum DBController {
     INSTANCE;
 
@@ -41,6 +44,7 @@ public enum DBController {
         // Build content values
         ContentValues contentValues = new ContentValues();
         contentValues.put(MyDBProvider.COLUMN_NOTE, content);
+        contentValues.put(MyDBProvider.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         // Insert data
         Uri newUri = mResolver.insert(MyDBProvider.MYTABLE_URI, contentValues);
@@ -65,6 +69,8 @@ public enum DBController {
         // Build content values
         ContentValues contentValues = new ContentValues();
         contentValues.put(MyDBProvider.COLUMN_NOTE, content);
+        contentValues.put(MyDBProvider.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
 
         String selection = MyDBProvider.COLUMN_ID + "=?";
         String[] selectionArgs = {id};
