@@ -1,10 +1,16 @@
 package com.adam.app.demoset.database;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +36,7 @@ import java.util.List;
 public class DemoDatabaseAct extends AppCompatActivity {
 
     private static final int ACTION_SHOW_OPTION = 0X2456;
+    public static final int REQUEST_VIBRATOR_PERMISSION_CODE = 0X1357;
 
     private RecyclerView mRecyclerView;
     private TextView mEmptyNoteView;
@@ -69,6 +76,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         Utils.inFo(this, "onCreate enter");
         setContentView(R.layout.activity_demo_database);
 
+
         mRecyclerView = this.findViewById(R.id.recycler_view);
         mEmptyNoteView = this.findViewById(R.id.empty_notes_view);
 
@@ -92,6 +100,9 @@ public class DemoDatabaseAct extends AppCompatActivity {
             @Override
             public void onLongClick(int position) {
                 Utils.inFo(this, "onLongClick");
+
+                triggerVibrator();
+
                 Message msg = Message.obtain();
                 msg.what = ACTION_SHOW_OPTION;
                 msg.arg1 = position;
@@ -150,6 +161,12 @@ public class DemoDatabaseAct extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    private void triggerVibrator() {
+        Utils.inFo(this, "triggerVibrator enter");
+        Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     private void loadData(List<Note> notes) {
