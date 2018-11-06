@@ -54,4 +54,8 @@
     <string name="permission_write_label">Write permission</string>
     <string name="permission_write_description">This is used to write adam database</string>
     <string name="label_no_note">No note</string>
+    <string name="label_info">Welcome to Demo system UI</string>
+    <string name="action_dim_system_ui">Dim</string>
+    <string name="action_show_system_ui">Show</string>
+    <string name="action_hide_system_ui">Hide</string>
 </resources>

@@ -7,19 +7,16 @@
         android:description="@string/label_permission_descript"
         android:label="@string/label_permission_label"
         android:protectionLevel="dangerous" />
-
     <permission
         android:name="com.adam.app.database.READ_DB"
         android:description="@string/permission_read_description"
         android:label="@string/permission_read_label"
-        android:protectionLevel="normal">
-    </permission>
+        android:protectionLevel="normal"></permission>
     <permission
         android:name="com.adam.app.database.WRITE_DB"
         android:description="@string/permission_write_description"
         android:label="@string/permission_read_label"
-        android:protectionLevel="normal">
-    </permission>
+        android:protectionLevel="normal"></permission>
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -35,7 +32,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -185,14 +182,19 @@
         <activity
             android:name=".database.DemoDatabaseAct"
             android:label="@string/title_activity_demo_database"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <provider
+            android:name=".database.provider.MyDBProvider"
             android:authorities="com.adam.app.demoset.provider.MyNote"
-            android:name="com.adam.app.demoset.database.provider.MyDBProvider"
             android:enabled="true"
             android:exported="true"
             android:readPermission="com.adam.app.database.READ_DB"
-            android:writePermission="com.adam.app.database.WRITE_DB"/>
+            android:writePermission="com.adam.app.database.WRITE_DB" />
+
+        <activity
+            android:name=".systemUI.DemoSysUIAct"
+            android:label="Demo system UI"></activity>
     </application>
 
 </manifest>
