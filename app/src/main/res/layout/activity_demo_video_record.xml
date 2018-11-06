@@ -32,4 +32,14 @@
         android:text="@string/action_play"
         android:onClick="onPlayVideo"/>
 
+    <Button
+        android:id="@+id/btn_exit_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btn_play_video"
+        android:layout_toRightOf="@+id/btn_start_rec"
+        android:layout_alignParentBottom="true"
+        android:onClick="onExit"
+        android:text="@string/label_exit" />
+
 </RelativeLayout>

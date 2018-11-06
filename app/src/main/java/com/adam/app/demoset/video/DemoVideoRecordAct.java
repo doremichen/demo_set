@@ -152,6 +152,15 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Hide systemUI
+        View decoreView = this.getWindow().getDecorView();
+        Utils.hideSystemUI(decoreView);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Utils.inFo(this, "onResume mIsAllow = " + mIsAllow);
@@ -187,29 +196,6 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         mController.stopCameraThread();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
-
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.demo_bt_exit:
-                // clear data
-                NativeUtils.getInstance().clearObjData();
-                NativeUtils.clearClazzData();
-
-                this.finish();
-                return true;
-        }
-
-        return false;
-    }
-
     public void onRecord(View v) {
         Utils.inFo(this, "onRecord");
         if (!mStartRec) {
@@ -234,6 +220,10 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         Intent intent = playVedioIntent();
         this.startActivity(intent);
 
+    }
+
+    public void onExit(View v) {
+        this.finish();
     }
 
     private Intent playVedioIntent() {

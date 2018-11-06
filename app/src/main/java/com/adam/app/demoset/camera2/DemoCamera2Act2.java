@@ -95,6 +95,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
