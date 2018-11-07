@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
+        this.getMenuInflater().inflate(R.menu.action_menu_main_list, menu);
 
         return true;
     }
@@ -109,11 +110,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.demo_bt_exit:
+            case R.id.start_log:
+                enableLogcat(true);
+                break;
+            case R.id.stop_log:
+                enableLogcat(false);
+                break;
+            case R.id.exit:
                 this.finish();
                 return true;
         }
 
         return false;
+    }
+
+    private boolean mLogStatus;
+    private void enableLogcat(boolean enable) {
+        Utils.inFo(this, "enableLogcat enter");
+        if (mLogStatus == enable) {
+            Utils.showToast(this, "The log status has " + (mLogStatus?"enable":"disable"));
+            return;
+        }
+
+        mLogStatus = enable;
+
+        File fileDir = this.getFilesDir();
+        String filePath = fileDir.getPath() + "/" + System.currentTimeMillis() + ".log";
+
+        Utils.enableLog(enable, filePath);
+
     }
 }

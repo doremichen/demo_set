@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public abstract class Utils {
 
     public static final String ITEM_START_SERVICE = "start service";
@@ -199,5 +201,29 @@ public abstract class Utils {
                 // Hide the nav bar and status bar
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    public static void enableLog(boolean enable, String path) {
+        Utils.inFo(Utils.class, "enableLog enter");
+        if (enable) {
+            Utils.inFo(Utils.class, "true");
+            // Clear logcat
+            executeCommend("logcat -c");
+            // Log file
+            executeCommend("logcat -f " + path);
+
+        } else {
+            Utils.inFo(Utils.class, "false");
+            // Dump log and exits
+            executeCommend("logcat -d");
+        }
+    }
+
+    private static void executeCommend(String cmd) {
+        try {
+            Process process = Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

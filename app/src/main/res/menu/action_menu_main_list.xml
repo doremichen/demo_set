@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/action_start_log" android:id="@+id/start_log" app:showAsAction="never" />
+    <item android:title="@string/action_stop_log" android:id="@+id/stop_log" app:showAsAction="never" />
+    <item android:title="@string/label_exit" android:id="@+id/exit" app:showAsAction="never" />
+</menu>
