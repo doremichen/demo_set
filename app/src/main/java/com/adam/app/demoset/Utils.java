@@ -10,14 +10,27 @@ package com.adam.app.demoset;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Messenger;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +38,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public abstract class Utils {
 
@@ -40,13 +57,19 @@ public abstract class Utils {
     private static final String TAG = "DemoSet";
     public static final String TRUE = "True";
     public static final String FALSE = "False";
+    public static final String NOTIFY_CHANNEL_ID = "0x1357";
+
     public static boolean sIsRemoteService = false;
     public static boolean sIsBound = false;
+
+    private static final String OUTPUT_PATH = "blur_filter_outputs";
 
     public static LocalService sLocalSvr;
     public static Messenger sMessenger;   // for remote service
 
     public static ServiceConnection sConnection;
+
+    public static String sImagePath;
 
     public static void inFo(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
@@ -227,5 +250,128 @@ public abstract class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Blurs the given Bitmap image
+     *
+     * @param bitmap             Image to blur
+     * @param applicationContext Application context
+     * @return Blurred bitmap image
+     */
+    @WorkerThread
+    public static Bitmap blurBitmap(@NonNull Bitmap bitmap,
+                                    @NonNull Context applicationContext) {
+
+        RenderScript rsContext = null;
+        try {
+
+            // Create the output bitmap
+            Bitmap output = Bitmap.createBitmap(
+                    bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
+
+            // Blur the image
+            rsContext = RenderScript.create(applicationContext, RenderScript.ContextType.DEBUG);
+            Allocation inAlloc = Allocation.createFromBitmap(rsContext, bitmap);
+            Allocation outAlloc = Allocation.createTyped(rsContext, inAlloc.getType());
+            ScriptIntrinsicBlur theIntrinsic =
+                    ScriptIntrinsicBlur.create(rsContext, Element.U8_4(rsContext));
+            theIntrinsic.setRadius(10.f);
+            theIntrinsic.setInput(inAlloc);
+            theIntrinsic.forEach(outAlloc);
+            outAlloc.copyTo(output);
+
+            return output;
+        } finally {
+            if (rsContext != null) {
+                rsContext.finish();
+            }
+        }
+    }
+
+    /**
+     * Writes bitmap to a temporary file and returns the Uri for the file
+     *
+     * @param applicationContext Application context
+     * @param bitmap             Bitmap to write to temp file
+     * @return Uri for temp file with bitmap
+     * @throws FileNotFoundException Throws if bitmap file cannot be found
+     */
+    public static Uri writeBitmapToFile(
+            @NonNull Context applicationContext,
+            @NonNull Bitmap bitmap) throws FileNotFoundException {
+
+        String name = String.format("blur-filter-output-%s.png", UUID.randomUUID().toString());
+        File outputDir = new File(applicationContext.getFilesDir(), OUTPUT_PATH);
+        if (!outputDir.exists()) {
+            outputDir.mkdirs(); // should succeed
+        }
+        File outputFile = new File(outputDir, name);
+
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(outputFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /* ignored for PNG */, out);
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ignore) {
+                }
+            }
+
+            sImagePath = outputFile.getPath();
+        }
+        return Uri.fromFile(outputFile);
+    }
+
+    public static int sNotifyID;
+
+    /**
+     * Create a Notification that is shown as a heads-up notification if possible.
+     * <p>
+     * For this codelab, this is used to show a notification so that you know when different steps
+     * of the background work chain are starting
+     *
+     * @param message Message shown on the notification
+     * @param context Context needed to create Toast
+     */
+    public static void makeStatusNotification(String message, Context context) {
+
+        // Make a channel if necessary
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            CharSequence name = "Demoset notification channel";
+            String description = "This is demoset notification";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel =
+                    new NotificationChannel(NOTIFY_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{0L, 1000L, 1000L});
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+
+            // Add the channel
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        // Create the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("DemoSet notification")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        // Show the notification
+        NotificationManagerCompat.from(context).notify(sNotifyID, builder.build());
+
+        sNotifyID++;
     }
 }

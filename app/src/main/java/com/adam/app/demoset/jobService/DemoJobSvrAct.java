@@ -80,7 +80,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         public void execute() {
             Utils.inFo(this, "execute enter");
             //Prepare jobinfo
-            JobInfo.Builder builder = new JobInfo.Builder(mJobId++,
+            JobInfo.Builder builder = new JobInfo.Builder(mJobId,
                     new ComponentName(PACKAGE_NAME, CLASS_NAME));
 
             //set latency time
@@ -99,6 +99,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
 //
 //            //set persist
 //            builder.setPersisted(true);
+
+            mJobId++;
 
             //Schedule job
             JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);

@@ -60,4 +60,6 @@
     <string name="action_hide_system_ui">Hide</string>
     <string name="action_start_log">Start log</string>
     <string name="action_stop_log">Stop log</string>
+    <string name="action_test_blur_img">Test</string>
+    <string name="action_show_img">Show</string>
 </resources>

@@ -3,4 +3,7 @@
     <files-path
         name="shared_files"
         path="."/>
+    <files-path
+        name="share_image"
+        path="blur_filter_outputs/"/>
 </paths>

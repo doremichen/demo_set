@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.PropertyPermission;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -131,9 +129,9 @@ public class MainActivity extends AppCompatActivity {
     private void enableLogcat(String enable) {
         Utils.inFo(this, "enableLogcat enter");
         String logstatus = System.getProperty(LOG_STATUS);
-        if (logstatus!= null && logstatus.equals(enable)) {
+        if (logstatus != null && logstatus.equals(enable)) {
             Utils.showToast(this, "The log status has " +
-                    (Utils.TRUE.equals(enable)?"enable":"disable"));
+                    (Utils.TRUE.equals(enable) ? "enable" : "disable"));
             return;
         }
 

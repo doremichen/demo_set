@@ -11,12 +11,12 @@
         android:name="com.adam.app.database.READ_DB"
         android:description="@string/permission_read_description"
         android:label="@string/permission_read_label"
-        android:protectionLevel="normal"></permission>
+        android:protectionLevel="normal" />
     <permission
         android:name="com.adam.app.database.WRITE_DB"
         android:description="@string/permission_write_description"
         android:label="@string/permission_read_label"
-        android:protectionLevel="normal"></permission>
+        android:protectionLevel="normal" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -32,7 +32,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
@@ -195,7 +194,10 @@
 
         <activity
             android:name=".systemUI.DemoSysUIAct"
-            android:label="Demo system UI"></activity>
+            android:label="Demo system UI" />
+        <activity
+            android:name=".workmanager.DemoWorkMangerAct"
+            android:label="Demo work manager"></activity>
     </application>
 
 </manifest>
