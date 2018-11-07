@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.PropertyPermission;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MainActivity extends AppCompatActivity {
 
 
+    private static final String LOG_STATUS = "log.status";
     private ListView mList;
 
 
@@ -111,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.start_log:
-                enableLogcat(true);
+                enableLogcat(Utils.TRUE);
                 break;
             case R.id.stop_log:
-                enableLogcat(false);
+                enableLogcat(Utils.FALSE);
                 break;
             case R.id.exit:
                 this.finish();
@@ -124,15 +127,18 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean mLogStatus;
-    private void enableLogcat(boolean enable) {
+
+    private void enableLogcat(String enable) {
         Utils.inFo(this, "enableLogcat enter");
-        if (mLogStatus == enable) {
-            Utils.showToast(this, "The log status has " + (mLogStatus?"enable":"disable"));
+        String logstatus = System.getProperty(LOG_STATUS);
+        if (logstatus!= null && logstatus.equals(enable)) {
+            Utils.showToast(this, "The log status has " +
+                    (Utils.TRUE.equals(enable)?"enable":"disable"));
             return;
         }
 
-        mLogStatus = enable;
+        System.setProperty(LOG_STATUS, enable);
+
 
         File fileDir = this.getFilesDir();
         String filePath = fileDir.getPath() + "/" + System.currentTimeMillis() + ".log";

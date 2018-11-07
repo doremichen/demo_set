@@ -38,6 +38,8 @@ public abstract class Utils {
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
     public static final String KEY_MSG = "service status";
     private static final String TAG = "DemoSet";
+    public static final String TRUE = "True";
+    public static final String FALSE = "False";
     public static boolean sIsRemoteService = false;
     public static boolean sIsBound = false;
 
@@ -203,9 +205,9 @@ public abstract class Utils {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
-    public static void enableLog(boolean enable, String path) {
+    public static void enableLog(String enable, String path) {
         Utils.inFo(Utils.class, "enableLog enter");
-        if (enable) {
+        if (TRUE.equals(enable)) {
             Utils.inFo(Utils.class, "true");
             // Clear logcat
             executeCommend("logcat -c");
