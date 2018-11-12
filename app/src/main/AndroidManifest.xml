@@ -197,7 +197,11 @@
             android:label="Demo system UI" />
         <activity
             android:name=".workmanager.DemoWorkMangerAct"
-            android:label="Demo work manager"></activity>
+            android:label="Demo work manager" />
+        <activity
+            android:name=".database2.DemoRoomAct"
+            android:label="Demo Room"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

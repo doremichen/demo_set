@@ -16,6 +16,7 @@
     <data title="Demo Scheduler service" clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Tayble layout" clsname="com.adam.app.demoset.tablelayout.DemoTableAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Database" clsname="com.adam.app.demoset.database.DemoDatabaseAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Room Database" clsname="com.adam.app.demoset.database2.DemoRoomAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo System UI" clsname="com.adam.app.demoset.systemUI.DemoSysUIAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Work manager" clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct" pkgname="com.adam.app.demoset"/>
 </List>
