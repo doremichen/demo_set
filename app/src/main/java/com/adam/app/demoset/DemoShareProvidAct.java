@@ -70,7 +70,7 @@ public class DemoShareProvidAct extends AppCompatActivity {
             case R.id.menu_shared:
                 // do action
                 return true;
-            case R.id.demo_bt_exit:
+            case R.id.demo_exit:
                 this.finish();
                 return true;
         }

@@ -87,7 +87,7 @@ public class DemoJNIAct extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.demo_bt_exit:
+            case R.id.demo_exit:
                 // clear data
                 NativeUtils.getInstance().clearObjData();
                 NativeUtils.clearClazzData();

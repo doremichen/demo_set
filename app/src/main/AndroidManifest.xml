@@ -201,7 +201,12 @@
         <activity
             android:name=".database2.DemoRoomAct"
             android:label="Demo Room"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <service
+            android:name=".alarm.MyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"
+            android:enabled="true"/>
     </application>
 
 </manifest>

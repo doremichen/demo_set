@@ -3,6 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:title="@string/label_exit"
-        android:id="@+id/demo_bt_exit"
+        android:id="@+id/demo_exit"
         app:showAsAction="never"/>
 </menu>

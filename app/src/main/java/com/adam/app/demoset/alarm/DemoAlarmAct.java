@@ -47,7 +47,8 @@ public class DemoAlarmAct extends AppCompatActivity {
                 // Update alarm info
                 mAlarmInfo.setText("Alarm count: " + String.valueOf(mCount));
 
-                Utils.makeStatusNotification("Alarm count: " + mCount, getApplicationContext());
+                MyJobService.actionNotification(getApplicationContext(), "Alarm count: " + String.valueOf(mCount));
+
 
             }
         }
@@ -91,7 +92,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.demo_bt_exit:
+            case R.id.demo_exit:
                 // clear data
                 NativeUtils.getInstance().clearObjData();
                 NativeUtils.clearClazzData();
@@ -105,6 +106,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
     public void onAlarm(View v) {
         Utils.inFo(this, "onAlarm enter");
+
         if (!mNeedAlarm) {
             startAlarm();
             mNeedAlarm = true;

@@ -124,7 +124,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.demo_bt_exit:
+            case R.id.demo_exit:
                 mController.finishTask();
                 return true;
         }
