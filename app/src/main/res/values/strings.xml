@@ -62,4 +62,5 @@
     <string name="action_stop_log">Stop log</string>
     <string name="action_test_blur_img">Test</string>
     <string name="action_show_img">Show</string>
+    <string name="img_this_is_test">this is test</string>
 </resources>

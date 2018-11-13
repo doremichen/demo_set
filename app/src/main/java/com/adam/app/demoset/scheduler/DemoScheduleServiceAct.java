@@ -1,5 +1,6 @@
 package com.adam.app.demoset.scheduler;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     private Handler mUIHander = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Utils.inFo(this, "handleMessage enter");
             super.handleMessage(msg);
             Bundle data = msg.getData();
             long spendTime = data.getLong(KEY_TIME);
@@ -83,6 +85,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         mCounterAction = this.findViewById(R.id.btn_action_counter);
 
         mController = new SchedulerController();
+
         mController.registeronControllerListener(new SchedulerController.onControllerListener() {
             @Override
             public void TimeArrive(long millisecond) {
@@ -103,7 +106,6 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
                 finish();
             }
         });
-
 
     }
 

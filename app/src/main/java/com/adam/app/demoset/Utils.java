@@ -69,7 +69,7 @@ public abstract class Utils {
 
     public static ServiceConnection sConnection;
 
-    public static String sImagePath;
+    public static volatile String sImagePath;
 
     public static void inFo(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
@@ -300,6 +300,9 @@ public abstract class Utils {
     public static Uri writeBitmapToFile(
             @NonNull Context applicationContext,
             @NonNull Bitmap bitmap) throws FileNotFoundException {
+
+        // clear static data
+        sImagePath = null;
 
         String name = String.format("blur-filter-output-%s.png", UUID.randomUUID().toString());
         File outputDir = new File(applicationContext.getFilesDir(), OUTPUT_PATH);

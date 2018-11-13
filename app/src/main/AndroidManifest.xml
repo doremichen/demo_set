@@ -41,7 +41,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,10 +51,13 @@
         </activity>
         <activity
             android:name=".DemoServiceAct"
-            android:label="@string/title_activity_demo_service" />
+            android:label="@string/title_activity_demo_service"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".jobService.DemoJobSvrAct"
-            android:label="DemoJobSvrAct" />
+            android:label="DemoJobSvrAct"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".LocalService"
@@ -81,7 +85,8 @@
 
         <activity
             android:name=".floatingDlg.DemoFloatingDialogAct"
-            android:label="Demo floation dialog activity" />
+            android:label="Demo floation dialog activity"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".floatingDlg.FloatingDialogSvr"
@@ -90,22 +95,27 @@
 
         <activity
             android:name=".bluetooth.DemoBTAct"
-            android:label="Demo bt activity" />
+            android:label="Demo bt activity"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".notification.DemoNotificationAct"
-            android:label="Demo notification" />
+            android:label="Demo notification"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".notification.NotifyResultAct"
-            android:label="Notify result UI" />
+            android:label="Notify result UI"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".DemoShareProvidAct"
-            android:label="Demo share action provider" />
+            android:label="Demo share action provider"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:label="Demo hello jni" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
-            android:label="Demo flash light" />
+            android:label="Demo flash light"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".flashlight.FlashLightService"
@@ -125,7 +135,8 @@
 
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
-            android:label="Demo Device admin" />
+            android:label="Demo Device admin"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".camera2.DemoCamera2Act"
             android:label="Demo Camera"
@@ -142,7 +153,8 @@
 
         <activity
             android:name=".alarm.DemoAlarmAct"
-            android:label="Demo alarm" />
+            android:label="Demo alarm"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".video.DemoVideoRecordAct"
             android:label="Demo record video"
@@ -160,7 +172,8 @@
 
         <activity
             android:name=".biner.DemoBinderAct"
-            android:label="Demo binder call" />
+            android:label="Demo binder call"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".biner.MyAidlService"
@@ -175,14 +188,17 @@
 
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
-            android:label="Demo scheduler counter" />
+            android:label="Demo scheduler counter"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".tablelayout.DemoTableAct"
-            android:label="Demo table layout" />
+            android:label="Demo table layout"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".database.DemoDatabaseAct"
             android:label="@string/title_activity_demo_database"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="nosensor"/>
 
         <provider
             android:name=".database.provider.MyDBProvider"
@@ -194,13 +210,16 @@
 
         <activity
             android:name=".systemUI.DemoSysUIAct"
-            android:label="Demo system UI" />
+            android:label="Demo system UI"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".workmanager.DemoWorkMangerAct"
-            android:label="Demo work manager" />
+            android:label="Demo work manager"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".database2.DemoRoomAct"
             android:label="Demo Room"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <service
             android:name=".alarm.MyJobService"

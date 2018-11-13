@@ -44,14 +44,21 @@ public class DemoWorkMangerAct extends AppCompatActivity {
             mIshow = true;
         } else {
             showImage();
-            mBtnTest.setText(this.getResources().getString(R.string.action_test_blur_img));
-            mIshow = false;
         }
 
     }
 
     private void showImage() {
         Utils.inFo(this, "showImage enter");
+        if (Utils.sImagePath == null) {
+            Utils.showToast(this, "the file path does not exist.");
+            return;
+        }
+
+        // Switch button states
+        mBtnTest.setText(this.getResources().getString(R.string.action_test_blur_img));
+        mIshow = false;
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         File file = new File(Utils.sImagePath);
         if (file.exists()) {

@@ -19,11 +19,6 @@ public class SchedulerController {
 
     private Runnable mScheduleTask;
 
-    public SchedulerController() {
-
-    }
-
-
     /**
      * Register callback
      *
