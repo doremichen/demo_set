@@ -8,10 +8,16 @@
 
     <TextView
         android:id="@+id/show_permission_result"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Hello job service demo" />
+        android:layout_marginTop="47dp"
+        android:fontFamily="@font/cabin_bold"
+        android:text="Hello job service demo"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +30,8 @@
         <ListView
             android:id="@+id/list_demo_permission"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:divider="@android:color/black"
+            android:dividerHeight="2dp" />
     </LinearLayout>
 </RelativeLayout>

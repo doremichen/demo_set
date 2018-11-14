@@ -6,12 +6,18 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp"
-        android:text="@string/label_demo_service" />
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/cabin_bold"
+        android:text="@string/label_demo_service"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,16 +28,22 @@
         <ListView
             android:id="@+id/list_action"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:background="@color/empty_notes_view_color"
+            android:divider="@android:color/black"
+            android:dividerHeight="2dp">
 
         </ListView>
+
         <TextView
             android:id="@android:id/empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textStyle="bold"
+            android:fontFamily="@font/cabin_bold"
+            android:text="@string/label_no_data"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
             android:textSize="24sp"
-            android:textColor="#000fff"
-            android:text="@string/label_no_data" />
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>

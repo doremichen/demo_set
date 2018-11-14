@@ -12,6 +12,7 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/note_color"
         android:scrollbars="vertical" />
 
     <TextView
@@ -21,10 +22,10 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="@dimen/empty_notes_view_marginTop_dim"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="@font/cabin_bold"
         android:text="@string/label_no_note"
-        android:textStyle="bold"
-        android:textColor="@color/empty_notes_view_color"
-        android:textSize="@dimen/empty_notes_view_text_size" />
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/empty_notes_view_text_size"
+        android:textStyle="bold" />
 
 </RelativeLayout>

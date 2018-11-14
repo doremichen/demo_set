@@ -1,4 +1,4 @@
-package com.adam.app.demoset.biner;
+package com.adam.app.demoset.binder;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -1,7 +1,7 @@
 // IMyAidlInterface.aidl
-package com.adam.app.demoset.biner;
+package com.adam.app.demoset.binder;
 
-import com.adam.app.demoset.biner.IMyAidlCBInterface;
+import com.adam.app.demoset.binder.IMyAidlCBInterface;
 
 interface IMyAidlInterface {
       // register call back interface

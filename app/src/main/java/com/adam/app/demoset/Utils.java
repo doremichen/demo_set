@@ -301,9 +301,6 @@ public abstract class Utils {
             @NonNull Context applicationContext,
             @NonNull Bitmap bitmap) throws FileNotFoundException {
 
-        // clear static data
-        sImagePath = null;
-
         String name = String.format("blur-filter-output-%s.png", UUID.randomUUID().toString());
         File outputDir = new File(applicationContext.getFilesDir(), OUTPUT_PATH);
         if (!outputDir.exists()) {

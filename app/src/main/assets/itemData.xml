@@ -12,9 +12,9 @@
     <data title="Demo Camera" clsname="com.adam.app.demoset.camera2.DemoCamera2Act2" pkgname="com.adam.app.demoset"/>
     <data title="Demo Video record" clsname="com.adam.app.demoset.video.DemoVideoRecordAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Alarm" clsname="com.adam.app.demoset.alarm.DemoAlarmAct" pkgname="com.adam.app.demoset"/>
-    <data title="Demo Binder Call" clsname="com.adam.app.demoset.biner.DemoBinderAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Binder Call" clsname="com.adam.app.demoset.binder.DemoBinderAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Scheduler service" clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct" pkgname="com.adam.app.demoset"/>
-    <data title="Demo Tayble layout" clsname="com.adam.app.demoset.tablelayout.DemoTableAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Table layout" clsname="com.adam.app.demoset.tablelayout.DemoTableAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Database" clsname="com.adam.app.demoset.database.DemoDatabaseAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Room Database" clsname="com.adam.app.demoset.database2.DemoRoomAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo System UI" clsname="com.adam.app.demoset.systemUI.DemoSysUIAct" pkgname="com.adam.app.demoset"/>

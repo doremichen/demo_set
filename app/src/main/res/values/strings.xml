@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DemoSet</string>
-    <string name="label_wellcome_to_demo">Wellcome to Demo</string>
+    <string name="label_welcome_to_demo">Welcome to Demo</string>
     <string name="title_activity_demo_service">DemoServiceAct</string>
     <string name="label_demo_service">Demo service</string>
     <string name="label_no_data">No data</string>
@@ -8,8 +8,8 @@
     <string name="label_target_remote_service">Target: remote service</string>
     <string name="label_exit">Exit</string>
     <string name="label_permission_label">direct use the service</string>
-    <string name="label_permission_descript">this is demo permission</string>
-    <string name="label_permission_group_descript">test permission group</string>
+    <string name="label_permission_description">this is demo permission</string>
+    <string name="label_permission_group_description">test permission group</string>
     <string name="label_popup_info">Floating pop up window</string>
     <string name="label_ok_btn">Ok</string>
     <string name="label_click">Click</string>
@@ -19,12 +19,12 @@
     <string name="label_bt_on_off">BT on/off</string>
     <string name="label_scan_list">Scan list: </string>
     <string name="label_paired_list">Paired list: </string>
-    <string name="label_welcome_to_demo_nitification">Welcome to Demo nitification</string>
+    <string name="label_welcome_to_demo_notification">Welcome to Demo nitification</string>
     <string name="label_btn_notification">Notification message</string>
     <string name="label_result_notification">This is the result of the Demo notification</string>
-    <string name="label_memnu_sahred">Sahred</string>
-    <string name="label_jni_info">Welcom to demo jni</string>
-    <string name="action_jni_sayhello">Invoke JNI to say hello</string>
+    <string name="label_menu_shared">Shared</string>
+    <string name="label_jni_info">Welcome to demo jni</string>
+    <string name="action_jni_say_hello">Invoke JNI to say hello</string>
     <string name="action_test_inst_cb">Test: Object CallBack</string>
     <string name="action_test_class_cb">Test: Class CallBack</string>
     <string name="label_demo_flashlight">Welcome to demo flash light</string>
@@ -63,4 +63,9 @@
     <string name="action_test_blur_img">Test</string>
     <string name="action_show_img">Show</string>
     <string name="img_this_is_test">this is test</string>
+    <string name="label_welcome_demo_table_layout">Welcome to demo table layout</string>
+    <string name="hint_input_note">Input word...</string>
+    <string name="action_bt_paired">Paired</string>
+    <string name="label_bt_device_name">Bt device name</string>
+    <string name="label_bt_address">Bt address</string>
 </resources>

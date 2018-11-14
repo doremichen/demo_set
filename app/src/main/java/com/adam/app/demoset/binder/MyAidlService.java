@@ -1,4 +1,4 @@
-package com.adam.app.demoset.biner;
+package com.adam.app.demoset.binder;
 
 import android.app.Service;
 import android.content.Intent;

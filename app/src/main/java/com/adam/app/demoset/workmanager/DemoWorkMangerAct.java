@@ -39,6 +39,9 @@ public class DemoWorkMangerAct extends AppCompatActivity {
 
     public void onMyWork(View v) {
         if (!mIshow) {
+            // reset
+            Utils.sImagePath = null;
+
             mWorkManger.enqueue(OneTimeWorkRequest.from(MyWork.class));
             mBtnTest.setText(this.getResources().getString(R.string.action_show_img));
             mIshow = true;

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btdemo_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,19 +10,32 @@
         android:id="@+id/tv_bt_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/empty_notes_view_color"
+        android:fontFamily="@font/cabin_bold"
         android:gravity="center"
-        android:text="@string/label_hello_bt" />
+        android:text="@string/label_hello_bt"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
 
     <Switch
         android:id="@+id/switch_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_bt_on_off" />
+        android:background="@android:color/holo_green_dark"
+        android:fontFamily="@font/cabin_bold"
+        android:text="@string/label_bt_on_off"
+        android:textColor="@android:color/background_light" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="@font/cabin_bold"
         android:text="@string/label_scan_list"
-        android:background="@color/colorAccent"/>
+        android:textColor="@android:color/background_light" />
 
     <LinearLayout
         android:id="@+id/scan_list_layout"
@@ -31,7 +45,10 @@
         <ListView
             android:id="@+id/scan_list"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:divider="@android:color/background_light"
+            android:dividerHeight="4dp" />
 
         <TextView
             android:id="@android:id/empty"
@@ -43,11 +60,14 @@
 
 
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="@font/cabin_bold"
         android:text="@string/label_paired_list"
-        android:background="@color/colorAccent"/>
+        android:textColor="@android:color/background_light" />
 
     <LinearLayout
         android:id="@+id/paired_list_layout"
@@ -57,7 +77,10 @@
         <ListView
             android:id="@+id/paired_list"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:divider="@android:color/background_light"
+            android:dividerHeight="4dp" />
 
         <TextView
             android:id="@android:id/empty"

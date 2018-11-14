@@ -10,15 +10,18 @@
         android:id="@+id/btn_test_wm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/testImg"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/design_default_color_primary_dark"
+        android:background="@drawable/item_selector"
+        android:fontFamily="@font/cabin_bold"
         android:onClick="onMyWork"
         android:text="@string/action_test_blur_img"
+        android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
-        android:typeface="sans"
-        android:layout_above="@+id/testImg"/>
+        android:textStyle="bold"
+        android:typeface="sans" />
 
     <ImageView
         android:id="@+id/testImg"

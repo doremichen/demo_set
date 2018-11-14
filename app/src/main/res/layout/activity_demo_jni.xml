@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:background="@color/colorPrimaryDark"
         android:onClick="onInvokeJNI"
-        android:text="@string/action_jni_sayhello"
+        android:text="@string/action_jni_say_hello"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/ic_launcher_background"
