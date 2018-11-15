@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -100,8 +101,8 @@ public class DemoRoomAct extends AppCompatActivity {
         mAdapter = new NoteListAdapter(this);
 
         // Build list
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager mGridManager = new GridLayoutManager(this, 3);
+        mRecyclerView.setLayoutManager(mGridManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 

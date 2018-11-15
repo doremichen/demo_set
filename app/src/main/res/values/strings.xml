@@ -68,4 +68,6 @@
     <string name="action_bt_paired">Paired</string>
     <string name="label_bt_device_name">Bt device name</string>
     <string name="label_bt_address">Bt address</string>
+    <string name="label_yyyy_mmm_dd">YYYY:MMM:DD</string>
+    <string name="label_sample">Sample</string>
 </resources>

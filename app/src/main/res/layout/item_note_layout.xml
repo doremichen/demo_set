@@ -3,22 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
     android:background="@drawable/item_selector"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:paddingStart="@dimen/padd_start_dim"
-    android:paddingTop="@dimen/padd_top_dim"
-    android:paddingEnd="@dimen/padd_end_dim"
-    android:paddingBottom="@dimen/padd_bottom_dim">
+    android:layout_marginTop="@dimen/padd_top_dim"
+    android:layout_marginEnd="@dimen/padd_end_dim"
+    android:layout_marginBottom="@dimen/padd_bottom_dim"
+    android:layout_marginStart="@dimen/padd_start_dim">
 
     <TextView
         android:id="@+id/timestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cabin_bold"
-        android:text="YYYY:MMM:DD"
+        android:text="@string/label_yyyy_mmm_dd"
         android:textColor="@color/timestamp_color"
         android:textSize="@dimen/timestamp_text_size" />
 
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/timestamp"
         android:fontFamily="@font/cabin_bold"
-        android:text="Sample"
+        android:text="@string/label_sample"
         android:textColor="@color/note_color"
         android:textSize="@dimen/note_text_size" />
 

@@ -1,9 +1,9 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="padd_start_dim">10dp</dimen>
-    <dimen name="padd_top_dim">10dp</dimen>
-    <dimen name="padd_end_dim">10dp</dimen>
-    <dimen name="padd_bottom_dim">10dp</dimen>
+    <dimen name="padd_start_dim">5dp</dimen>
+    <dimen name="padd_top_dim">5dp</dimen>
+    <dimen name="padd_end_dim">5dp</dimen>
+    <dimen name="padd_bottom_dim">5dp</dimen>
     <dimen name="timestamp_text_size">12sp</dimen>
     <dimen name="note_text_size">24sp</dimen>
     <dimen name="empty_notes_view_text_size">24sp</dimen>
