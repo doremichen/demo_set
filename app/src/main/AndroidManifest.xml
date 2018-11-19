@@ -104,7 +104,6 @@
         <activity
             android:name=".notification.NotifyResultAct"
             android:label="Notify result UI"
-            android:parentActivityName=".notification.DemoNotificationAct"
             android:screenOrientation="nosensor"/>
         <activity
             android:name=".DemoShareProvidAct"

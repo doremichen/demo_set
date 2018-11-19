@@ -70,4 +70,6 @@
     <string name="label_bt_address">Bt address</string>
     <string name="label_yyyy_mmm_dd">YYYY:MMM:DD</string>
     <string name="label_sample">Sample</string>
+    <string name="label_btn_update_notification">Update notification</string>
+    <string name="label_btn_cancel_notification">Cancel notification</string>
 </resources>

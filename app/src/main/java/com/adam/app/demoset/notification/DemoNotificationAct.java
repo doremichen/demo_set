@@ -10,7 +10,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,14 +20,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
 
 public class DemoNotificationAct extends AppCompatActivity {
 
 
-    private static final String NOTIFY_CHANNEL_ID = "test channel id";
+    private static final String NOTIFY_CHANNEL_ID = "test_notification_channel_id";
+    public static final int NOTIFICATION_ID = 1;
 
     private NotificationManager mManager;
-    private Notification mNotify;
+    private NotificationCompat.Builder mBuilder;
+
 
 
     @Override
@@ -33,28 +38,33 @@ public class DemoNotificationAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_notification);
 
-        mNotify = buildNotification();
+        mBuilder = notificationBuilder();
+
 
     }
 
-    private Notification buildNotification() {
+    private NotificationCompat.Builder notificationBuilder() {
 
         mManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Create Notification channel <Android 8.0>
-        NotificationChannel channel = new NotificationChannel(NOTIFY_CHANNEL_ID,
-                "my test notification",
-                NotificationManager.IMPORTANCE_HIGH);
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Create notification channel id
+            NotificationChannel channel = new NotificationChannel(NOTIFY_CHANNEL_ID,
+                    "my test notification",
+                    NotificationManager.IMPORTANCE_HIGH);
 
-        channel.setDescription("This is notification demo");
-        channel.enableLights(true);
-        channel.setLightColor(Color.GREEN);
+            channel.setDescription("This notification is from Demoset app");
+            channel.enableLights(true);
+            channel.setLightColor(Color.GREEN);
 
-        channel.enableVibration(true);
-        channel.setVibrationPattern(new long[]{100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L});
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L});
 
-        mManager.createNotificationChannel(channel);
+            channel.setSound(null, null);
 
+            mManager.createNotificationChannel(channel);
+
+        }
 
         Bitmap largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_notification_test);
 
@@ -68,27 +78,31 @@ public class DemoNotificationAct extends AppCompatActivity {
         builder.setContentText("This is Demo text");
         builder.setLargeIcon(largeIcon);
         builder.setWhen(System.currentTimeMillis());
-        builder.setOngoing(true);  // Not removable
+        builder.setAutoCancel(true);
+
+//        builder.setOngoing(true);  // Not removable
 
         // Config result activity to notification
+        PendingIntent resultPT = getPendingIntent();
+        builder.setContentIntent(resultPT);
+
+        return builder;
+    }
+
+    private PendingIntent getPendingIntent() {
         Intent resultIntent = new Intent(this, NotifyResultAct.class);
         // ensures that navigating backward from the Activity leads out of application to Home screen
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(NotifyResultAct.class);
         stackBuilder.addNextIntent(resultIntent);
 
-        PendingIntent resultPT = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        builder.setContentIntent(resultPT);
-
-
-        return builder.build();
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
     public void onNotification(View v) {
 
-        mManager.notify(1, mNotify);
+        mManager.notify(NOTIFICATION_ID, mBuilder.build());
 
     }
 
@@ -111,4 +125,43 @@ public class DemoNotificationAct extends AppCompatActivity {
         return false;
     }
 
+    public void updateNotify(View view) {
+        Utils.inFo(this, "updateNotify");
+        if (hasNotification()) return;
+
+        Bitmap notifyImg = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        NotificationCompat.Builder builder = notificationBuilder();
+        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(notifyImg).setBigContentTitle("Notify update"));
+
+        // Update
+        mManager.notify(NOTIFICATION_ID, builder.build());
+
+    }
+
+    public void cancelNotify(View view) {
+        Utils.inFo(this, "cancelNotify enter");
+        if (hasNotification()) return;
+
+        // cancel notification
+        mManager.cancel(NOTIFICATION_ID);
+
+    }
+
+    private boolean hasNotification() {
+        boolean hasNotification = false;
+        // Get active notification
+        StatusBarNotification[] notifications = mManager.getActiveNotifications();
+        // Check whether or not the notification exists
+        for (StatusBarNotification notify : notifications) {
+            if (notify.getId() == NOTIFICATION_ID) {
+                hasNotification = true;
+            }
+        }
+
+        if (hasNotification == false) {
+            Utils.showToast(this, "No notification...");
+            return true;
+        }
+        return false;
+    }
 }
