@@ -7,17 +7,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.jnidemo.NativeUtils;
 
+/**
+ * Testing your app with Doze
+ * Force the system into idle mode by running the following command: adb shell dumpsys deviceidle force-idle
+ * When ready, exit idle mode by running the following command: adb shell dumpsys deviceidle unforce
+ * Reactivate the device by performing the following command: adb shell dumpsys battery reset
+ *
+ * Testing your app with App Standby
+ * Force the app into App Standby mode by running the following commands:
+ * $ adb shell dumpsys battery unplug
+ * $ adb shell am set-inactive <packageName> true
+ * Simulate waking your app using the following commands:
+ * $ adb shell am set-inactive <packageName> false
+ * $ adb shell am get-inactive <packageName>
+ */
 public class DemoAlarmAct extends AppCompatActivity {
 
     public static final String ACTION_UPDATE_INFO = "update alarm info";
@@ -32,9 +48,12 @@ public class DemoAlarmAct extends AppCompatActivity {
 
 
     private int mCount;
+    private RadioGroup mRadioGroup;
 
 
     private class UIReceiver extends BroadcastReceiver {
+
+        private static final long OFFSET_TIME = 10*60*1000L;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -47,8 +66,28 @@ public class DemoAlarmAct extends AppCompatActivity {
                 // Update alarm info
                 mAlarmInfo.setText("Alarm count: " + String.valueOf(mCount));
 
-                MyJobService.actionNotification(getApplicationContext(), "Alarm count: " + String.valueOf(mCount));
+                int type = AlarmManager.RTC_WAKEUP;
+                long triggerTime = System.currentTimeMillis() + OFFSET_TIME;
 
+                switch (mRadioGroup.getCheckedRadioButtonId()) {
+                    case R.id.allWhileIdle:
+                        Utils.inFo(this, "allWhileIdle");
+                        Intent intent1 = new Intent(DemoAlarmAct.this, MyAlarmReceiver.class);
+                        PendingIntent alarmIntent1 = PendingIntent.getBroadcast(DemoAlarmAct.this, 0, intent1, 0);
+                        mAlarmManager.setAndAllowWhileIdle(type, triggerTime, alarmIntent1);
+                        break;
+                    case R.id.exectAllowWhileIde:
+                        Utils.inFo(this, "exectAllowWhileIde");
+                        Intent intent2 = new Intent(DemoAlarmAct.this, MyAlarmReceiver.class);
+                        PendingIntent alarmIntent2 = PendingIntent.getBroadcast(DemoAlarmAct.this, 0, intent2, 0);
+                        mAlarmManager.setExactAndAllowWhileIdle(type, triggerTime, alarmIntent2);
+                        break;
+                    default:
+                        break;
+                }
+
+                Utils.makeStatusNotification("Alarm count: " + String.valueOf(mCount), getApplicationContext());
+//                MyJobService.actionNotification(getApplicationContext(), "Alarm count: " + String.valueOf(mCount));
 
             }
         }
@@ -63,6 +102,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
         mbtnAlarm = this.findViewById(R.id.btn_alarm);
         mAlarmInfo = this.findViewById(R.id.tv_alarm_info);
+        mRadioGroup = findViewById(R.id.radioGroup);
 
         // Alarm service
         mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
@@ -124,8 +164,28 @@ public class DemoAlarmAct extends AppCompatActivity {
         Utils.inFo(this, "startAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // Start alarm
-        this.mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+        switch (mRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.Repeat:
+                Utils.inFo(this, "Repeat");
+                this.mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+                break;
+            case R.id.inexactRepeat:
+                Utils.inFo(this, "inexactRepeat");
+                this.mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
+                break;
+            case R.id.allWhileIdle:
+                Utils.inFo(this, "allWhileIdle");
+                this.mAlarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmIntent);
+                break;
+            case R.id.exectAllowWhileIde:
+                Utils.inFo(this, "exectAllowWhileIde");
+                this.mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmIntent);
+                break;
+        }
+
+
 
     }
 

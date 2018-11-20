@@ -72,4 +72,9 @@
     <string name="label_sample">Sample</string>
     <string name="label_btn_update_notification">Update notification</string>
     <string name="label_btn_cancel_notification">Cancel notification</string>
+    <string name="label_set_trigger_alrm_type">Set trigger type:</string>
+    <string name="radio_setinexactrepeating">setInexactRepeating</string>
+    <string name="radio_setandallowwhileidle">setAndAllowWhileIdle</string>
+    <string name="radio_setexactandallowwhileidle">setExactAndAllowWhileIdle</string>
+    <string name="radio_setrepeating">setRepeating</string>
 </resources>
