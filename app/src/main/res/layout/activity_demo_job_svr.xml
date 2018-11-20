@@ -7,24 +7,127 @@
     tools:context=".jobService.DemoJobSvrAct">
 
     <TextView
-        android:id="@+id/show_permission_result"
+        android:id="@+id/welcome_demo_job_svr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/cabin_bold"
-        android:text="Hello job service demo"
+        android:text="@string/label_hello_job_service_demo"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="24sp" />
-
+    <TextView
+        android:id="@+id/tv_require"
+        android:layout_below="@+id/welcome_demo_job_svr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/label_require_jobsvr"
+        android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
     <LinearLayout
+        android:id="@+id/switch_require"
+        android:layout_below="@+id/tv_require"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+        <Switch
+            android:id="@+id/switch_idle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_switch_idle" />
+        <Switch
+            android:id="@+id/switch_charging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_switch_charging" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_network_type_require"
+        android:layout_below="@+id/switch_require"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/label_network_type_require"
+        android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+    <RadioGroup
+        android:id="@+id/network_option"
+        android:layout_below="@+id/tv_network_type_require"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/no_network_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/label_option_none_network"
+            />
+        <RadioButton
+            android:id="@+id/any_network_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lable_option_any_network"
+            />
+        <RadioButton
+            android:id="@+id/wifi_network_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_option_wifi_network"
+            />
+    </RadioGroup>
+    <LinearLayout
+        android:id="@+id/set_time_type"
+        android:layout_below="@+id/network_option"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_set_trigger_interval_type"
+            android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/spinner_set_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </Spinner>
+            <TextView
+                android:id="@+id/interval_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_interval_no_set"
+                android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <SeekBar
+        android:id="@+id/seekbar_time_interval"
+        android:layout_below="@+id/set_time_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+    <LinearLayout
+        android:layout_below="@+id/seekbar_time_interval"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <ListView

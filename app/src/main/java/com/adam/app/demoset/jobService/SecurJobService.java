@@ -25,7 +25,7 @@ public class SecurJobService extends JobService {
             Utils.showToast(SecurJobService.this, "Job is running...");
             Utils.inFo(this, "Job is running...");
             Utils.makeStatusNotification("JobService is triggerd...", getApplicationContext());
-            jobFinished((JobParameters) msg.obj, true);
+            jobFinished((JobParameters) msg.obj, false);
         }
     };
 

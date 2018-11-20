@@ -77,4 +77,14 @@
     <string name="radio_setandallowwhileidle">setAndAllowWhileIdle</string>
     <string name="radio_setexactandallowwhileidle">setExactAndAllowWhileIdle</string>
     <string name="radio_setrepeating">setRepeating</string>
+    <string name="label_hello_job_service_demo">Hello job service demo</string>
+    <string name="label_require_jobsvr">Require:</string>
+    <string name="label_switch_idle">Idle</string>
+    <string name="label_switch_charging">Charging</string>
+    <string name="label_network_type_require">Network type require:</string>
+    <string name="label_option_none_network">None</string>
+    <string name="lable_option_any_network">Any</string>
+    <string name="label_set_trigger_interval_type">Set trigger interval type:</string>
+    <string name="label_option_wifi_network">Wifi</string>
+    <string name="label_interval_no_set">No set</string>
 </resources>
