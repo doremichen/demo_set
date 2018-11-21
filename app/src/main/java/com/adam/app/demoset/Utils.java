@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -34,8 +35,10 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -43,6 +46,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public abstract class Utils {
 
@@ -70,6 +75,8 @@ public abstract class Utils {
     public static ServiceConnection sConnection;
 
     public static volatile String sImagePath;
+
+    private static final String PREFERENCES_KEY = "com.google.android_quick_settings";
 
     public static void inFo(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
@@ -207,6 +214,28 @@ public abstract class Utils {
         builder.setMessage(msg);
         builder.setPositiveButton(context.getResources().getString(R.string.label_ok_btn),
                 listener);
+
+        builder.create().show();
+    }
+
+    public static void showAlertDialog(Context context,
+                                       String msg,
+                                       DialogInterface.OnClickListener listener1,
+                                       DialogInterface.OnClickListener listener2) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        LayoutInflater LayoutInflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = LayoutInflater.inflate(R.layout.layout_alert_dialog, null);
+        TextView message = dialogView.findViewById(R.id.dlg_message);
+        message.setText(msg);
+
+        builder.setTitle("Info:");
+        builder.setView(dialogView);
+        builder.setNegativeButton(context.getString(R.string.label_off),
+                listener1);
+        builder.setPositiveButton(context.getString(R.string.label_on),
+                listener2);
 
         builder.create().show();
     }
@@ -373,5 +402,20 @@ public abstract class Utils {
         NotificationManagerCompat.from(context).notify(sNotifyID, builder.build());
 
         sNotifyID++;
+    }
+
+    /**
+     * Used for quick setting demo
+     * @param ctx
+     * @param key
+     * @return
+     */
+    public static boolean updateServiceStatus(Context ctx, String key) {
+        Utils.inFo(Utils.class, "getServiceStatus enter");
+        SharedPreferences prefs = ctx.getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
+        boolean isActive = prefs.getBoolean(key, false);
+        isActive = !isActive;
+        prefs.edit().putBoolean(key, isActive).apply();
+        return isActive;
     }
 }

@@ -41,7 +41,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,12 +53,12 @@
         <activity
             android:name=".DemoServiceAct"
             android:label="@string/title_activity_demo_service"
-            android:screenOrientation="nosensor"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".jobService.DemoJobSvrAct"
             android:label="DemoJobSvrAct"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".LocalService"
@@ -86,7 +87,7 @@
         <activity
             android:name=".floatingDlg.DemoFloatingDialogAct"
             android:label="Demo floation dialog activity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".floatingDlg.FloatingDialogSvr"
@@ -96,26 +97,26 @@
         <activity
             android:name=".bluetooth.DemoBTAct"
             android:label="Demo bt activity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".notification.DemoNotificationAct"
             android:label="Demo notification"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".notification.NotifyResultAct"
             android:label="Notify result UI"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".DemoShareProvidAct"
             android:label="Demo share action provider"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:label="Demo hello jni" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:label="Demo flash light"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".flashlight.FlashLightService"
@@ -136,7 +137,7 @@
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
             android:label="Demo Device admin"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.DemoCamera2Act"
             android:label="Demo Camera"
@@ -154,7 +155,7 @@
         <activity
             android:name=".alarm.DemoAlarmAct"
             android:label="Demo alarm"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".video.DemoVideoRecordAct"
             android:label="Demo record video"
@@ -173,7 +174,7 @@
         <activity
             android:name=".binder.DemoBinderAct"
             android:label="Demo binder call"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".binder.MyAidlService"
@@ -189,16 +190,16 @@
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
             android:label="Demo scheduler counter"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".tablelayout.DemoTableAct"
             android:label="Demo table layout"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".database.DemoDatabaseAct"
             android:label="@string/title_activity_demo_database"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name=".database.provider.MyDBProvider"
@@ -211,24 +212,70 @@
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:label="Demo system UI"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkMangerAct"
             android:label="Demo work manager"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".database2.DemoRoomAct"
             android:label="Demo Room"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".alarm.MyJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true"/>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".quicksetting.DemoQuickSetting"
+            android:label="Demo quick setting" />
+        <!-- TileService for "Update the Tile UI" section -->
+
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingService"
+            android:icon="@drawable/ic_demo_qs1_inactive"
+            android:label="Demo quick setting1"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- TileService for "Launch a dialog from a tile" section -->
+
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingDialogService"
+            android:icon="@drawable/ic_demo_qs2_dialog"
+            android:label="Demo quick setting2"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- TileService for "Launch an activity from a tile" section -->
+
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingIntentService"
+            android:icon="@drawable/ic_demo_qs3"
+            android:label="Demo quick setting3"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".quicksetting.QuickSettingResultAct"
+            android:label="Result activity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
