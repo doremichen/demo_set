@@ -240,7 +240,7 @@
 
         <service
             android:name=".quicksetting.qsservice.QuickSettingService"
-            android:icon="@drawable/ic_demo_qs1_inactive"
+            android:icon="@drawable/ic_demo_qs1_active"
             android:label="Demo quick setting1"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

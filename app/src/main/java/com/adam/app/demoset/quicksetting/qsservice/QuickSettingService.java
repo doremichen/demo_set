@@ -15,14 +15,10 @@ import com.adam.app.demoset.Utils;
 @TargetApi(Build.VERSION_CODES.O)
 public class QuickSettingService extends TileService {
 
-    private static final String SERVICE_STATUS_FLAG = "Qs1_Status";
-
-
     @Override
     public void onTileAdded() {
         super.onTileAdded();
         Utils.inFo(this, "onTileAdded enter");
-        updateTitle();
     }
 
     @Override
@@ -53,13 +49,12 @@ public class QuickSettingService extends TileService {
     private void updateTitle() {
         Utils.inFo(this, "updateTitle enter");
         Tile tile = this.getQsTile();
-        boolean updateSetting = Utils.updateServiceStatus(getApplicationContext(), SERVICE_STATUS_FLAG);
-
+        boolean updateSetting = (tile.getState() == Tile.STATE_ACTIVE)? true: false;
         Icon icon;
         String label;
         int state;
 
-        if (updateSetting) {
+        if (!updateSetting) {
             label = "Demo quick setting1: active";
             icon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_demo_qs1_active);
             state = Tile.STATE_ACTIVE;

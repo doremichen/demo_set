@@ -88,7 +88,10 @@
     <string name="label_option_wifi_network">Wifi</string>
     <string name="label_interval_no_set">No set</string>
     <string name="label_info_demo_qs">Welcome to demo quick setting. To open the notification shade,
-        swipe down from the top of the phone. Expand the setting and click the menu to select the button order.</string>
+        swipe down from the top of the phone. Expand the setting and click the action menu to select the button order.</string>
     <string name="label_dlg_title">Title:</string>
     <string name="label_dialog_info">dialog info</string>
+    <string name="label_qs_turn_on">turn on</string>
+    <string name="label_qs_turn_off">turn off</string>
+    <string name="label_qs_cancel">cancel</string>
 </resources>

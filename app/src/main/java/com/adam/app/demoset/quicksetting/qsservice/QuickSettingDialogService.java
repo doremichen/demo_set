@@ -20,8 +20,6 @@ import com.adam.app.demoset.Utils;
 @TargetApi(Build.VERSION_CODES.O)
 public class QuickSettingDialogService extends TileService {
 
-    private static final String SERVICE_STATUS_FLAG = "Qs2_Status";
-
     private DialogInterface.OnClickListener mPositiveButton = new DialogInterface.OnClickListener() {
 
         @Override
@@ -34,7 +32,6 @@ public class QuickSettingDialogService extends TileService {
     @Override
     public void onTileAdded() {
         super.onTileAdded();
-        updateTile();
     }
 
     @Override
@@ -50,8 +47,7 @@ public class QuickSettingDialogService extends TileService {
     private void updateTile() {
         Utils.inFo(this, "updateTile enter");
         Tile tile = getQsTile();
-        boolean updateSetting = Utils.updateServiceStatus(getApplicationContext(), SERVICE_STATUS_FLAG);
-        int state = updateSetting? Tile.STATE_ACTIVE: Tile.STATE_INACTIVE;
+        int state = (tile.getState() == Tile.STATE_ACTIVE)? Tile.STATE_INACTIVE: Tile.STATE_ACTIVE;
 
         tile.setState(state);
         tile.updateTile();
@@ -62,6 +58,10 @@ public class QuickSettingDialogService extends TileService {
                                   DialogInterface.OnClickListener listener1,
                                   DialogInterface.OnClickListener listener2) {
         Context ctx = getApplicationContext();
+        Tile tile = getQsTile();
+        // Check state
+        String rb_label = (tile.getState() == Tile.STATE_ACTIVE)? getString(R.string.label_qs_turn_off): getString(R.string.label_qs_turn_on);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
 
         LayoutInflater LayoutInflater =
@@ -72,9 +72,9 @@ public class QuickSettingDialogService extends TileService {
 
         builder.setTitle("Info:");
         builder.setView(dialogView);
-        builder.setNegativeButton(ctx.getString(R.string.label_off),
+        builder.setNegativeButton(ctx.getString(R.string.label_qs_cancel),
                 listener1);
-        builder.setPositiveButton(ctx.getString(R.string.label_on),
+        builder.setPositiveButton(rb_label,
                 listener2);
 
         return builder.create();
