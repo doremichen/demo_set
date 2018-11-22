@@ -404,18 +404,4 @@ public abstract class Utils {
         sNotifyID++;
     }
 
-    /**
-     * Used for quick setting demo
-     * @param ctx
-     * @param key
-     * @return
-     */
-    public static boolean updateServiceStatus(Context ctx, String key) {
-        Utils.inFo(Utils.class, "getServiceStatus enter");
-        SharedPreferences prefs = ctx.getSharedPreferences(PREFERENCES_KEY, MODE_PRIVATE);
-        boolean isActive = prefs.getBoolean(key, false);
-        isActive = !isActive;
-        prefs.edit().putBoolean(key, isActive).apply();
-        return isActive;
-    }
 }
