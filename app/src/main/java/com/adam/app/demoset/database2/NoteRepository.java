@@ -19,6 +19,7 @@ public class NoteRepository {
 
     /**
      * Initial note dao
+     *
      * @param app
      */
     public NoteRepository(Application app) {
@@ -30,6 +31,7 @@ public class NoteRepository {
 
     /**
      * Provide to the View modle
+     *
      * @return
      */
     public LiveData<List<Note>> loadAllNotes() {

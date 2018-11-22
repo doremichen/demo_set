@@ -47,7 +47,7 @@ public class QuickSettingDialogService extends TileService {
     private void updateTile() {
         Utils.inFo(this, "updateTile enter");
         Tile tile = getQsTile();
-        int state = (tile.getState() == Tile.STATE_ACTIVE)? Tile.STATE_INACTIVE: Tile.STATE_ACTIVE;
+        int state = (tile.getState() == Tile.STATE_ACTIVE) ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE;
 
         tile.setState(state);
         tile.updateTile();
@@ -55,12 +55,12 @@ public class QuickSettingDialogService extends TileService {
     }
 
     private Dialog showAlertDialog(String msg,
-                                  DialogInterface.OnClickListener listener1,
-                                  DialogInterface.OnClickListener listener2) {
+                                   DialogInterface.OnClickListener listener1,
+                                   DialogInterface.OnClickListener listener2) {
         Context ctx = getApplicationContext();
         Tile tile = getQsTile();
         // Check state
-        String rb_label = (tile.getState() == Tile.STATE_ACTIVE)? getString(R.string.label_qs_turn_off): getString(R.string.label_qs_turn_on);
+        String rb_label = (tile.getState() == Tile.STATE_ACTIVE) ? getString(R.string.label_qs_turn_off) : getString(R.string.label_qs_turn_on);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
 

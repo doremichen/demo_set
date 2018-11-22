@@ -193,7 +193,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
     private void setTriggerInterval(JobInfo.Builder builder) {
         Utils.inFo(this, "setTriggerInterval enter mCanSetTrigger = " + mCanSetTrigger);
         if (mCanSetTrigger) {
-            long interval = ConstraintSet.triggervalue*1000L;
+            long interval = ConstraintSet.triggervalue * 1000L;
             switch (ConstraintSet.triggerfunc) {
                 case SPINNER_SET_PERIODIC:
                     Utils.inFo(this, "SPINNER_SET_PERIODIC");
@@ -243,7 +243,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
             return null;
         }
     }
-
 
 
     /**
@@ -307,11 +306,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
 //            builder.setPersisted(true);
 
 
-
-
         }
     }
-
 
 
     private class StopSvrItem implements ItemType {
@@ -332,9 +328,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
             } else {
                 Utils.showToast(DemoJobSvrAct.this, "No Jobinfo ConstraintSet");
             }
-
-
-
 
 
         }

@@ -1,7 +1,7 @@
 package com.adam.app.demoset.quicksetting;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.adam.app.demoset.R;

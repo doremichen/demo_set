@@ -16,7 +16,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -47,8 +46,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public abstract class Utils {
 
     public static final String ITEM_START_SERVICE = "start service";
@@ -75,8 +72,6 @@ public abstract class Utils {
     public static ServiceConnection sConnection;
 
     public static volatile String sImagePath;
-
-    private static final String PREFERENCES_KEY = "com.google.android_quick_settings";
 
     public static void inFo(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);

@@ -23,7 +23,7 @@ public class QuickSettingIntentService extends TileService {
         if (!isCurrentlyLocked) {
             Tile tile = getQsTile();
             String title = tile.getLabel().toString();
-            String status = (tile.getState() ==  Tile.STATE_ACTIVE)? "Active": "Inactive";
+            String status = (tile.getState() == Tile.STATE_ACTIVE) ? "Active" : "Inactive";
 
             Intent intent = new Intent(getApplicationContext(), QuickSettingResultAct.class);
             intent.putExtra(QuickSettingResultAct.KEY_RESULT_SETTING_TITLE, title);

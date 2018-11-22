@@ -1,6 +1,5 @@
 package com.adam.app.demoset.notification;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,7 +29,6 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     private NotificationManager mManager;
     private NotificationCompat.Builder mBuilder;
-
 
 
     @Override

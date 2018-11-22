@@ -57,7 +57,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
     @Override
     public int getItemCount() {
         Utils.inFo(this, "getItemCount enter ");
-        int count = (mNotes != null)? mNotes.size(): 0;
+        int count = (mNotes != null) ? mNotes.size() : 0;
         Utils.inFo(this, "count = " + count);
         return count;
     }

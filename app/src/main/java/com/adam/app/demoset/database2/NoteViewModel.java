@@ -19,6 +19,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     /**
      * Initialize Note repository
+     *
      * @param application
      */
     public NoteViewModel(@NonNull Application application) {

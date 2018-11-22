@@ -1,6 +1,5 @@
 package com.adam.app.demoset.scheduler;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;

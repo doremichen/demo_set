@@ -36,7 +36,7 @@ public class Note {
     }
 
     public void setNote(String note) {
-        mNote= note;
+        mNote = note;
     }
 
     public String getNote() {

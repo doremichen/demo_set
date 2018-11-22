@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,7 @@ import com.adam.app.demoset.jnidemo.NativeUtils;
  * Force the system into idle mode by running the following command: adb shell dumpsys deviceidle force-idle
  * When ready, exit idle mode by running the following command: adb shell dumpsys deviceidle unforce
  * Reactivate the device by performing the following command: adb shell dumpsys battery reset
- *
+ * <p>
  * Testing your app with App Standby
  * Force the app into App Standby mode by running the following commands:
  * $ adb shell dumpsys battery unplug
@@ -53,7 +52,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
     private class UIReceiver extends BroadcastReceiver {
 
-        private static final long OFFSET_TIME = 10*60*1000L;
+        private static final long OFFSET_TIME = 10 * 60 * 1000L;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -184,7 +183,6 @@ public class DemoAlarmAct extends AppCompatActivity {
                 this.mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), alarmIntent);
                 break;
         }
-
 
 
     }

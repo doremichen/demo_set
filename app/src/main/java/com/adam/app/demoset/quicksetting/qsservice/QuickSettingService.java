@@ -2,7 +2,6 @@ package com.adam.app.demoset.quicksetting.qsservice;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
@@ -49,7 +48,7 @@ public class QuickSettingService extends TileService {
     private void updateTitle() {
         Utils.inFo(this, "updateTitle enter");
         Tile tile = this.getQsTile();
-        boolean updateSetting = (tile.getState() == Tile.STATE_ACTIVE)? true: false;
+        boolean updateSetting = (tile.getState() == Tile.STATE_ACTIVE) ? true : false;
         Icon icon;
         String label;
         int state;
@@ -79,7 +78,6 @@ public class QuickSettingService extends TileService {
         tile.updateTile();
 
     }
-
 
 
 }
