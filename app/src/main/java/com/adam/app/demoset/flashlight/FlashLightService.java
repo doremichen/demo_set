@@ -3,6 +3,8 @@ package com.adam.app.demoset.flashlight;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
 
@@ -35,11 +37,11 @@ public class FlashLightService extends JobIntentService {
 
         if (CMD_FLASH_LIGHT_ON.equals(cmd)) {
 
-            startFlash();
+            enableFlash(true);
 
         } else if (CMD_FLASH_LIGHT_OFF.equals(cmd)) {
 
-            stopFalsh();
+            enableFlash(false);
 
         }
 
@@ -47,20 +49,17 @@ public class FlashLightService extends JobIntentService {
     }
 
 
-    private void startFlash() {
+    private void enableFlash(boolean on) {
         Utils.inFo(this, "startFlash enter");
-        mCamera = Camera.open();
-        Camera.Parameters p = mCamera.getParameters();
-        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-        mCamera.setParameters(p);
-        mCamera.startPreview();
-    }
+        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
-    private void stopFalsh() {
-        Utils.inFo(this, "stopFalsh enter");
-        mCamera = Camera.open();
-        mCamera.stopPreview();
-        mCamera.release();
+        try {
+            String cameraId = manager.getCameraIdList()[0];
+            manager.setTorchMode(cameraId, on);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
