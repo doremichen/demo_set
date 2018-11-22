@@ -2,7 +2,6 @@ package com.adam.app.demoset.flashlight;
 
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.support.annotation.NonNull;
@@ -17,9 +16,6 @@ public class FlashLightService extends JobIntentService {
 
     public static final String CMD_FLASH_LIGHT_ON = "flash light on";
     public static final String CMD_FLASH_LIGHT_OFF = "flash light off";
-
-    private Camera mCamera;
-    private android.hardware.Camera.Parameters parameters;
 
 
     public static void execute(Context context, String cmd) {
