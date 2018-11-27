@@ -94,4 +94,5 @@
     <string name="label_qs_turn_on">turn on</string>
     <string name="label_qs_turn_off">turn off</string>
     <string name="label_qs_cancel">cancel</string>
+    <string name="label_meter">Meter:</string>
 </resources>

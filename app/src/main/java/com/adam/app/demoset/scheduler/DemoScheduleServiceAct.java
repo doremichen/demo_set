@@ -3,11 +3,13 @@ package com.adam.app.demoset.scheduler;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import com.adam.app.demoset.R;
@@ -20,6 +22,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
     private TextView mShowCounter;
     private Button mCounterAction;
+    private Chronometer mMeter;
 
     private SchedulerController mController;
 
@@ -36,41 +39,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         }
 
-        private void UpdateCounter(long millisecond) {
-            Utils.inFo(this, "UpdateCounter");
-            long second = millisecond / 1000L;
-            long minute = second / 60L;
-            long hour = minute / 60L;
-            long day = hour / 24L;
 
-            if (second >= 60L)
-                second %= 60L;
-
-            if (minute >= 60L)
-                minute %= 60L;
-
-            if (hour >= 24L)
-                hour %= 24L;
-
-            if (day >= 365L)
-                day %= 365L;
-
-            // Create StringBuilder
-            StringBuilder stb = new StringBuilder();
-            stb.append("Counter:").append("\n");
-            stb.append(String.valueOf(day)).append(" ");
-            stb.append("day").append(" ");
-            stb.append(String.valueOf(hour)).append(" ");
-            stb.append("hr").append(" ");
-            stb.append(String.valueOf(minute)).append(" ");
-            stb.append("min").append(" ");
-            stb.append(String.valueOf(second)).append(" ");
-            stb.append("Sec").append(" ");
-
-            //Show counter information
-            mShowCounter.setText(stb.toString());
-
-        }
     };
 
 
@@ -82,6 +51,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         mShowCounter = this.findViewById(R.id.tv_show_counter);
         mCounterAction = this.findViewById(R.id.btn_action_counter);
+        mMeter = findViewById(R.id.chronometer);
 
         mController = new SchedulerController();
 
@@ -138,7 +108,13 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         if (!mStartCounter) {
 
+            // Reset counter ui
+            UpdateCounter(0L);
+
             mController.startCount();
+
+            mMeter.setBase(SystemClock.elapsedRealtime());
+            mMeter.start();
 
             mCounterAction.setText(this.getResources().getString(R.string.action_stop_counter));
             mStartCounter = true;
@@ -146,9 +122,47 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
             mController.stopCount();
 
+            mMeter.stop();
+
             mCounterAction.setText(this.getResources().getString(R.string.action_start_counter));
             mStartCounter = false;
         }
+    }
+
+    private void UpdateCounter(long millisecond) {
+        Utils.inFo(this, "UpdateCounter");
+        long second = millisecond / 1000L;
+        long minute = second / 60L;
+        long hour = minute / 60L;
+        long day = hour / 24L;
+
+        if (second >= 60L)
+            second %= 60L;
+
+        if (minute >= 60L)
+            minute %= 60L;
+
+        if (hour >= 24L)
+            hour %= 24L;
+
+        if (day >= 365L)
+            day %= 365L;
+
+        // Create StringBuilder
+        StringBuilder stb = new StringBuilder();
+        stb.append("Counter:").append("\n");
+        stb.append(String.valueOf(day)).append(" ");
+        stb.append("day").append(" ");
+        stb.append(String.valueOf(hour)).append(" ");
+        stb.append("hr").append(" ");
+        stb.append(String.valueOf(minute)).append(" ");
+        stb.append("min").append(" ");
+        stb.append(String.valueOf(second)).append(" ");
+        stb.append("Sec").append(" ");
+
+        //Show counter information
+        mShowCounter.setText(stb.toString());
+
     }
 
 }

@@ -86,10 +86,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ItemContent data = (ItemContent) parent.getItemAtPosition(position);
+                Utils.inFo(this, "the item: " + data.getTitle());
 
-                Toast.makeText(MainActivity.this, "the istem: " + data.getTitle(), Toast.LENGTH_SHORT).show();
-                Utils.inFo(this, "the istem: " + data.getTitle());
-
+                // Go to the specified demo item
                 Intent it = new Intent();
                 it.setClassName(data.getPkgName(), data.getClassName());
                 MainActivity.this.startActivity(it);
