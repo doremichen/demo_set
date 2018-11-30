@@ -43,7 +43,7 @@
     <string name="label_input_b">b:</string>
     <string name="label_output_c">c:</string>
     <string name="action_binder_call">Execute Binder call (c=a+b)</string>
-    <string name="label_show_counter">Counter:</string>
+    <string name="label_welcome_info">Welcome to Demo schedule</string>
     <string name="action_start_counter">Start counter</string>
     <string name="action_stop_counter">Stop counter</string>
     <string name="action_reset">Reset</string>
@@ -94,5 +94,9 @@
     <string name="label_qs_turn_on">turn on</string>
     <string name="label_qs_turn_off">turn off</string>
     <string name="label_qs_cancel">cancel</string>
-    <string name="label_meter">Meter:</string>
+    <string name="label_meter">Time:</string>
+    <string name="label_period_title">Period:</string>
+    <string name="label_time_unit">N/A</string>
+    <string name="label_bt_status">BT status</string>
+    <string name="label_show_non_zero_input_info">Please input the non zero value...</string>
 </resources>

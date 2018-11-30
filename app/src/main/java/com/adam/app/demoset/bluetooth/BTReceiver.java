@@ -47,7 +47,7 @@ public class BTReceiver extends BroadcastReceiver {
 
     private AlertDialog buildAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActRef.get());
-        builder.setTitle("BT status");
+        builder.setTitle(R.string.label_bt_status);
         builder.setView(R.layout.dialog_bt_scanning);
         builder.setCancelable(false);
 

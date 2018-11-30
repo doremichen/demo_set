@@ -235,6 +235,18 @@ public abstract class Utils {
         builder.create().show();
     }
 
+    public static AlertDialog showProgressDialog(Context context, String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater LayoutInflater =
+                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = LayoutInflater.inflate(R.layout.dialog_progress, null);
+        TextView info = dialogView.findViewById(R.id.progess_dlg_info);
+        info.setText(msg);
+        builder.setTitle("Info:");
+        builder.setView(dialogView);
+        return builder.create();
+    }
+
     public static void hideSoftKeyBoardFrom(Context context, View v) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);

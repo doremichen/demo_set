@@ -31,9 +31,16 @@ public class SchedulerController {
 
     /**
      * Start counter
+     *
+     * @param period
      */
-    public void startCount() {
+    public void startCount(long period) {
         Utils.inFo(this, "startCount enter");
+
+        if (period == 0L) {
+            throw new IllegalArgumentException("Please input the nonzero value");
+        }
+
         // Check if task is running
         cancelTask();
 
@@ -44,7 +51,7 @@ public class SchedulerController {
         mScheduleTask = new MyScheduleTask();
 
         // Start schedule
-        mFuture = mService.scheduleAtFixedRate(mScheduleTask, 1L, 1L, TimeUnit.SECONDS);
+        mFuture = mService.scheduleAtFixedRate(mScheduleTask, 0L, period, TimeUnit.SECONDS);
 
     }
 
