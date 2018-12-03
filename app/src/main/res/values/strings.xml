@@ -99,4 +99,14 @@
     <string name="label_time_unit">N/A</string>
     <string name="label_bt_status">BT status</string>
     <string name="label_show_non_zero_input_info">Please input the non zero value...</string>
+    <string name="label_welcome_to_demo_work_manager">Welcome to demo Work Manager</string>
+    <string name="label_btn_select_image">Select image</string>
+    <string name="label_image_view_description">This is image</string>
+    <string name="label_image_blur">Image blur</string>
+    <string name="radioButton_title_blurred">Title blurred</string>
+    <string name="radioButton_more_blurred">More blurred</string>
+    <string name="radioButton_the_most_blurred">The most blurred</string>
+    <string name="action_cnacel">Cnacel</string>
+    <string name="action_execute">Execute</string>
+    <string name="action_result">Result</string>
 </resources>

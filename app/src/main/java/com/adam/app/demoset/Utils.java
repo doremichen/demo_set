@@ -56,6 +56,7 @@ public abstract class Utils {
     public static final String ITEM_EXIT = "exit";
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
     public static final String KEY_MSG = "service status";
+    public static final String THE_SELECTED_IMAGE = "The selected image";
     private static final String TAG = "DemoSet";
     public static final String TRUE = "True";
     public static final String FALSE = "False";
@@ -64,7 +65,7 @@ public abstract class Utils {
     public static boolean sIsRemoteService = false;
     public static boolean sIsBound = false;
 
-    private static final String OUTPUT_PATH = "blur_filter_outputs";
+    public static final String OUTPUT_PATH = "blur_filter_outputs";
 
     public static LocalService sLocalSvr;
     public static Messenger sMessenger;   // for remote service

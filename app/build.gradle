@@ -47,4 +47,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     // Working manager components
     implementation "android.arch.work:work-runtime:$rootProject.workingVersion"
+    // Glid libary
+    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
+
 }
