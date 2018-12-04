@@ -27,7 +27,12 @@ public class MyViewModel extends ViewModel {
 
 
     public MyViewModel() {
+        Utils.inFo(this, "Constructor is called");
         mManager = WorkManager.getInstance();
+
+        // Reset work
+        mManager.cancelAllWork();
+
         // Get work status
         mSaveWorkStatus = mManager.getStatusesByTagLiveData(IMAGE_TAG);
     }
@@ -92,6 +97,7 @@ public class MyViewModel extends ViewModel {
      * Setters
      */
     void setImageUri(String uri) {
+        Utils.inFo(this, "setImageUri enter uri = " + uri);
         mImageUri = uriOrNull(uri);
     }
 
@@ -99,10 +105,12 @@ public class MyViewModel extends ViewModel {
      * Getters
      */
     Uri getImageUri() {
+        Utils.inFo(this, "getImageUri enter mImageUri = " + mImageUri.toString());
         return mImageUri;
     }
 
     private Data createInputDataForUri() {
+        Utils.inFo(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
         Data.Builder builder = new Data.Builder();
         if (mImageUri != null) {
             builder.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());

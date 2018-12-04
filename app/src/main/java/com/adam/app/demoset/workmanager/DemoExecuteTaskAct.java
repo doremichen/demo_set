@@ -53,6 +53,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         // Get the selected image
         Intent intent = getIntent();
         String imgUri = intent.getStringExtra(Utils.THE_SELECTED_IMAGE);
+        Utils.inFo(this, "imgUri = " + imgUri);
         // Downlaod image by glid
         mViewModel.setImageUri(imgUri);
         if (mViewModel.getImageUri() != null) {
@@ -66,8 +67,10 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable List<WorkStatus> workStatuses) {
                 Utils.inFo(this, "onChanged enter");
+
                 // Check if work status exists
-                if (workStatuses == null || workStatuses.isEmpty()) {
+                if (mExecuteWork == false || workStatuses == null || workStatuses.isEmpty()) {
+                    Utils.inFo(this, "No execute, No save work or save work is empty");
                     return;
                 }
 
@@ -75,16 +78,20 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 WorkStatus workStatus = workStatuses.get(0);
 
                 boolean isFinished = workStatus.getState().isFinished();
+                Utils.inFo(this, "isFinished = " + String.valueOf(isFinished));
 
                 if (isFinished) {
                     updatButtonStatus(false);
 
+                    // Normally this processing, which is not directly related to drawing views on
+                    // screen would be in the ViewModel. For simplicity we are keeping it here.
                     Data outputData = workStatus.getOutputData();
                     String imageUri = outputData.getString(Utils.THE_SELECTED_IMAGE);
 
                     if (!TextUtils.isEmpty(imageUri)) {
                         mViewModel.setImageUri(imageUri);
                         mBtnShow.setVisibility(View.VISIBLE);
+                        mExecuteWork = false;
                     }
 
                 } else {
@@ -95,7 +102,6 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void onCancel(View view) {
@@ -103,8 +109,10 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         mViewModel.cancelWork();
     }
 
+    boolean mExecuteWork;
     public void onExecute(View view) {
         Utils.inFo(this, "onExecute enter");
+        mExecuteWork = true;
         mViewModel.applyBlur(getRadioOption());
     }
 

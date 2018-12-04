@@ -64,12 +64,12 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Utils.inFo(this, "onActivityResult enter");
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
             Utils.showToast(this, "Uri: " + uri.toString());
-
+            Utils.inFo(this, "Uri: " + uri.toString());
             // Start execute picture activity
             Intent intent = new Intent(this, DemoExecuteTaskAct.class);
             intent.putExtra(Utils.THE_SELECTED_IMAGE, uri.toString());
