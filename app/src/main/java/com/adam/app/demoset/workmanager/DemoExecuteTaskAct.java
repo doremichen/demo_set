@@ -110,6 +110,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
     }
 
     boolean mExecuteWork;
+
     public void onExecute(View view) {
         Utils.inFo(this, "onExecute enter");
         mExecuteWork = true;

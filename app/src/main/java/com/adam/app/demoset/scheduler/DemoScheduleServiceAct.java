@@ -134,7 +134,6 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         } else {
 
             mController.stopCount();
-
             mMeter.stop();
 
             // enable seekbar
