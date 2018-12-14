@@ -15,6 +15,7 @@ import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.Image;
 import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -25,6 +26,12 @@ import android.view.TextureView;
 
 import com.adam.app.demoset.Utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public final class MyCameraController {
@@ -223,6 +230,9 @@ public final class MyCameraController {
         try {
             String cameraId = cameraService.getCameraIdList()[id];
 
+            // Saved file object
+            final File file = (mCallBack == null)? null: new File(mCallBack.getPath());
+
             // Set up camera output
             CameraCharacteristics CameraChar = cameraService.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = CameraChar.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
@@ -232,7 +242,41 @@ public final class MyCameraController {
             mReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
+                    // Tell UI
+                    if (mCallBack != null) {
+                        mCallBack.info("image is available...");
+                    }
 
+                    Image image = null;
+                    try {
+                        image = reader.acquireLatestImage();
+                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                        byte[] bytes = new byte[buffer.capacity()];
+                        buffer.get(bytes);
+                        if (file != null) save(bytes);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (image != null) {
+                            image.close();
+                        }
+                    }
+
+
+                }
+
+                private void save(byte[] bytes) throws IOException {
+                    OutputStream output = null;
+                    try {
+                        output = new FileOutputStream(file);
+                        output.write(bytes);
+                    } finally {
+                        if (null != output) {
+                            output.close();
+                        }
+                    }
                 }
             }, mBgHandler);
 
@@ -434,7 +478,11 @@ public final class MyCameraController {
     public interface MyCameraCallBack {
         void onCaptureDone();
 
+        void info(String str);
+
         void onDeviceStateError(int code);
+
+        String getPath();
     }
 
     /**
