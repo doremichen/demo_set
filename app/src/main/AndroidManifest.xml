@@ -34,7 +34,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -279,7 +278,15 @@
             android:name=".workmanager.DemoExecuteTaskAct"
             android:label="Execute task activity"
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
-            android:screenOrientation="nosensor"></activity>
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".material.DemoMaterialLogInAct"
+            android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
+            android:screenOrientation="nosensor"
+            android:label="@string/title_activity_demo_material_log_in"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

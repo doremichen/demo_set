@@ -111,4 +111,9 @@
     <string name="action_result">Result</string>
     <string name="label_offset_time">Offset Time:</string>
     <string name="label_button_camera_result">Result</string>
+    <string name="title_activity_demo_material_log_in">Log in</string>
+    <string name="label_edit_input_your_name">Name: </string>
+    <string name="label_edit_input_password">Password: </string>
+    <string name="label_material_button_next">Next</string>
+    <string name="label_material_button_cancel">Cancel</string>
 </resources>
