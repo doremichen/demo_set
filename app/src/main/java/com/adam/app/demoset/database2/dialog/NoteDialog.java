@@ -26,7 +26,7 @@ public abstract class NoteDialog {
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
-        mAlertBuilder = new AlertDialog.Builder(context);
+        mAlertBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         mAlertBuilder.setCancelable(false);
     }
 

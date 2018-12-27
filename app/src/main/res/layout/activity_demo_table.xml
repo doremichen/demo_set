@@ -4,81 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tablelayout.DemoTableAct">
+    tools:context=".tablelayout.DemoTableAct"
+    style="?android:attr/buttonBarStyle">
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        style="?android:attr/buttonBarStyle">
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/btnItem1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button1" />
+                android:onClick="Button1"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button2" />
+                android:onClick="Button2"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button3" />
+                android:onClick="Button3"
+                style="?android:attr/buttonBarStyle"/>
         </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/btnItem4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button4" />
+                android:onClick="Button4"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button5" />
+                android:onClick="Button5"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button6" />
+                android:onClick="Button6"
+                style="?android:attr/buttonBarStyle"/>
         </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/btnItem7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button7" />
+                android:onClick="Button7"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button8" />
+                android:onClick="Button8"
+                style="?android:attr/buttonBarStyle"/>
 
             <Button
                 android:id="@+id/btnItem9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button9" />
+                android:onClick="Button9"
+                style="?android:attr/buttonBarStyle"/>
         </TableRow>
 
     </TableLayout>
@@ -96,7 +110,8 @@
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        style="?android:attr/buttonBarStyle"/>
 
     <Button
         android:id="@+id/btnReset"
@@ -113,7 +128,8 @@
         android:textAllCaps="false"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        style="?android:attr/buttonBarStyle"/>
 
     <TextView
         android:id="@+id/info_demo_table"

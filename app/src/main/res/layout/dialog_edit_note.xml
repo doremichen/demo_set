@@ -8,10 +8,7 @@
         android:id="@+id/dialog_note_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/cabin_bold"
-        android:lineSpacingExtra="8sp"
-        android:text="Title"
-        android:textColor="@android:color/black"
+        android:text="@string/label_note_title_text"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -19,8 +16,9 @@
         android:id="@+id/edit_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/cabin_bold"
         android:hint="@string/hint_input_note"
+        android:inputType="textAutoComplete"
+        android:autofillHints="@string/hint_input_note"
         android:textSize="24sp" />
 
 </LinearLayout>

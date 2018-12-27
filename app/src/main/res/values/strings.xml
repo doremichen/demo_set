@@ -116,4 +116,5 @@
     <string name="label_edit_input_password">Password: </string>
     <string name="label_material_button_next">Next</string>
     <string name="label_material_button_cancel">Cancel</string>
+    <string name="label_note_title_text">Title</string>
 </resources>
