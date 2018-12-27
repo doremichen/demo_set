@@ -36,8 +36,6 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
         // check input valid
         if (checkInputValid()) {
             Utils.showAlertDialog(this, "Not implemented next UI yet...", null);
-        } else {
-            Utils.showToast(this, "Password Error...");
         }
 
     }
@@ -65,7 +63,12 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
             return false;
         }
 
-        if (password.equals(DEFAULT_PASSWORD)) return true;
+        if (password.equals(DEFAULT_PASSWORD)) {
+            return true;
+        } else {
+            // Show toast to info user
+            Utils.showToast(this, "Password error...");
+        }
 
         return false;
     }
