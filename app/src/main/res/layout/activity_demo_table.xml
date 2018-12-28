@@ -10,89 +10,89 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        style="?android:attr/buttonBarStyle">
+        android:layout_centerVertical="true"
+        android:background="@android:color/darker_gray">
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarStyle">
+            android:padding="2dp">
 
             <Button
                 android:id="@+id/btnItem1"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button1"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button1" />
 
             <Button
                 android:id="@+id/btnItem2"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button2"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button2" />
 
             <Button
                 android:id="@+id/btnItem3"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button3"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button3" />
         </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarStyle">
+            android:padding="2dp">
 
             <Button
                 android:id="@+id/btnItem4"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button4"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button4" />
 
             <Button
                 android:id="@+id/btnItem5"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button5"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button5" />
 
             <Button
                 android:id="@+id/btnItem6"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button6"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button6" />
         </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:attr/buttonBarStyle">
+            android:padding="2dp">
 
             <Button
                 android:id="@+id/btnItem7"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button7"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button7" />
 
             <Button
                 android:id="@+id/btnItem8"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button8"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button8" />
 
             <Button
                 android:id="@+id/btnItem9"
+                style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="Button9"
-                style="?android:attr/buttonBarStyle"/>
+                android:onClick="Button9" />
         </TableRow>
 
     </TableLayout>
