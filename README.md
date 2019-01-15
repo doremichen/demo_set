@@ -12,4 +12,4 @@ The demo item is as the following at the current moment.
 9. Remote and local Service communication
 10. Floating dialog
 11. ...
-![image](https://github.com/doremichen/demo_set/blob/master/Screenshot_20181203-112108_DemoSet%5B1%5D.jpg)
+![image](https://github.com/doremichen/demo_set/blob/master/Screenshot_DemoSet.jpg)
