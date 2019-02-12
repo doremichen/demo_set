@@ -42,7 +42,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
         this.stopService(intent);
     }
 
-    public void onStartFlaotingDialog(View v) {
+    public void onStartFloatingDialog(View v) {
 
         if (Settings.canDrawOverlays(this)) {
             triggerDialog();
@@ -50,7 +50,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
 
     }
 
-    public void onColse(View v) {
+    public void onClose(View v) {
 
         this.finish();
     }
