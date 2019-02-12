@@ -24,7 +24,7 @@ public class NativeUtils {
         public static final NativeUtils INSTANCE = new NativeUtils();
     }
 
-    public static NativeUtils getInstance() {
+    public static NativeUtils newInstance() {
         return Helper.INSTANCE;
     }
 

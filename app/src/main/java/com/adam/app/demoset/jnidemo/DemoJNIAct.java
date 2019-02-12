@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -23,21 +22,20 @@ import java.lang.ref.WeakReference;
 public class DemoJNIAct extends AppCompatActivity {
 
     private TextView mShow;
-    private ConstraintLayout mLayout;
 
-    private static final int ACTION_UPDATE_OBJECTCALLBACK = 0;
-    private static final int ACTION_UPDATE_CLAZZCALLBACK = 1;
+    private static final int ACTION_UPDATE_OBJECT_CALLBACK = 0;
+    private static final int ACTION_UPDATE_CLAZZ_CALLBACK = 1;
 
 
     /**
      * Ui handler
      */
-    private static class UIHanlder extends Handler {
+    private static class UIHandler extends Handler {
 
         private WeakReference<DemoJNIAct> mReference;
 
-        public UIHanlder(@NonNull DemoJNIAct act) {
-            mReference = new WeakReference<DemoJNIAct>(act);
+        public UIHandler(@NonNull DemoJNIAct act) {
+            mReference = new WeakReference<>(act);
         }
 
         @Override
@@ -45,14 +43,14 @@ public class DemoJNIAct extends AppCompatActivity {
             super.handleMessage(msg);
 
             switch (msg.what) {
-                case ACTION_UPDATE_OBJECTCALLBACK: {
+                case ACTION_UPDATE_OBJECT_CALLBACK: {
                     Bundle bundle = msg.getData();
                     String data = bundle.getString(KEY_DATA);
                     String method = bundle.getString(KEY_METHOD);
                     mReference.get().showDialog(data, method);
                 }
                 break;
-                case ACTION_UPDATE_CLAZZCALLBACK: {
+                case ACTION_UPDATE_CLAZZ_CALLBACK: {
                     Bundle bundle = msg.getData();
                     boolean data = bundle.getBoolean(KEY_DATA);
                     String method = bundle.getString(KEY_METHOD);
@@ -63,16 +61,15 @@ public class DemoJNIAct extends AppCompatActivity {
         }
     }
 
-    private static UIHanlder mHandler;
+    private static UIHandler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_jni);
-        mLayout = (ConstraintLayout) findViewById(R.id.demo_jni_layout);
-        mShow = (TextView) this.findViewById(R.id.tv_show_jni);
+        mShow = this.findViewById(R.id.tv_show_jni);
 
-        mHandler = new UIHanlder(this);
+        mHandler = new UIHandler(this);
 
     }
 
@@ -89,7 +86,7 @@ public class DemoJNIAct extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.demo_exit:
                 // clear data
-                NativeUtils.getInstance().clearObjData();
+                NativeUtils.newInstance().clearObjData();
                 NativeUtils.clearClazzData();
 
                 this.finish();
@@ -105,7 +102,7 @@ public class DemoJNIAct extends AppCompatActivity {
      * @param v
      */
     public void onInvokeJNI(View v) {
-        String info = NativeUtils.getInstance().sayHello();
+        String info = NativeUtils.newInstance().sayHello();
         mShow.setText("JNI info: " + info);
 
 
@@ -117,7 +114,7 @@ public class DemoJNIAct extends AppCompatActivity {
      * @param v
      */
     public void onObjectCB(View v) {
-        NativeUtils.getInstance().objectCallBack();
+        NativeUtils.newInstance().objectCallBack();
     }
 
     /**
@@ -195,7 +192,7 @@ public class DemoJNIAct extends AppCompatActivity {
      */
     public static void notifyUI(String data, String str) {
         Message message = mHandler.obtainMessage();
-        message.what = ACTION_UPDATE_OBJECTCALLBACK;
+        message.what = ACTION_UPDATE_OBJECT_CALLBACK;
         Bundle bundle = new Bundle();
         bundle.putString(KEY_DATA, data);
         bundle.putString(KEY_METHOD, str);
@@ -212,7 +209,7 @@ public class DemoJNIAct extends AppCompatActivity {
      */
     public static void notifyUI(boolean data, String str) {
         Message message = mHandler.obtainMessage();
-        message.what = ACTION_UPDATE_CLAZZCALLBACK;
+        message.what = ACTION_UPDATE_CLAZZ_CALLBACK;
         Bundle bundle = new Bundle();
         bundle.putBoolean(KEY_DATA, data);
         bundle.putString(KEY_METHOD, str);

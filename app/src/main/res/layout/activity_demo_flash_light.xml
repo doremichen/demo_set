@@ -18,6 +18,7 @@
         android:textOff="@string/label_off"
         android:textOn="@string/label_on"
         android:textSize="24sp"
+        android:theme="@android:style/Widget.Button.Toggle"
         app:layout_constraintBaseline_toBaselineOf="@+id/tv_turn_flash_info"
         app:layout_constraintEnd_toEndOf="parent" />
 
