@@ -48,7 +48,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
             Note note = mNotes.get(position);
 
             // Set item information
-            holder.mTimeStamp.setText(formateDate(note.getTimeStamp()));
+            holder.mTimeStamp.setText(formatDate(note.getTimeStamp()));
             holder.mNote.setText(note.getNote());
         }
 
@@ -66,8 +66,8 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
      * @param timeStamp
      * @return
      */
-    private String formateDate(String timeStamp) {
-        Utils.inFo(this, "formateDate enter");
+    private String formatDate(String timeStamp) {
+        Utils.inFo(this, "formatDate enter");
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = sdf.parse(timeStamp);

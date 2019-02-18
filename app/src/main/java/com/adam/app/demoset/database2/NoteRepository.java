@@ -48,7 +48,7 @@ public class NoteRepository {
 
     public void update(Note... notes) {
         Utils.inFo(this, "update ");
-        new UpdatetTask(mNoteDao).execute(notes);
+        new UpdateTask(mNoteDao).execute(notes);
     }
 
     public void delete(Note... notes) {
@@ -76,11 +76,11 @@ public class NoteRepository {
         }
     }
 
-    private static class UpdatetTask extends AsyncTask<Note, Void, Void> {
+    private static class UpdateTask extends AsyncTask<Note, Void, Void> {
 
         private NoteDao mDao;
 
-        UpdatetTask(NoteDao dao) {
+        UpdateTask(NoteDao dao) {
             this.mDao = dao;
         }
 
