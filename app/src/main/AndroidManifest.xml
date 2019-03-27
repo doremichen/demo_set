@@ -42,6 +42,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".myHandlerThread.DemoMyHandlerThreadAct"
+            android:label="@string/title_activity_demo_my_handler_thread"
+            android:screenOrientation="nosensor"></activity>
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="nosensor">
             <intent-filter>
@@ -229,9 +233,7 @@
 
         <activity
             android:name=".quicksetting.DemoQuickSetting"
-            android:label="Demo quick setting" />
-        <!-- TileService for "Update the Tile UI" section -->
-
+            android:label="Demo quick setting" /> <!-- TileService for "Update the Tile UI" section -->
         <service
             android:name=".quicksetting.qsservice.QuickSettingService"
             android:icon="@drawable/ic_demo_qs1_active"
@@ -240,10 +242,7 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
-
-        <!-- TileService for "Launch a dialog from a tile" section -->
-
+        </service> <!-- TileService for "Launch a dialog from a tile" section -->
         <service
             android:name=".quicksetting.qsservice.QuickSettingDialogService"
             android:icon="@drawable/ic_demo_qs2_dialog"
@@ -252,10 +251,7 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
-
-        <!-- TileService for "Launch an activity from a tile" section -->
-
+        </service> <!-- TileService for "Launch an activity from a tile" section -->
         <service
             android:name=".quicksetting.qsservice.QuickSettingIntentService"
             android:icon="@drawable/ic_demo_qs3"
@@ -281,12 +277,10 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".material.DemoMaterialLogInAct"
+            android:label="@string/title_activity_demo_material_log_in"
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
-            android:label="@string/title_activity_demo_material_log_in"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -21,4 +21,5 @@
     <data title="Demo Work manager" clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Quick setting" clsname="com.adam.app.demoset.quicksetting.DemoQuickSetting" pkgname="com.adam.app.demoset"/>
     <data title="Demo Material Widget" clsname="com.adam.app.demoset.material.DemoMaterialLogInAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Handler thread" clsname="com.adam.app.demoset.myHandlerThread.DemoMyHandlerThreadAct" pkgname="com.adam.app.demoset"/>
 </List>

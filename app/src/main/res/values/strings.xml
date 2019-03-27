@@ -117,4 +117,8 @@
     <string name="label_material_button_next">Next</string>
     <string name="label_material_button_cancel">Cancel</string>
     <string name="label_note_title_text">Title</string>
+    <string name="title_activity_demo_my_handler_thread">DemoMyHandlerThreadAct</string>
+    <string name="action_execute_hdthrd">Execute</string>
+    <string name="action_cancel_hdthrd">Cancel</string>
+    <string name="label_hdthrd_info">Welcome to handler thread demo</string>
 </resources>
