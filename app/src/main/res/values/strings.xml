@@ -121,4 +121,7 @@
     <string name="action_execute_hdthrd">Execute</string>
     <string name="action_cancel_hdthrd">Cancel</string>
     <string name="label_hdthrd_info">Welcome to handler thread demo</string>
+    <string name="title_activity_demo_wifi">Wifi demo item</string>
+    <string name="no_ap_data">No data</string>
+    <string name="sart_wifi_scan">Sart scan</string>
 </resources>
