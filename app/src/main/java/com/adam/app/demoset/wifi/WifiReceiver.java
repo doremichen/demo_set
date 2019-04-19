@@ -40,7 +40,7 @@ public class WifiReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Utils.inFo(this, "[onReceive] enter action = " + intent.getAction());
 
-        WifiAction action =  mActMap.get(intent.getAction());
+        WifiAction action = mActMap.get(intent.getAction());
         if (action != null) {
             action.process(intent, mUIHandler);
         }
@@ -79,7 +79,7 @@ public class WifiReceiver extends BroadcastReceiver {
         private void scanSuccess(Handler handler) {
             Utils.inFo(this, "[scanSuccess] enter");
             List<ScanResult> scanResults = WifiController.newInstance().getResult();
-            for (ScanResult result: scanResults) {
+            for (ScanResult result : scanResults) {
 
                 String scanResult = result.SSID;
                 sendInfoToUI(handler, DemoWifiAct.KEY_SSID, scanResult, DemoWifiAct.SCAN_RESULT);

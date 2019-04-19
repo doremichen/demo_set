@@ -70,9 +70,9 @@ public class BTDeviceListAdapter extends BaseAdapter {
             mHolder = new ViewHolder();
 
             // get View handler
-            mHolder.mName = (TextView) convertView.findViewById(R.id.tv_bt_name);
-            mHolder.mAddress = (TextView) convertView.findViewById(R.id.tv_bt_address);
-            mHolder.mAction = (Button) convertView.findViewById(R.id.btn_bt_pair);
+            mHolder.mName = convertView.findViewById(R.id.tv_bt_name);
+            mHolder.mAddress = convertView.findViewById(R.id.tv_bt_address);
+            mHolder.mAction = convertView.findViewById(R.id.btn_bt_pair);
 
             convertView.setTag(mHolder);
 

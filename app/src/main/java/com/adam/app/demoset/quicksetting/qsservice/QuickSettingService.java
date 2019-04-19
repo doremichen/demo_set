@@ -48,7 +48,7 @@ public class QuickSettingService extends TileService {
     private void updateTitle() {
         Utils.inFo(this, "updateTitle enter");
         Tile tile = this.getQsTile();
-        boolean updateSetting = (tile.getState() == Tile.STATE_ACTIVE) ? true : false;
+        boolean updateSetting = tile.getState() == Tile.STATE_ACTIVE;
         Icon icon;
         String label;
         int state;

@@ -188,16 +188,16 @@ public class DemoBTAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_demo_bluetooth);
 
-        mLayout = (LinearLayout) this.findViewById(R.id.btdemo_layout);
-        mBTSwitch = (Switch) this.findViewById(R.id.switch_bt);
-        mBTResult = (TextView) this.findViewById(R.id.tv_bt_status);
-        mScanList = (ListView) this.findViewById(R.id.scan_list);
+        mLayout = this.findViewById(R.id.btdemo_layout);
+        mBTSwitch = this.findViewById(R.id.switch_bt);
+        mBTResult = this.findViewById(R.id.tv_bt_status);
+        mScanList = this.findViewById(R.id.scan_list);
         mScanAdapter = new BTDeviceListAdapter(this);
-        mPairedList = (ListView) this.findViewById(R.id.paired_list);
+        mPairedList = this.findViewById(R.id.paired_list);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
         //Set empty vliew
-        TextView emptyView = (TextView) this.findViewById(android.R.id.empty);
+        TextView emptyView = this.findViewById(android.R.id.empty);
         mScanList.setEmptyView(emptyView);
         mPairedList.setEmptyView(emptyView);
 

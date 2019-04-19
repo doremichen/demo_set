@@ -161,7 +161,7 @@ public class DemoJNIAct extends AppCompatActivity {
     public void showDialog(boolean data, String str) {
         // Show alertDialog
         StringBuilder stb = new StringBuilder();
-        stb.append("Data: " + String.valueOf(data) + "\n");
+        stb.append("Data: " + data + "\n");
         stb.append("Method: " + str + "\n");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

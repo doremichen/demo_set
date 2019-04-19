@@ -65,7 +65,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
                 mCount++;
                 // Update alarm info
-                mAlarmInfo.setText("Alarm count: " + String.valueOf(mCount));
+                mAlarmInfo.setText("Alarm count: " + mCount);
 
                 int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
                 long triggerTime = SystemClock.elapsedRealtime() + mOffset;
@@ -87,7 +87,7 @@ public class DemoAlarmAct extends AppCompatActivity {
                         break;
                 }
 
-                Utils.makeStatusNotification("Alarm count: " + String.valueOf(mCount), getApplicationContext());
+                Utils.makeStatusNotification("Alarm count: " + mCount, getApplicationContext());
 
             }
         }
@@ -113,7 +113,7 @@ public class DemoAlarmAct extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Update offset time text view
                 if (progress > 0) {
-                    mTextOffsetTime.setText(String.valueOf(progress * 15) + "min");
+                    mTextOffsetTime.setText(progress * 15 + "min");
                 } else {
                     mTextOffsetTime.setText(getString(R.string.label_time_unit));
                 }

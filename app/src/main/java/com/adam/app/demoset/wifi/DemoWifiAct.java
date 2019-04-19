@@ -57,7 +57,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
             super.handleMessage(msg);
             Utils.inFo(this, "[handleMessage] msg.what = " + msg.what);
             if (msg.what == SCAN_RESULT) {
-                String name = (String)msg.getData().get(KEY_SSID);
+                String name = (String) msg.getData().get(KEY_SSID);
 
                 //Update list view
                 mSSIDs.add(name);
@@ -65,7 +65,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
                 showEmptyIfNoData();
             } else if (msg.what == CONNECT_RESULT) {
-                String result = (String)msg.getData().get(KEY_INFO);
+                String result = (String) msg.getData().get(KEY_INFO);
 
                 // Show info
                 Utils.showAlertDialog(DemoWifiAct.this, result, null);
@@ -94,7 +94,6 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -103,7 +102,6 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
             showEmptyIfNoData();
         }
     }
-
 
 
     @Override
@@ -147,7 +145,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
         Utils.inFo(this, "onRequestPermissionsResult enter");
         if (requestCode == WIFI_PERMISSION_RESULT_CODE) {
             if (grantResults.length == WIFI_PERMISSION.length) {
-                for (int result: grantResults) {
+                for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         Utils.inFo(this, "result is not PackageManager.PERMISSION_GRANTED");
                         mIsAllow = false;
@@ -204,7 +202,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
         @Override
         public void run() {
-           Utils.inFo(this, "[run] enter");
+            Utils.inFo(this, "[run] enter");
 
             Utils.showAlertDialog(DemoWifiAct.this, "Connect to " + mInfo, new DialogInterface.OnClickListener() {
                 @Override
@@ -216,7 +214,6 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
             });
         }
     }
-
 
 
     //
@@ -275,7 +272,6 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
         }
         Utils.inFo(this, "[showEmptyIfNoData] exit");
     }
-
 
 
 }

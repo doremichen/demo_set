@@ -109,10 +109,10 @@ public class DemoDatabaseAct extends AppCompatActivity {
         mRecyclerView.addOnItemTouchListener(mTouchListener);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(mFabClickListener);
     }

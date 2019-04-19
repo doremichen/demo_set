@@ -229,7 +229,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         private int mId;
         private String mName;
 
-        private SpinnerItem(String name, int id) {
+        SpinnerItem(String name, int id) {
             this.mName = name;
             this.mId = id;
         }

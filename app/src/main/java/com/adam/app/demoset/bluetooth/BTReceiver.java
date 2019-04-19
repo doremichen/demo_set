@@ -102,7 +102,7 @@ public class BTReceiver extends BroadcastReceiver {
 
 
         } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-            BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             // Bt device bound state
             int state = device.getBondState();
@@ -115,7 +115,7 @@ public class BTReceiver extends BroadcastReceiver {
         } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
             final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
             final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
-            BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             Utils.inFo(this, "bound state: " + state);
             Utils.inFo(this, "bound prevstate: " + prevState);
             if (device != null) {

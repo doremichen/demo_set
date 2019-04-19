@@ -229,7 +229,7 @@ public class DemoBinderAct extends AppCompatActivity {
             Utils.showToast(this, "The result is overflow!!!");
         }
 
-        mTVOutputC.setText("c: " + String.valueOf(value));
+        mTVOutputC.setText("c: " + value);
     }
 
     /**

@@ -231,7 +231,7 @@ public final class MyCameraController {
             String cameraId = cameraService.getCameraIdList()[id];
 
             // Saved file object
-            final File file = (mCallBack == null)? null: new File(mCallBack.getPath());
+            final File file = (mCallBack == null) ? null : new File(mCallBack.getPath());
 
             // Set up camera output
             CameraCharacteristics CameraChar = cameraService.getCameraCharacteristics(cameraId);
@@ -282,7 +282,7 @@ public final class MyCameraController {
 
             // Check auto flash
             Boolean isFlash = CameraChar.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-            mCanFalsh = (isFlash == null) ? false : true;
+            mCanFalsh = isFlash != null;
 
             // Open camera
             cameraService.openCamera(cameraId, mDeviceStateCB, this.mBgHandler);

@@ -78,7 +78,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 WorkStatus workStatus = workStatuses.get(0);
 
                 boolean isFinished = workStatus.getState().isFinished();
-                Utils.inFo(this, "isFinished = " + String.valueOf(isFinished));
+                Utils.inFo(this, "isFinished = " + isFinished);
 
                 if (isFinished) {
                     updatButtonStatus(false);

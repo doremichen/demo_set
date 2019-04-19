@@ -52,7 +52,7 @@ public class MainListAdapter extends BaseAdapter {
             convertView = this.mInflater.inflate(R.layout.item_data_layout, null);
             holder = new ViewHolder();
             // get view id
-            holder.mTitle = (TextView) convertView.findViewById(R.id.item_data);
+            holder.mTitle = convertView.findViewById(R.id.item_data);
 
             //set tag
             convertView.setTag(holder);

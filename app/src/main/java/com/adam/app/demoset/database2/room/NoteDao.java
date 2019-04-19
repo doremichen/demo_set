@@ -13,15 +13,15 @@ import java.util.List;
 public interface NoteDao {
 
     @Insert
-    public void insertNote(Note note);
+    void insertNote(Note note);
 
     @Query("SELECT * from Adam_note_table")
-    public LiveData<List<Note>> loadAllNotes();
+    LiveData<List<Note>> loadAllNotes();
 
     @Update
-    public void updateNotes(Note... notes);
+    void updateNotes(Note... notes);
 
     @Delete
-    public void deleteNotes(Note... notes);
+    void deleteNotes(Note... notes);
 
 }

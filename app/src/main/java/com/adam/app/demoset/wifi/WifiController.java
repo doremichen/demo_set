@@ -31,7 +31,7 @@ class WifiController {
     // Return object
     //
     public static WifiController newInstance() {
-        return  Helper.INSTANCE;
+        return Helper.INSTANCE;
     }
 
     //
@@ -39,7 +39,7 @@ class WifiController {
     //
     public void init(Context context, CallBack cb) {
         Utils.inFo(this, "[init]");
-        mWifimanager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+        mWifimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         mCB = cb;
     }
 
@@ -61,7 +61,7 @@ class WifiController {
         // Start scan
         mWifimanager.startScan();
 
-        Utils.inFo(this, "[startScan] exit ret[" + ret +"]");
+        Utils.inFo(this, "[startScan] exit ret[" + ret + "]");
         return ret;
     }
 
@@ -115,7 +115,7 @@ class WifiController {
     private WifiConfiguration getWifiConfig(String ssid) {
         Utils.inFo(this, "[getWifiConfig] enter");
         List<WifiConfiguration> configList = mWifimanager.getConfiguredNetworks();
-        for (WifiConfiguration config: configList) {
+        for (WifiConfiguration config : configList) {
             // Get the wifi configuration
             if (config.SSID != null && config.SSID.equals(ssid)) {
                 return config;

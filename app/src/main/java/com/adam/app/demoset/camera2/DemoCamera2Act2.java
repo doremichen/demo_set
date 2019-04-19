@@ -192,28 +192,28 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
-                if (grantResults.length == CAMERA_PERMISSION.length) {
-                    for (int result : grantResults) {
-                        Utils.inFo(this, "result = " + result);
-                        if (result != PackageManager.PERMISSION_GRANTED) {
-                            Utils.showToast(this, "Camera permission is not granted");
-                            mCanOpenCamera = false;
-                            // finish UI
-                            DemoCamera2Act2.this.finish();
-                            break;
-                        } else {
-                            Utils.showToast(this, "Camera permission is granted");
-                            mCanOpenCamera = true;
-                            // Open camera
-                            mCameraController.openCamera(this, mIndex);
-                        }
+        if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
+            if (grantResults.length == CAMERA_PERMISSION.length) {
+                for (int result : grantResults) {
+                    Utils.inFo(this, "result = " + result);
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        Utils.showToast(this, "Camera permission is not granted");
+                        mCanOpenCamera = false;
+                        // finish UI
+                        DemoCamera2Act2.this.finish();
+                        break;
+                    } else {
+                        Utils.showToast(this, "Camera permission is granted");
+                        mCanOpenCamera = true;
+                        // Open camera
+                        mCameraController.openCamera(this, mIndex);
                     }
                 }
-
-            } else {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
 
     }
 

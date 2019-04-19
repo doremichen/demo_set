@@ -74,13 +74,13 @@ public class DemoServiceAct extends AppCompatActivity {
 
         Item.setActivityContext(this);
 
-        mListView = (ListView) this.findViewById(R.id.list_action);
-        mLayout = (RelativeLayout) this.findViewById(R.id.content_view);
+        mListView = this.findViewById(R.id.list_action);
+        mLayout = this.findViewById(R.id.content_view);
 
         // Covert arrayList to array string
         String[] itemDatas = new String[mItems.size()];
         for (int i = 0; i < mItems.size(); i++) {
-            itemDatas[i] = (String) mItems.get(i);
+            itemDatas[i] = mItems.get(i);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemDatas);
@@ -158,7 +158,7 @@ public class DemoServiceAct extends AppCompatActivity {
 
     }
 
-    private static enum Item {
+    private enum Item {
 
         START_SERVICE(Utils.ITEM_START_SERVICE) {
             @Override
@@ -304,7 +304,7 @@ public class DemoServiceAct extends AppCompatActivity {
         private static WeakReference<Activity> mActRef;
         private String mType;
 
-        private Item(String type) {
+        Item(String type) {
             mType = type;
         }
 

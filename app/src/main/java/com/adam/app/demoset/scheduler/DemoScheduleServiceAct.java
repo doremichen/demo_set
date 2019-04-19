@@ -45,7 +45,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Utils.inFo(this, "onProgressChanged enter");
                 if (progress > 0) {
-                    mPeriodic.setText(String.valueOf(progress) + " s");
+                    mPeriodic.setText(progress + " s");
                     mPeriodicTime = progress;
                 } else {
                     mPeriodic.setText(getString(R.string.label_time_unit));

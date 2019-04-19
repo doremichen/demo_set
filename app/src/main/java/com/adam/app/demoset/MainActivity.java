@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.mList = (ListView) this.findViewById(R.id.list_view);
+        this.mList = this.findViewById(R.id.list_view);
 
         // prepare item list
         List<ItemContent> itemDatas = new ArrayList<>();

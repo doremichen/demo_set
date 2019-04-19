@@ -2,10 +2,7 @@ package com.adam.app.demoset.myHandlerThread;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +11,7 @@ import android.widget.TextView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
-public class DemoMyHandlerThreadAct extends AppCompatActivity implements HandlerObserver{
+public class DemoMyHandlerThreadAct extends AppCompatActivity implements HandlerObserver {
 
     // Task info
     private TextView mTaskInfo;
@@ -27,7 +24,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     private Handler mUIHandler = new Handler();
 
     // UI task
-    private class UITask implements  Runnable {
+    private class UITask implements Runnable {
 
         @Override
         public void run() {

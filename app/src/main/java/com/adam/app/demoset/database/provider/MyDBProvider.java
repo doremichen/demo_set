@@ -90,7 +90,7 @@ public class MyDBProvider extends ContentProvider {
         mWriteDatabase = helper.getWritableDatabase();
         mReadDatabase = helper.getReadableDatabase();
 
-        return (mWriteDatabase == null || mReadDatabase == null) ? false : true;
+        return mWriteDatabase != null && mReadDatabase != null;
     }
 
     /**
@@ -182,7 +182,7 @@ public class MyDBProvider extends ContentProvider {
         // Notify content resolver
         this.getContext().getContentResolver().notifyChange(uri, null);
 
-        return Uri.parse(TABLE_NAME + "/" + String.valueOf(id));
+        return Uri.parse(TABLE_NAME + "/" + id);
     }
 
     /**

@@ -8,7 +8,8 @@ public class WorkData {
     // Record count times of the work
     private int mCount;
 
-    private WorkData() {}
+    private WorkData() {
+    }
 
     private static class Helper {
         private static WorkData INSTANCE = new WorkData();
@@ -29,7 +30,7 @@ public class WorkData {
     // Get counter value
     //
     public int getCounter() {
-        return  mCount;
+        return mCount;
     }
 
 }
