@@ -46,9 +46,9 @@ public class DemoJobSvrAct extends AppCompatActivity {
     private boolean mCanSetTrigger;
 
     private static abstract class ConstraintSet {
-        public static int triggerfunc = SPINNER_SET_PERIODIC;
-        public static int triggervalue = 0;
-        public static int netWorkType = JobInfo.NETWORK_TYPE_NONE;
+        public static int sTriggerfunc = SPINNER_SET_PERIODIC;
+        public static int sTriggervalue = 0;
+        public static int sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
     }
 
     /**
@@ -94,7 +94,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 if (progress > 0) {
-                    ConstraintSet.triggervalue = progress;
+                    ConstraintSet.sTriggervalue = progress;
                     mIntervalVal.setText(progress + " s");
                     mCanSetTrigger = true;
                 } else {
@@ -134,7 +134,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
                 Utils.inFo(this, "onItemSelected");
                 String name = SpinnerItem.getName(position);
                 Utils.inFo(this, "set trigger type: " + name);
-                ConstraintSet.triggerfunc = position;
+                ConstraintSet.sTriggerfunc = position;
             }
 
             @Override
@@ -175,26 +175,26 @@ public class DemoJobSvrAct extends AppCompatActivity {
         switch (mNetworkRequireOption.getCheckedRadioButtonId()) {
             case R.id.no_network_opt:
                 Utils.inFo(this, "no_network_opt");
-                ConstraintSet.netWorkType = JobInfo.NETWORK_TYPE_NONE;
+                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
                 break;
             case R.id.any_network_opt:
                 Utils.inFo(this, "any_network_opt");
-                ConstraintSet.netWorkType = JobInfo.NETWORK_TYPE_ANY;
+                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_ANY;
                 break;
             case R.id.wifi_network_opt:
                 Utils.inFo(this, "wifi_network_opt");
-                ConstraintSet.netWorkType = JobInfo.NETWORK_TYPE_UNMETERED;
+                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_UNMETERED;
                 break;
         }
-        builder.setRequiredNetworkType(ConstraintSet.netWorkType);
+        builder.setRequiredNetworkType(ConstraintSet.sNetWorkType);
     }
 
 
     private void setTriggerInterval(JobInfo.Builder builder) {
         Utils.inFo(this, "setTriggerInterval enter mCanSetTrigger = " + mCanSetTrigger);
         if (mCanSetTrigger) {
-            long interval = ConstraintSet.triggervalue * 1000L;
-            switch (ConstraintSet.triggerfunc) {
+            long interval = ConstraintSet.sTriggervalue * 1000L;
+            switch (ConstraintSet.sTriggerfunc) {
                 case SPINNER_SET_PERIODIC:
                     Utils.inFo(this, "SPINNER_SET_PERIODIC");
                     builder.setPeriodic(interval);
@@ -273,7 +273,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
             setTriggerInterval(builder);
 
             // Check job constrain set
-            if ((ConstraintSet.netWorkType != JobInfo.NETWORK_TYPE_NONE) ||
+            if ((ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE) ||
                     mSwitchIdle.isChecked() ||
                     mSwitchCharging.isChecked() ||
                     mCanSetTrigger) {
@@ -316,7 +316,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         public void execute() {
             Utils.inFo(this, "execute enter");
             // Check job constrain set
-            if ((ConstraintSet.netWorkType != JobInfo.NETWORK_TYPE_NONE) ||
+            if ((ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE) ||
                     mSwitchIdle.isChecked() ||
                     mSwitchCharging.isChecked() ||
                     mCanSetTrigger) {
