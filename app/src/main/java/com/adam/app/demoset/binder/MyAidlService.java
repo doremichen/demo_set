@@ -98,5 +98,16 @@ public class MyAidlService extends Service {
             Binder.restoreCallingIdentity(tokenId);
 
         }
+
+        @Override
+        public void sendRequest(MyBinderData data) throws RemoteException {
+            Utils.inFo(this, "[sendRequest] enter");
+
+            String msg = data.getMessage();
+
+            // Show notification to tell user
+            Utils.makeStatusNotification("I got the data from UI: " + msg, mRef_svr.get());
+
+        }
     }
 }

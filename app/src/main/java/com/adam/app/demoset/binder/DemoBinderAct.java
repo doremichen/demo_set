@@ -208,6 +208,11 @@ public class DemoBinderAct extends AppCompatActivity {
                 Utils.inFo(this, "AIDL binder call");
                 try {
                     mProxyAidl.add(a, b);
+
+                    // send data to the remote service
+                    MyBinderData data = new MyBinderData("Binder data");
+                    mProxyAidl.sendRequest(data);
+
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
