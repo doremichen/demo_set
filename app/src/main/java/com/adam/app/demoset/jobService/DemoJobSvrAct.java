@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class DemoJobSvrAct extends AppCompatActivity {
 
     private static final String PACKAGE_NAME = "com.adam.app.demoset";
-    private static final String CLASS_NAME = "com.adam.app.demoset.jobService.SecurJobService";
+    private static final String CLASS_NAME = SecurJobService.class.getName();
 
     // Spinner item index
     private static final int SPINNER_SET_PERIODIC = 0;
@@ -95,7 +95,12 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
                 if (progress > 0) {
                     ConstraintSet.sTriggervalue = progress;
-                    mIntervalVal.setText(progress + " s");
+                    // use min when select periodic item
+                    if (ConstraintSet.sTriggerfunc == SpinnerItem.SET_PERIODIC.getId()) {
+                        mIntervalVal.setText(progress + " min");
+                    } else {
+                        mIntervalVal.setText(progress + " s");
+                    }
                     mCanSetTrigger = true;
                 } else {
                     mIntervalVal.setText(getString(R.string.label_interval_no_set));
@@ -135,6 +140,12 @@ public class DemoJobSvrAct extends AppCompatActivity {
                 String name = SpinnerItem.getName(position);
                 Utils.inFo(this, "set trigger type: " + name);
                 ConstraintSet.sTriggerfunc = position;
+
+                // show information when select the periodic item
+                if (SpinnerItemName.Periodic.equals(name)) {
+                    String msg = "You must increased the Interval Time to 15 minutes under this item otherwise the job service can not work.";
+                    Utils.showAlertDialog(DemoJobSvrAct.this, msg, null);
+                }
             }
 
             @Override
@@ -197,6 +208,10 @@ public class DemoJobSvrAct extends AppCompatActivity {
             switch (ConstraintSet.sTriggerfunc) {
                 case SPINNER_SET_PERIODIC:
                     Utils.inFo(this, "SPINNER_SET_PERIODIC");
+                    // Use min when select the periodic item
+                    if (ConstraintSet.sTriggerfunc == SpinnerItem.SET_PERIODIC.getId()) {
+                        interval *= 60;
+                    }
                     builder.setPeriodic(interval);
                     break;
                 case SPINNER_SET_OVERRIDE_DEADLINE:
@@ -241,6 +256,10 @@ public class DemoJobSvrAct extends AppCompatActivity {
                 }
             }
             return null;
+        }
+
+        public int getId() {
+            return this.mId;
         }
     }
 
