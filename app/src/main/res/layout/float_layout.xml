@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_gravity="center"
+    android:background="#00ffffff"
+    android:clickable="false"
+    android:orientation="vertical">
+
+    <com.adam.app.demoset.floatingwindow.widget.CircleView
+        android:id="@+id/float_id"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+</FrameLayout>

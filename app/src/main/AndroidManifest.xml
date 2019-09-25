@@ -2,41 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adam.app.demoset">
 
-    <permission
-        android:name="com.adam.app.permission.SECUR_SERVICE"
-        android:description="@string/label_permission_description"
-        android:label="@string/label_permission_label"
-        android:protectionLevel="dangerous" />
-    <permission
-        android:name="com.adam.app.database.READ_DB"
-        android:description="@string/permission_read_description"
-        android:label="@string/permission_read_label"
-        android:protectionLevel="normal" />
-    <permission
-        android:name="com.adam.app.database.WRITE_DB"
-        android:description="@string/permission_write_description"
-        android:label="@string/permission_read_label"
-        android:protectionLevel="normal" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera2.full" />
-
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -44,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".wifi.DemoWifiAct"
+        <activity
+            android:name=".wifi.DemoWifiAct"
             android:label="@string/title_activity_demo_wifi"
-            android:screenOrientation="nosensor">
-        </activity>
+            android:screenOrientation="nosensor" />
+
         <activity
             android:name=".myHandlerThread.DemoMyHandlerThreadAct"
             android:label="@string/title_activity_demo_my_handler_thread"
@@ -70,41 +36,14 @@
             android:name=".jobService.DemoJobSvrAct"
             android:label="DemoJobSvrAct"
             android:screenOrientation="nosensor" />
-
-        <service
-            android:name=".LocalService"
-            android:enabled="true"
-            android:exported="true" />
-        <service
-            android:name=".RemoteService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":remote" />
-        <service
-            android:name=".SecurService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.adam.app.permission.SECUR_SERVICE">
-            <intent-filter>
-                <action android:name="com.adam.app.demo.start.secur_servcie" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".jobService.SecurJobService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <activity
             android:name=".floatingDlg.DemoFloatingDialogAct"
             android:label="Demo floation dialog activity"
             android:screenOrientation="nosensor" />
-
-        <service
-            android:name=".floatingDlg.FloatingDialogSvr"
-            android:enabled="true"
-            android:exported="true" />
-
+        <activity
+            android:name=".floatingwindow.DemoFloatingWindowAct"
+            android:label="Demo floation dialog activity"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".bluetooth.DemoBTAct"
             android:label="Demo bt activity"
@@ -128,23 +67,6 @@
             android:name=".flashlight.DemoFlashLightAct"
             android:label="Demo flash light"
             android:screenOrientation="nosensor" />
-
-        <service
-            android:name=".flashlight.FlashLightService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <receiver
-            android:name=".lockscreen.MyAdminReceiver"
-            android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data
-                android:name="android.app.device_admin"
-                android:resource="@xml/policies" />
-
-            <intent-filter>
-                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
             android:label="Demo Device admin"
@@ -157,12 +79,6 @@
             android:name=".camera2.DemoCamera2Act2"
             android:label="Demo Camera 2"
             android:screenOrientation="nosensor" />
-
-        <receiver
-            android:name=".alarm.MyAlarmReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".alarm.DemoAlarmAct"
             android:label="Demo alarm"
@@ -171,33 +87,10 @@
             android:name=".video.DemoVideoRecordAct"
             android:label="Demo record video"
             android:screenOrientation="nosensor" />
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.adam.app.demoset.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/share_file" />
-        </provider>
-
         <activity
             android:name=".binder.DemoBinderAct"
             android:label="Demo binder call"
             android:screenOrientation="nosensor" />
-
-        <service
-            android:name=".binder.MyAidlService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":Remote_aidl" />
-        <service
-            android:name=".binder.MyMessengerService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":Remote_messenger" />
-
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
             android:label="Demo scheduler counter"
@@ -211,15 +104,6 @@
             android:label="@string/title_activity_demo_database"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <provider
-            android:name=".database.provider.MyDBProvider"
-            android:authorities="com.adam.app.demoset.provider.MyNote"
-            android:enabled="true"
-            android:exported="true"
-            android:readPermission="com.adam.app.database.READ_DB"
-            android:writePermission="com.adam.app.database.WRITE_DB" />
-
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:label="Demo system UI"
@@ -233,42 +117,9 @@
             android:label="Demo Room"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
         <activity
             android:name=".quicksetting.DemoQuickSetting"
-            android:label="Demo quick setting" /> <!-- TileService for "Update the Tile UI" section -->
-        <service
-            android:name=".quicksetting.qsservice.QuickSettingService"
-            android:icon="@drawable/ic_demo_qs1_active"
-            android:label="Demo quick setting1"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service> <!-- TileService for "Launch a dialog from a tile" section -->
-        <service
-            android:name=".quicksetting.qsservice.QuickSettingDialogService"
-            android:icon="@drawable/ic_demo_qs2_dialog"
-            android:label="Demo quick setting2"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service> <!-- TileService for "Launch an activity from a tile" section -->
-        <service
-            android:name=".quicksetting.qsservice.QuickSettingIntentService"
-            android:icon="@drawable/ic_demo_qs3"
-            android:label="Demo quick setting3"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
-
+            android:label="Demo quick setting" />
         <activity
             android:name=".quicksetting.QuickSettingResultAct"
             android:label="Result activity"
@@ -288,6 +139,150 @@
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.adam.app.demoset.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_file" />
+        </provider>
+
+        <provider
+            android:name=".database.provider.MyDBProvider"
+            android:authorities="com.adam.app.demoset.provider.MyNote"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.adam.app.database.READ_DB"
+            android:writePermission="com.adam.app.database.WRITE_DB" />
+        <receiver
+            android:name=".lockscreen.MyAdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/policies" />
+        </receiver>
+
+        <receiver
+            android:name=".alarm.MyAlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".floatingwindow.FloatingWindowSvr"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <service
+            android:name=".LocalService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".RemoteService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" />
+        <service
+            android:name=".SecurService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.adam.app.permission.SECUR_SERVICE">
+            <intent-filter>
+                <action android:name="com.adam.app.demo.start.secur_servcie" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".jobService.SecurJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- TileService for "Update the Tile UI" section -->
+        <service
+            android:name=".floatingDlg.FloatingDialogSvr"
+            android:enabled="true"
+            android:exported="true" /> <!-- TileService for "Launch a dialog from a tile" section -->
+        <service
+            android:name=".flashlight.FlashLightService"
+            android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- TileService for "Launch an activity from a tile" section -->
+        <service
+            android:name=".binder.MyAidlService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Remote_aidl" />
+        <service
+            android:name=".binder.MyMessengerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Remote_messenger" />
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingService"
+            android:icon="@drawable/ic_demo_qs1_active"
+            android:label="Demo quick setting1"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingDialogService"
+            android:icon="@drawable/ic_demo_qs2_dialog"
+            android:label="Demo quick setting2"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".quicksetting.qsservice.QuickSettingIntentService"
+            android:icon="@drawable/ic_demo_qs3"
+            android:label="Demo quick setting3"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
     </application>
+    <permission
+        android:name="com.adam.app.permission.SECUR_SERVICE"
+        android:description="@string/label_permission_description"
+        android:label="@string/label_permission_label"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="com.adam.app.database.READ_DB"
+        android:description="@string/permission_read_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal" />
+
+    <permission
+        android:name="com.adam.app.database.WRITE_DB"
+        android:description="@string/permission_write_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.camera2.full" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

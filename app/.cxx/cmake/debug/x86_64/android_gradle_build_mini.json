@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "D:\\AndroidStudioProjects\\DemoSet\\app\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "D:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\AndroidStudioProjects\\DemoSet\\app\\.cxx\\cmake\\debug\\x86_64 --target clean"
+  ],
+  "libraries": {
+    "demo-jni-Debug-x86_64": {
+      "artifactName": "demo-jni",
+      "buildCommand": "D:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\AndroidStudioProjects\\DemoSet\\app\\.cxx\\cmake\\debug\\x86_64 --target demo-jni",
+      "abi": "x86_64",
+      "output": "D:\\AndroidStudioProjects\\DemoSet\\app\\build\\intermediates\\cmake\\debug\\obj\\x86_64\\libdemo-jni.so"
+    }
+  }
+}

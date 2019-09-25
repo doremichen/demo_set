@@ -1,0 +1,3 @@
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/release/arm64-v8a/CMakeFiles/demo-jni.dir
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/release/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/release/arm64-v8a/CMakeFiles/rebuild_cache.dir

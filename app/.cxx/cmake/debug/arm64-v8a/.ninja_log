@@ -1,0 +1,5 @@
+# ninja log v5
+0	541	0	CMakeFiles/demo-jni.dir/src/main/cpp/demo-native.cpp.o	c0c04e6fea7f39af
+543	729	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libdemo-jni.so	7a3a37b3fe2c86da
+6	1358	0	CMakeFiles/demo-jni.dir/src/main/cpp/demo-native.cpp.o	c0c04e6fea7f39af
+1358	1554	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libdemo-jni.so	7a3a37b3fe2c86da

@@ -1,0 +1,3 @@
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/demo-jni.dir
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/AndroidStudioProjects/DemoSet/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir

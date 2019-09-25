@@ -12,7 +12,7 @@
     <string name="label_permission_group_description">test permission group</string>
     <string name="label_popup_info">Floating pop up window</string>
     <string name="label_ok_btn">Ok</string>
-    <string name="label_click">Click</string>
+    <string name="label_open_float_window">Open window</string>
     <string name="title_activity_demo_popup_window">DemoPopupWindowAct</string>
     <string name="label_hello_floating_dialog">Hello floating dialog</string>
     <string name="label_hello_bt">Hello BT</string>
@@ -124,4 +124,6 @@
     <string name="title_activity_demo_wifi">Wifi demo item</string>
     <string name="no_ap_data">No data</string>
     <string name="sart_wifi_scan">Sart scan</string>
+    <string name="label_hello_floating_window">Hello floating window</string>
+    <string name="label_close_float_window">Close window</string>
 </resources>
