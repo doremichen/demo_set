@@ -61,12 +61,12 @@ public class BTReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         String action = intent.getAction();
-        Utils.inFo(this, "action = " + action);
+        Utils.info(this, "action = " + action);
 
         if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
 //            Utils.showSnackBar(context, "ACTION_STATE_CHANGED");
             final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
-            Utils.inFo(this, "state = " + state);
+            Utils.info(this, "state = " + state);
 
             // After on it enter to scan state
             if (state == BluetoothAdapter.STATE_ON) {
@@ -116,10 +116,10 @@ public class BTReceiver extends BroadcastReceiver {
             final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
             final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            Utils.inFo(this, "bound state: " + state);
-            Utils.inFo(this, "bound prevstate: " + prevState);
+            Utils.info(this, "bound state: " + state);
+            Utils.info(this, "bound prevstate: " + prevState);
             if (device != null) {
-                Utils.inFo(this, "address: " + device.getAddress());
+                Utils.info(this, "address: " + device.getAddress());
 
                 // update bt information
                 Intent it = new Intent();

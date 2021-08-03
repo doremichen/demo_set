@@ -34,21 +34,21 @@ public class SaveToFileWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Utils.inFo(this, "doWork enter");
+        Utils.info(this, "doWork enter");
         Context appContext = getApplicationContext();
 
         // get resolver
         ContentResolver resolver = appContext.getContentResolver();
 
         String imageUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
-        Utils.inFo(this, "imageUri = " + imageUri);
+        Utils.info(this, "imageUri = " + imageUri);
         try {
             Bitmap map = BitmapFactory.decodeStream(resolver.openInputStream(Uri.parse(imageUri)));
             String saveUri = MediaStore.Images.Media.insertImage(
                     resolver, map, TITLE, DATE_FORMATE.format(new Date())
             );
 
-            Utils.inFo(this, "saveUri = " + saveUri);
+            Utils.info(this, "saveUri = " + saveUri);
             // Check exists
             if (TextUtils.isEmpty(saveUri)) {
                 return Result.FAILURE;

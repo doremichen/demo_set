@@ -58,7 +58,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Utils.inFo(this, "UI onReceive");
+            Utils.info(this, "UI onReceive");
             String action = intent.getAction();
 
             if (ACTION_UPDATE_INFO.equals(action)) {
@@ -72,13 +72,13 @@ public class DemoAlarmAct extends AppCompatActivity {
 
                 switch (mRadioGroup.getCheckedRadioButtonId()) {
                     case R.id.allWhileIdle:
-                        Utils.inFo(this, "allWhileIdle");
+                        Utils.info(this, "allWhileIdle");
                         Intent intent1 = new Intent(DemoAlarmAct.this, MyAlarmReceiver.class);
                         PendingIntent alarmIntent1 = PendingIntent.getBroadcast(DemoAlarmAct.this, 0, intent1, 0);
                         mAlarmManager.setAndAllowWhileIdle(type, triggerTime, alarmIntent1);
                         break;
                     case R.id.exectAllowWhileIde:
-                        Utils.inFo(this, "exectAllowWhileIde");
+                        Utils.info(this, "exectAllowWhileIde");
                         Intent intent2 = new Intent(DemoAlarmAct.this, MyAlarmReceiver.class);
                         PendingIntent alarmIntent2 = PendingIntent.getBroadcast(DemoAlarmAct.this, 0, intent2, 0);
                         mAlarmManager.setExactAndAllowWhileIdle(type, triggerTime, alarmIntent2);
@@ -171,7 +171,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     }
 
     public void onAlarm(View v) {
-        Utils.inFo(this, "onAlarm enter");
+        Utils.info(this, "onAlarm enter");
         if (mOffset == 0L) {
             Utils.showToast(this, "Please config offset time first");
             return;
@@ -194,28 +194,28 @@ public class DemoAlarmAct extends AppCompatActivity {
     }
 
     private void startAlarm() {
-        Utils.inFo(this, "startAlarm enter");
+        Utils.info(this, "startAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
         long triggerTime = SystemClock.elapsedRealtime() + mOffset;
         switch (mRadioGroup.getCheckedRadioButtonId()) {
             case R.id.Repeat:
-                Utils.inFo(this, "Repeat");
+                Utils.info(this, "Repeat");
                 this.mAlarmManager.setRepeating(type,
                         triggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
                 break;
             case R.id.inexactRepeat:
-                Utils.inFo(this, "inexactRepeat");
+                Utils.info(this, "inexactRepeat");
                 this.mAlarmManager.setInexactRepeating(type,
                         triggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmIntent);
                 break;
             case R.id.allWhileIdle:
-                Utils.inFo(this, "allWhileIdle");
+                Utils.info(this, "allWhileIdle");
                 this.mAlarmManager.setAndAllowWhileIdle(type, triggerTime, alarmIntent);
                 break;
             case R.id.exectAllowWhileIde:
-                Utils.inFo(this, "exectAllowWhileIde");
+                Utils.info(this, "exectAllowWhileIde");
                 this.mAlarmManager.setExactAndAllowWhileIdle(type, triggerTime, alarmIntent);
                 break;
         }
@@ -224,7 +224,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     }
 
     private void stopAlarm() {
-        Utils.inFo(this, "stopAlarm enter");
+        Utils.info(this, "stopAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         // Cancel alarm

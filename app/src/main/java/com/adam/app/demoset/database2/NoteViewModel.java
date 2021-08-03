@@ -24,7 +24,7 @@ public class NoteViewModel extends AndroidViewModel {
      */
     public NoteViewModel(@NonNull Application application) {
         super(application);
-        Utils.inFo(this, "Constructor ");
+        Utils.info(this, "Constructor ");
         mRepository = new NoteRepository(application);
         mAllNotes = mRepository.loadAllNotes();
     }
@@ -33,17 +33,17 @@ public class NoteViewModel extends AndroidViewModel {
      * Access database interface
      */
     public void insert(Note note) {
-        Utils.inFo(this, "insert ");
+        Utils.info(this, "insert ");
         mRepository.insert(note);
     }
 
     public void update(Note... notes) {
-        Utils.inFo(this, "update ");
+        Utils.info(this, "update ");
         mRepository.update(notes);
     }
 
     public void delete(Note... notes) {
-        Utils.inFo(this, "delete ");
+        Utils.info(this, "delete ");
         mRepository.delete(notes);
     }
 }

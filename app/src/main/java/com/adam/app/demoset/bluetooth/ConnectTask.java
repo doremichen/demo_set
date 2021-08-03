@@ -24,7 +24,7 @@ public class ConnectTask implements Runnable {
 
     public ConnectTask(Context context, BluetoothDevice device) {
 
-        Utils.inFo(this, "Connect task construct");
+        Utils.info(this, "Connect task construct");
         this.mContext = context;
 
         this.mBTAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -35,11 +35,11 @@ public class ConnectTask implements Runnable {
 
         //Test
         for (ParcelUuid uuid : uuids) {
-            Utils.inFo(this, "uuid: " + uuid.toString());
+            Utils.info(this, "uuid: " + uuid.toString());
             try {
                 mSocket = mDevice.createRfcommSocketToServiceRecord(UUID.fromString(String.valueOf(uuid)));
             } catch (IOException e) {
-                Utils.inFo(this, "Socket's create() method failed");
+                Utils.info(this, "Socket's create() method failed");
             }
         }
 
@@ -65,11 +65,11 @@ public class ConnectTask implements Runnable {
             try {
                 mSocket.close();
             } catch (IOException e1) {
-                Utils.inFo(this, "Could not close the client socket");
+                Utils.info(this, "Could not close the client socket");
             }
         }
-        Utils.inFo(this, "Connect succeeded");
-        Utils.inFo(this, "Connect status: " + mSocket.isConnected());
+        Utils.info(this, "Connect succeeded");
+        Utils.info(this, "Connect status: " + mSocket.isConnected());
 
         // test
         if (!mSocket.isConnected()) {
@@ -81,19 +81,19 @@ public class ConnectTask implements Runnable {
 
     // Closes the client socket and causes the thread to finish.
     public void cancel() {
-        Utils.inFo(this, "cancel enter....");
+        Utils.info(this, "cancel enter....");
         try {
             mSocket.close();
         } catch (IOException e) {
-            Utils.inFo(this, "Could not close the client socket");
+            Utils.info(this, "Could not close the client socket");
         }
 
         sendConnectInfo();
-        Utils.inFo(this, "Connect status: " + mSocket.isConnected());
+        Utils.info(this, "Connect status: " + mSocket.isConnected());
     }
 
     private void sendConnectInfo() {
-        Utils.inFo(this, "send connect infomation");
+        Utils.info(this, "send connect infomation");
         Intent it = new Intent();
         it.setAction(ACTION_UPDATE_CONNECT_INFO);
         it.putExtra(KEY_CONNECT_INFO, mSocket.isConnected());

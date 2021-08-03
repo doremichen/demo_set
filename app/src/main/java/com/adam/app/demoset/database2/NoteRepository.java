@@ -23,7 +23,7 @@ public class NoteRepository {
      * @param app
      */
     public NoteRepository(Application app) {
-        Utils.inFo(this, "Constructer enter");
+        Utils.info(this, "Constructer enter");
         NoteRoomDatabase database = NoteRoomDatabase.getDatabase(app);
         mNoteDao = database.getNoteDao();
         mAllNotes = mNoteDao.loadAllNotes();
@@ -42,17 +42,17 @@ public class NoteRepository {
      * Access database interface
      */
     public void insert(@NonNull Note note) {
-        Utils.inFo(this, "insert ");
+        Utils.info(this, "insert ");
         new InsertTask(mNoteDao).execute(note);
     }
 
     public void update(Note... notes) {
-        Utils.inFo(this, "update ");
+        Utils.info(this, "update ");
         new UpdateTask(mNoteDao).execute(notes);
     }
 
     public void delete(Note... notes) {
-        Utils.inFo(this, "delete ");
+        Utils.info(this, "delete ");
         new DeleteTask(mNoteDao).execute(notes);
     }
 
@@ -70,7 +70,7 @@ public class NoteRepository {
 
         @Override
         protected Void doInBackground(Note... notes) {
-            Utils.inFo(this, "doInBackground enter");
+            Utils.info(this, "doInBackground enter");
             this.mDao.insertNote(notes[0]);
             return null;
         }
@@ -87,7 +87,7 @@ public class NoteRepository {
 
         @Override
         protected Void doInBackground(Note... notes) {
-            Utils.inFo(this, "doInBackground enter");
+            Utils.info(this, "doInBackground enter");
             this.mDao.updateNotes(notes);
             return null;
         }
@@ -103,7 +103,7 @@ public class NoteRepository {
 
         @Override
         protected Void doInBackground(Note... notes) {
-            Utils.inFo(this, "doInBackground enter");
+            Utils.info(this, "doInBackground enter");
             mDao.deleteNotes(notes[0]);
             return null;
         }

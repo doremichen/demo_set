@@ -27,7 +27,7 @@ public class FlashLightService extends JobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        Utils.inFo(this, "onHandleWork enter");
+        Utils.info(this, "onHandleWork enter");
 
         String cmd = intent.getStringExtra(KEY_COMMEND);
 
@@ -46,7 +46,7 @@ public class FlashLightService extends JobIntentService {
 
 
     private void enableFlash(boolean on) {
-        Utils.inFo(this, "startFlash enter");
+        Utils.info(this, "startFlash enter");
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
         try {

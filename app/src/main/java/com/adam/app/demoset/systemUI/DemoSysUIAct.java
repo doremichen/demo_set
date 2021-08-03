@@ -32,7 +32,7 @@ public class DemoSysUIAct extends AppCompatActivity {
     private boolean mCanDim;
 
     public void onDimSysUI(View v) {
-        Utils.inFo(this, "onDimSysUI enter");
+        Utils.info(this, "onDimSysUI enter");
         View decoreView = v.getRootView();
         if (!mCanDim) {
             int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE
@@ -57,7 +57,7 @@ public class DemoSysUIAct extends AppCompatActivity {
     private boolean mCanHide;
 
     public void onHideSysUI(View v) {
-        Utils.inFo(this, "onHideSysUI enter");
+        Utils.info(this, "onHideSysUI enter");
         View decoreView = v.getRootView();
         if (!mCanHide) {
             int uiOptions = View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -87,7 +87,7 @@ public class DemoSysUIAct extends AppCompatActivity {
     }
 
     public void onExit(View v) {
-        Utils.inFo(this, "onExit enter");
+        Utils.info(this, "onExit enter");
         this.finish();
     }
 }

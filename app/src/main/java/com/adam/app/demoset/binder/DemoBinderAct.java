@@ -37,13 +37,13 @@ public class DemoBinderAct extends AppCompatActivity {
     private ServiceConnection mMessengerConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Utils.inFo(this, "onServiceConnected");
+            Utils.info(this, "onServiceConnected");
             mMessenger = new Messenger(service);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Utils.inFo(this, "onServiceDisconnected");
+            Utils.info(this, "onServiceDisconnected");
             mMessenger = null;
         }
     };
@@ -55,7 +55,7 @@ public class DemoBinderAct extends AppCompatActivity {
     private ServiceConnection mAidlConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Utils.inFo(this, "onServiceConnected");
+            Utils.info(this, "onServiceConnected");
             mProxyAidl = IMyAidlInterface.Stub.asInterface(service);
             // register call back
             try {
@@ -67,7 +67,7 @@ public class DemoBinderAct extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Utils.inFo(this, "onServiceDisconnected");
+            Utils.info(this, "onServiceDisconnected");
             // register call back
             try {
                 mProxyAidl.unregisterServiceCB(mAidlCB);
@@ -82,7 +82,7 @@ public class DemoBinderAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_binder);
 
         mETInputA = this.findViewById(R.id.et_input_a);
@@ -99,7 +99,7 @@ public class DemoBinderAct extends AppCompatActivity {
     }
 
     private void binderMyService(Context context, Class<?> target, ServiceConnection connection) {
-        Utils.inFo(this, "binderMyService enter");
+        Utils.info(this, "binderMyService enter");
         Intent intent = new Intent(context, target);
         this.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
@@ -107,7 +107,7 @@ public class DemoBinderAct extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
 
         // Unregister callback
         try {
@@ -155,14 +155,14 @@ public class DemoBinderAct extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Utils.inFo(this, "onTouchEvent enter");
+        Utils.info(this, "onTouchEvent enter");
         View view = this.getCurrentFocus();
         Utils.hideSoftKeyBoardFrom(this, view);
         return true;
     }
 
     public void onExecuteBinderCall(View v) {
-        Utils.inFo(this, "onExecuteBinderCall enter");
+        Utils.info(this, "onExecuteBinderCall enter");
 
         // Check if the text is valid
         if (mETInputA.getText() == null || mETInputB.getText() == null) {
@@ -183,12 +183,12 @@ public class DemoBinderAct extends AppCompatActivity {
             // Get value from edit text
             int a = Integer.parseInt(mETInputA.getText().toString());
             int b = Integer.parseInt(mETInputB.getText().toString());
-            Utils.inFo(this, "a = " + a);
-            Utils.inFo(this, "b = " + b);
+            Utils.info(this, "a = " + a);
+            Utils.info(this, "b = " + b);
 
             if (isMessenger) {
                 Utils.showToast(this, "Messenger binder call");
-                Utils.inFo(this, "Messenger binder call");
+                Utils.info(this, "Messenger binder call");
                 try {
                     // Get message
                     Message msg = Message.obtain();
@@ -205,7 +205,7 @@ public class DemoBinderAct extends AppCompatActivity {
 
             } else {
                 Utils.showToast(this, "AIDL binder call");
-                Utils.inFo(this, "AIDL binder call");
+                Utils.info(this, "AIDL binder call");
                 try {
                     mProxyAidl.add(a, b);
 
@@ -229,7 +229,7 @@ public class DemoBinderAct extends AppCompatActivity {
     }
 
     public void showResult(int value) {
-        Utils.inFo(this, "showResult");
+        Utils.info(this, "showResult");
         if (value == -1) {
             Utils.showToast(this, "The result is overflow!!!");
         }
@@ -247,13 +247,13 @@ public class DemoBinderAct extends AppCompatActivity {
         private WeakReference<DemoBinderAct> mRef_act;
 
         public AidlServiceCB(DemoBinderAct activity) {
-            Utils.inFo(this, "constructor enter");
+            Utils.info(this, "constructor enter");
             mRef_act = new WeakReference<DemoBinderAct>(activity);
         }
 
         @Override
         public void result(int c) throws RemoteException {
-            Utils.inFo(this, "result");
+            Utils.info(this, "result");
             mRef_act.get().showResult(c);
         }
     }
@@ -274,7 +274,7 @@ public class DemoBinderAct extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Utils.inFo(this, "UI handler");
+            Utils.info(this, "UI handler");
             int flag = msg.what;
 
             if (flag == MyMessengerService.ACTION_REPLY_RESULT) {

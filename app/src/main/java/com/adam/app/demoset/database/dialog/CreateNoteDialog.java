@@ -12,13 +12,13 @@ public class CreateNoteDialog extends NoteDialog {
 
     @Override
     public String onDlgTitle() {
-        Utils.inFo(this, "onDlgTitle enter");
+        Utils.info(this, "onDlgTitle enter");
         return TITLE_CREATE_NOTE;
     }
 
     @Override
     public String onDlgRightButton() {
-        Utils.inFo(this, "onDlgRightButton enter");
+        Utils.info(this, "onDlgRightButton enter");
         return RBUTTON_CREATE_NOTE;
     }
 }

@@ -32,20 +32,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 
 public class DemoServiceAct extends AppCompatActivity {
-
-    private static ArrayList<String> mItems = new ArrayList<String>();
-
-    static {
-        mItems.add(Utils.ITEM_START_SERVICE);
-        mItems.add(Utils.ITEM_STOP_SERVICE);
-        mItems.add(Utils.ITEM_BIND_SERVICE);
-        mItems.add(Utils.ITEM_UNBIND_SERVICE);
-        mItems.add(Utils.ITEM_SERVICE_REQUEST);
-    }
 
     private ListView mListView;
 
@@ -78,9 +67,9 @@ public class DemoServiceAct extends AppCompatActivity {
         mLayout = this.findViewById(R.id.content_view);
 
         // Covert arrayList to array string
-        String[] itemDatas = new String[mItems.size()];
-        for (int i = 0; i < mItems.size(); i++) {
-            itemDatas[i] = mItems.get(i);
+        String[] itemDatas = new String[Item.values().length];
+        for (int i = 0; i < itemDatas.length; i++) {
+            itemDatas[i] = Item.values()[i].getType();
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemDatas);
@@ -159,38 +148,28 @@ public class DemoServiceAct extends AppCompatActivity {
     }
 
     private enum Item {
-
         START_SERVICE(Utils.ITEM_START_SERVICE) {
             @Override
             public void execute() {
-
                 Intent it = new Intent();
-
                 if (Utils.sIsRemoteService) {
-
                     it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
                 } else {
                     it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
-
                 }
                 mActRef.get().startService(it);
-
 
             }
         }, STOP_SERVICE(Utils.ITEM_STOP_SERVICE) {
             @Override
             public void execute() {
                 Intent it = new Intent();
-
                 if (Utils.sIsRemoteService) {
-
                     it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
                 } else {
                     it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
-
                 }
                 mActRef.get().stopService(it);
-
             }
         }, BIND_SERVICE(Utils.ITEM_BIND_SERVICE) {
 
@@ -204,7 +183,7 @@ public class DemoServiceAct extends AppCompatActivity {
 
                     mLocalService = ((LocalService.LocalBinder) service).getService();
                     Utils.sLocalSvr = mLocalService;
-                    Utils.inFo(this, "service connect...");
+                    Utils.info(this, "service connect...");
 
                 }
 
@@ -212,8 +191,8 @@ public class DemoServiceAct extends AppCompatActivity {
                 public void onServiceDisconnected(ComponentName name) {
 
                     mLocalService = null;
-                    Utils.sLocalSvr = mLocalService;
-                    Utils.inFo(this, "service disconnect...");
+                    Utils.sLocalSvr = null;
+                    Utils.info(this, "service disconnect...");
 
                 }
             };
@@ -221,47 +200,35 @@ public class DemoServiceAct extends AppCompatActivity {
             private ServiceConnection mRemoteConnection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
-
                     mService = new Messenger(service);
                     Utils.sMessenger = mService;
-
-                    Utils.inFo(this, "service connect...");
+                    Utils.info(this, "service connect...");
                 }
 
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
-
                     mService = null;
-                    Utils.sMessenger = mService;
-                    Utils.inFo(this, "service disconnect...");
-
+                    Utils.sMessenger = null;
+                    Utils.info(this, "service disconnect...");
                 }
             };
 
             @Override
             public void execute() {
-
                 Intent it = new Intent();
-
                 if (Utils.sIsRemoteService) {
-
                     it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
                     Utils.sConnection = mRemoteConnection;
                 } else {
                     it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
                     Utils.sConnection = mLocalConnection;
-
                 }
-
                 mActRef.get().bindService(it, Utils.sConnection, Context.BIND_AUTO_CREATE);
-
                 Utils.sIsBound = true;
-
             }
         }, UNBIND_SERVICE(Utils.ITEM_UNBIND_SERVICE) {
             @Override
             public void execute() {
-
                 if (Utils.sIsBound) {
                     mActRef.get().unbindService(Utils.sConnection);
                     Utils.sIsBound = false;
@@ -270,14 +237,11 @@ public class DemoServiceAct extends AppCompatActivity {
                     } else {
                         Utils.sLocalSvr = null;
                     }
-
                 }
-
             }
         }, SERVICE_REQ(Utils.ITEM_SERVICE_REQUEST) {
             @Override
             public void execute() {
-
                 if (Utils.sIsRemoteService) {
                     if (Utils.sMessenger != null) {
                         Message message = Message.obtain(null, RemoteService.ACTION_ONE);
@@ -287,14 +251,10 @@ public class DemoServiceAct extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-
-
                 } else {
                     if (Utils.sLocalSvr != null) {
                         Utils.sLocalSvr.action1();
                     }
-
-
                 }
 
             }

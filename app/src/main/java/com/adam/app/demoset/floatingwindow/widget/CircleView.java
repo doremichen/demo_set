@@ -69,7 +69,7 @@ public class CircleView extends View {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Utils.inFo(this, "onTouchEvent");
+        Utils.info(this, "onTouchEvent");
         int action = event.getAction();
 //        StringBuilder stb = new StringBuilder("Refresh UI: \n");
 

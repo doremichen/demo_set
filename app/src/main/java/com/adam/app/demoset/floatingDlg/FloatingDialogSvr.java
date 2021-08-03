@@ -18,7 +18,7 @@ public class FloatingDialogSvr extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Utils.inFo(this, "onCreate");
+        Utils.info(this, "onCreate");
         // set system alert window type
         mDialog = this.floatingDialog(this.getApplicationContext());
         mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
@@ -27,7 +27,7 @@ public class FloatingDialogSvr extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Utils.inFo(this, "onStartCommand 11");
+        Utils.info(this, "onStartCommand 11");
         if (ACTION_SHOW_FLOATING_DIALOG.equals(intent.getAction())) {
             mDialog.show();
         }
@@ -38,7 +38,7 @@ public class FloatingDialogSvr extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy");
+        Utils.info(this, "onDestroy");
     }
 
     @Override

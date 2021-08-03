@@ -136,9 +136,9 @@ public class DemoJobSvrAct extends AppCompatActivity {
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Utils.inFo(this, "onItemSelected");
+                Utils.info(this, "onItemSelected");
                 String name = SpinnerItem.getName(position);
-                Utils.inFo(this, "set trigger type: " + name);
+                Utils.info(this, "set trigger type: " + name);
                 ConstraintSet.sTriggerfunc = position;
 
                 // show information when select the periodic item
@@ -182,18 +182,18 @@ public class DemoJobSvrAct extends AppCompatActivity {
      * Network require option
      */
     private void setNetWorkRequire(JobInfo.Builder builder) {
-        Utils.inFo(this, "setNetWorkRequire enter");
+        Utils.info(this, "setNetWorkRequire enter");
         switch (mNetworkRequireOption.getCheckedRadioButtonId()) {
             case R.id.no_network_opt:
-                Utils.inFo(this, "no_network_opt");
+                Utils.info(this, "no_network_opt");
                 ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
                 break;
             case R.id.any_network_opt:
-                Utils.inFo(this, "any_network_opt");
+                Utils.info(this, "any_network_opt");
                 ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_ANY;
                 break;
             case R.id.wifi_network_opt:
-                Utils.inFo(this, "wifi_network_opt");
+                Utils.info(this, "wifi_network_opt");
                 ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_UNMETERED;
                 break;
         }
@@ -202,12 +202,12 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
 
     private void setTriggerInterval(JobInfo.Builder builder) {
-        Utils.inFo(this, "setTriggerInterval enter mCanSetTrigger = " + mCanSetTrigger);
+        Utils.info(this, "setTriggerInterval enter mCanSetTrigger = " + mCanSetTrigger);
         if (mCanSetTrigger) {
             long interval = ConstraintSet.sTriggervalue * 1000L;
             switch (ConstraintSet.sTriggerfunc) {
                 case SPINNER_SET_PERIODIC:
-                    Utils.inFo(this, "SPINNER_SET_PERIODIC");
+                    Utils.info(this, "SPINNER_SET_PERIODIC");
                     // Use min when select the periodic item
                     if (ConstraintSet.sTriggerfunc == SpinnerItem.SET_PERIODIC.getId()) {
                         interval *= 60;
@@ -215,11 +215,11 @@ public class DemoJobSvrAct extends AppCompatActivity {
                     builder.setPeriodic(interval);
                     break;
                 case SPINNER_SET_OVERRIDE_DEADLINE:
-                    Utils.inFo(this, "SPINNER_SET_OVERRIDE_DEADLINE");
+                    Utils.info(this, "SPINNER_SET_OVERRIDE_DEADLINE");
                     builder.setOverrideDeadline(interval);
                     break;
                 case SPINNER_SET_MINIMUMLATENCY:
-                    Utils.inFo(this, "SPINNER_SET_MINIMUMLATENCY");
+                    Utils.info(this, "SPINNER_SET_MINIMUMLATENCY");
                     builder.setMinimumLatency(interval);
                     break;
             }
@@ -275,7 +275,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
         @Override
         public void execute() {
-            Utils.inFo(this, "execute enter");
+            Utils.info(this, "execute enter");
 
             //Prepare jobinfo
             JobInfo.Builder builder = new JobInfo.Builder(mJobId,
@@ -283,8 +283,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
             setNetWorkRequire(builder);
 
-            Utils.inFo(this, "mSwitchIdle = " + mSwitchIdle.isChecked());
-            Utils.inFo(this, "mSwitchCharging = " + mSwitchCharging.isChecked());
+            Utils.info(this, "mSwitchIdle = " + mSwitchIdle.isChecked());
+            Utils.info(this, "mSwitchCharging = " + mSwitchCharging.isChecked());
 
             builder.setRequiresDeviceIdle(mSwitchIdle.isChecked());
             builder.setRequiresCharging(mSwitchCharging.isChecked());
@@ -301,7 +301,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
                 //Schedule job
                 JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobService.schedule(builder.build());
-                Utils.inFo(this, "execute exit");
+                Utils.info(this, "execute exit");
 
             } else {
                 Utils.showToast(DemoJobSvrAct.this, "No Jobinfo ConstraintSet");
@@ -333,7 +333,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
         @Override
         public void execute() {
-            Utils.inFo(this, "execute enter");
+            Utils.info(this, "execute enter");
             // Check job constrain set
             if ((ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE) ||
                     mSwitchIdle.isChecked() ||
@@ -342,7 +342,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
                 //cancel all job
                 JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobService.cancelAll();
-                Utils.inFo(this, "execute exit");
+                Utils.info(this, "execute exit");
 
             } else {
                 Utils.showToast(DemoJobSvrAct.this, "No Jobinfo ConstraintSet");

@@ -20,7 +20,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            Utils.inFo(this, "Note room database is opened");
+            Utils.info(this, "Note room database is opened");
         }
     };
 

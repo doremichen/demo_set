@@ -59,12 +59,12 @@ public class MyDBProvider extends ContentProvider {
 
         public MyDBHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABSE_VERSION);
-            Utils.inFo(this, "MyDbHelper constructor...");
+            Utils.info(this, "MyDbHelper constructor...");
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Utils.inFo(this, "onCreate enter");
+            Utils.info(this, "onCreate enter");
             // Create db
             db.execSQL(CREATE_TABLE);
 
@@ -72,7 +72,7 @@ public class MyDBProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Utils.inFo(this, "onUpgrade enter");
+            Utils.info(this, "onUpgrade enter");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(db);
         }
@@ -83,7 +83,7 @@ public class MyDBProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         MyDBHelper helper = new MyDBHelper(this.getContext());
 
         // Get read/write handler
@@ -108,7 +108,7 @@ public class MyDBProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection,
                         @Nullable String selection, @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
-        Utils.inFo(this, "query enter");
+        Utils.info(this, "query enter");
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         queryBuilder.setTables(TABLE_NAME);
 
@@ -144,7 +144,7 @@ public class MyDBProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        Utils.inFo(this, "getType enter");
+        Utils.info(this, "getType enter");
         int uriType = URI_MATCHER.match(uri);
         switch (uriType) {
             case MYTABLE:
@@ -166,7 +166,7 @@ public class MyDBProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        Utils.inFo(this, "insert enter");
+        Utils.info(this, "insert enter");
         int uriType = URI_MATCHER.match(uri);
 
         long id = 0L;
@@ -195,7 +195,7 @@ public class MyDBProvider extends ContentProvider {
      */
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        Utils.inFo(this, "delete enter");
+        Utils.info(this, "delete enter");
         int uriType = URI_MATCHER.match(uri);
         int rowDelete = 0;
 
@@ -224,7 +224,7 @@ public class MyDBProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        Utils.inFo(this, "update enter");
+        Utils.info(this, "update enter");
         int uriType = URI_MATCHER.match(uri);
         int rowUpdate = 0;
 

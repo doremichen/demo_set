@@ -52,7 +52,7 @@ public class DemoWorkMangerAct extends AppCompatActivity {
     }
 
     private void showImage() {
-        Utils.inFo(this, "showImage enter");
+        Utils.info(this, "showImage enter");
         if (Utils.sImagePath == null) {
             Utils.showToast(this, "the file path does not exist.");
             return;

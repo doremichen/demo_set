@@ -55,7 +55,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Utils.inFo(this, "[handleMessage] msg.what = " + msg.what);
+            Utils.info(this, "[handleMessage] msg.what = " + msg.what);
             if (msg.what == SCAN_RESULT) {
                 String name = (String) msg.getData().get(KEY_SSID);
 
@@ -97,7 +97,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume enter");
+        Utils.info(this, "onResume enter");
         if (mIsAllow) {
             showEmptyIfNoData();
         }
@@ -107,14 +107,14 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause enter");
+        Utils.info(this, "onPause enter");
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
         // unregister receiver
         unregisterReceiver(mReceiver);
 
@@ -142,18 +142,18 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Utils.inFo(this, "onRequestPermissionsResult enter");
+        Utils.info(this, "onRequestPermissionsResult enter");
         if (requestCode == WIFI_PERMISSION_RESULT_CODE) {
             if (grantResults.length == WIFI_PERMISSION.length) {
                 for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
-                        Utils.inFo(this, "result is not PackageManager.PERMISSION_GRANTED");
+                        Utils.info(this, "result is not PackageManager.PERMISSION_GRANTED");
                         mIsAllow = false;
                         // permission denied
                         this.finish();
                         break;
                     } else {
-                        Utils.inFo(this, "result is PackageManager.PERMISSION_GRANTED");
+                        Utils.info(this, "result is PackageManager.PERMISSION_GRANTED");
                         mIsAllow = true;
                     }
                 }
@@ -180,7 +180,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
     @Override
     public void onLongClick(int position) {
-        Utils.inFo(this, "[onLongClick] enter");
+        Utils.info(this, "[onLongClick] enter");
         // Show dialog to tell user connect information
         String info = mSSIDs.get(position);
         //
@@ -202,7 +202,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
         @Override
         public void run() {
-            Utils.inFo(this, "[run] enter");
+            Utils.info(this, "[run] enter");
 
             Utils.showAlertDialog(DemoWifiAct.this, "Connect to " + mInfo, new DialogInterface.OnClickListener() {
                 @Override
@@ -262,7 +262,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     // Show empty view when no ap data
     //
     private void showEmptyIfNoData() {
-        Utils.inFo(this, "[showEmptyIfNoData] enter");
+        Utils.info(this, "[showEmptyIfNoData] enter");
         if (mSSIDs.isEmpty()) {
             mEmptyAp.setVisibility(View.VISIBLE);
             mListAp.setVisibility(View.GONE);
@@ -270,7 +270,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
             mEmptyAp.setVisibility(View.GONE);
             mListAp.setVisibility(View.VISIBLE);
         }
-        Utils.inFo(this, "[showEmptyIfNoData] exit");
+        Utils.info(this, "[showEmptyIfNoData] exit");
     }
 
 

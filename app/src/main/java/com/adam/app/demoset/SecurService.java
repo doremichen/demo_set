@@ -13,21 +13,21 @@ public class SecurService extends Service {
     public void onCreate() {
         super.onCreate();
         Utils.showToast(this, "onCreate");
-        Utils.inFo(this, "onCreate");
+        Utils.info(this, "onCreate");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Utils.showToast(this, "onDestroy");
-        Utils.inFo(this, "onDestroy");
+        Utils.info(this, "onDestroy");
         this.stopForeground(true);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Utils.showToast(this, "onStartCommand");
-        Utils.inFo(this, "onStartCommand");
+        Utils.info(this, "onStartCommand");
 
         // Android 8.0 suggestion
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1");

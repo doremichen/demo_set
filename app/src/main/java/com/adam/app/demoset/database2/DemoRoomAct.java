@@ -47,7 +47,7 @@ public class DemoRoomAct extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Utils.inFo(this, "UI handleMessage enter");
+            Utils.info(this, "UI handleMessage enter");
             switch (msg.what) {
                 case ACTION_SHOW_OPTION:
                     int position = msg.arg1;
@@ -62,7 +62,7 @@ public class DemoRoomAct extends AppCompatActivity {
     private View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Utils.inFo(this, "Floating button clicked....");
+            Utils.info(this, "Floating button clicked....");
             showAddNoteDlg();
         }
     };
@@ -73,7 +73,7 @@ public class DemoRoomAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_database2);
 
 
@@ -85,7 +85,7 @@ public class DemoRoomAct extends AppCompatActivity {
         mViewModel.mAllNotes.observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
-                Utils.inFo(this, "onChanged enter");
+                Utils.info(this, "onChanged enter");
                 mAllNotes = notes;
 
                 // Update list
@@ -110,7 +110,7 @@ public class DemoRoomAct extends AppCompatActivity {
         mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
             @Override
             public void onLongClick(int position) {
-                Utils.inFo(this, "onLongClick");
+                Utils.info(this, "onLongClick");
 
                 triggerVibrator();
 
@@ -133,7 +133,7 @@ public class DemoRoomAct extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume enter");
+        Utils.info(this, "onResume enter");
 
         showEmptyIfNoData();
     }
@@ -142,13 +142,13 @@ public class DemoRoomAct extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause enter");
+        Utils.info(this, "onPause enter");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
         mTouchListener.release();
     }
 
@@ -172,16 +172,16 @@ public class DemoRoomAct extends AppCompatActivity {
     }
 
     private void triggerVibrator() {
-        Utils.inFo(this, "triggerVibrator enter");
+        Utils.info(this, "triggerVibrator enter");
         Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
 
     private void showEmptyIfNoData() {
-        Utils.inFo(this, "showEmptyIfNoData enter");
-        Utils.inFo(this, "mAllNotes = " + mAllNotes);
-        Utils.inFo(this, "mEmptyNoteView = " + mEmptyNoteView);
+        Utils.info(this, "showEmptyIfNoData enter");
+        Utils.info(this, "mAllNotes = " + mAllNotes);
+        Utils.info(this, "mEmptyNoteView = " + mEmptyNoteView);
         if ((mAllNotes != null) && (mAllNotes.size() != 0)) {
             mEmptyNoteView.setVisibility(View.GONE);
         } else {
@@ -196,14 +196,14 @@ public class DemoRoomAct extends AppCompatActivity {
 
             @Override
             public void info(String msg) {
-                Utils.inFo(this, "info enter");
+                Utils.info(this, "info enter");
                 Utils.showToast(DemoRoomAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.inFo(this, "updateList enter");
-                Utils.inFo(this, "content = " + content);
+                Utils.info(this, "updateList enter");
+                Utils.info(this, "content = " + content);
                 Note note = new Note();
                 note.setNote(content);
                 note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
@@ -216,7 +216,7 @@ public class DemoRoomAct extends AppCompatActivity {
     }
 
     private void showOptionDlg(final int position) {
-        Utils.inFo(this, "showOptionDlg enter position = " + position);
+        Utils.info(this, "showOptionDlg enter position = " + position);
         CharSequence[] items = new CharSequence[]{"Update", "Delete"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -224,7 +224,7 @@ public class DemoRoomAct extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Utils.inFo(this, "onClick enter which = " + which);
+                Utils.info(this, "onClick enter which = " + which);
                 switch (which) {
                     case 0:     // Update
                         showUpdateDlg(position);
@@ -235,12 +235,12 @@ public class DemoRoomAct extends AppCompatActivity {
                 }
             }
         });
-        Utils.inFo(this, "showOptionDlg show");
+        Utils.info(this, "showOptionDlg show");
         builder.create().show();
     }
 
     private void showUpdateDlg(final int position) {
-        Utils.inFo(this, "showUpdateDlg enter");
+        Utils.info(this, "showUpdateDlg enter");
 
         final Note note = mAllNotes.get(position);
 
@@ -248,13 +248,13 @@ public class DemoRoomAct extends AppCompatActivity {
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
             public void info(String msg) {
-                Utils.inFo(this, "info enter");
+                Utils.info(this, "info enter");
                 Utils.showToast(DemoRoomAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.inFo(this, "updateList enter");
+                Utils.info(this, "updateList enter");
                 note.setNote(content);
                 note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                 // Update note
@@ -266,7 +266,7 @@ public class DemoRoomAct extends AppCompatActivity {
     }
 
     private void deleteNote(int position) {
-        Utils.inFo(this, "deleteNote enter");
+        Utils.info(this, "deleteNote enter");
         if (mAllNotes != null) {
             Note note = mAllNotes.get(position);
             // Delete note

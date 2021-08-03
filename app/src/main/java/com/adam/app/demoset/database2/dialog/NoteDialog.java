@@ -31,12 +31,12 @@ public abstract class NoteDialog {
     }
 
     public void registerListener(OnControllerCallBack listener) {
-        Utils.inFo(this, "registerCallBack enter");
+        Utils.info(this, "registerCallBack enter");
         mListener = listener;
     }
 
     public AlertDialog create() {
-        Utils.inFo(this, "create enter");
+        Utils.info(this, "create enter");
 
         View view = mInflater.inflate(R.layout.dialog_edit_note, null);
 
@@ -53,7 +53,7 @@ public abstract class NoteDialog {
         mAlertBuilder.setPositiveButton(dlgRbutton, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Utils.inFo(this, "Positive click");
+                Utils.info(this, "Positive click");
                 // Check whether the edit string is empty or not
                 String strInput = input.getText().toString();
                 if (TextUtils.isEmpty(strInput)) {
@@ -81,7 +81,7 @@ public abstract class NoteDialog {
         mAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Utils.inFo(this, "Negative click");
+                Utils.info(this, "Negative click");
                 dialog.dismiss();
             }
         });

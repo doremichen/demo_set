@@ -40,7 +40,7 @@ public class MyTimingLog {
     }
 
     public void dumpToLog() {
-        Utils.inFo(this, mLabel + ": begin");
+        Utils.info(this, mLabel + ": begin");
 
         final long first = mSplits.get(0);
         long now = first;
@@ -48,8 +48,8 @@ public class MyTimingLog {
             now = mSplits.get(i);
             final String splitLabel = mSplitLabels.get(i);
             final long prev = mSplits.get(i - 1);
-            Utils.inFo(this, mLabel + ":      " + (now - prev) + " ms, " + splitLabel);
+            Utils.info(this, mLabel + ":      " + (now - prev) + " ms, " + splitLabel);
         }
-        Utils.inFo(this, mLabel + ": end, " + (now - first) + " ms");
+        Utils.info(this, mLabel + ": end, " + (now - first) + " ms");
     }
 }

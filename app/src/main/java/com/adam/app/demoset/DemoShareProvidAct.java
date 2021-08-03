@@ -38,8 +38,8 @@ public class DemoShareProvidAct extends AppCompatActivity {
     }
 
     private boolean setShareIntent() {
-        Utils.inFo(this, "setShareIntent enter");
-        Utils.inFo(this, "mShareAction = " + mShareAction);
+        Utils.info(this, "setShareIntent enter");
+        Utils.info(this, "mShareAction = " + mShareAction);
         boolean ret = false;
 
         if (mShareAction != null) {
@@ -52,7 +52,7 @@ public class DemoShareProvidAct extends AppCompatActivity {
             PackageManager pm = getPackageManager();
             List<ResolveInfo> infos = pm.queryIntentActivities(sendIntent, 0);
 
-            Utils.inFo(this, "infos.isEmpty = " + infos.isEmpty());
+            Utils.info(this, "infos.isEmpty = " + infos.isEmpty());
 
             if (!infos.isEmpty()) {
                 mShareAction.setShareIntent(sendIntent);

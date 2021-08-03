@@ -72,20 +72,20 @@ public class MyHandlerThread extends HandlerThread {
     // Execute task
     //
     public void executeTask() {
-        Utils.inFo(this, "[executeTask] enter");
+        Utils.info(this, "[executeTask] enter");
         isCancel = false;
         mHandler.post(mTask);
-        Utils.inFo(this, "[executeTask] exit");
+        Utils.info(this, "[executeTask] exit");
     }
 
     //
     // Cancel task
     //
     public void cancelTask() {
-        Utils.inFo(this, "[cancelTask] enter");
+        Utils.info(this, "[cancelTask] enter");
         mHandler.removeCallbacks(mTask);
         isCancel = true;
-        Utils.inFo(this, "[cancelTask] exit");
+        Utils.info(this, "[cancelTask] exit");
     }
 
 
@@ -93,30 +93,30 @@ public class MyHandlerThread extends HandlerThread {
     // Register handler thread observer
     //
     public void registerObserver(HandlerObserver observer) {
-        Utils.inFo(this, "[registerObserver] enter");
+        Utils.info(this, "[registerObserver] enter");
 
         if (observer == null) {
-            Utils.inFo(this, "observer is null.......");
+            Utils.info(this, "observer is null.......");
             return;
         }
 
         mObvList.add(observer);
 
-        Utils.inFo(this, "[registerObserver] exit");
+        Utils.info(this, "[registerObserver] exit");
     }
 
     //
     // Unregister handler thread observer
     //
     public void unregisterObserver(HandlerObserver observer) {
-        Utils.inFo(this, "[unregisterObserver] enter");
+        Utils.info(this, "[unregisterObserver] enter");
         if (observer == null) {
-            Utils.inFo(this, "observer is null.......");
+            Utils.info(this, "observer is null.......");
             return;
         }
 
         mObvList.remove(observer);
 
-        Utils.inFo(this, "[unregisterObserver] exit");
+        Utils.info(this, "[unregisterObserver] exit");
     }
 }

@@ -49,7 +49,7 @@ public final class MyCameraController {
     private CameraDevice.StateCallback mDeviceStateCB = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
-            Utils.inFo(this, "onOpened");
+            Utils.info(this, "onOpened");
             mDevice = camera;
 
             // Start camera preview
@@ -84,22 +84,22 @@ public final class MyCameraController {
     private CameraCaptureSession.CaptureCallback mCaptureCallBack = new CameraCaptureSession.CaptureCallback() {
 
         private void process(CaptureResult result) {
-            Utils.inFo(this, "process");
-            Utils.inFo(this, "mState = " + mState);
+            Utils.info(this, "process");
+            Utils.info(this, "mState = " + mState);
             switch (mState) {
                 case STATE.PREVIEW:
                     // do nothing
                     break;
                 case STATE.WAITING_LOCK:
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    Utils.inFo(this, "afState = " + afState);
+                    Utils.info(this, "afState = " + afState);
                     if (afState == null) {
                         // Capture
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
                             CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                        Utils.inFo(this, "aeState = " + afState);
+                        Utils.info(this, "aeState = " + afState);
                         if (aeState == null ||
                                 aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
                             mState = STATE.PICTURE_TAKEN;
@@ -136,7 +136,7 @@ public final class MyCameraController {
                                      @NonNull CaptureRequest request,
                                      long timestamp, long frameNumber) {
             super.onCaptureStarted(session, request, timestamp, frameNumber);
-            Utils.inFo(this, "onCaptureStarted enter");
+            Utils.info(this, "onCaptureStarted enter");
         }
 
         @Override
@@ -144,7 +144,7 @@ public final class MyCameraController {
                                         @NonNull CaptureRequest request,
                                         @NonNull CaptureResult partialResult) {
             super.onCaptureProgressed(session, request, partialResult);
-            Utils.inFo(this, "onCaptureProgressed enter");
+            Utils.info(this, "onCaptureProgressed enter");
             process(partialResult);
         }
 
@@ -153,7 +153,7 @@ public final class MyCameraController {
                                        @NonNull CaptureRequest request,
                                        @NonNull TotalCaptureResult result) {
             super.onCaptureCompleted(session, request, result);
-            Utils.inFo(this, "onCaptureCompleted enter");
+            Utils.info(this, "onCaptureCompleted enter");
             process(result);
         }
 
@@ -202,14 +202,14 @@ public final class MyCameraController {
 
 
     public void startCameraThread() {
-        Utils.inFo(this, "startCameraThread enter");
+        Utils.info(this, "startCameraThread enter");
         this.mBgThread = new HandlerThread(THREAD_NAME);
         this.mBgThread.start();
         this.mBgHandler = new Handler(this.mBgThread.getLooper());
     }
 
     public void stopCameraThread() {
-        Utils.inFo(this, "stopCameraThread enter");
+        Utils.info(this, "stopCameraThread enter");
         this.mBgThread.quitSafely();
         try {
             this.mBgThread.join();
@@ -223,7 +223,7 @@ public final class MyCameraController {
 
     @SuppressLint("MissingPermission")
     public void openCamera(Context context, int id) {
-        Utils.inFo(this, "openCamera enter");
+        Utils.info(this, "openCamera enter");
         CameraManager cameraService = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
 
@@ -296,12 +296,12 @@ public final class MyCameraController {
      * Start camera preview
      */
     private void startPreview() {
-        Utils.inFo(this, "startPreview");
+        Utils.info(this, "startPreview");
 
         // Create preview session
         SurfaceTexture texture = mView.getSurfaceTexture();
-        Utils.inFo(this, "texture = " + texture);
-        Utils.inFo(this, "mPreviewSize = " + mPreviewSize);
+        Utils.info(this, "texture = " + texture);
+        Utils.info(this, "mPreviewSize = " + mPreviewSize);
         texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
 
         // Preview surface
@@ -316,7 +316,7 @@ public final class MyCameraController {
             mDevice.createCaptureSession(Arrays.asList(surface, mReader.getSurface()), new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
-                    Utils.inFo(this, "preview config: onConfigured enter");
+                    Utils.info(this, "preview config: onConfigured enter");
                     // When the session is ready, start to displaying the preview
                     mCaptureSession = session;
 
@@ -351,7 +351,7 @@ public final class MyCameraController {
     }
 
     private void captureStillPicture() {
-        Utils.inFo(this, "captureStillPicture enter");
+        Utils.info(this, "captureStillPicture enter");
         try {
             // Take a picture request
             final CaptureRequest.Builder builder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
@@ -370,7 +370,7 @@ public final class MyCameraController {
                 @Override
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Utils.inFo(this, "captureCallBack: onCaptureCompleted");
+                    Utils.info(this, "captureCallBack: onCaptureCompleted");
 
                     // Tell UI
                     if (mCallBack != null) {
@@ -391,7 +391,7 @@ public final class MyCameraController {
     }
 
     private void runPrecaptureSequence() {
-        Utils.inFo(this, "runPrecaptureSequence");
+        Utils.info(this, "runPrecaptureSequence");
         try {
             // This is how to tell the camera to trigger.
             mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
@@ -406,7 +406,7 @@ public final class MyCameraController {
     }
 
     private void restartPreview() {
-        Utils.inFo(this, "restartPreview");
+        Utils.info(this, "restartPreview");
         try {
             mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             if (mCanFalsh) {
@@ -424,7 +424,7 @@ public final class MyCameraController {
      * Close camera by CameraDevice
      */
     public void closeCamera() {
-        Utils.inFo(this, "closeCamera enter");
+        Utils.info(this, "closeCamera enter");
         if (mCaptureSession != null) {
             mCaptureSession.close();
             mCaptureSession = null;
@@ -459,7 +459,7 @@ public final class MyCameraController {
      * Take a picture
      */
     public void capturePicture() {
-        Utils.inFo(this, "capturePicture");
+        Utils.info(this, "capturePicture");
 
         try {
             // This is how to tell the camera to lock focus.

@@ -38,7 +38,7 @@ public class MyRecordVideoController {
     private CameraDevice.StateCallback mOpenCameraCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
-            Utils.inFo(this, "onOpened");
+            Utils.info(this, "onOpened");
             mDevice = camera;
 
             // start preview
@@ -47,7 +47,7 @@ public class MyRecordVideoController {
 
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
-            Utils.inFo(this, "onDisconnected");
+            Utils.info(this, "onDisconnected");
             camera.close();
             mDevice = null;
 
@@ -55,7 +55,7 @@ public class MyRecordVideoController {
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            Utils.inFo(this, "onError");
+            Utils.info(this, "onError");
             camera.close();
             mDevice = null;
 
@@ -91,7 +91,7 @@ public class MyRecordVideoController {
     }
 
     public void startCameraThread() {
-        Utils.inFo(this, "startCameraThread");
+        Utils.info(this, "startCameraThread");
         mBgThread = new HandlerThread("camera work thread");
         mBgThread.start();
         mHandler = new Handler(mBgThread.getLooper());
@@ -99,7 +99,7 @@ public class MyRecordVideoController {
     }
 
     public void stopCameraThread() {
-        Utils.inFo(this, "stopCameraThread");
+        Utils.info(this, "stopCameraThread");
         if (mBgThread == null) return;
 
         mBgThread.quitSafely();
@@ -115,7 +115,7 @@ public class MyRecordVideoController {
 
     @SuppressLint("MissingPermission")
     public void openCamera(Context context, TextureView textureView) {
-        Utils.inFo(this, "openCamera");
+        Utils.info(this, "openCamera");
 
         mTextureView = textureView;
 
@@ -142,7 +142,7 @@ public class MyRecordVideoController {
     }
 
     public void closeCamera() {
-        Utils.inFo(this, "closeCamera");
+        Utils.info(this, "closeCamera");
         closePreviewSession();
         if (mDevice != null) {
             mDevice.close();
@@ -155,7 +155,7 @@ public class MyRecordVideoController {
     }
 
     public void startRecord(final Activity activity) {
-        Utils.inFo(this, "startRecord");
+        Utils.info(this, "startRecord");
         // Check data validity
         if (mDevice == null || !mTextureView.isAvailable() || mPreviewSize == null) {
             return;
@@ -187,14 +187,14 @@ public class MyRecordVideoController {
             mDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
                 @Override
                 public void onConfigured(@NonNull CameraCaptureSession session) {
-                    Utils.inFo(this, "onConfigred");
+                    Utils.info(this, "onConfigred");
                     mPreviewSession = session;
                     updatePreview();
 
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Utils.inFo(this, "runOnUiThread...");
+                            Utils.info(this, "runOnUiThread...");
                             // Start recording
                             mRecorder.start();
                             Utils.showToast(activity, "Start recording....");
@@ -221,7 +221,7 @@ public class MyRecordVideoController {
     }
 
     private void setUpVideoConfig() {
-        Utils.inFo(this, "setUpVideoConfig enter");
+        Utils.info(this, "setUpVideoConfig enter");
         if (mRecorder == null || mListener == null) {
             return;
         }
@@ -240,9 +240,9 @@ public class MyRecordVideoController {
             mRecorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
                 @Override
                 public void onError(MediaRecorder mr, int what, int extra) {
-                    Utils.inFo(this, "Recorder onError enter");
-                    Utils.inFo(this, "what = " + what);
-                    Utils.inFo(this, "extra = " + extra);
+                    Utils.info(this, "Recorder onError enter");
+                    Utils.info(this, "what = " + what);
+                    Utils.info(this, "extra = " + extra);
                 }
             });
             mRecorder.prepare();
@@ -252,7 +252,7 @@ public class MyRecordVideoController {
     }
 
     public void stopRecord() {
-        Utils.inFo(this, "stopRecord");
+        Utils.info(this, "stopRecord");
 
         mRecorder.setOnErrorListener(null);
         mRecorder.setOnInfoListener(null);
@@ -273,7 +273,7 @@ public class MyRecordVideoController {
     }
 
     private void startPreview() {
-        Utils.inFo(this, "startPreview enter");
+        Utils.info(this, "startPreview enter");
         // Check data validity
         if (mDevice == null || !mTextureView.isAvailable() || mPreviewSize == null) {
             return;
@@ -320,7 +320,7 @@ public class MyRecordVideoController {
     }
 
     private void closePreviewSession() {
-        Utils.inFo(this, "closePreviewSession enter");
+        Utils.info(this, "closePreviewSession enter");
         if (mPreviewSession != null) {
             mPreviewSession.close();
             mPreviewSession = null;
@@ -328,7 +328,7 @@ public class MyRecordVideoController {
     }
 
     private void updatePreview() {
-        Utils.inFo(this, "updatePreview enter");
+        Utils.info(this, "updatePreview enter");
         if (mDevice == null) {
             return;
         }
@@ -347,7 +347,7 @@ public class MyRecordVideoController {
                 return size;
             }
         }
-        Utils.inFo(MyRecordVideoController.class, "Couldn't find any suitable video size");
+        Utils.info(MyRecordVideoController.class, "Couldn't find any suitable video size");
         return choices[choices.length - 1];
     }
 

@@ -64,7 +64,7 @@ public class CameraController {
     }
 
     public void openCamera(int index, TextureView textView) {
-        Utils.inFo(this, "openCamera enter");
+        Utils.info(this, "openCamera enter");
         mTexture = textView;
 
 
@@ -106,18 +106,18 @@ public class CameraController {
      * Start camera work thread
      */
     public void startWorkThread() {
-        Utils.inFo(this, "startWorkThread enter");
+        Utils.info(this, "startWorkThread enter");
         mWorkThread = new HandlerThread("Demo camera2 work task");
         mWorkThread.start();
         mWorkHandler = new Handler(mWorkThread.getLooper());
-        Utils.inFo(this, "startWorkThread enter: mWorkHandler = " + mWorkHandler);
+        Utils.info(this, "startWorkThread enter: mWorkHandler = " + mWorkHandler);
     }
 
     /**
      * Stop camera work thread
      */
     public void stopWorkThread() {
-        Utils.inFo(this, "stopWorkThread enter: mWorkHandler = " + mWorkHandler);
+        Utils.info(this, "stopWorkThread enter: mWorkHandler = " + mWorkHandler);
         if (mWorkThread != null) {
             mWorkThread.quitSafely();
             try {
@@ -132,7 +132,7 @@ public class CameraController {
     }
 
     public void capture() {
-        Utils.inFo(this, "capture");
+        Utils.info(this, "capture");
         ArrayList<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(new Surface(mTexture.getSurfaceTexture()));
         surfaces.add(this.mImageReader.getSurface());
@@ -163,7 +163,7 @@ public class CameraController {
 
 
     private void startPreview() {
-        Utils.inFo(this, "startPreview");
+        Utils.info(this, "startPreview");
         // Get Surface
         SurfaceTexture surfaceText = this.mTexture.getSurfaceTexture();
         surfaceText.setDefaultBufferSize(this.mPreviewSize.getWidth(), this.mPreviewSize.getHeight());
@@ -185,7 +185,7 @@ public class CameraController {
     private class MyCaptureStateCallback extends CameraCaptureSession.StateCallback {
         @Override
         public void onConfigured(@NonNull CameraCaptureSession session) {
-            Utils.inFo(this, "onConfigured enter");
+            Utils.info(this, "onConfigured enter");
 
             try {
                 session.capture(mRequestBuilder.build(), new MyCaptureCallback(), mWorkHandler);
@@ -198,7 +198,7 @@ public class CameraController {
 
         @Override
         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-            Utils.inFo(this, "onConfigureFailed enter");
+            Utils.info(this, "onConfigureFailed enter");
 
         }
 
@@ -206,43 +206,43 @@ public class CameraController {
             @Override
             public void onCaptureStarted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, long timestamp, long frameNumber) {
                 super.onCaptureStarted(session, request, timestamp, frameNumber);
-                Utils.inFo(this, "onCaptureStarted");
+                Utils.info(this, "onCaptureStarted");
             }
 
             @Override
             public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
                 super.onCaptureProgressed(session, request, partialResult);
-                Utils.inFo(this, "onCaptureProgressed");
+                Utils.info(this, "onCaptureProgressed");
             }
 
             @Override
             public void onCaptureFailed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureFailure failure) {
                 super.onCaptureFailed(session, request, failure);
-                Utils.inFo(this, "onCaptureFailed");
+                Utils.info(this, "onCaptureFailed");
             }
 
             @Override
             public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session, int sequenceId, long frameNumber) {
                 super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
-                Utils.inFo(this, "onCaptureSequenceCompleted");
+                Utils.info(this, "onCaptureSequenceCompleted");
             }
 
             @Override
             public void onCaptureSequenceAborted(@NonNull CameraCaptureSession session, int sequenceId) {
                 super.onCaptureSequenceAborted(session, sequenceId);
-                Utils.inFo(this, "onCaptureSequenceAborted");
+                Utils.info(this, "onCaptureSequenceAborted");
             }
 
             @Override
             public void onCaptureBufferLost(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull Surface target, long frameNumber) {
                 super.onCaptureBufferLost(session, request, target, frameNumber);
-                Utils.inFo(this, "onCaptureBufferLost");
+                Utils.info(this, "onCaptureBufferLost");
             }
 
             @Override
             public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                 super.onCaptureCompleted(session, request, result);
-                Utils.inFo(this, "onCaptureCompleted");
+                Utils.info(this, "onCaptureCompleted");
                 // Start preview
                 startPreview();
             }
@@ -252,7 +252,7 @@ public class CameraController {
     private class MyOpenCameraStateCallback extends CameraDevice.StateCallback {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
-            Utils.inFo(this, "onOpened");
+            Utils.info(this, "onOpened");
             mCameraDevice = camera;
             // Start preview
             startPreview();
@@ -260,14 +260,14 @@ public class CameraController {
 
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
-            Utils.inFo(this, "onDisconnected");
+            Utils.info(this, "onDisconnected");
             camera.close();
             mCameraDevice = null;
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            Utils.inFo(this, "onError error: " + error);
+            Utils.info(this, "onError error: " + error);
             camera.close();
             mCameraDevice = null;
         }
@@ -276,7 +276,7 @@ public class CameraController {
     private class MyPreviewStateCallback extends CameraCaptureSession.StateCallback {
         @Override
         public void onConfigured(@NonNull CameraCaptureSession session) {
-            Utils.inFo(this, "onConfigured");
+            Utils.info(this, "onConfigured");
             if (mCameraDevice != null) {
                 mRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
                 mRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
@@ -292,7 +292,7 @@ public class CameraController {
 
         @Override
         public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-            Utils.inFo(this, "onConfigureFailed");
+            Utils.info(this, "onConfigureFailed");
 
         }
 

@@ -87,12 +87,12 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == REQUEST_ALTER_WINDOW) {
-            Utils.inFo(this, "onActivityResult");
+            Utils.info(this, "onActivityResult");
             if (!Settings.canDrawOverlays(this)) {
                 Utils.showToast(this, "Permission is not been granted yet");
             } else {
                 Utils.showToast(this, "Permission is been granted");
-                Utils.inFo(this, "Permission is been granted");
+                Utils.info(this, "Permission is been granted");
             }
         }
     }

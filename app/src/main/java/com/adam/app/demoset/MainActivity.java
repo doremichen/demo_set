@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ItemContent data = (ItemContent) parent.getItemAtPosition(position);
-                Utils.inFo(this, "the item: " + data.getTitle());
+                Utils.info(this, "the item: " + data.getTitle());
 
                 // Go to the specified demo item
                 Intent it = new Intent();
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void enableLogcat(String enable) {
-        Utils.inFo(this, "enableLogcat enter");
+        Utils.info(this, "enableLogcat enter");
         String logstatus = System.getProperty(LOG_STATUS);
         if (logstatus != null && logstatus.equals(enable)) {
             Utils.showToast(this, "The log status has " +

@@ -27,7 +27,7 @@ public class MyViewModel extends ViewModel {
 
 
     public MyViewModel() {
-        Utils.inFo(this, "Constructor is called");
+        Utils.info(this, "Constructor is called");
         mManager = WorkManager.getInstance();
 
         // Reset work
@@ -42,7 +42,7 @@ public class MyViewModel extends ViewModel {
     }
 
     void applyBlur(int level) {
-        Utils.inFo(this, "applyBlur enter");
+        Utils.info(this, "applyBlur enter");
         // Work1: clean up
         // replace this code
 //        WorkContinuation continuation = mManager.beginWith(OneTimeWorkRequest.from(CleanupWorker.class));
@@ -81,7 +81,7 @@ public class MyViewModel extends ViewModel {
     }
 
     void cancelWork() {
-        Utils.inFo(this, "cancelWork enter");
+        Utils.info(this, "cancelWork enter");
         mManager.cancelUniqueWork(IMAGE_WROK_PROCESS);
     }
 
@@ -97,7 +97,7 @@ public class MyViewModel extends ViewModel {
      * Setters
      */
     void setImageUri(String uri) {
-        Utils.inFo(this, "setImageUri enter uri = " + uri);
+        Utils.info(this, "setImageUri enter uri = " + uri);
         mImageUri = uriOrNull(uri);
     }
 
@@ -105,12 +105,12 @@ public class MyViewModel extends ViewModel {
      * Getters
      */
     Uri getImageUri() {
-        Utils.inFo(this, "getImageUri enter mImageUri = " + mImageUri.toString());
+        Utils.info(this, "getImageUri enter mImageUri = " + mImageUri.toString());
         return mImageUri;
     }
 
     private Data createInputDataForUri() {
-        Utils.inFo(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
+        Utils.info(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
         Data.Builder builder = new Data.Builder();
         if (mImageUri != null) {
             builder.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());

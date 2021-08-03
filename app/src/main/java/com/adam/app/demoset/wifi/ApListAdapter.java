@@ -19,19 +19,19 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.MyViewHold
     private Context mCtx;
 
     public ApListAdapter(Context context) {
-        Utils.inFo(this, "Constructor");
+        Utils.info(this, "Constructor");
         mCtx = context;
     }
 
     public void setData(@NonNull List<String> ssids) {
-        Utils.inFo(this, "setNotes enter mSSIDs = " + mSSIDs);
+        Utils.info(this, "setNotes enter mSSIDs = " + mSSIDs);
         this.mSSIDs = ssids;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Utils.inFo(this, "onCreateViewHolder enter");
+        Utils.info(this, "onCreateViewHolder enter");
         View view = LayoutInflater.from(mCtx).inflate(R.layout.item_ap_layout,
                 viewGroup, false);
         return new MyViewHolder(view);
@@ -39,7 +39,7 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Utils.inFo(this, "onBindViewHolder enter");
+        Utils.info(this, "onBindViewHolder enter");
         if (mSSIDs != null) {
             String ssidName = mSSIDs.get(position);
             // Set item information
@@ -50,9 +50,9 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        Utils.inFo(this, "getItemCount enter ");
+        Utils.info(this, "getItemCount enter ");
         int count = (mSSIDs != null) ? mSSIDs.size() : 0;
-        Utils.inFo(this, "count = " + count);
+        Utils.info(this, "count = " + count);
         return count;
     }
 

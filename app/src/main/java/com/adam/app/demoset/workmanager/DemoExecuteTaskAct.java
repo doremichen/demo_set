@@ -53,7 +53,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         // Get the selected image
         Intent intent = getIntent();
         String imgUri = intent.getStringExtra(Utils.THE_SELECTED_IMAGE);
-        Utils.inFo(this, "imgUri = " + imgUri);
+        Utils.info(this, "imgUri = " + imgUri);
         // Downlaod image by glid
         mViewModel.setImageUri(imgUri);
         if (mViewModel.getImageUri() != null) {
@@ -66,11 +66,11 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
 
             @Override
             public void onChanged(@Nullable List<WorkStatus> workStatuses) {
-                Utils.inFo(this, "onChanged enter");
+                Utils.info(this, "onChanged enter");
 
                 // Check if work status exists
                 if (mExecuteWork == false || workStatuses == null || workStatuses.isEmpty()) {
-                    Utils.inFo(this, "No execute, No save work or save work is empty");
+                    Utils.info(this, "No execute, No save work or save work is empty");
                     return;
                 }
 
@@ -78,7 +78,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 WorkStatus workStatus = workStatuses.get(0);
 
                 boolean isFinished = workStatus.getState().isFinished();
-                Utils.inFo(this, "isFinished = " + isFinished);
+                Utils.info(this, "isFinished = " + isFinished);
 
                 if (isFinished) {
                     updatButtonStatus(false);
@@ -105,20 +105,20 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
     }
 
     public void onCancel(View view) {
-        Utils.inFo(this, "onCancel enter");
+        Utils.info(this, "onCancel enter");
         mViewModel.cancelWork();
     }
 
     boolean mExecuteWork;
 
     public void onExecute(View view) {
-        Utils.inFo(this, "onExecute enter");
+        Utils.info(this, "onExecute enter");
         mExecuteWork = true;
         mViewModel.applyBlur(getRadioOption());
     }
 
     public void onResult(View view) {
-        Utils.inFo(this, "onResult enter");
+        Utils.info(this, "onResult enter");
         Uri imgUri = mViewModel.getImageUri();
         if (imgUri != null) {
             Intent actionView = new Intent(Intent.ACTION_VIEW, imgUri);
@@ -129,7 +129,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
     }
 
     private int getRadioOption() {
-        Utils.inFo(this, "getRadioOption enter");
+        Utils.info(this, "getRadioOption enter");
         RadioGroup group = findViewById(R.id.radio_blur_group);
         switch (group.getCheckedRadioButtonId()) {
             case R.id.radio_blur_lv_1:
@@ -143,7 +143,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
     }
 
     private void updatButtonStatus(boolean isWorking) {
-        Utils.inFo(this, "updatButtonStatus enter isWorking = " + isWorking);
+        Utils.info(this, "updatButtonStatus enter isWorking = " + isWorking);
         mProgress.setVisibility((isWorking) ? View.VISIBLE : View.GONE);
         mBtnCancel.setVisibility((isWorking) ? View.VISIBLE : View.GONE);
         mBtnExecute.setVisibility((isWorking) ? View.GONE : View.VISIBLE);

@@ -124,7 +124,7 @@ public class DemoNotificationAct extends AppCompatActivity {
     }
 
     public void updateNotify(View view) {
-        Utils.inFo(this, "updateNotify");
+        Utils.info(this, "updateNotify");
         if (hasNotification()) return;
 
         Bitmap notifyImg = BitmapFactory.decodeResource(getResources(), R.drawable.test);
@@ -137,7 +137,7 @@ public class DemoNotificationAct extends AppCompatActivity {
     }
 
     public void cancelNotify(View view) {
-        Utils.inFo(this, "cancelNotify enter");
+        Utils.info(this, "cancelNotify enter");
         if (hasNotification()) return;
 
         // cancel notification

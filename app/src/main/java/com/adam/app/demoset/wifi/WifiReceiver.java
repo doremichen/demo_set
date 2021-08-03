@@ -38,7 +38,7 @@ public class WifiReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Utils.inFo(this, "[onReceive] enter action = " + intent.getAction());
+        Utils.info(this, "[onReceive] enter action = " + intent.getAction());
 
         WifiAction action = mActMap.get(intent.getAction());
         if (action != null) {
@@ -50,7 +50,7 @@ public class WifiReceiver extends BroadcastReceiver {
         abstract void process(Intent intent, Handler handler);
 
         protected void sendInfoToUI(Handler handler, String key, String value, int result) {
-            Utils.inFo(this, "[sendInfoToUI] enter");
+            Utils.info(this, "[sendInfoToUI] enter");
             Bundle bundle = new Bundle();
             bundle.putString(key, value);
             Message msg = Message.obtain(null, result);
@@ -67,7 +67,7 @@ public class WifiReceiver extends BroadcastReceiver {
 
         @Override
         public void process(Intent intent, Handler handler) {
-            Utils.inFo(this, "[process] enter");
+            Utils.info(this, "[process] enter");
             boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
             if (success == true) {
                 scanSuccess(handler);
@@ -77,7 +77,7 @@ public class WifiReceiver extends BroadcastReceiver {
         }
 
         private void scanSuccess(Handler handler) {
-            Utils.inFo(this, "[scanSuccess] enter");
+            Utils.info(this, "[scanSuccess] enter");
             List<ScanResult> scanResults = WifiController.newInstance().getResult();
             for (ScanResult result : scanResults) {
 
@@ -88,7 +88,7 @@ public class WifiReceiver extends BroadcastReceiver {
         }
 
         private void scanFail(Handler handler) {
-            Utils.inFo(this, "[scanFail] enter");
+            Utils.info(this, "[scanFail] enter");
         }
 
     }
@@ -100,11 +100,11 @@ public class WifiReceiver extends BroadcastReceiver {
 
         @Override
         public void process(Intent intent, Handler handler) {
-            Utils.inFo(this, "[process] enter");
+            Utils.info(this, "[process] enter");
             // NetworkInfo
             NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
             if (info.getState().equals(NetworkInfo.State.CONNECTED)) {
-                Utils.inFo(this, "Network state is connected...");
+                Utils.info(this, "Network state is connected...");
                 sendInfoToUI(handler, DemoWifiAct.KEY_INFO, info.toString(), DemoWifiAct.CONNECT_RESULT);
             }
         }

@@ -38,7 +38,7 @@ class WifiController {
     // initialization
     //
     public void init(Context context, CallBack cb) {
-        Utils.inFo(this, "[init]");
+        Utils.info(this, "[init]");
         mWifimanager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         mCB = cb;
     }
@@ -49,7 +49,7 @@ class WifiController {
     // The ability for apps to trigger scan requests will be removed in a future release.
     //
     public boolean startScan() {
-        Utils.inFo(this, "[startScan] enter");
+        Utils.info(this, "[startScan] enter");
         boolean ret = false;
 
         // Check wifi enable
@@ -61,7 +61,7 @@ class WifiController {
         // Start scan
         mWifimanager.startScan();
 
-        Utils.inFo(this, "[startScan] exit ret[" + ret + "]");
+        Utils.info(this, "[startScan] exit ret[" + ret + "]");
         return ret;
     }
 
@@ -69,7 +69,7 @@ class WifiController {
     // Connect to AP
     //
     public void connectToAP(String ssid, String pass) {
-        Utils.inFo(this, "[connectToAP] enter");
+        Utils.info(this, "[connectToAP] enter");
         // Check ssid is already connected
         String getSSID = mWifimanager.getConnectionInfo().getSSID();
         if ((getSSID != null) && (getSSID.equals(ssid))) {
@@ -89,16 +89,16 @@ class WifiController {
         mWifimanager.enableNetwork(config.networkId, true);
         mWifimanager.reconnect();
 
-        Utils.inFo(this, "[connectToAP] exit");
+        Utils.info(this, "[connectToAP] exit");
     }
 
     //
     // Get Scan result
     //
     public List<ScanResult> getResult() {
-        Utils.inFo(this, "[getResult] enter");
+        Utils.info(this, "[getResult] enter");
         if (mWifimanager == null) {
-            Utils.inFo(this, "mWifimanager is null");
+            Utils.info(this, "mWifimanager is null");
             return null;
         }
 
@@ -113,7 +113,7 @@ class WifiController {
     // Get ssid from wifi configuration
     //
     private WifiConfiguration getWifiConfig(String ssid) {
-        Utils.inFo(this, "[getWifiConfig] enter");
+        Utils.info(this, "[getWifiConfig] enter");
         List<WifiConfiguration> configList = mWifimanager.getConfiguredNetworks();
         for (WifiConfiguration config : configList) {
             // Get the wifi configuration
@@ -121,7 +121,7 @@ class WifiController {
                 return config;
             }
         }
-        Utils.inFo(this, "[getWifiConfig] exit");
+        Utils.info(this, "[getWifiConfig] exit");
         return null;
     }
 
@@ -129,13 +129,13 @@ class WifiController {
     // Create wifi configuration
     //
     private void createWPAProfile(String ssid, String pass) {
-        Utils.inFo(this, "[createWPAProfile] enter");
+        Utils.info(this, "[createWPAProfile] enter");
         WifiConfiguration config = new WifiConfiguration();
         config.SSID = ssid;
         config.preSharedKey = pass;
         // Add config to netWork
         mWifimanager.addNetwork(config);
-        Utils.inFo(this, "[createWPAProfile] exit");
+        Utils.info(this, "[createWPAProfile] exit");
     }
 
 

@@ -32,7 +32,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_schedule_service);
 
         mCounterAction = findViewById(R.id.btn_action_counter);
@@ -43,7 +43,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         mSbPeriodic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Utils.inFo(this, "onProgressChanged enter");
+                Utils.info(this, "onProgressChanged enter");
                 if (progress > 0) {
                     mPeriodic.setText(progress + " s");
                     mPeriodicTime = progress;
@@ -70,8 +70,8 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         mController.registeronControllerListener(new SchedulerController.onControllerListener() {
             @Override
             public void TimeArrive(long millisecond) {
-                Utils.inFo(this, "TimeArrive enter");
-                Utils.inFo(this, "counter = " + millisecond);
+                Utils.info(this, "TimeArrive enter");
+                Utils.info(this, "counter = " + millisecond);
                 // show notification
                 Utils.makeStatusNotification("Time is arrived", DemoScheduleServiceAct.this);
 
@@ -79,7 +79,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
             @Override
             public void finishUI() {
-                Utils.inFo(this, "finishUI");
+                Utils.info(this, "finishUI");
                 finish();
             }
         });
@@ -89,7 +89,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
     }
 
     @Override
@@ -112,7 +112,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     }
 
     public void onCounterAction(View v) {
-        Utils.inFo(this, "onCounterAction enter");
+        Utils.info(this, "onCounterAction enter");
         // Range check
         if (mPeriodicTime == 0L) {
             Utils.showToast(this, getString(R.string.label_show_non_zero_input_info));

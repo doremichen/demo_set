@@ -33,7 +33,7 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
     }
 
     public void onSelectImg(View view) {
-        Utils.inFo(this, "onSelectImg enter");
+        Utils.info(this, "onSelectImg enter");
         Intent intent = new Intent();
         // Show only images, no videos or anything else
         intent.setType("image/*");
@@ -64,12 +64,12 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Utils.inFo(this, "onActivityResult enter");
+        Utils.info(this, "onActivityResult enter");
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
             Utils.showToast(this, "Uri: " + uri.toString());
-            Utils.inFo(this, "Uri: " + uri.toString());
+            Utils.info(this, "Uri: " + uri.toString());
             // Start execute picture activity
             Intent intent = new Intent(this, DemoExecuteTaskAct.class);
             intent.putExtra(Utils.THE_SELECTED_IMAGE, uri.toString());

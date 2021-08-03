@@ -22,12 +22,12 @@ public class MyTouchItemListener implements OnItemTouchListener {
 
 
     public MyTouchItemListener() {
-        Utils.inFo(this, "Constructor enter");
+        Utils.info(this, "Constructor enter");
         mService = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void release() {
-        Utils.inFo(this, "release enter");
+        Utils.info(this, "release enter");
         mService.shutdown();
 
         try {
@@ -39,25 +39,25 @@ public class MyTouchItemListener implements OnItemTouchListener {
     }
 
     public void setonItemClickListener(onItemClickListener listener) {
-        Utils.inFo(this, "setonItemClickListener enter");
+        Utils.info(this, "setonItemClickListener enter");
         mClickListener = listener;
     }
 
     @Override
     public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-        Utils.inFo(this, "onInterceptTouchEvent enter");
+        Utils.info(this, "onInterceptTouchEvent enter");
         View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-        Utils.inFo(this, "child = " + child);
+        Utils.info(this, "child = " + child);
         if (child != null) {
             int position = recyclerView.getChildAdapterPosition(child);
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                Utils.inFo(this, "Start long click timer");
+                Utils.info(this, "Start long click timer");
                 // Start long click timer
                 mFuture = mService.schedule(new LongClickTask(position), 2L, TimeUnit.SECONDS);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 // Cancel long click timer
-                Utils.inFo(this, "cancel long click timer");
+                Utils.info(this, "cancel long click timer");
                 mFuture.cancel(true);
             }
         }
@@ -95,7 +95,7 @@ public class MyTouchItemListener implements OnItemTouchListener {
 
         @Override
         public void run() {
-            Utils.inFo(this, "2 second has been arrived..");
+            Utils.info(this, "2 second has been arrived..");
             if (mClickListener != null) {
                 mClickListener.onLongClick(mPos);
             }

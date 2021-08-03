@@ -15,30 +15,30 @@ public class MyAidlService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Utils.inFo(this, "onBind enter");
+        Utils.info(this, "onBind enter");
         return mSvrStub.asBinder();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Utils.inFo(this, "onBind enter");
+        Utils.info(this, "onBind enter");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Utils.inFo(this, "onStartCommand enter");
+        Utils.info(this, "onStartCommand enter");
         return Service.START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
         super.onDestroy();
     }
 
     public int add(int a, int b) {
-        Utils.inFo(this, "add method is executed.");
+        Utils.info(this, "add method is executed.");
         // Overflow check
         if (a > 0 && b > 0 && a > Integer.MAX_VALUE - b) return -1;
 
@@ -57,13 +57,13 @@ public class MyAidlService extends Service {
         private RemoteCallbackList<IMyAidlCBInterface> mCallbacks = new RemoteCallbackList<IMyAidlCBInterface>();
 
         public ServiceStub(MyAidlService svr) {
-            Utils.inFo(this, "constructor enter");
+            Utils.info(this, "constructor enter");
             mRef_svr = new WeakReference<MyAidlService>(svr);
         }
 
         @Override
         public void registerServiceCB(IMyAidlCBInterface callBack) throws RemoteException {
-            Utils.inFo(this, "registerServiceCB enter");
+            Utils.info(this, "registerServiceCB enter");
             if (callBack != null) {
                 mCallbacks.register(callBack);
             }
@@ -71,7 +71,7 @@ public class MyAidlService extends Service {
 
         @Override
         public void unregisterServiceCB(IMyAidlCBInterface callBack) throws RemoteException {
-            Utils.inFo(this, "unregisterServiceCB enter");
+            Utils.info(this, "unregisterServiceCB enter");
             if (callBack != null) {
                 mCallbacks.unregister(callBack);
             }
@@ -79,9 +79,9 @@ public class MyAidlService extends Service {
 
         @Override
         public void add(int a, int b) throws RemoteException {
-            Utils.inFo(this, "add enter");
-            Utils.inFo(this, "a = " + a);
-            Utils.inFo(this, "b = " + b);
+            Utils.info(this, "add enter");
+            Utils.info(this, "a = " + a);
+            Utils.info(this, "b = " + b);
 
             // Set service uid pid
             long tokenId = Binder.clearCallingIdentity();
@@ -101,7 +101,7 @@ public class MyAidlService extends Service {
 
         @Override
         public void sendRequest(MyBinderData data) throws RemoteException {
-            Utils.inFo(this, "[sendRequest] enter");
+            Utils.info(this, "[sendRequest] enter");
 
             String msg = data.getMessage();
 

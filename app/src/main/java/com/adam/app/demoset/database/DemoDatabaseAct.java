@@ -45,7 +45,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Utils.inFo(this, "UI handleMessage enter");
+            Utils.info(this, "UI handleMessage enter");
             switch (msg.what) {
                 case ACTION_SHOW_OPTION:
                     int position = msg.arg1;
@@ -60,7 +60,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     private View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Utils.inFo(this, "Floating button clicked....");
+            Utils.info(this, "Floating button clicked....");
             showAddNoteDlg();
         }
     };
@@ -70,7 +70,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_database);
 
 
@@ -96,7 +96,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
             @Override
             public void onLongClick(int position) {
-                Utils.inFo(this, "onLongClick");
+                Utils.info(this, "onLongClick");
 
                 triggerVibrator();
 
@@ -120,7 +120,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume enter");
+        Utils.info(this, "onResume enter");
 
         loadData(mNotes);
 
@@ -131,13 +131,13 @@ public class DemoDatabaseAct extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause enter");
+        Utils.info(this, "onPause enter");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
         mTouchListener.release();
     }
 
@@ -161,13 +161,13 @@ public class DemoDatabaseAct extends AppCompatActivity {
     }
 
     private void triggerVibrator() {
-        Utils.inFo(this, "triggerVibrator enter");
+        Utils.info(this, "triggerVibrator enter");
         Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     private void loadData(List<Note> notes) {
-        Utils.inFo(this, "updateList enter");
+        Utils.info(this, "updateList enter");
         Cursor c = DBController.INSTANCE.queryNote("");
 
         // loop all data and add to list
@@ -187,7 +187,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     }
 
     private void showEmptyIfNoData() {
-        Utils.inFo(this, "showEmptyIfNoData enter");
+        Utils.info(this, "showEmptyIfNoData enter");
         if (mNotes.size() != 0) {
             mEmptyNoteView.setVisibility(View.GONE);
         } else {
@@ -201,13 +201,13 @@ public class DemoDatabaseAct extends AppCompatActivity {
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
             public void info(String msg) {
-                Utils.inFo(this, "info enter");
+                Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.inFo(this, "updateList enter");
+                Utils.info(this, "updateList enter");
 
                 // Query data form database
                 Cursor c = DBController.INSTANCE.queryNote(content);
@@ -231,7 +231,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     }
 
     private void showOptionDlg(final int position) {
-        Utils.inFo(this, "showOptionDlg enter position = " + position);
+        Utils.info(this, "showOptionDlg enter position = " + position);
         CharSequence[] items = new CharSequence[]{"Update", "Delete"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -239,7 +239,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Utils.inFo(this, "onClick enter which = " + which);
+                Utils.info(this, "onClick enter which = " + which);
                 switch (which) {
                     case 0:     // Update
                         showUpdateDlg(position);
@@ -250,12 +250,12 @@ public class DemoDatabaseAct extends AppCompatActivity {
                 }
             }
         });
-        Utils.inFo(this, "showOptionDlg show");
+        Utils.info(this, "showOptionDlg show");
         builder.create().show();
     }
 
     private void showUpdateDlg(final int position) {
-        Utils.inFo(this, "showUpdateDlg enter");
+        Utils.info(this, "showUpdateDlg enter");
 
         final Note note = mNotes.get(position);
 
@@ -263,13 +263,13 @@ public class DemoDatabaseAct extends AppCompatActivity {
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
             public void info(String msg) {
-                Utils.inFo(this, "info enter");
+                Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.inFo(this, "updateList enter");
+                Utils.info(this, "updateList enter");
 
                 // Query data form database
                 Cursor c = DBController.INSTANCE.queryNote(content);
@@ -294,7 +294,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
     }
 
     private void deleteNote(int position) {
-        Utils.inFo(this, "deleteNote enter");
+        Utils.info(this, "deleteNote enter");
         Note note = mNotes.get(position);
         DBController.INSTANCE.deleteNote(note.getId());
         // reload data

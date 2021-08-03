@@ -19,7 +19,7 @@ public class MyMessengerService extends Service {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Utils.inFo(this, "service handler");
+            Utils.info(this, "service handler");
             int flag = msg.what;
 
             if (flag == ACTION_ADD) {
@@ -57,25 +57,25 @@ public class MyMessengerService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Utils.inFo(this, "onBinder");
+        Utils.info(this, "onBinder");
         return mMessenger.getBinder();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Utils.inFo(this, "onBinder");
+        Utils.info(this, "onBinder");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Utils.inFo(this, "onStartCommand");
+        Utils.info(this, "onStartCommand");
         return Service.START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy");
+        Utils.info(this, "onDestroy");
     }
 }

@@ -15,7 +15,7 @@ public class Note {
     }
 
     public void updateNote(String note) {
-        Utils.inFo(this, "updateNote enter");
+        Utils.info(this, "updateNote enter");
         mNote = note;
     }
 
@@ -24,17 +24,17 @@ public class Note {
     }
 
     public String getId() {
-        Utils.inFo(this, "getId enter");
+        Utils.info(this, "getId enter");
         return this.mId;
     }
 
     public String getTimeStamp() {
-        Utils.inFo(this, "getTimeStamp enter");
+        Utils.info(this, "getTimeStamp enter");
         return this.mTimeStamp;
     }
 
     public String getNote() {
-        Utils.inFo(this, "getNote enter");
+        Utils.info(this, "getNote enter");
         return this.mNote;
     }
 }

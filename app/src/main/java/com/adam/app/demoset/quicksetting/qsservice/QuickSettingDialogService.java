@@ -24,7 +24,7 @@ public class QuickSettingDialogService extends TileService {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            Utils.inFo(this, "Dialog positive button click....");
+            Utils.info(this, "Dialog positive button click....");
             updateTile();
         }
     };
@@ -37,7 +37,7 @@ public class QuickSettingDialogService extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        Utils.inFo(this, "onClick");
+        Utils.info(this, "onClick");
         Dialog settingDlg = showAlertDialog("Quick setting2", null, mPositiveButton);
 
         this.showDialog(settingDlg);
@@ -45,7 +45,7 @@ public class QuickSettingDialogService extends TileService {
     }
 
     private void updateTile() {
-        Utils.inFo(this, "updateTile enter");
+        Utils.info(this, "updateTile enter");
         Tile tile = getQsTile();
         int state = (tile.getState() == Tile.STATE_ACTIVE) ? Tile.STATE_INACTIVE : Tile.STATE_ACTIVE;
 

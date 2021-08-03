@@ -65,7 +65,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     private TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            Utils.inFo(this, "onSurfaceTextureAvailable enter");
+            Utils.info(this, "onSurfaceTextureAvailable enter");
             mCameraController.openCamera(DemoCamera2Act2.this, mIndex);
 
         }
@@ -127,7 +127,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume enter");
+        Utils.info(this, "onResume enter");
         // Check permission and cameraDevice
         if (mCanOpenCamera) {
 
@@ -146,7 +146,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause");
+        Utils.info(this, "onPause");
         if (mCanOpenCamera) {
             // Close camera
             mCameraController.closeCamera();
@@ -195,7 +195,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
             if (grantResults.length == CAMERA_PERMISSION.length) {
                 for (int result : grantResults) {
-                    Utils.inFo(this, "result = " + result);
+                    Utils.info(this, "result = " + result);
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         Utils.showToast(this, "Camera permission is not granted");
                         mCanOpenCamera = false;
@@ -218,12 +218,12 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     }
 
     public void onTakePic(View v) {
-        Utils.inFo(this, "onTakePic enter");
+        Utils.info(this, "onTakePic enter");
         mCameraController.capturePicture();
     }
 
     public void onResult(View view) {
-        Utils.inFo(this, "onResult enter");
+        Utils.info(this, "onResult enter");
         if (mCaptureDone) {
             // Start play video app
             Intent intent = playImageIntent();
@@ -236,8 +236,8 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     }
 
     private Intent playImageIntent() {
-        Utils.inFo(this, "playVedioIntent");
-        Utils.inFo(this, "mFilePath = " + mFilePath);
+        Utils.info(this, "playVedioIntent");
+        Utils.info(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // Check file exists
         File file = new File(mFilePath);

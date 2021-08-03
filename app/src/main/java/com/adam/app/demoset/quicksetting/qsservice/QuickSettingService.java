@@ -17,36 +17,36 @@ public class QuickSettingService extends TileService {
     @Override
     public void onTileAdded() {
         super.onTileAdded();
-        Utils.inFo(this, "onTileAdded enter");
+        Utils.info(this, "onTileAdded enter");
     }
 
     @Override
     public void onTileRemoved() {
         super.onTileRemoved();
-        Utils.inFo(this, "onTileRemoved enter");
+        Utils.info(this, "onTileRemoved enter");
     }
 
     @Override
     public void onStartListening() {
         super.onStartListening();
-        Utils.inFo(this, "onStartListening enter");
+        Utils.info(this, "onStartListening enter");
     }
 
     @Override
     public void onStopListening() {
         super.onStopListening();
-        Utils.inFo(this, "onStopListening enter");
+        Utils.info(this, "onStopListening enter");
     }
 
     @Override
     public void onClick() {
         super.onClick();
-        Utils.inFo(this, "onClick enter");
+        Utils.info(this, "onClick enter");
         updateTitle();
     }
 
     private void updateTitle() {
-        Utils.inFo(this, "updateTitle enter");
+        Utils.info(this, "updateTitle enter");
         Tile tile = this.getQsTile();
         boolean updateSetting = tile.getState() == Tile.STATE_ACTIVE;
         Icon icon;

@@ -38,55 +38,55 @@ public class DemoTableAct extends AppCompatActivity {
     }
 
     public void Button1(View v) {
-        Utils.inFo(this, "Button1 enter");
+        Utils.info(this, "Button1 enter");
         mBtn1.setText(updateInfo());
 
     }
 
     public void Button2(View v) {
-        Utils.inFo(this, "Button2 enter");
+        Utils.info(this, "Button2 enter");
         mBtn2.setText(updateInfo());
 
     }
 
     public void Button3(View v) {
-        Utils.inFo(this, "Button3 enter");
+        Utils.info(this, "Button3 enter");
         mBtn3.setText(updateInfo());
 
     }
 
     public void Button4(View v) {
-        Utils.inFo(this, "Button4 enter");
+        Utils.info(this, "Button4 enter");
         mBtn4.setText(updateInfo());
 
     }
 
     public void Button5(View v) {
-        Utils.inFo(this, "Button5 enter");
+        Utils.info(this, "Button5 enter");
         mBtn5.setText(updateInfo());
 
     }
 
     public void Button6(View v) {
-        Utils.inFo(this, "Button6 enter");
+        Utils.info(this, "Button6 enter");
         mBtn6.setText(updateInfo());
 
     }
 
     public void Button7(View v) {
-        Utils.inFo(this, "Button7 enter");
+        Utils.info(this, "Button7 enter");
         mBtn7.setText(updateInfo());
 
     }
 
     public void Button8(View v) {
-        Utils.inFo(this, "Button8 enter");
+        Utils.info(this, "Button8 enter");
         mBtn8.setText(updateInfo());
 
     }
 
     public void Button9(View v) {
-        Utils.inFo(this, "Button9 enter");
+        Utils.info(this, "Button9 enter");
         mBtn9.setText(updateInfo());
 
     }
@@ -95,17 +95,17 @@ public class DemoTableAct extends AppCompatActivity {
      * Exit UI
      */
     public void Exit(View v) {
-        Utils.inFo(this, "Exit enter");
+        Utils.info(this, "Exit enter");
         this.finish();
     }
 
     public void Reset(View v) {
-        Utils.inFo(this, "Reset enter");
+        Utils.info(this, "Reset enter");
         resetButton();
     }
 
     private String updateInfo() {
-        Utils.inFo(this, "updateInfo enter");
+        Utils.info(this, "updateInfo enter");
 
         if (mIsCircle) {
             mIsCircle = false;
@@ -117,7 +117,7 @@ public class DemoTableAct extends AppCompatActivity {
     }
 
     private void resetButton() {
-        Utils.inFo(this, "Reset enter");
+        Utils.info(this, "Reset enter");
         mBtn1.setText("");
         mBtn2.setText("");
         mBtn3.setText("");

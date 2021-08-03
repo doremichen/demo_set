@@ -43,7 +43,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     private TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            Utils.inFo(this, "onSurfaceTextureAvailable enter");
+            Utils.info(this, "onSurfaceTextureAvailable enter");
             // Open camera
             mController.openCamera(DemoVideoRecordAct.this, mSurfaceView);
 
@@ -96,7 +96,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
         @Override
         public String getPath() {
-            Utils.inFo(this, "getPath enter");
+            Utils.info(this, "getPath enter");
             File fileDir = DemoVideoRecordAct.this.getFilesDir();
             mFilePath = fileDir.getPath() + "/" + System.currentTimeMillis() + ".mp4";
             return mFilePath;
@@ -126,11 +126,11 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Utils.inFo(this, "onRequestPermissionsResult enter");
+        Utils.info(this, "onRequestPermissionsResult enter");
         if (requestCode == REQUEST_PERMISSION_CODE) {
             if (grantResults.length == RECORD_PERMISSION.length) {
                 for (int result : grantResults) {
-                    Utils.inFo(this, "result = " + result);
+                    Utils.info(this, "result = " + result);
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         mIsAllow = false;
                         // permission denied
@@ -160,7 +160,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume mIsAllow = " + mIsAllow);
+        Utils.info(this, "onResume mIsAllow = " + mIsAllow);
         if (mIsAllow) {
             if (mSurfaceView.isAvailable()) {
                 // Open camera
@@ -176,7 +176,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause mIsAllow = " + mIsAllow);
+        Utils.info(this, "onPause mIsAllow = " + mIsAllow);
         if (mIsAllow) {
             mController.closeCamera();
         }
@@ -185,7 +185,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy mIsAllow = " + mIsAllow);
+        Utils.info(this, "onDestroy mIsAllow = " + mIsAllow);
         if (mIsAllow) {
 
         }
@@ -194,7 +194,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     public void onRecord(View v) {
-        Utils.inFo(this, "onRecord");
+        Utils.info(this, "onRecord");
         if (!mStartRec) {
             mController.startRecord(this);
             mBtn_recod.setText(this.getResources().getString(R.string.action_stop_record));
@@ -207,7 +207,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     public void onPlayVideo(View v) {
-        Utils.inFo(this, "onPlayVideo");
+        Utils.info(this, "onPlayVideo");
         if (mStartRec) {
             Utils.showToast(this, "Recording. Do not play");
             return;
@@ -224,8 +224,8 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     private Intent playVedioIntent() {
-        Utils.inFo(this, "playVedioIntent");
-        Utils.inFo(this, "mFilePath = " + mFilePath);
+        Utils.info(this, "playVedioIntent");
+        Utils.info(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // Check file exists
         File file = new File(mFilePath);

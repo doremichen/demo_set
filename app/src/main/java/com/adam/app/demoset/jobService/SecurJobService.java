@@ -23,7 +23,7 @@ public class SecurJobService extends JobService {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Utils.showToast(SecurJobService.this, "Job is running...");
-            Utils.inFo(this, "Job is running...");
+            Utils.info(this, "Job is running...");
             Utils.makeStatusNotification("JobService is triggerd...", getApplicationContext());
             jobFinished((JobParameters) msg.obj, false);
         }
@@ -34,19 +34,19 @@ public class SecurJobService extends JobService {
     public void onCreate() {
         super.onCreate();
         Utils.showToast(this, "onCreate");
-        Utils.inFo(this, "onCreate");
+        Utils.info(this, "onCreate");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Utils.showToast(this, "onDestroy");
-        Utils.inFo(this, "onDestroy");
+        Utils.info(this, "onDestroy");
     }
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        Utils.inFo(this, "onStartJob");
+        Utils.info(this, "onStartJob");
         Utils.showToast(this, "onStartJob");
         Message msg = Message.obtain(mJobH, 1, params);
         mJobH.sendMessage(msg);
@@ -55,7 +55,7 @@ public class SecurJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        Utils.inFo(this, "onSopJob");
+        Utils.info(this, "onSopJob");
         Utils.showToast(this, "onStopJob");
         mJobH.removeMessages(1);
         return false;

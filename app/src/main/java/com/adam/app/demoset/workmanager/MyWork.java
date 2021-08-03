@@ -29,13 +29,13 @@ public class MyWork extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Utils.inFo(this, "doWork enter");
+        Utils.info(this, "doWork enter");
         try {
             Context appContext = this.getApplicationContext();
 
             // Get image from data object
             String imgUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
-            Utils.inFo(this, "imgUri = " + imgUri);
+            Utils.info(this, "imgUri = " + imgUri);
             // Check if image exists or not
             if (TextUtils.isEmpty(imgUri)) {
                 throw new IllegalArgumentException("Invalid input imgUri");

@@ -25,8 +25,8 @@ public class LocalService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Utils.showSnackBar(this, "onStartCommand");
-        Utils.inFo(this, "flags = " + flags);
-        Utils.inFo(this, "intent = " + intent);
+        Utils.info(this, "flags = " + flags);
+        Utils.info(this, "intent = " + intent);
         return Service.START_REDELIVER_INTENT;
     }
 

@@ -30,7 +30,7 @@ public class DemoCamera2Act extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.inFo(this, "onCreate enter");
+        Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_camera2);
 
         mSureView = this.findViewById(R.id.textureView_act2);
@@ -52,7 +52,7 @@ public class DemoCamera2Act extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.inFo(this, "onResume enter");
+        Utils.info(this, "onResume enter");
         // open camera
         if (this.mSureView.isAvailable()) {
             mCameraController.openCamera(mIndex, this.mSureView);
@@ -64,14 +64,14 @@ public class DemoCamera2Act extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.inFo(this, "onPause enter");
+        Utils.info(this, "onPause enter");
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy enter");
+        Utils.info(this, "onDestroy enter");
         // close camera
         mCameraController.stopWorkThread();
         mCameraController.closeCamera();
@@ -128,7 +128,7 @@ public class DemoCamera2Act extends AppCompatActivity {
      * @param v
      */
     public void onTakePic(View v) {
-        Utils.inFo(this, "onTakePic enter");
+        Utils.info(this, "onTakePic enter");
         mCameraController.capture();
 
 
@@ -137,18 +137,18 @@ public class DemoCamera2Act extends AppCompatActivity {
     private class MySurfaceTextureListener implements TextureView.SurfaceTextureListener {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            Utils.inFo(this, "onSurfaceTextureAvailable enter");
+            Utils.info(this, "onSurfaceTextureAvailable enter");
             mCameraController.openCamera(0, mSureView);
         }
 
         @Override
         public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            Utils.inFo(this, "onSurfaceTextureSizeChanged enter");
+            Utils.info(this, "onSurfaceTextureSizeChanged enter");
         }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            Utils.inFo(this, "onSurfaceTextureDestroyed enter");
+            Utils.info(this, "onSurfaceTextureDestroyed enter");
             return false;
         }
 

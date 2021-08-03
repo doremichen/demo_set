@@ -60,7 +60,7 @@ public class FloatingWindowSvr extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Utils.inFo(this, "onCreate");
+        Utils.info(this, "onCreate");
         // get window service and layout params
         this.mLayoutParams = new WindowManager.LayoutParams();
         this.mWM = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -71,7 +71,7 @@ public class FloatingWindowSvr extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.inFo(this, "onDestroy");
+        Utils.info(this, "onDestroy");
         // removew circle view to dismiss the floating view
         if (this.mLayout != null
             || this.mLayoutParams != null) {
@@ -80,7 +80,7 @@ public class FloatingWindowSvr extends Service {
     }
 
     private void buildFloatingView() {
-        Utils.inFo(this, "buildFloatingView");
+        Utils.info(this, "buildFloatingView");
         // config layout params
         this.mLayoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         this.mLayoutParams.format = PixelFormat.RGBA_8888; // the effect is transparent
@@ -105,7 +105,7 @@ public class FloatingWindowSvr extends Service {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Utils.inFo(this, "onTouch");
+                Utils.info(this, "onTouch");
 //                StringBuilder stb = new StringBuilder("Refresh UI: \n");
                 int action = event.getAction();
                 switch (action) {
@@ -131,7 +131,7 @@ public class FloatingWindowSvr extends Service {
                             mLayoutParams.x += (int)deltaX;
                             mLayoutParams.y += (int)deltaY;
                             // refresh UI
-                            Utils.inFo(this, "refresh UI...");
+                            Utils.info(this, "refresh UI...");
                             mWM.updateViewLayout(mLayout, mLayoutParams);
                         }
 //                        stb.append("event x: ").append(event.getRawX()).append(" ").append(Current.sY);

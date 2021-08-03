@@ -25,7 +25,7 @@ public class SchedulerController {
      * @param listener
      */
     public void registeronControllerListener(onControllerListener listener) {
-        Utils.inFo(this, "registeronControllerListener enter");
+        Utils.info(this, "registeronControllerListener enter");
         mListener = listener;
     }
 
@@ -35,7 +35,7 @@ public class SchedulerController {
      * @param period
      */
     public void startCount(long period) {
-        Utils.inFo(this, "startCount enter");
+        Utils.info(this, "startCount enter");
 
         if (period == 0L) {
             throw new IllegalArgumentException("Please input the nonzero value");
@@ -59,7 +59,7 @@ public class SchedulerController {
      * Stop counter
      */
     public void stopCount() {
-        Utils.inFo(this, "stopCount enter");
+        Utils.info(this, "stopCount enter");
         cancelTask();
 
     }
@@ -68,7 +68,7 @@ public class SchedulerController {
      * Release resource
      */
     public void finishTask() {
-        Utils.inFo(this, "finishTask enter");
+        Utils.info(this, "finishTask enter");
         cancelTask();
 
         mService.shutdown();
@@ -83,7 +83,7 @@ public class SchedulerController {
             e.printStackTrace();
         }
 
-        Utils.inFo(this, "finishTask exit");
+        Utils.info(this, "finishTask exit");
         if (mListener != null) {
             mListener.finishUI();
         }
@@ -94,7 +94,7 @@ public class SchedulerController {
      * Cancel counter task
      */
     private void cancelTask() {
-        Utils.inFo(this, "cancelTask enter");
+        Utils.info(this, "cancelTask enter");
         if (mFuture != null && mFuture.isCancelled() == false) {
             mFuture.cancel(true);
         }
@@ -106,7 +106,7 @@ public class SchedulerController {
     private class MyScheduleTask implements Runnable {
         @Override
         public void run() {
-            Utils.inFo(this, "Schedule task is running....");
+            Utils.info(this, "Schedule task is running....");
             // Tell UI
             if (mListener != null) {
                 mListener.TimeArrive(System.currentTimeMillis() - mStartTime);

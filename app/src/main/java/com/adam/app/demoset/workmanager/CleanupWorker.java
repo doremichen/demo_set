@@ -20,7 +20,7 @@ public class CleanupWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Utils.inFo(this, "doWork enter");
+        Utils.info(this, "doWork enter");
         Context appContext = getApplicationContext();
 
         File outputDir = new File(appContext.getFilesDir(), Utils.OUTPUT_PATH);
@@ -34,7 +34,7 @@ public class CleanupWorker extends Worker {
                         String name = f.getName();
                         if (!TextUtils.isEmpty(name) && name.endsWith(".png")) {
                             boolean deleted = f.delete();
-                            Utils.inFo(this, name + " is delted " + deleted);
+                            Utils.info(this, name + " is delted " + deleted);
                         }
                     }
                 }
@@ -42,7 +42,7 @@ public class CleanupWorker extends Worker {
             Utils.makeStatusNotification("Clean up Successful", appContext);
             return Result.SUCCESS;
         } catch (Exception e) {
-            Utils.inFo(this, "Clean error");
+            Utils.info(this, "Clean error");
             Utils.makeStatusNotification("Clean up error", appContext);
             return Result.FAILURE;
         }

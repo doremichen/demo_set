@@ -74,11 +74,11 @@ public abstract class Utils {
 
     public static volatile String sImagePath;
 
-    public static void inFo(Object obj, String str) {
+    public static void info(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
     }
 
-    public static void inFo(Class<?> clazz, String str) {
+    public static void info(Class<?> clazz, String str) {
         Log.i(TAG, clazz.getSimpleName() + ": " + str);
     }
 
@@ -126,7 +126,7 @@ public abstract class Utils {
 
 
     public static boolean askPermission(final Activity context, @NonNull final String[] permissions, final int requestcode) {
-        Utils.inFo(Utils.class, "askPermission enter");
+        Utils.info(Utils.class, "askPermission enter");
         boolean ret = false;
         int allowNum = 0;
         boolean showDlg = false;
@@ -168,7 +168,7 @@ public abstract class Utils {
             }
 
         }
-        Utils.inFo(Utils.class, "ret = " + ret);
+        Utils.info(Utils.class, "ret = " + ret);
 
         return ret;
     }
@@ -266,16 +266,16 @@ public abstract class Utils {
     }
 
     public static void enableLog(String enable, String path) {
-        Utils.inFo(Utils.class, "enableLog enter");
+        Utils.info(Utils.class, "enableLog enter");
         if (TRUE.equals(enable)) {
-            Utils.inFo(Utils.class, "true");
+            Utils.info(Utils.class, "true");
             // Clear logcat
             executeCommend("logcat -c");
             // Log file
             executeCommend("logcat -f " + path);
 
         } else {
-            Utils.inFo(Utils.class, "false");
+            Utils.info(Utils.class, "false");
             // Dump log and exits
             executeCommend("logcat -d");
         }

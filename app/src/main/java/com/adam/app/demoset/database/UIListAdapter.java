@@ -22,7 +22,7 @@ public class UIListAdapter extends RecyclerView.Adapter<UIListAdapter.MyViewHold
     private Context mCtx;
 
     public UIListAdapter(Context context, @NonNull List<Note> notes) {
-        Utils.inFo(this, "UIListAdapter constructor");
+        Utils.info(this, "UIListAdapter constructor");
         mCtx = context;
         this.mNotes = notes;
     }
@@ -30,7 +30,7 @@ public class UIListAdapter extends RecyclerView.Adapter<UIListAdapter.MyViewHold
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Utils.inFo(this, "onCreateViewHolder enter");
+        Utils.info(this, "onCreateViewHolder enter");
         View view = LayoutInflater.from(mCtx).inflate(R.layout.item_note_layout,
                 viewGroup, false);
         return new MyViewHolder(view);
@@ -38,7 +38,7 @@ public class UIListAdapter extends RecyclerView.Adapter<UIListAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Utils.inFo(this, "onBindViewHolder enter");
+        Utils.info(this, "onBindViewHolder enter");
         Note note = mNotes.get(position);
 
         // Set item information
@@ -48,7 +48,7 @@ public class UIListAdapter extends RecyclerView.Adapter<UIListAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        Utils.inFo(this, "getItemCount enter size = " + mNotes.size());
+        Utils.info(this, "getItemCount enter size = " + mNotes.size());
         return mNotes.size();
     }
 
@@ -57,7 +57,7 @@ public class UIListAdapter extends RecyclerView.Adapter<UIListAdapter.MyViewHold
      * @return
      */
     private String formateDate(String timeStamp) {
-        Utils.inFo(this, "formateDate enter");
+        Utils.info(this, "formateDate enter");
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = sdf.parse(timeStamp);

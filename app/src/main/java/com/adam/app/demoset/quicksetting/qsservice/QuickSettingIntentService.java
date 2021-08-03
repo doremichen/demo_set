@@ -17,7 +17,7 @@ public class QuickSettingIntentService extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        Utils.inFo(this, "onClick enter");
+        Utils.info(this, "onClick enter");
         boolean isCurrentlyLocked = this.isLocked();
 
         if (!isCurrentlyLocked) {

@@ -23,19 +23,19 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
     private Context mCtx;
 
     public NoteListAdapter(Context context) {
-        Utils.inFo(this, "Constructor");
+        Utils.info(this, "Constructor");
         mCtx = context;
     }
 
     public void setNotes(@NonNull List<Note> notes) {
-        Utils.inFo(this, "setNotes enter notes = " + notes);
+        Utils.info(this, "setNotes enter notes = " + notes);
         this.mNotes = notes;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        Utils.inFo(this, "onCreateViewHolder enter");
+        Utils.info(this, "onCreateViewHolder enter");
         View view = LayoutInflater.from(mCtx).inflate(R.layout.item_note_layout,
                 viewGroup, false);
         return new MyViewHolder(view);
@@ -43,7 +43,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Utils.inFo(this, "onBindViewHolder enter");
+        Utils.info(this, "onBindViewHolder enter");
         if (mNotes != null) {
             Note note = mNotes.get(position);
 
@@ -56,9 +56,9 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
 
     @Override
     public int getItemCount() {
-        Utils.inFo(this, "getItemCount enter ");
+        Utils.info(this, "getItemCount enter ");
         int count = (mNotes != null) ? mNotes.size() : 0;
-        Utils.inFo(this, "count = " + count);
+        Utils.info(this, "count = " + count);
         return count;
     }
 
@@ -67,7 +67,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
      * @return
      */
     private String formatDate(String timeStamp) {
-        Utils.inFo(this, "formatDate enter");
+        Utils.info(this, "formatDate enter");
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = sdf.parse(timeStamp);

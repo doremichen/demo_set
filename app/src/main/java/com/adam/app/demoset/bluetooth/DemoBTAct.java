@@ -58,7 +58,7 @@ public class DemoBTAct extends AppCompatActivity {
 
         @Override
         public void onClick(int position) {
-            Utils.inFo(this, "the item button " + position + " is pressed");
+            Utils.info(this, "the item button " + position + " is pressed");
             BluetoothDevice device = this.mDevices.get(position);
 
             if (mTask == null) {
@@ -69,7 +69,7 @@ public class DemoBTAct extends AppCompatActivity {
                 mTask.cancel();
                 mTask = null;
             }
-            Utils.inFo(this, "connect down....");
+            Utils.info(this, "connect down....");
         }
     }
 
@@ -86,11 +86,11 @@ public class DemoBTAct extends AppCompatActivity {
 
         @Override
         public void onClick(int position) {
-            Utils.inFo(this, "the item button " + position + " is pressed");
+            Utils.info(this, "the item button " + position + " is pressed");
             BluetoothDevice device = this.mDevices.get(position);
 
             // Check BT status bound/unbound
-            Utils.inFo(this, "bound state = " + device.getBondState());
+            Utils.info(this, "bound state = " + device.getBondState());
             if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                 unpairDevice(device);
             } else {
@@ -112,11 +112,11 @@ public class DemoBTAct extends AppCompatActivity {
 
         @Override
         public void onClick(int position) {
-            Utils.inFo(this, "the item button " + position + " is pressed");
+            Utils.info(this, "the item button " + position + " is pressed");
             BluetoothDevice device = this.mDevices.get(position);
 
             // Check BT status bound/unbound
-            Utils.inFo(this, "bound state = " + device.getBondState());
+            Utils.info(this, "bound state = " + device.getBondState());
             unpairDevice(device);
         }
     }
@@ -134,7 +134,7 @@ public class DemoBTAct extends AppCompatActivity {
                 Snackbar.make(mLayout, "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
 
             } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
-                Utils.inFo(this, "Get ACTION_FOUND_BT_DEVICE....");
+                Utils.info(this, "Get ACTION_FOUND_BT_DEVICE....");
                 mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
 
                 // Show scan list
@@ -146,12 +146,12 @@ public class DemoBTAct extends AppCompatActivity {
                 updatePairedList();
 
             } else if (BTReceiver.ACTION_UPDATE_BT_BOUND_STATE.equals(action)) {
-                Utils.inFo(this, "Update bt information....");
+                Utils.info(this, "Update bt information....");
 
                 Bundle bundle = intent.getBundleExtra(BTReceiver.KEY_BUNDLE_DEVICE);
                 BluetoothDevice device = bundle.getParcelable(BTReceiver.KEY_BT_DEVICE);
 
-                Utils.inFo(this, "Bond state = " + device.getBondState());
+                Utils.info(this, "Bond state = " + device.getBondState());
                 int state = device.getBondState();
                 if (state == BluetoothDevice.BOND_BONDED) {
                     mPairedDevices.add(device);
@@ -168,7 +168,7 @@ public class DemoBTAct extends AppCompatActivity {
             } else if (ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
                 // Update list
                 boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
-                Utils.inFo(this, "got connect status: " + isConnect);
+                Utils.info(this, "got connect status: " + isConnect);
                 mPairedAdapter.updateAdressContent(isConnect);
                 mPairedAdapter.notifyDataSetChanged();
             }
@@ -291,7 +291,7 @@ public class DemoBTAct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_ENABLE_BT_CODE) {
-            Utils.inFo(this, "resultCode = " + resultCode);
+            Utils.info(this, "resultCode = " + resultCode);
 
             // Reject to enable bt
             if (resultCode == RESULT_CANCELED) {
@@ -355,7 +355,7 @@ public class DemoBTAct extends AppCompatActivity {
      * @param device
      */
     private void pairDevice(BluetoothDevice device) {
-        Utils.inFo(this, "pairDevice enter");
+        Utils.info(this, "pairDevice enter");
         device.createBond();
     }
 
@@ -365,7 +365,7 @@ public class DemoBTAct extends AppCompatActivity {
      * @param device
      */
     private void unpairDevice(BluetoothDevice device) {
-        Utils.inFo(this, "unpairDevice enter");
+        Utils.info(this, "unpairDevice enter");
         try {
             Method method = device.getClass().getMethod("removeBond", (Class[]) null);
             method.invoke(device, (Object[]) null);

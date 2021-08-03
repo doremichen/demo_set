@@ -104,10 +104,10 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     //
     @Override
     public void updateTaskInfo() {
-        Utils.inFo(this, "[update] enter");
+        Utils.info(this, "[update] enter");
 
         mUIHandler.post(mUITask);
 
-        Utils.inFo(this, "[update] exit");
+        Utils.info(this, "[update] exit");
     }
 }

@@ -36,13 +36,13 @@ public class NativeUtils {
     public static boolean sDataFromNative = false;
 
     private void notifyObj(String message) {
-        Utils.inFo(this, "notify is called and message: " + message);
+        Utils.info(this, "notify is called and message: " + message);
         DemoJNIAct.notifyUI(mDataFromNative, message);
 
     }
 
     private static void notifyClazz(String message) {
-        Utils.inFo(NativeUtils.class, "notify is called and message: " + message);
+        Utils.info(NativeUtils.class, "notify is called and message: " + message);
         DemoJNIAct.notifyUI(sDataFromNative, message);
 
     }

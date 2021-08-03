@@ -24,7 +24,7 @@ public enum DBController {
      * @param resolver
      */
     public void setContentResolver(@NonNull ContentResolver resolver) {
-        Utils.inFo(this, "setContentResolver enter");
+        Utils.info(this, "setContentResolver enter");
         mResolver = resolver;
     }
 
@@ -35,7 +35,7 @@ public enum DBController {
      * @return
      */
     public Uri addNote(@NonNull String content) {
-        Utils.inFo(this, "addNote enter");
+        Utils.info(this, "addNote enter");
         // Check mResolver validity
         if (mResolver == null) {
             throw new IllegalArgumentException("Please set content resolver first");
@@ -60,7 +60,7 @@ public enum DBController {
      * @return
      */
     public int updateNote(@NonNull String id, @NonNull String content) {
-        Utils.inFo(this, "updateNode enter");
+        Utils.info(this, "updateNode enter");
         // Check mResolver validity
         if (mResolver == null) {
             throw new IllegalArgumentException("Please set content resolver first");
@@ -89,7 +89,7 @@ public enum DBController {
      * @return
      */
     public Cursor queryNote(String note) {
-        Utils.inFo(this, "queryNote enter");
+        Utils.info(this, "queryNote enter");
         // Check mResolver validity
         if (mResolver == null) {
             throw new IllegalArgumentException("Please set content resolver first");
@@ -121,7 +121,7 @@ public enum DBController {
      * @return
      */
     public int deleteNote(String id) {
-        Utils.inFo(this, "deleteNote enter");
+        Utils.info(this, "deleteNote enter");
         // Check mResolver validity
         if (mResolver == null) {
             throw new IllegalArgumentException("Please set content resolver first");
@@ -139,7 +139,7 @@ public enum DBController {
 
         // Delete data
         int deleteId = mResolver.delete(MyDBProvider.MYTABLE_URI, selection, selectionArgs);
-        Utils.inFo(this, "deleteNote deleteId = " + deleteId);
+        Utils.info(this, "deleteNote deleteId = " + deleteId);
         return deleteId;
     }
 
