@@ -3,10 +3,12 @@
 //
 package com.adam.app.demoset.myHandlerThread;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class WorkData {
 
     // Record count times of the work
-    private int mCount;
+    private AtomicInteger mCount = new AtomicInteger(0);
 
     private WorkData() {
     }
@@ -23,14 +25,14 @@ public class WorkData {
     // Set counter value
     //
     public void setCounter(int value) {
-        mCount = value;
+        mCount.set(value);
     }
 
     //
     // Get counter value
     //
     public int getCounter() {
-        return mCount;
+        return mCount.get();
     }
 
 }

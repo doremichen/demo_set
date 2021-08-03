@@ -7,6 +7,7 @@ import com.adam.app.demoset.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MyHandlerThread extends HandlerThread {
 
@@ -14,26 +15,25 @@ public class MyHandlerThread extends HandlerThread {
     List<HandlerObserver> mObvList = new ArrayList<HandlerObserver>();
 
     // Used to cancel the task
-    private boolean isCancel;
+    private AtomicBoolean mIsCancel = new AtomicBoolean(false);
 
     //
     // Work task
     //
     private class WorkTask implements Runnable {
 
-        private int i;
+        private int mId;
 
         @Override
         public void run() {
-
-            while (isCancel == false) {
-                i++;
+            while (mIsCancel.get() == false) {
+                mId++;
                 // Add one task time
-                WorkData.newInstance().setCounter(i);
+                WorkData.newInstance().setCounter(mId);
 
                 // Notify observer
-                for (int i = 0; i < mObvList.size(); i++) {
-                    mObvList.get(i).updateTaskInfo();
+                for (HandlerObserver observer: mObvList) {
+                    observer.updateTaskInfo();
                 }
 
                 // sleep 1 sec
@@ -42,9 +42,7 @@ public class MyHandlerThread extends HandlerThread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
     }
 
@@ -63,7 +61,7 @@ public class MyHandlerThread extends HandlerThread {
     @Override
     protected void onLooperPrepared() {
         super.onLooperPrepared();
-
+        // initial work thread handler
         mHandler = new Handler(getLooper());
     }
 
@@ -73,7 +71,7 @@ public class MyHandlerThread extends HandlerThread {
     //
     public void executeTask() {
         Utils.info(this, "[executeTask] enter");
-        isCancel = false;
+        mIsCancel.set(false);
         mHandler.post(mTask);
         Utils.info(this, "[executeTask] exit");
     }
@@ -84,7 +82,7 @@ public class MyHandlerThread extends HandlerThread {
     public void cancelTask() {
         Utils.info(this, "[cancelTask] enter");
         mHandler.removeCallbacks(mTask);
-        isCancel = true;
+        mIsCancel.set(true);
         Utils.info(this, "[cancelTask] exit");
     }
 
