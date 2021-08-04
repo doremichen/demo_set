@@ -42,7 +42,6 @@ public class MyAidlService extends Service {
         // Overflow check
         if (a > 0 && b > 0 && a > Integer.MAX_VALUE - b) return -1;
 
-
         int c = a + b;
 
         return c;
@@ -102,12 +101,13 @@ public class MyAidlService extends Service {
         @Override
         public void sendRequest(MyBinderData data) throws RemoteException {
             Utils.info(this, "[sendRequest] enter");
-
+            // Set service uid pid
+            long tokenId = Binder.clearCallingIdentity();
             String msg = data.getMessage();
 
             // Show notification to tell user
             Utils.makeStatusNotification("I got the data from UI: " + msg, mRef_svr.get());
-
+            Binder.restoreCallingIdentity(tokenId);
         }
     }
 }

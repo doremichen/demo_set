@@ -135,6 +135,11 @@ public class DemoBinderAct extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // clear input/text data
+        this.mETInputA.setText("");
+        this.mETInputB.setText("");
+        this.mTVOutputC.setText("c:");
+
         switch (item.getItemId()) {
             case R.id.aidl_config:
                 Utils.showToast(this, "AIDL is configured.");
