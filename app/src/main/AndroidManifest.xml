@@ -62,7 +62,8 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".jnidemo.DemoJNIAct"
-            android:label="Demo hello jni" />
+            android:label="Demo hello jni"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:label="Demo flash light"
@@ -119,11 +120,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".quicksetting.DemoQuickSetting"
-            android:label="Demo quick setting" />
+            android:label="Demo quick setting"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".quicksetting.QuickSettingResultAct"
             android:label="Result activity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".workmanager.DemoWorkManagerMainAct"
             android:label="Demo work manager main"
