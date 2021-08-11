@@ -2,18 +2,56 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.adam.app.demoset">
 
+    <permission
+        android:name="com.adam.app.permission.SECUR_SERVICE"
+        android:description="@string/label_permission_description"
+        android:label="@string/label_permission_label"
+        android:protectionLevel="dangerous" />
+    <permission
+        android:name="com.adam.app.database.READ_DB"
+        android:description="@string/permission_read_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.adam.app.database.WRITE_DB"
+        android:description="@string/permission_write_description"
+        android:label="@string/permission_read_label"
+        android:protectionLevel="normal" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera2.full" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".animation.DemoGifAct"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".wifi.DemoWifiAct"
             android:label="@string/title_activity_demo_wifi"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".myHandlerThread.DemoMyHandlerThreadAct"
             android:label="@string/title_activity_demo_my_handler_thread"
@@ -63,7 +101,7 @@
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:label="Demo hello jni"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:label="Demo flash light"
@@ -121,12 +159,12 @@
         <activity
             android:name=".quicksetting.DemoQuickSetting"
             android:label="Demo quick setting"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".quicksetting.QuickSettingResultAct"
             android:label="Result activity"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkManagerMainAct"
             android:label="Demo work manager main"
@@ -142,6 +180,7 @@
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -155,7 +194,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/share_file" />
         </provider>
-
         <provider
             android:name=".database.provider.MyDBProvider"
             android:authorities="com.adam.app.demoset.provider.MyNote"
@@ -163,6 +201,7 @@
             android:exported="true"
             android:readPermission="com.adam.app.database.READ_DB"
             android:writePermission="com.adam.app.database.WRITE_DB" />
+
         <receiver
             android:name=".lockscreen.MyAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -174,16 +213,15 @@
                 android:name="android.app.device_admin"
                 android:resource="@xml/policies" />
         </receiver>
-
         <receiver
             android:name=".alarm.MyAlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name=".floatingwindow.FloatingWindowSvr"
             android:enabled="true"
-            android:exported="true"></service>
-
+            android:exported="true" />
         <service
             android:name=".LocalService"
             android:enabled="true"
@@ -252,40 +290,5 @@
             </intent-filter>
         </service>
     </application>
-    <permission
-        android:name="com.adam.app.permission.SECUR_SERVICE"
-        android:description="@string/label_permission_description"
-        android:label="@string/label_permission_label"
-        android:protectionLevel="dangerous" />
-    <permission
-        android:name="com.adam.app.database.READ_DB"
-        android:description="@string/permission_read_description"
-        android:label="@string/permission_read_label"
-        android:protectionLevel="normal" />
-
-    <permission
-        android:name="com.adam.app.database.WRITE_DB"
-        android:description="@string/permission_write_description"
-        android:label="@string/permission_read_label"
-        android:protectionLevel="normal" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-feature android:name="android.hardware.camera2.full" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

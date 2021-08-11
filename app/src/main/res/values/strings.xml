@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">DemoSet</string>
+    <string name="label_hello_world">Hello world</string>
     <string name="label_welcome_to_demo">Welcome to Demo</string>
     <string name="title_activity_demo_service">DemoServiceAct</string>
     <string name="label_demo_service">Demo service</string>
@@ -34,8 +35,8 @@
     <string name="label_demo_admin_info">Welcome to demo device admin</string>
     <string name="action_take_picture">Take picture</string>
     <string name="label_alarm_info">Alarm count: 0</string>
-    <string name="action_start_alarm">Start</string>
-    <string name="action_stop_alarm">Stop</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
     <string name="action_start_record">Start record</string>
     <string name="action_stop_record">Stop record</string>
     <string name="action_play">Play</string>

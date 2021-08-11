@@ -182,11 +182,11 @@ public class DemoAlarmAct extends AppCompatActivity {
             mSeekBarOffsetTime.setEnabled(false);
             startAlarm();
             mNeedAlarm = true;
-            mbtnAlarm.setText(this.getResources().getString(R.string.action_stop_alarm));
+            mbtnAlarm.setText(this.getResources().getString(R.string.action_stop));
         } else {
             stopAlarm();
             mNeedAlarm = false;
-            mbtnAlarm.setText(this.getResources().getString(R.string.action_start_alarm));
+            mbtnAlarm.setText(this.getResources().getString(R.string.action_start));
             mSeekBarOffsetTime.setEnabled(true);
         }
 

@@ -35,7 +35,7 @@
         android:background="@drawable/item_selector"
         android:fontFamily="@font/cabin_bold"
         android:onClick="onAlarm"
-        android:text="@string/action_start_alarm"
+        android:text="@string/action_start"
         android:textAllCaps="false"
         android:textColor="@color/ic_launcher_background"
         android:textSize="24sp"
