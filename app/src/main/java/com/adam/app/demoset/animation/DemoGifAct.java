@@ -1,3 +1,13 @@
+/**
+ * This example is that demo how to play gif image.
+ * The implement flow is as the following:
+ * 1. Implement customize view: In this example the customize view is
+ *    GifView
+ * 2. Add declare-styleable in values/attrs.xml. Reference:
+ *    https://developer.android.com/training/custom-views/create-view#customattr
+ * 3. Make sure the attribute android:hardwareAccelerated="false" according to
+ *    show gif activity tag in AndroidManifest.xml
+ */
 package com.adam.app.demoset.animation;
 
 import android.support.v7.app.AppCompatActivity;
