@@ -22,39 +22,38 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:typeface="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_invoke_jni"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_invoke_jni"
-        android:layout_width="0dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padd_start_dim"
+        android:layout_marginEnd="@dimen/padd_end_dim"
+        android:layout_marginBottom="@dimen/padd_bottom_dim"
         android:background="@color/colorPrimaryDark"
         android:onClick="onInvokeJNI"
         android:text="@string/action_jni_say_hello"
-        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/ic_launcher_background"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_test_instance_cb"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_show_jni" />
+        />
 
     <Button
         android:id="@+id/btn_test_instance_cb"
-        android:layout_width="0dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padd_top_dim"
+        android:layout_marginBottom="@dimen/padd_bottom_dim"
+        android:layout_marginStart="@dimen/padd_start_dim"
+        android:layout_marginEnd="@dimen/padd_end_dim"
         android:background="@color/design_default_color_primary_dark"
         android:onClick="onObjectCB"
         android:text="@string/action_test_inst_cb"
@@ -64,18 +63,17 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_test_class_cb"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_invoke_jni" />
+        />
 
     <Button
         android:id="@+id/btn_test_class_cb"
-        android:layout_width="0dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padd_top_dim"
+        android:layout_marginBottom="@dimen/padd_bottom_dim"
+        android:layout_marginStart="@dimen/padd_start_dim"
+        android:layout_marginEnd="@dimen/padd_end_dim"
         android:background="@color/colorPrimaryDark"
         android:onClick="onClazzCB"
         android:text="@string/action_test_class_cb"
@@ -85,14 +83,6 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_test_instance_cb" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="271dp" />
+        />
 </android.support.constraint.ConstraintLayout>

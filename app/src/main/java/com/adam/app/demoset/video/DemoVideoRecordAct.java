@@ -214,19 +214,24 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         }
 
         // Start play video app
-        Intent intent = playVedioIntent();
-        this.startActivity(intent);
-
+        Intent intent = playVideo();
+        if (intent != null) {
+            this.startActivity(intent);
+        }
     }
 
     public void onExit(View v) {
         this.finish();
     }
 
-    private Intent playVedioIntent() {
+    private Intent playVideo() {
         Utils.info(this, "playVedioIntent");
         Utils.info(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (this.mFilePath == null) {
+            Utils.showToast(this, "Please record first!!!");
+            return null;
+        }
         // Check file exists
         File file = new File(mFilePath);
         if (!file.exists()) {

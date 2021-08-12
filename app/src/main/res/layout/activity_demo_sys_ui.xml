@@ -23,51 +23,67 @@
         android:typeface="serif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/ActDimSysUI"
-        android:layout_width="118dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layout_btn"
+        />
+    <LinearLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:background="@android:color/holo_green_dark"
-        android:onClick="onDimSysUI"
-        android:text="@string/action_dim_system_ui"
-        android:textColor="@color/ic_launcher_background"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ActExit"
-        app:layout_constraintStart_toEndOf="@+id/ActExit" />
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/ActDimSysUI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@android:color/holo_green_dark"
+            android:onClick="onDimSysUI"
+            android:text="@string/action_dim_system_ui"
+            android:textColor="@color/ic_launcher_background"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans"/>
 
-    <Button
-        android:id="@+id/ActExit"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:background="@android:color/holo_green_dark"
-        android:onClick="onExit"
-        android:text="@string/label_exit"
-        android:textColor="@color/ic_launcher_background"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ActHideSysUI"
-        app:layout_constraintStart_toEndOf="@+id/ActHideSysUI" />
+        <Button
+            android:id="@+id/ActExit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@android:color/holo_green_dark"
+            android:onClick="onExit"
+            android:text="@string/label_exit"
+            android:textColor="@color/ic_launcher_background"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans"/>
 
-    <Button
-        android:id="@+id/ActHideSysUI"
-        android:layout_width="117dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/holo_green_dark"
-        android:onClick="onHideSysUI"
-        android:text="@string/action_hide_system_ui"
-        android:textColor="@color/ic_launcher_background"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="sans"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/ActHideSysUI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_green_dark"
+            android:onClick="onHideSysUI"
+            android:text="@string/action_hide_system_ui"
+            android:textColor="@color/ic_launcher_background"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans"/>
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

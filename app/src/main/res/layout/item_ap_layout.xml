@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/item_selector"
+    android:background="#000000"
     android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:focusable="true">
 
     <TextView
         android:id="@+id/item_ap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/item_pressed"
         android:fontFamily="@font/cabin_bold"
         android:textColor="#0f0"
         android:textSize="24sp"
