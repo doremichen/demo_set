@@ -43,12 +43,6 @@ public class ConnectTask implements Runnable {
             }
         }
 
-//        try {
-//            mSocket = mDevice.createRfcommSocketToServiceRecord(UUID.fromString(String.valueOf(uuids[8])));
-//        } catch (IOException e) {
-//            Utils.inFo(this, "Socket's create() method failed");
-//        }
-
     }
 
     @Override
