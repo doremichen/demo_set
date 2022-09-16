@@ -1,9 +1,9 @@
 package com.adam.app.demoset.database2;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.database2.room.Note;

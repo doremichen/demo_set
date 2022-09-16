@@ -16,12 +16,12 @@
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:src="@drawable/test"
             android:layout_weight="1"
             android:contentDescription="@string/label_image_view_description"
             android:scaleType="fitCenter" />
 
         <TextView
-            android:id="@+id/filters_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_image_blur"
@@ -49,7 +49,6 @@
         </RadioGroup>
 
         <RadioGroup
-            android:id="@+id/destinations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">

@@ -21,20 +21,44 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera2.full" />
+    
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- Needed only if your app looks for Bluetooth devices.
+         If your app doesn't use Bluetooth scan results to derive physical
+         location information, you can strongly assert that your app
+         doesn't derive physical location. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
+    <!-- Needed only if your app makes the device discoverable to Bluetooth
+         devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <!-- Needed only if your app communicates with already-paired Bluetooth
+         devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -46,19 +70,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".animation.DemoGifAct"
+            android:exported="true"
             android:hardwareAccelerated="false"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".wifi.DemoWifiAct"
+            android:exported="true"
             android:label="@string/title_activity_demo_wifi"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".myHandlerThread.DemoMyHandlerThreadAct"
+            android:exported="true"
             android:label="@string/title_activity_demo_my_handler_thread"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,23 +96,28 @@
         <activity
             android:name=".DemoServiceAct"
             android:label="@string/title_activity_demo_service"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".jobService.DemoJobSvrAct"
             android:label="DemoJobSvrAct"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".floatingDlg.DemoFloatingDialogAct"
             android:label="Demo floation dialog activity"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".floatingwindow.DemoFloatingWindowAct"
             android:label="Demo floation dialog activity"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".bluetooth.DemoBTAct"
             android:label="Demo bt activity"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".notification.DemoNotificationAct"
@@ -93,90 +126,111 @@
         <activity
             android:name=".notification.NotifyResultAct"
             android:label="Notify result UI"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".DemoShareProvidAct"
             android:label="Demo share action provider"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:label="Demo hello jni"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:label="Demo flash light"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
             android:label="Demo Device admin"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.DemoCamera2Act"
             android:label="Demo Camera"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.DemoCamera2Act2"
             android:label="Demo Camera 2"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".alarm.DemoAlarmAct"
             android:label="Demo alarm"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".video.DemoVideoRecordAct"
             android:label="Demo record video"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".binder.DemoBinderAct"
             android:label="Demo binder call"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
             android:label="Demo scheduler counter"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".tablelayout.DemoTableAct"
             android:label="Demo table layout"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".database.DemoDatabaseAct"
             android:label="@string/title_activity_demo_database"
+            android:exported="true"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:label="Demo system UI"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkMangerAct"
             android:label="Demo work manager"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".database2.DemoRoomAct"
             android:label="Demo Room"
+            android:exported="true"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".quicksetting.DemoQuickSetting"
             android:label="Demo quick setting"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".quicksetting.QuickSettingResultAct"
             android:label="Result activity"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkManagerMainAct"
             android:label="Demo work manager main"
+            android:exported="true"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoExecuteTaskAct"
             android:label="Execute task activity"
+            android:exported="true"
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".material.DemoMaterialLogInAct"
             android:label="@string/title_activity_demo_material_log_in"
+            android:exported="true"
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -186,7 +240,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.adam.app.demoset.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -204,6 +258,7 @@
 
         <receiver
             android:name=".lockscreen.MyAdminReceiver"
+            android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
@@ -266,6 +321,7 @@
             android:name=".quicksetting.qsservice.QuickSettingService"
             android:icon="@drawable/ic_demo_qs1_active"
             android:label="Demo quick setting1"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -275,6 +331,7 @@
             android:name=".quicksetting.qsservice.QuickSettingDialogService"
             android:icon="@drawable/ic_demo_qs2_dialog"
             android:label="Demo quick setting2"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -284,6 +341,7 @@
             android:name=".quicksetting.qsservice.QuickSettingIntentService"
             android:icon="@drawable/ic_demo_qs3"
             android:label="Demo quick setting3"
+            android:exported="true"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

@@ -1,5 +1,6 @@
 package com.adam.app.demoset.bluetooth;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -7,7 +8,10 @@ import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+
+import androidx.core.app.ActivityCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -37,11 +41,8 @@ public class BTReceiver extends BroadcastReceiver {
 
     public BTReceiver(DemoBTAct act) {
         mActRef = new WeakReference<DemoBTAct>(act);
-
         mDialog = buildAlertDialog();
-
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
         mBTDevices = new ArrayList<BluetoothDevice>();
     }
 
@@ -60,8 +61,10 @@ public class BTReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Utils.info(this, "[onReceive@BT receiver]");
+
         String action = intent.getAction();
-        Utils.info(this, "action = " + action);
+        Utils.info(this, "BTReceiver action = " + action);
 
         if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
 //            Utils.showSnackBar(context, "ACTION_STATE_CHANGED");
@@ -72,13 +75,9 @@ public class BTReceiver extends BroadcastReceiver {
             if (state == BluetoothAdapter.STATE_ON) {
                 Utils.showToast(context, "bt state on");
                 mBTAdapter.startDiscovery();
-
-
             } else if (state == BluetoothAdapter.STATE_OFF) {
                 Utils.showToast(context, "bt state off");
-
             }
-
 
         } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
 //            Utils.showSnackBar(context, "ACTION_DISCOVERY_STARTED");
@@ -103,15 +102,12 @@ public class BTReceiver extends BroadcastReceiver {
 
         } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
             // Bt device bound state
             int state = device.getBondState();
             if (state == BluetoothDevice.BOND_NONE) {
                 mBTDevices.add(device);
             }
-
             preAction = action;
-
         } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
             final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
             final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);

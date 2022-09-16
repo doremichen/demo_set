@@ -116,7 +116,6 @@
         style="?android:attr/buttonBarStyle"/>
 
     <Button
-        android:id="@+id/btnReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_exit"
@@ -134,7 +133,6 @@
         style="?android:attr/buttonBarStyle"/>
 
     <TextView
-        android:id="@+id/info_demo_table"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

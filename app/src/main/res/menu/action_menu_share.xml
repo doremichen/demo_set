@@ -5,7 +5,7 @@
         android:id="@+id/menu_shared"
         android:title="shared"
         android:icon="@drawable/ic_action_shared"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         app:showAsAction="always"/>
     <item
         android:title="@string/label_exit"

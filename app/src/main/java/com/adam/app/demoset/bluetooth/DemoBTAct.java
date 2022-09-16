@@ -6,14 +6,19 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
@@ -41,6 +46,8 @@ public class DemoBTAct extends AppCompatActivity {
     private BluetoothAdapter mBTAdapter;
     private ArrayList<BluetoothDevice> mScanDevices;
     private ArrayList<BluetoothDevice> mPairedDevices;
+
+    private CompoundButton.OnCheckedChangeListener mCheckBoxlistener;
 
 
     /**
@@ -123,9 +130,9 @@ public class DemoBTAct extends AppCompatActivity {
 
 
     private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
+            Utils.info(DemoBTAct.this, "[onReceive@UI receiver]");
 
             String action = intent.getAction();
             if (Utils.ACTION_SHOW_SNACKBAR.equals(action)) {
@@ -136,6 +143,8 @@ public class DemoBTAct extends AppCompatActivity {
             } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
                 Utils.info(this, "Get ACTION_FOUND_BT_DEVICE....");
                 mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
+                // null check
+                if (!checkValidObject(mScanDevices, mScanAdapter, mScanList)) return;
 
                 // Show scan list
                 mScanAdapter.setData(mScanDevices);
@@ -150,6 +159,9 @@ public class DemoBTAct extends AppCompatActivity {
 
                 Bundle bundle = intent.getBundleExtra(BTReceiver.KEY_BUNDLE_DEVICE);
                 BluetoothDevice device = bundle.getParcelable(BTReceiver.KEY_BT_DEVICE);
+
+                // null check
+                if (!checkValidObject(mPairedDevices, mScanDevices, mScanAdapter, mPairedAdapter)) return;
 
                 Utils.info(this, "Bond state = " + device.getBondState());
                 int state = device.getBondState();
@@ -166,6 +178,9 @@ public class DemoBTAct extends AppCompatActivity {
                 mScanAdapter.notifyDataSetChanged();
                 mPairedAdapter.notifyDataSetChanged();
             } else if (ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
+                // null check
+                if (!checkValidObject(mScanAdapter, mPairedAdapter)) return;
+
                 // Update list
                 boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
                 Utils.info(this, "got connect status: " + isConnect);
@@ -184,27 +199,85 @@ public class DemoBTAct extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        Utils.info(this, "[onCreate]");
         this.setContentView(R.layout.activity_demo_bluetooth);
+
+        // Use this check to determine whether Bluetooth classic is supported on the device.
+        // Then you can selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
+            Utils.showToast(this, getResources().getString(R.string.bluetooth_not_supported));
+            finish();
+        }
+        // Use this check to determine whether BLE is supported on the device. Then
+        // you can selectively disable BLE-related features.
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Utils.showToast(this, getResources().getString(R.string.ble_not_supported));
+            finish();
+        }
 
         mLayout = this.findViewById(R.id.btdemo_layout);
         mBTSwitch = this.findViewById(R.id.switch_bt);
         mBTResult = this.findViewById(R.id.tv_bt_status);
         mScanList = this.findViewById(R.id.scan_list);
-        mScanAdapter = new BTDeviceListAdapter(this);
         mPairedList = this.findViewById(R.id.paired_list);
+
+        mScanAdapter = new BTDeviceListAdapter(this);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
         //Set empty vliew
-        TextView emptyView = this.findViewById(android.R.id.empty);
-        mScanList.setEmptyView(emptyView);
-        mPairedList.setEmptyView(emptyView);
+        TextView emptyScanView = this.findViewById(R.id.nodata_scan_list);
+        TextView emptyPairedView = this.findViewById(R.id.nodata_paired_list);
+        mScanList.setEmptyView(emptyScanView);
+        mPairedList.setEmptyView(emptyPairedView);
+
+
+        // Register switch listener
+        mCheckBoxlistener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
+                Utils.info(DemoBTAct.this, "BT checkbox status: " + isChecked);
+                if (isChecked) {
+
+                    if (!checkValidObject(mBTAdapter)) return;
+
+                    // Check bt power status
+                    boolean enabled = mBTAdapter.isEnabled();
+                    if (enabled == false) {
+                        enableBT();
+                    }
+
+//                    if (Utils.askPermission(DemoBTAct.this,
+//                            Manifest.permission.ACCESS_COARSE_LOCATION,
+//                            REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
+//                        Utils.info(DemoBTAct.this, "enable BT...");
+//                        enableBT();
+//                    }
+                } else {
+                    Utils.info(DemoBTAct.this, "Reset status because the BT choice is off.");
+
+                    // Check bt discovery status
+                    if (mBTAdapter.isDiscovering()) {
+                        mBTAdapter.cancelDiscovery();
+                    }
+                    mBTAdapter.disable();
+
+                    // clear list
+                    if (mPairedDevices != null)
+                        mPairedDevices.clear();
+                    if (mScanDevices != null)
+                        mScanDevices.clear();
+                    mScanAdapter.notifyDataSetChanged();
+                    mPairedAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        mBTSwitch.setOnCheckedChangeListener(mCheckBoxlistener);
+
 
         mBTReceiver = new BTReceiver(this);
-
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
 
         // Register snack listener
         IntentFilter uiFilter = new IntentFilter();
@@ -212,55 +285,8 @@ public class DemoBTAct extends AppCompatActivity {
         uiFilter.addAction(BTReceiver.ACTION_FOUND_BT_DEVICE);
         uiFilter.addAction(BTReceiver.ACTION_UPDATE_BT_BOUND_STATE);
         uiFilter.addAction(ConnectTask.ACTION_UPDATE_CONNECT_INFO);
+        Utils.info(this, "register BT receiver");
         registerReceiver(mUIReceiver, uiFilter);
-
-        // Register switch listener
-        mBTSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
-
-                if (isChecked) {
-//                    askPermission();
-                    if (Utils.askPermission(DemoBTAct.this,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
-                        enableBT();
-                    }
-                } else {
-
-                    // Check bt discovery status
-                    if (mBTAdapter.isDiscovering()) {
-                        mBTAdapter.cancelDiscovery();
-                    }
-
-                    mBTAdapter.disable();
-
-                    // clear list
-                    mPairedDevices.clear();
-                    mScanDevices.clear();
-                    mScanAdapter.notifyDataSetChanged();
-                    mPairedAdapter.notifyDataSetChanged();
-
-                }
-
-            }
-        });
-
-        // Check bt adapter is valid
-        if (mBTAdapter == null) {
-            Utils.showToast(this, "BT adapter is invalid");
-            mBTSwitch.setChecked(false);
-        } else {
-            Utils.showToast(this, "BT adapter is valid...");
-            // Check bt power status
-            mBTSwitch.setChecked(mBTAdapter.isEnabled());
-            // Auto scan
-            if (mBTAdapter.isEnabled()) {
-                mBTAdapter.startDiscovery();
-            }
-
-        }
 
         // Register BT receiver
         IntentFilter btFilter = new IntentFilter();
@@ -271,6 +297,55 @@ public class DemoBTAct extends AppCompatActivity {
         btFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBTReceiver, btFilter);
 
+        handleBTPowerState();
+        Utils.info(this, "onCreate Done!!!");
+    }
+
+
+    /**
+     * Process BT power state
+     */
+    private void handleBTPowerState() {
+        Utils.info(this, "handleBTPowerState");
+        // Check bt adapter is valid
+        if (!checkValidObject(mBTAdapter)) {
+            Utils.showToast(this, "BT adapter is invalid");
+            mBTSwitch.setChecked(false);
+            return;
+        }
+
+        Utils.showToast(this, "BT adapter is valid...");
+        Utils.info(this, "check bt permission!!!");
+        // ask permission
+        String[] needPermissions = {Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        Utils.info(this, "Need check BT permission");
+        if (Utils.askPermission(DemoBTAct.this,
+                needPermissions,
+                REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
+            autoDiscoveryIfBTOn();
+        }
+    }
+
+    /**
+     * Auto discovery if BT power on otherwise turn on BT first
+     */
+    private void autoDiscoveryIfBTOn() {
+        Utils.info(this, "autoDiscoveryIfBTOn");
+        // null check
+        if (!checkValidObject(mBTAdapter, mBTSwitch)) return;
+
+        // Check bt power status
+        boolean enabled = mBTAdapter.isEnabled();
+        mBTSwitch.setChecked(enabled);
+        Utils.info(this, "Bt power status: " + enabled);
+        // Auto scan when permission is ok and bt power status is on state
+        if (enabled) {
+            this.mBTAdapter.startDiscovery();
+        }
     }
 
     private void updatePairedList() {
@@ -309,8 +384,7 @@ public class DemoBTAct extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
-
+        this.getMenuInflater().inflate(R.menu.action_exit, menu);
         return true;
     }
 
@@ -332,11 +406,17 @@ public class DemoBTAct extends AppCompatActivity {
 
         if (requestCode == REQUEST_ACCESS_COARSE_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted and enable bt
-                enableBT();
-
+                Utils.info(this, "Permission granted and enable bt");
+                // Permission granted
+                autoDiscoveryIfBTOn();
             } else {
                 // Permission denied
+                Utils.showAlertDialog(this, "This APP permission denied", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
             }
         }
     }
@@ -345,8 +425,9 @@ public class DemoBTAct extends AppCompatActivity {
      * Start bt enable/disable dialog
      */
     private void enableBT() {
-        Intent it = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(it, REQUEST_ENABLE_BT_CODE);
+        Utils.info(this, "[enableBT]");
+        Intent actionRequestEnable = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(actionRequestEnable, REQUEST_ENABLE_BT_CODE);
     }
 
     /**
@@ -355,7 +436,7 @@ public class DemoBTAct extends AppCompatActivity {
      * @param device
      */
     private void pairDevice(BluetoothDevice device) {
-        Utils.info(this, "pairDevice enter");
+        Utils.info(this, "[pairDevice]");
         device.createBond();
     }
 
@@ -373,6 +454,24 @@ public class DemoBTAct extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * Check the object validity
+     * @param objs
+     * @return
+     */
+    private boolean checkValidObject(Object... objs) {
+
+        for (Object o: objs) {
+            if (o == null) {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
 

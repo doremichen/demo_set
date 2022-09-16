@@ -16,7 +16,6 @@
         android:textStyle="bold" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
         style="@android:style/Widget.ProgressBar.Large"
         android:layout_width="109dp"
         android:layout_height="118dp"

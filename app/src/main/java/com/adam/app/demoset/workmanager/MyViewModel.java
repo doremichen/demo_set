@@ -1,91 +1,157 @@
 package com.adam.app.demoset.workmanager;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.adam.app.demoset.Utils;
-
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkContinuation;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkStatus;
+
+import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
+
+import java.util.List;
+
 
 public class MyViewModel extends ViewModel {
 
-    public static final String IMAGE_TAG = "Image tag";
-    public static final String IMAGE_WROK_PROCESS = "Image wrok process";
     private Uri mImageUri;
     private WorkManager mManager;
-    private LiveData<List<WorkStatus>> mSaveWorkStatus;
+    private LiveData<List<WorkInfo>> mSaveWorkInfo;
+    private Uri mOutputUri;
 
 
-    public MyViewModel() {
-        Utils.info(this, "Constructor is called");
-        mManager = WorkManager.getInstance();
+    public MyViewModel(@NonNull Application app) {
+        super();
+        Utils.info(this, "MyViewModel constructor");
+        // work manager instance
+        this.mManager = WorkManager.getInstance(app);
+        // image uri
+        this.mImageUri = buildImageUri(app.getApplicationContext());
 
-        // Reset work
-        mManager.cancelAllWork();
-
-        // Get work status
-        mSaveWorkStatus = mManager.getStatusesByTagLiveData(IMAGE_TAG);
+        // UI listen to work change
+        this.mSaveWorkInfo = this.mManager.getWorkInfosByTagLiveData(Utils.TAG_IMG_OUTPUT);
     }
 
-    public LiveData<List<WorkStatus>> getSaveWorkStatus() {
-        return mSaveWorkStatus;
+    /**
+     * Return work info of Save process
+     * @return
+     */
+    LiveData<List<WorkInfo>> getMyWorkInfo() {
+        return this.mSaveWorkInfo;
     }
 
-    void applyBlur(int level) {
-        Utils.info(this, "applyBlur enter");
-        // Work1: clean up
-        // replace this code
-//        WorkContinuation continuation = mManager.beginWith(OneTimeWorkRequest.from(CleanupWorker.class));
-        WorkContinuation continuation = mManager.beginUniqueWork(IMAGE_WROK_PROCESS, ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequest.from(CleanupWorker.class));
 
-        // Work2: image blur
-        for (int i = 0; i < level; i++) {
-            OneTimeWorkRequest.Builder blurBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
-
-            if (i == 0) {
-                blurBuilder.setInputData(createInputDataForUri());
-            }
-
-            continuation = continuation.then(blurBuilder.build());
-        }
-
-
-//        OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class).
-//                setInputData(createInputDataForUri()).build();
-//        continuation = continuation.then(blurRequest);
-
-        // Work3: save image
-        OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).
-                addTag(IMAGE_TAG).
-                build();
-        continuation = continuation.then(saveRequest);
-
-        // Start work
-        continuation.enqueue();
-
-//        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(MyWork.class).
-//                setInputData(createInputDataForUri()).build();
-//
-//        mManager.enqueue(request);
+    /**
+     * Set ouput uri
+     */
+    void setOutputUri(String outputUri) {
+        Utils.info(this, "setImageUri enter uri = " + outputUri);
+        this.mOutputUri = uriOrNull(outputUri);
     }
 
+    /**
+     * Get output uri
+     * @return
+     */
+    Uri getOutputUri() {
+        Utils.info(this, "getOutputUri");
+        return this.mOutputUri;
+    }
+
+    /**
+     * Cancel work process
+     */
     void cancelWork() {
         Utils.info(this, "cancelWork enter");
-        mManager.cancelUniqueWork(IMAGE_WROK_PROCESS);
+        mManager.cancelUniqueWork(Utils.IMAGE_MANIPULATION_WORK_NAME);
     }
 
 
+    void applyBlur(int level) {
+        Utils.info(this, "applyBlur enter leve: " + level);
+        // clean up work request
+        OneTimeWorkRequest cleanupReq = OneTimeWorkRequest.from(CleanupWorker.class);
+        // Add start request to work manager
+        WorkContinuation continuation = this.mManager.beginUniqueWork(Utils.IMAGE_MANIPULATION_WORK_NAME,
+                ExistingWorkPolicy.REPLACE,
+                cleanupReq);
+
+        // Add my work request to work manager depend on the level
+        int i = 0;
+        while (i < level) {
+            // my work request builder
+            OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
+            // Input Uri for the first blur image request
+            if (i == 0) {
+                myWorkBuilder.setInputData(createInputDataForUri());
+            }
+
+            // Add my work request to work manager
+            continuation = continuation.then(myWorkBuilder.build());
+            i++;
+        }
+
+        // Create constraint for work request
+        Constraints constraints = new Constraints.Builder()
+                .setRequiresCharging(false)
+                .build();
+
+        // save image work request
+        OneTimeWorkRequest saveReq = new OneTimeWorkRequest.Builder(SaveToFileWorker.class)
+                .setConstraints(constraints)
+                .addTag(Utils.TAG_IMG_OUTPUT)
+                .build();
+
+        // Add save image work request to work manager
+        continuation = continuation.then(saveReq);
+
+        // start work process
+        continuation.enqueue();
+
+//      chain of work example
+//        // clean up
+//        OneTimeWorkRequest cleanupRequest = OneTimeWorkRequest.from(CleanupWorker.class);
+//
+//        // blurred image
+//        OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class)
+//                .setInputData(createInputDataForUri())
+//                .build();
+//
+//        // save to file
+//        OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).build();
+//
+//        // chain of work task
+//        WorkContinuation continuation = this.mManager.beginWith(cleanupRequest);
+//        continuation = continuation.then(blurRequest);
+//        continuation = continuation.then(saveRequest);
+//
+//        // start to work
+//        continuation.enqueue();
+
+//        single work example
+//        // enqueue single task
+//        this.mManager.enqueue(blurRequest);
+
+    }
+
+
+    /**
+     * Check Uri validity
+     * @param uriString
+     * @return
+     */
     private Uri uriOrNull(@NonNull String uriString) {
         if (!TextUtils.isEmpty(uriString)) {
             return Uri.parse(uriString);
@@ -94,21 +160,9 @@ public class MyViewModel extends ViewModel {
     }
 
     /**
-     * Setters
+     * Create the input data according the image resource uri
+     * @return
      */
-    void setImageUri(String uri) {
-        Utils.info(this, "setImageUri enter uri = " + uri);
-        mImageUri = uriOrNull(uri);
-    }
-
-    /**
-     * Getters
-     */
-    Uri getImageUri() {
-        Utils.info(this, "getImageUri enter mImageUri = " + mImageUri.toString());
-        return mImageUri;
-    }
-
     private Data createInputDataForUri() {
         Utils.info(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
         Data.Builder builder = new Data.Builder();
@@ -118,5 +172,25 @@ public class MyViewModel extends ViewModel {
 
         return builder.build();
     }
+
+    /**
+     * Build image Uri according to app resource
+     */
+    private Uri buildImageUri(Context ctx) {
+        Utils.info(this, "getImageUri enter");
+        Resources resources = ctx.getResources();
+
+        // build uri
+        Uri imageUri = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(resources.getResourcePackageName(R.drawable.test))
+                .appendPath(resources.getResourceTypeName(R.drawable.test))
+                .appendPath(resources.getResourceEntryName(R.drawable.test))
+                .build();
+
+        Utils.info(this, "imageUri: " + Uri.parse(imageUri.toString()));
+        return imageUri;
+    }
+
 
 }

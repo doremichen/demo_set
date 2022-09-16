@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">DemoSet</string>
-    <string name="label_hello_world">Hello world</string>
     <string name="label_welcome_to_demo">Welcome to Demo</string>
     <string name="title_activity_demo_service">DemoServiceAct</string>
     <string name="label_demo_service">Demo service</string>
@@ -10,20 +9,18 @@
     <string name="label_exit">Exit</string>
     <string name="label_permission_label">direct use the service</string>
     <string name="label_permission_description">this is demo permission</string>
-    <string name="label_permission_group_description">test permission group</string>
-    <string name="label_popup_info">Floating pop up window</string>
     <string name="label_ok_btn">Ok</string>
     <string name="label_open_float_window">Open window</string>
-    <string name="title_activity_demo_popup_window">DemoPopupWindowAct</string>
     <string name="label_hello_floating_dialog">Hello floating dialog</string>
     <string name="label_hello_bt">Hello BT</string>
     <string name="label_bt_on_off">BT on/off</string>
+    <string name="bluetooth_not_supported">BT not support</string>
+    <string name="ble_not_supported">Ble not support</string>
     <string name="label_scan_list">Scan list: </string>
     <string name="label_paired_list">Paired list: </string>
     <string name="label_welcome_to_demo_notification">Welcome to Demo nitification</string>
     <string name="label_btn_notification">Notification message</string>
     <string name="label_result_notification">This is the result of the Demo notification</string>
-    <string name="label_menu_shared">Shared</string>
     <string name="label_jni_info">Welcome to demo jni</string>
     <string name="action_jni_say_hello">Invoke JNI to say hello</string>
     <string name="action_test_inst_cb">Test: Object CallBack</string>
@@ -48,11 +45,9 @@
     <string name="action_start_counter">Start counter</string>
     <string name="action_stop_counter">Stop counter</string>
     <string name="action_reset">Reset</string>
-    <string name="title_activity_demo_database_">Demo_database_Act</string>
     <string name="title_activity_demo_database">DemoDatabaseAct</string>
     <string name="permission_read_label">Read permission</string>
     <string name="permission_read_description">This is used to read adam database</string>
-    <string name="permission_write_label">Write permission</string>
     <string name="permission_write_description">This is used to write adam database</string>
     <string name="label_no_note">No note</string>
     <string name="label_info">Welcome to Demo system UI</string>
@@ -90,7 +85,6 @@
     <string name="label_interval_no_set">No set</string>
     <string name="label_info_demo_qs">Welcome to demo quick setting. To open the notification shade,
         swipe down from the top of the phone. Expand the setting and click the action menu to select the button order.</string>
-    <string name="label_dlg_title">Title:</string>
     <string name="label_dialog_info">dialog info</string>
     <string name="label_qs_turn_on">turn on</string>
     <string name="label_qs_turn_off">turn off</string>

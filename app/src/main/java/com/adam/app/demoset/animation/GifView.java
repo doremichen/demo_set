@@ -7,13 +7,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Movie;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
-class GifView extends android.support.v7.widget.AppCompatImageView {
+public class GifView extends androidx.appcompat.widget.AppCompatImageView {
 
     /**
      * Used to call back of gif play

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 
 import com.adam.app.demoset.Utils;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +29,6 @@
         app:layout_constraintVertical_bias="0.44" />
 
     <Button
-        android:id="@+id/btn_execute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,7 +54,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/item_selector"
         android:fontFamily="@font/cabin_bold"
-        android:onClick="cancleTask"
+        android:onClick="cancelTask"
         android:text="@string/action_cancel_hdthrd"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
@@ -63,4 +62,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,21 +3,21 @@
  */
 package com.adam.app.demoset.workmanager;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.adam.app.demoset.Utils;
-
-import java.io.FileNotFoundException;
-
+import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
+
+import java.io.FileNotFoundException;
 
 public class MyWork extends Worker {
 
@@ -30,45 +30,47 @@ public class MyWork extends Worker {
     @Override
     public Result doWork() {
         Utils.info(this, "doWork enter");
-        try {
-            Context appContext = this.getApplicationContext();
+        Context appCtx = this.getApplicationContext();
 
-            // Get image from data object
-            String imgUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
-            Utils.info(this, "imgUri = " + imgUri);
-            // Check if image exists or not
-            if (TextUtils.isEmpty(imgUri)) {
-                throw new IllegalArgumentException("Invalid input imgUri");
+        Utils.makeStatusNotification("Blurring Image!!!", appCtx);
+        Utils.delay();
+
+        String resUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
+
+        try {
+            // check the non empty resUri
+            if (TextUtils.isEmpty(resUri)) {
+                Utils.info(this, "Invalid input uri...");
+                throw new IllegalArgumentException("Invalid input uri!!!");
             }
 
-            ContentResolver resolver = appContext.getContentResolver();
-            // Create a bitmap
-            Bitmap picture = BitmapFactory.decodeStream(resolver.openInputStream(Uri.parse(imgUri)));
+            //Bitmap picture = BitmapFactory.decodeResource(appCtx.getResources(), R.drawable.test);
+            Bitmap picture = BitmapFactory.decodeStream(appCtx
+                    .getContentResolver()
+                    .openInputStream(Uri.parse(resUri)));
 
-            // Blur image
-            Bitmap output = Utils.blurBitmap(picture, appContext);
+            // Blur the bitmap
+            Bitmap output = Utils.blurBitmap(picture, appCtx);
 
-            // Write image to temp file
-            Uri uriOutput = Utils.writeBitmapToFile(appContext, output);
+            // Write bitmap to a temp file
+            Uri outputUri = Utils.writeBitmapToFile(appCtx, output);
 
-            // Return ouptput for the temp file
-            setOutputData(new Data.Builder().putString(Utils.THE_SELECTED_IMAGE, uriOutput.toString()).build());
+            // show notification
+            Utils.makeStatusNotification("Output: " + outputUri.toString(), appCtx);
 
-            // Notification
-            Utils.makeStatusNotification("output: " + uriOutput.toString(), appContext);
+            // Prepare Result Data to pass
+            Data outputData = new Data.Builder()
+                    .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
+                    .build();
 
-            return Result.SUCCESS;
+            // return success
+            return  Result.success(outputData);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-
-            return Result.FAILURE;
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return Result.FAILURE;
         }
 
-
+        return Result.failure();
     }
 
 }

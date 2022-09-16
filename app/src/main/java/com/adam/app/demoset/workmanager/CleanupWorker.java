@@ -1,7 +1,7 @@
 package com.adam.app.demoset.workmanager;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.adam.app.demoset.Utils;
@@ -21,31 +21,38 @@ public class CleanupWorker extends Worker {
     @Override
     public Result doWork() {
         Utils.info(this, "doWork enter");
-        Context appContext = getApplicationContext();
+        Context appCtx = getApplicationContext();
 
-        File outputDir = new File(appContext.getFilesDir(), Utils.OUTPUT_PATH);
+        // Make a notification when the work start and slows down the work
+        // so that see each workRequest start
+        Utils.makeStatusNotification("Clean up old temporary files", appCtx);
+        Utils.delay();
+
+        boolean pass = false;
 
         try {
-            // Check exists
+            File outputDir = new File(appCtx.getFilesDir(), Utils.OUTPUT_PATH);
+            // check exists
             if (outputDir.exists()) {
                 File[] files = outputDir.listFiles();
                 if (files != null && files.length > 0) {
-                    for (File f : files) {
+                    // loop
+                    for (File f: files) {
                         String name = f.getName();
+                        // delete if the file is png type
                         if (!TextUtils.isEmpty(name) && name.endsWith(".png")) {
+                            // delete
                             boolean deleted = f.delete();
-                            Utils.info(this, name + " is delted " + deleted);
+                            Utils.info(this, String.format("deleted file: %s - %s", name, deleted));
                         }
                     }
                 }
             }
-            Utils.makeStatusNotification("Clean up Successful", appContext);
-            return Result.SUCCESS;
+            pass = true;
         } catch (Exception e) {
-            Utils.info(this, "Clean error");
-            Utils.makeStatusNotification("Clean up error", appContext);
-            return Result.FAILURE;
-        }
 
+        }
+        Utils.info(this, "Done!!!: pass: " + pass);
+        return (pass == true)? Result.success(): Result.failure();
     }
 }

@@ -26,12 +26,12 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.NonNull;
-import android.support.annotation.WorkerThread;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,6 +66,9 @@ public abstract class Utils {
     public static boolean sIsBound = false;
 
     public static final String OUTPUT_PATH = "blur_filter_outputs";
+    public static final String TAG_IMG_OUTPUT = "OUTPUT";
+    // The name of the image manipulation work
+    public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
 
     public static LocalService sLocalSvr;
     public static Messenger sMessenger;   // for remote service
@@ -73,6 +76,8 @@ public abstract class Utils {
     public static ServiceConnection sConnection;
 
     public static volatile String sImagePath;
+
+    private static final long DELAY_TIME_MILLIS = 3000L;
 
     public static void info(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
@@ -410,6 +415,17 @@ public abstract class Utils {
         NotificationManagerCompat.from(context).notify(sNotifyID, builder.build());
 
         sNotifyID++;
+    }
+
+    /**
+     * Method for sleeping for a fixed amount of time to emulate slower work
+     */
+    public static void delay() {
+        try {
+            Thread.sleep(DELAY_TIME_MILLIS, 0);
+        } catch (InterruptedException e) {
+            Log.d(TAG, e.getMessage());
+        }
     }
 
 }

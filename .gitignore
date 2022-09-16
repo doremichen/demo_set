@@ -12,3 +12,4 @@ build
 captures
 app/.externalNativeBuild
 app/.cxx
+dump.txt

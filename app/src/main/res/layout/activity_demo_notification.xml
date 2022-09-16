@@ -7,7 +7,6 @@
     tools:context=".notification.DemoNotificationAct">
 
     <TextView
-        android:id="@+id/tv_notification_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_start_notification"

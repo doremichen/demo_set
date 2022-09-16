@@ -12,8 +12,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,7 +106,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_only_exit_menu, menu);
+        this.getMenuInflater().inflate(R.menu.action_exit, menu);
 
         return true;
     }

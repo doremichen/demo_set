@@ -1,151 +1,179 @@
 package com.adam.app.demoset.workmanager;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.WorkInfo;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.bumptech.glide.Glide;
+import com.adam.app.demoset.databinding.ActivityDemoExecuteTaskBinding;
 
 import java.util.List;
 
-import androidx.work.Data;
-import androidx.work.WorkStatus;
 
 public class DemoExecuteTaskAct extends AppCompatActivity {
 
     private MyViewModel mViewModel;
-    private ImageView mImgView;
-    private ProgressBar mProgress;
-    private Button mBtnCancel;
-    private Button mBtnExecute;
-    private Button mBtnShow;
-
-
-    private static final int TITLE_BLUR = 1;
-    private static final int MORE_BLUR = 2;
-    private static final int MOST_BLUR = 3;
+    private ActivityDemoExecuteTaskBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_execute_task);
-        mImgView = findViewById(R.id.image_view);
-        mProgress = findViewById(R.id.progress_bar);
-        mBtnCancel = findViewById(R.id.cancel_button);
-        mBtnExecute = findViewById(R.id.go_button);
-        mBtnShow = findViewById(R.id.see_file_button);
+        this.mBinding =  ActivityDemoExecuteTaskBinding.inflate(getLayoutInflater());
+        setContentView(this.mBinding.getRoot());
 
-        // Get view model
-        mViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+        // instance view model
+        this.mViewModel = new MyViewModel(getApplication());
 
-        // Get the selected image
-        Intent intent = getIntent();
-        String imgUri = intent.getStringExtra(Utils.THE_SELECTED_IMAGE);
-        Utils.info(this, "imgUri = " + imgUri);
-        // Downlaod image by glid
-        mViewModel.setImageUri(imgUri);
-        if (mViewModel.getImageUri() != null) {
-            // Load image to show
-            Glide.with(this).load(mViewModel.getImageUri()).into(mImgView);
-        }
-
-        // Work status
-        mViewModel.getSaveWorkStatus().observe(this, new Observer<List<WorkStatus>>() {
-
+        // Ui observer according to work process
+        this.mViewModel.getMyWorkInfo().observe(this, new Observer<List<WorkInfo>>() {
             @Override
-            public void onChanged(@Nullable List<WorkStatus> workStatuses) {
-                Utils.info(this, "onChanged enter");
-
-                // Check if work status exists
-                if (mExecuteWork == false || workStatuses == null || workStatuses.isEmpty()) {
-                    Utils.info(this, "No execute, No save work or save work is empty");
+            public void onChanged(List<WorkInfo> ListOfWorkInfo) {
+                Utils.info(DemoExecuteTaskAct.this, "View modele onChange!!!");
+                // preprocess
+                if (ListOfWorkInfo == null || ListOfWorkInfo.isEmpty()) {
+                    Utils.info(DemoExecuteTaskAct.this, "No work info list!!!");
                     return;
                 }
 
-                // Check tag
-                WorkStatus workStatus = workStatuses.get(0);
-
-                boolean isFinished = workStatus.getState().isFinished();
-                Utils.info(this, "isFinished = " + isFinished);
-
-                if (isFinished) {
-                    updatButtonStatus(false);
-
-                    // Normally this processing, which is not directly related to drawing views on
-                    // screen would be in the ViewModel. For simplicity we are keeping it here.
-                    Data outputData = workStatus.getOutputData();
-                    String imageUri = outputData.getString(Utils.THE_SELECTED_IMAGE);
-
-                    if (!TextUtils.isEmpty(imageUri)) {
-                        mViewModel.setImageUri(imageUri);
-                        mBtnShow.setVisibility(View.VISIBLE);
-                        mExecuteWork = false;
-                    }
-
+                // check work status
+                WorkInfo workInfo = ListOfWorkInfo.get(0);
+                boolean isFinished = workInfo.getState().isFinished();
+                Utils.info(DemoExecuteTaskAct.this, "isFinished: " + isFinished);
+                if (!isFinished) {
+                    updateButtonView(true);
+                    mBinding.seeFileButton.setVisibility(ViewState.findby(false).toValue());
                 } else {
-                    updatButtonStatus(true);
-                    mBtnShow.setVisibility(View.GONE);
+                    updateButtonView(false);
+                    Data outputData = workInfo.getOutputData();
+                    // get output image uri
+                    String OutputImageUriStr = outputData.getString(Utils.THE_SELECTED_IMAGE);
+                    Utils.info(DemoExecuteTaskAct.this, "OutputImageUriStr: " + OutputImageUriStr);
+                    // the see file button is visble when the file exists
+                    if (!TextUtils.isEmpty(OutputImageUriStr)) {
+                        mViewModel.setOutputUri(OutputImageUriStr);
+                        mBinding.seeFileButton.setVisibility(ViewState.findby(true).toValue());
+                    }
                 }
 
             }
         });
 
-    }
-
-    public void onCancel(View view) {
-        Utils.info(this, "onCancel enter");
-        mViewModel.cancelWork();
-    }
-
-    boolean mExecuteWork;
-
-    public void onExecute(View view) {
-        Utils.info(this, "onExecute enter");
-        mExecuteWork = true;
-        mViewModel.applyBlur(getRadioOption());
-    }
-
-    public void onResult(View view) {
-        Utils.info(this, "onResult enter");
-        Uri imgUri = mViewModel.getImageUri();
-        if (imgUri != null) {
-            Intent actionView = new Intent(Intent.ACTION_VIEW, imgUri);
-            if (actionView.resolveActivity(getPackageManager()) != null) {
-                startActivity(actionView);
+        // Execute button
+        this.mBinding.goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // go
+                mViewModel.applyBlur(getLevel());
             }
-        }
+        });
+
+        // see file
+        this.mBinding.seeFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.showToast(DemoExecuteTaskAct.this, "seeFileButton");
+                Utils.info(DemoExecuteTaskAct.this, "seeFileButton is clicked!!!");
+                Uri currentUri = mViewModel.getOutputUri();
+                Utils.info(DemoExecuteTaskAct.this, "currentUri: " + currentUri);
+                if (currentUri != null) {
+                    Intent actionView = new Intent(Intent.ACTION_VIEW, currentUri);
+                    if (actionView.resolveActivity(getPackageManager()) != null) {
+                        startActivity(actionView);
+                    }
+                }
+            }
+        });
+
+
+        // cancel task
+        this.mBinding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utils.showToast(DemoExecuteTaskAct.this, "cancelButton");
+                mViewModel.cancelWork();
+            }
+        });
+
     }
 
-    private int getRadioOption() {
-        Utils.info(this, "getRadioOption enter");
-        RadioGroup group = findViewById(R.id.radio_blur_group);
-        switch (group.getCheckedRadioButtonId()) {
+
+    private enum ViewState {
+        SHOW(true) {
+            @Override
+            int toValue() {
+                return View.VISIBLE;
+            }
+        },
+        HIDE(false) {
+            @Override
+            int toValue() {
+                return View.GONE;
+            }
+        };
+
+        private boolean mKey;
+        private ViewState(boolean key) {
+            this.mKey = key;
+        }
+
+        public static ViewState findby(boolean key) {
+            for (ViewState e: ViewState.values()) {
+                if (e.mKey == key) {
+                    return e;
+                }
+            }
+            return null;
+        }
+
+        abstract int toValue();
+    }
+
+
+    /**
+     * update Button according the work status
+     *      process: progressBar, cancel Visible and go, see file Gone
+     *      finish: progressBar, cancel Gone and go, see file Visible
+     */
+    private void updateButtonView(boolean isShow) {
+        this.mBinding.progressBar.setVisibility(ViewState.findby(isShow).toValue());
+        this.mBinding.cancelButton.setVisibility(ViewState.findby(isShow).toValue());
+        this.mBinding.goButton.setVisibility(ViewState.findby(!isShow).toValue());
+
+    }
+
+    /**
+     * Finish state
+     */
+    private void showWorkFinish() {
+
+    }
+
+
+    /**
+     * Depend on user choice
+     * @return
+     */
+    private int getLevel() {
+        int choiceId = this.mBinding.radioBlurGroup.getCheckedRadioButtonId();
+
+        switch (choiceId) {
             case R.id.radio_blur_lv_1:
-                return TITLE_BLUR;
+                return 1;
             case R.id.radio_blur_lv_2:
-                return MORE_BLUR;
+                return 2;
             case R.id.radio_blur_lv_3:
-                return MOST_BLUR;
+                return 3;
         }
-        return TITLE_BLUR;
+
+        return 1;
     }
 
-    private void updatButtonStatus(boolean isWorking) {
-        Utils.info(this, "updatButtonStatus enter isWorking = " + isWorking);
-        mProgress.setVisibility((isWorking) ? View.VISIBLE : View.GONE);
-        mBtnCancel.setVisibility((isWorking) ? View.VISIBLE : View.GONE);
-        mBtnExecute.setVisibility((isWorking) ? View.GONE : View.VISIBLE);
-    }
 }

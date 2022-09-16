@@ -42,7 +42,6 @@
         android:textSize="18sp" />
 
     <LinearLayout
-        android:id="@+id/scan_list_layout"
         android:layout_width="wrap_content"
         android:layout_height="219dp">
 
@@ -55,7 +54,7 @@
             android:dividerHeight="4dp" />
 
         <TextView
-            android:id="@android:id/empty"
+            android:id="@+id/nodata_scan_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_no_data"
@@ -75,7 +74,6 @@
         android:textSize="18sp" />
 
     <LinearLayout
-        android:id="@+id/paired_list_layout"
         android:layout_width="wrap_content"
         android:layout_height="219dp">
 
@@ -88,7 +86,7 @@
             android:dividerHeight="4dp" />
 
         <TextView
-            android:id="@android:id/empty"
+            android:id="@+id/nodata_paired_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_no_data"

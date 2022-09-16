@@ -11,7 +11,7 @@ package com.adam.app.demoset;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_menu_main_list, menu);
+        this.getMenuInflater().inflate(R.menu.action_main_menu_list, menu);
 
         return true;
     }
