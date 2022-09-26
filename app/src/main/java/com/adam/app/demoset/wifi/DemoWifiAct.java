@@ -45,42 +45,44 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
 
     // Wifi permission
     private static final String[] WIFI_PERMISSION = {
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     private static final int WIFI_PERMISSION_RESULT_CODE = 0x5487;
 
     // Handle UI process
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Utils.info(this, "[handleMessage] msg.what = " + msg.what);
-            if (msg.what == SCAN_RESULT) {
-                String name = (String) msg.getData().get(KEY_SSID);
-
-                //Update list view
-                mSSIDs.add(name);
-                mListAdapter.notifyDataSetChanged();
-
-                showEmptyIfNoData();
-            } else if (msg.what == CONNECT_RESULT) {
-                String result = (String) msg.getData().get(KEY_INFO);
-
-                // Show info
-                Utils.showAlertDialog(DemoWifiAct.this, result, null);
-            }
-        }
-    };
-
+    private Handler mHandler;
     // Wifi receiver
     private WifiReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.info(this, "[onCreate] enter");
         setContentView(R.layout.activity_demo_wifi);
+
+        mHandler = new Handler(this.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Utils.info(this, "[handleMessage] msg.what = " + msg.what);
+                if (msg.what == SCAN_RESULT) {
+                    String name = (String) msg.getData().get(KEY_SSID);
+
+                    //Update list view
+                    mSSIDs.add(name);
+                    mListAdapter.notifyDataSetChanged();
+
+                    showEmptyIfNoData();
+                } else if (msg.what == CONNECT_RESULT) {
+                    String result = (String) msg.getData().get(KEY_INFO);
+
+                    // Show info
+                    Utils.showAlertDialog(DemoWifiAct.this, result, null);
+                }
+            }
+        };
 
         // Check permission
         if (Utils.askPermission(this, WIFI_PERMISSION, WIFI_PERMISSION_RESULT_CODE)) {
@@ -248,6 +250,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     // register wifi action
     //
     private void registerWifiAction() {
+        Utils.info(this, "[registerWifiAction] enter");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
@@ -263,13 +266,10 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     //
     private void showEmptyIfNoData() {
         Utils.info(this, "[showEmptyIfNoData] enter");
-        if (mSSIDs.isEmpty()) {
-            mEmptyAp.setVisibility(View.VISIBLE);
-            mListAp.setVisibility(View.GONE);
-        } else {
-            mEmptyAp.setVisibility(View.GONE);
-            mListAp.setVisibility(View.VISIBLE);
-        }
+        boolean isEmpty = mSSIDs.isEmpty();
+        Utils.info(this, "Is ssids empty?: " + isEmpty);
+        mEmptyAp.setVisibility((isEmpty == true)? View.VISIBLE: View.GONE);
+        mListAp.setVisibility((isEmpty == false)? View.VISIBLE: View.GONE);
         Utils.info(this, "[showEmptyIfNoData] exit");
     }
 
