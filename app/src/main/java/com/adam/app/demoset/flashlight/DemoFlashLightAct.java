@@ -17,8 +17,6 @@ public class DemoFlashLightAct extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 1;
     public static final String PROP_FLASH_LIGHT_ENABLE = "flash light enable";
-    public static final String FLASH_ON = "on";
-    public static final String FLASH_OFF = "off";
     private ToggleButton mTButton;
 
     @Override
@@ -39,25 +37,20 @@ public class DemoFlashLightAct extends AppCompatActivity {
             // Check flash light status
             String status = System.getProperty(PROP_FLASH_LIGHT_ENABLE);
 
-            if (FLASH_ON.equals(status)) {
+            if (FlashLightService.CMD_FLASH_LIGHT_ON.equals(status)) {
                 mTButton.setChecked(true);
             }
 
             mTButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mTButton.isChecked()) {
-                        Utils.showToast(DemoFlashLightAct.this, "flash light on...");
-                        System.setProperty(PROP_FLASH_LIGHT_ENABLE, FLASH_ON);
-                        FlashLightService.execute(DemoFlashLightAct.this, FlashLightService.CMD_FLASH_LIGHT_ON);
+                    boolean isChecked = mTButton.isChecked();
+                    String action = (isChecked == true)? FlashLightService.CMD_FLASH_LIGHT_ON: FlashLightService.CMD_FLASH_LIGHT_OFF;
+                    Utils.showToast(DemoFlashLightAct.this, "action: " + action);
 
+                    System.setProperty(PROP_FLASH_LIGHT_ENABLE, action);
+                    FlashLightService.execute(DemoFlashLightAct.this, action);
 
-                    } else {
-                        Utils.showToast(DemoFlashLightAct.this, "flash light off...");
-                        System.setProperty(PROP_FLASH_LIGHT_ENABLE, FLASH_OFF);
-                        FlashLightService.execute(DemoFlashLightAct.this, FlashLightService.CMD_FLASH_LIGHT_OFF);
-
-                    }
                 }
             });
         }
