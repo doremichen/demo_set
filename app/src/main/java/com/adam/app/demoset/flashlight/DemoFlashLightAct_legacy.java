@@ -1,30 +1,24 @@
-/**
- * Flash light demo
- */
 package com.adam.app.demoset.flashlight;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
-public class DemoFlashLightAct extends AppCompatActivity implements FlashLightViewModel.ViewModelCallBack{
+public class DemoFlashLightAct_legacy extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 1;
     public static final String PROP_FLASH_LIGHT_ENABLE = "flash light enable";
     private ToggleButton mTButton;
-
-    // flash light view model
-    private FlashLightViewModel mFlViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +29,6 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
 
         // Ask permission
         Utils.askPermission(this, Manifest.permission.CAMERA, REQUEST_CAMERA_PERMISSION_CODE);
-
-        // instance view model
-        this.mFlViewModel = new FlashLightViewModel(this, this);
 
         if (isFlash) {
             Utils.showToast(this, "the flash light is available");
@@ -56,10 +47,11 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
                 public void onClick(View v) {
                     boolean isChecked = mTButton.isChecked();
                     String action = (isChecked == true)? FlashLightService.CMD_FLASH_LIGHT_ON: FlashLightService.CMD_FLASH_LIGHT_OFF;
-                    Utils.showToast(DemoFlashLightAct.this, "action: " + action);
+                    Utils.showToast(DemoFlashLightAct_legacy.this, "action: " + action);
+
                     System.setProperty(PROP_FLASH_LIGHT_ENABLE, action);
-                    // enable flash
-                    mFlViewModel.enableFlashlight(isChecked);
+                    FlashLightService.execute(DemoFlashLightAct_legacy.this, action);
+
                 }
             });
         }
@@ -84,6 +76,7 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.getMenuInflater().inflate(R.menu.action_exit, menu);
+
         return true;
     }
 
@@ -97,10 +90,5 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
         }
 
         return false;
-    }
-
-    @Override
-    public void onUpdate() {
-        Utils.info(this, "onUpdate");
     }
 }
