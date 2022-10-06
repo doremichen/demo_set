@@ -27,7 +27,7 @@ class WifiController {
     }
 
     private static class Helper {
-        private static WifiController INSTANCE = new WifiController();
+        private static final WifiController INSTANCE = new WifiController();
     }
 
     //
