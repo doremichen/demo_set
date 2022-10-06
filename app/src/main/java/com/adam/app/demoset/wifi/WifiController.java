@@ -4,9 +4,12 @@
 package com.adam.app.demoset.wifi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.provider.Settings;
 
 import com.adam.app.demoset.Utils;
 
@@ -48,14 +51,18 @@ class WifiController {
     // note: This method startScan of WifiManager was deprecated in API level 28.
     // The ability for apps to trigger scan requests will be removed in a future release.
     //
-    public boolean startScan() {
+    public boolean startScan(Context ctx) {
         Utils.info(this, "[startScan] enter");
         boolean ret = false;
 
         // Check wifi enable
         if (!mWifimanager.isWifiEnabled()) {
-            mWifimanager.setWifiEnabled(true);
-            mCB.onInfo("Wifi function is enabled");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                ctx.startActivity(new Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY));
+            } else {
+                mWifimanager.setWifiEnabled(true);
+                mCB.onInfo("Wifi function is enabled");
+            }
         }
 
         // Start scan

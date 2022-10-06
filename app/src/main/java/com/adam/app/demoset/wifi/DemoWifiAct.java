@@ -171,7 +171,7 @@ public class DemoWifiAct extends AppCompatActivity implements WifiController.Cal
     //
     public void startScanAction(View view) {
         Utils.showToast(this, "start scan....");
-        WifiController.newInstance().startScan();
+        WifiController.newInstance().startScan(this);
     }
 
     @Override
