@@ -51,7 +51,6 @@ public final class MyCameraController {
         public void onOpened(@NonNull CameraDevice camera) {
             Utils.info(this, "onOpened");
             mDevice = camera;
-
             // Start camera preview
             startPreview();
         }
@@ -60,18 +59,15 @@ public final class MyCameraController {
         public void onDisconnected(@NonNull CameraDevice camera) {
             camera.close();
             mDevice = null;
-
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
             camera.close();
             mDevice = null;
-
             if (mCallBack != null) {
                 mCallBack.onDeviceStateError(error);
             }
-
         }
     };
     private MyCameraCallBack mCallBack;
@@ -105,7 +101,7 @@ public final class MyCameraController {
                             mState = STATE.PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
-                            runPrecaptureSequence();
+                            runPreCaptureSequence();
                         }
                     }
                     break;
@@ -129,7 +125,6 @@ public final class MyCameraController {
                 break;
             }
         }
-
 
         @Override
         public void onCaptureStarted(@NonNull CameraCaptureSession session,
@@ -329,7 +324,7 @@ public final class MyCameraController {
                     }
 
                     try {
-                        // Start to display the previewing
+                        // Start to display the preview
                         mPreviewReq = mPreviewReqBuilder.build();
                         session.setRepeatingRequest(mPreviewReq, mCaptureCallBack, mBgHandler);
                     } catch (CameraAccessException e) {
@@ -371,14 +366,13 @@ public final class MyCameraController {
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
                     Utils.info(this, "captureCallBack: onCaptureCompleted");
-
                     // Tell UI
                     if (mCallBack != null) {
                         mCallBack.onCaptureDone();
                     }
-
                     restartPreview();
                 }
+
             };
 
             mCaptureSession.stopRepeating();
@@ -390,13 +384,13 @@ public final class MyCameraController {
         }
     }
 
-    private void runPrecaptureSequence() {
+    private void runPreCaptureSequence() {
         Utils.info(this, "runPrecaptureSequence");
         try {
             // This is how to tell the camera to trigger.
             mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
                     CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
-            // Tell #mCaptureCallback to wait for the precapture sequence to be set.
+            // Tell #mCaptureCallback to wait for the preCapture sequence to be set.
             mState = STATE.WATING_PRECAPTURE;
             mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack,
                     mBgHandler);
