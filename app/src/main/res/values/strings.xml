@@ -121,4 +121,5 @@
     <string name="sart_wifi_scan">Sart scan</string>
     <string name="label_hello_floating_window">Hello floating window</string>
     <string name="label_close_float_window">Close window</string>
+    <string name="title_activity_demo_xml_parser">DemoXmlParserAct</string>
 </resources>
