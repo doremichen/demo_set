@@ -24,7 +24,7 @@ public class DemoXmlParserAct extends AppCompatActivity {
 
         ListView listView = this.findViewById(R.id.listView1);
         // init
-        XmlPullParserManager.newInstance().init(this);
+        XmlPullParserManager.newInstance().init(this.getApplicationContext());
         List<ItemData> dataSet = XmlPullParserManager.newInstance().parse();
         // build list view
         ArrayAdapter<ItemData> arrayAdapter = new ArrayAdapter<ItemData>(this, android.R.layout.simple_list_item_1, dataSet);
