@@ -19,12 +19,12 @@ public class XmlPullParserManager {
 
     private static final String TAG = XmlPullParserManager.class.getSimpleName();
 
-    private static class SingleTon {
+    private static class Singleton {
         private static final XmlPullParserManager INSTANCE = new XmlPullParserManager();
     }
 
     public static XmlPullParserManager newInstance() {
-        return  SingleTon.INSTANCE;
+        return  Singleton.INSTANCE;
     }
 
     private XmlPullParserManager() {}
