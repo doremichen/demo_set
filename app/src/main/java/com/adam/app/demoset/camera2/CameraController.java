@@ -34,12 +34,11 @@ import java.util.Arrays;
 
 public class CameraController {
 
-
     private HandlerThread mWorkThread;
     private Handler mWorkHandler;
 
     private CameraDevice mCameraDevice;
-    private TextureView mTexture;
+
     private Size mPreviewSize;
 
     private SoftReference<Activity> mRef_act;
@@ -47,27 +46,37 @@ public class CameraController {
     private CaptureRequest.Builder mRequestBuilder;
     private ImageReader mImageReader;
 
+    // CameraUIContent
+    private static class CameraUIContent {
+
+        TextureView mTexture;
+
+        public CameraUIContent(TextureView view) {
+            this.mTexture = view;
+        }
+    }
+
+    CameraUIContent mUIContent;
+
     private CameraController() {
     }
 
-    private static class Builder {
+    private static class Singleton {
         public static final CameraController INSTANCE = new CameraController();
     }
 
     public static CameraController newInstance() {
-        return Builder.INSTANCE;
+        return Singleton.INSTANCE;
     }
 
 
     public void registerContext(Activity act) {
-        this.mRef_act = new SoftReference<Activity>(act);
+        this.mRef_act = new SoftReference<>(act);
     }
 
     public void openCamera(int index, TextureView textView) {
         Utils.info(this, "openCamera enter");
-        mTexture = textView;
-
-
+        mUIContent = new CameraUIContent(textView);
         if (ActivityCompat.checkSelfPermission(mRef_act.get(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(mRef_act.get(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(mRef_act.get(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, DemoCamera2Act.REQUEST_PERMISSION_CODE);
@@ -85,13 +94,7 @@ public class CameraController {
                 int width = (mPreviewSize == null) ? textView.getWidth() : mPreviewSize.getWidth();
                 int height = (mPreviewSize == null) ? textView.getHeight() : mPreviewSize.getHeight();
                 mImageReader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 2);
-                mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
-                    @Override
-                    public void onImageAvailable(ImageReader reader) {
-
-                    }
-                }, mWorkHandler);
-
+                mImageReader.setOnImageAvailableListener((reader) ->{}, mWorkHandler);
 
                 cameraService.openCamera(cameraId, new MyOpenCameraStateCallback(), mWorkHandler);
             } catch (CameraAccessException e) {
@@ -131,10 +134,14 @@ public class CameraController {
         }
     }
 
-    public void capture() {
+    public void capture() throws IllegalAccessException {
         Utils.info(this, "capture");
-        ArrayList<Surface> surfaces = new ArrayList<Surface>();
-        surfaces.add(new Surface(mTexture.getSurfaceTexture()));
+        if (mUIContent == null) {
+            throw new IllegalAccessException("Please openCamera first!!!");
+        }
+
+        ArrayList<Surface> surfaces = new ArrayList<>();
+        surfaces.add(new Surface(mUIContent.mTexture.getSurfaceTexture()));
         surfaces.add(this.mImageReader.getSurface());
 
         try {
@@ -162,10 +169,13 @@ public class CameraController {
     }
 
 
-    private void startPreview() {
+    private void startPreview() throws IllegalAccessException {
         Utils.info(this, "startPreview");
+        if (mUIContent == null) {
+            throw new IllegalAccessException("Please openCamera first!!!");
+        }
         // Get Surface
-        SurfaceTexture surfaceText = this.mTexture.getSurfaceTexture();
+        SurfaceTexture surfaceText = mUIContent.mTexture.getSurfaceTexture();
         surfaceText.setDefaultBufferSize(this.mPreviewSize.getWidth(), this.mPreviewSize.getHeight());
         Surface surface = new Surface((surfaceText));
 
@@ -244,7 +254,11 @@ public class CameraController {
                 super.onCaptureCompleted(session, request, result);
                 Utils.info(this, "onCaptureCompleted");
                 // Start preview
-                startPreview();
+                try {
+                    startPreview();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -255,7 +269,11 @@ public class CameraController {
             Utils.info(this, "onOpened");
             mCameraDevice = camera;
             // Start preview
-            startPreview();
+            try {
+                startPreview();
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override

@@ -46,7 +46,7 @@ public final class MyCameraController {
     private int mState = STATE.PREVIEW;
 
     private CameraDevice mDevice;
-    private CameraDevice.StateCallback mDeviceStateCB = new CameraDevice.StateCallback() {
+    private final CameraDevice.StateCallback mDeviceStateCB = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
             Utils.info(this, "onOpened");
@@ -73,11 +73,11 @@ public final class MyCameraController {
     private MyCameraCallBack mCallBack;
     private Size mPreviewSize;
     private ImageReader mReader;
-    private boolean mCanFalsh;
+    private boolean mCanFlash;
     private CaptureRequest.Builder mPreviewReqBuilder;
     private CameraCaptureSession mCaptureSession;
 
-    private CameraCaptureSession.CaptureCallback mCaptureCallBack = new CameraCaptureSession.CaptureCallback() {
+    private final CameraCaptureSession.CaptureCallback mCaptureCallBack = new CameraCaptureSession.CaptureCallback() {
 
         private void process(CaptureResult result) {
             Utils.info(this, "process");
@@ -182,17 +182,17 @@ public final class MyCameraController {
     private MyCameraController() {
     }
 
-    private static class Builder {
+    private static class Singleton {
         public static final MyCameraController INSTANCE = new MyCameraController();
     }
 
     /**
-     * SingleTon
+     * Singleton
      *
-     * @return
+     * @return MyCameraController
      */
     public static MyCameraController newInstance() {
-        return Builder.INSTANCE;
+        return Singleton.INSTANCE;
     }
 
 
@@ -277,7 +277,7 @@ public final class MyCameraController {
 
             // Check auto flash
             Boolean isFlash = CameraChar.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-            mCanFalsh = isFlash != null;
+            mCanFlash = isFlash != null;
 
             // Open camera
             cameraService.openCamera(cameraId, mDeviceStateCB, this.mBgHandler);
@@ -303,7 +303,7 @@ public final class MyCameraController {
         Surface surface = new Surface(texture);
 
         try {
-            // Set up CaptureRequest.Builder
+            // Set up CaptureRequest.Singleton
             mPreviewReqBuilder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mPreviewReqBuilder.addTarget(surface);
 
@@ -319,7 +319,7 @@ public final class MyCameraController {
                     mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
                     // Flash mode
-                    if (mCanFalsh) {
+                    if (mCanFlash) {
                         mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                     }
 
@@ -356,7 +356,7 @@ public final class MyCameraController {
             builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 
             // set flash
-            if (mCanFalsh) {
+            if (mCanFlash) {
                 builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             }
 
@@ -385,7 +385,7 @@ public final class MyCameraController {
     }
 
     private void runPreCaptureSequence() {
-        Utils.info(this, "runPrecaptureSequence");
+        Utils.info(this, "runPreCaptureSequence");
         try {
             // This is how to tell the camera to trigger.
             mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
@@ -403,7 +403,7 @@ public final class MyCameraController {
         Utils.info(this, "restartPreview");
         try {
             mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            if (mCanFalsh) {
+            if (mCanFlash) {
                 mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             }
             mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack, mBgHandler);
@@ -439,7 +439,7 @@ public final class MyCameraController {
     /**
      * Get view from UI
      *
-     * @param view
+     * @param view:
      */
     public void setPreviewContent(TextureView view) {
         mView = view;

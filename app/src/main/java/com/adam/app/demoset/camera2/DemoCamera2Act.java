@@ -20,7 +20,7 @@ public class DemoCamera2Act extends AppCompatActivity {
 
 
     private TextureView mSureView;
-    private MySurfaceTextureListener mTexturelistener;
+    private MySurfaceTextureListener mTextureListener;
 
     // Control lens
     private int mIndex;
@@ -36,8 +36,8 @@ public class DemoCamera2Act extends AppCompatActivity {
         mSureView = this.findViewById(R.id.textureView_act2);
 
         // register surface listener
-        mTexturelistener = new MySurfaceTextureListener();
-        mSureView.setSurfaceTextureListener(mTexturelistener);
+        mTextureListener = new MySurfaceTextureListener();
+        mSureView.setSurfaceTextureListener(mTextureListener);
 
         // Get camera controller
         mCameraController = CameraController.newInstance();
@@ -57,7 +57,7 @@ public class DemoCamera2Act extends AppCompatActivity {
         if (this.mSureView.isAvailable()) {
             mCameraController.openCamera(mIndex, this.mSureView);
         } else {
-            this.mSureView.setSurfaceTextureListener(mTexturelistener);
+            this.mSureView.setSurfaceTextureListener(mTextureListener);
         }
     }
 
@@ -105,6 +105,8 @@ public class DemoCamera2Act extends AppCompatActivity {
             case R.id.exit_camera:
                 this.finish();
                 return true;
+            default:
+                break;
         }
 
         return false;
@@ -125,11 +127,15 @@ public class DemoCamera2Act extends AppCompatActivity {
     /**
      * Take picture button callback
      *
-     * @param v
+     * @param view:
      */
-    public void onTakePic(View v) {
+    public void onTakePic(View view) {
         Utils.info(this, "onTakePic enter");
-        mCameraController.capture();
+        try {
+            mCameraController.capture();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }

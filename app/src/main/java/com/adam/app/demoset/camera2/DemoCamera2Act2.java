@@ -41,7 +41,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     /**
      * Callback from MyCameraController
      */
-    private MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
+    private final MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
         @Override
         public void onCaptureDone() {
             Utils.showToast(DemoCamera2Act2.this, "Capture Done!!!");
@@ -72,7 +72,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     /**
      * Surface view listener
      */
-    private TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
+    private final TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             Utils.info(this, "onSurfaceTextureAvailable enter");
@@ -169,8 +169,8 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * The callback of menu item is pressed.
-     * @param item
-     * @return
+     * @param item:
+     * @return boolean
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -190,9 +190,9 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Receive the result of permission request.
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
+     * @param requestCode:
+     * @param permissions:
+     * @param grantResults:
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -225,7 +225,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Take picture button
-     * @param v
+     * @param v:
      */
     public void onTakePic(View v) {
         Utils.info(this, "onTakePic enter");
@@ -234,7 +234,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Show result button
-     * @param view
+     * @param view:
      */
     public void onResult(View view) {
         Utils.info(this, "onResult enter");
@@ -250,7 +250,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     }
 
     private Intent playImageIntent() {
-        Utils.info(this, "playVedioIntent");
+        Utils.info(this, "playVideoIntent");
         Utils.info(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // Check file exists
@@ -277,7 +277,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
      */
     private void switchToFrontCamera(boolean isFront) {
         Utils.info(this, "switchToFrontCamera: isFront = " + isFront);
-        mIndex = (isFront == true)? CameraCharacteristics.LENS_FACING_BACK: CameraCharacteristics.LENS_FACING_FRONT;
+        mIndex = (isFront)? CameraCharacteristics.LENS_FACING_BACK: CameraCharacteristics.LENS_FACING_FRONT;
         // Close camera
         mCameraController.closeCamera();
         // Open camera
