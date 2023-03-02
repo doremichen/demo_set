@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
 import com.github.mjdev.libaums.fs.UsbFile;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class FileListAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
+        Utils.info(this, "getView +++");
         // view
         ViewHolder holder = null;
         if (convertView == null) {
@@ -65,6 +67,7 @@ public class FileListAdapter<T> extends BaseAdapter {
         String fileName = "";
         String fileSizeInfo = "";
         if (t instanceof UsbFile) {
+            Utils.info(this, "UsbFile");
             UsbFile usbFile = (UsbFile) t;
             ResId = RESICONITEMS.getResourceIdBy(usbFile.isDirectory(), usbFile.getName());
             fileName = usbFile.getName();
@@ -72,6 +75,7 @@ public class FileListAdapter<T> extends BaseAdapter {
                 fileSizeInfo =  toFileSizeInfo(usbFile.getLength());
             }
         } else if (t instanceof File) {
+            Utils.info(this, "File");
             File localFile = (File) t;
             ResId = RESICONITEMS.getResourceIdBy(localFile.isDirectory(), localFile.getName());
             fileName = localFile.getName();
@@ -86,7 +90,7 @@ public class FileListAdapter<T> extends BaseAdapter {
         holder.mIcon.setImageResource(ResId);
         holder.mFileName.setText(fileName);
         holder.mFileSize.setText(fileSizeInfo);
-
+        Utils.info(this, "getView xxx");
         return convertView;
     }
 
@@ -105,8 +109,8 @@ public class FileListAdapter<T> extends BaseAdapter {
         MP4(".mp4", R.drawable.video),
         AVI(".avi", R.drawable.video);
 
-        private String mImgType;
-        private int mResId;
+        private final String mImgType;
+        private final int mResId;
 
         private RESICONITEMS(String imgType, int resId) {
             this.mImgType = imgType;
@@ -120,16 +124,20 @@ public class FileListAdapter<T> extends BaseAdapter {
          * @return resource id
          */
         public static int getResourceIdBy(boolean isFolder, @NonNull String fileName) {
+            Utils.info(RESICONITEMS.class, "getResourceIdBy +++");
             fileName = fileName.toLowerCase();
             if (isFolder) {
+                Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: folder");
                 return R.drawable.folder;
             } else {
                 for (RESICONITEMS item: RESICONITEMS.values()) {
                     if (fileName.endsWith(item.mImgType)) {
+                        Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: fileName " + fileName);
                         return item.mResId;
                     }
                 }
             }
+            Utils.info(RESICONITEMS.class, "getResourceIdBy xxx");
             return R.drawable.unkown_file;
         }
 

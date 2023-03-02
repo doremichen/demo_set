@@ -3,7 +3,9 @@
  */
 package com.adam.app.demoset.usb_storage;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.usb.UsbDevice;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastReceiver.UsbListener {
+
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_CODE = 0x13579;
+
 
     // Local file
     private ImageButton mLocalFileIB;
@@ -100,12 +105,16 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
          * @param list
          */
         public void updateFileList(List<T> list) {
+            Utils.info(this, "updateFileList +++");
+            Utils.info(this, "input list: " + list.toString());
             // clear
             this.mList.clear();
             // add data from input
             this.mList.addAll(list);
+            Utils.info(this, "list: " + this.mList.toString());
             // notify list adapter
             this.mAdapter.notifyDataSetChanged();
+            Utils.info(this, "updateFileList xxx");
         }
 
         /**
@@ -155,8 +164,13 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         this.mUsbFileIB = this.findViewById(R.id.usb_backspace_iv);
         this.mProgressTV = this.findViewById(R.id.show_progress_tv);
 
-        initLocalView();
-        initUsbView();
+        // ASK permission
+        if (Utils.askPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_CODE)) {
+            // permission pass
+            initLocalView();
+            initUsbView();
+        }
+
         Utils.info(this, "onCreate xxx");
     }
 
@@ -184,6 +198,33 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         this.mUsbHelper.finishUsbHelper();
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Utils.showToast(this, "Permission granted");
+//                // debug
+//                File dir = new File("/storage/emulated/0/Download/霹靂俠峰-英雄精選-77/霹靂俠峰-英雄精選-77/CD2");
+//                if (dir.isDirectory()) {
+//                    Utils.info(this, "debug!!!");
+//                    for (File file: dir.listFiles()) {
+//                        Utils.info(this, "file: " + file.getName());
+//                    }
+//                }
+//                // debug
+                initLocalView();
+                initUsbView();
+
+            } else {
+                Utils.showToast(this, "Permission not granted");
+                // Finish UI
+                this.finish();
+            }
+        }
+    }
+
     /**
      * initial local list view
      */
@@ -202,6 +243,7 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
                 Utils.info(this, "onItemClick@LocalFileList");
                 Utils.info(this, "position: " + String.valueOf(i));
                 File file = mLocalFileListInfo.getFile(i);
+                Utils.info(this, "file name: " + file.getName());
                 // open directory/file
                 openLocalFile(file);
             }
@@ -367,6 +409,15 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         }
     }
 
+    private void dumpFileArray(File[] files) {
+        Utils.info(this, "dumpFileArray +++");
+        for (File file: files) {
+            Utils.info(this, "file: " + file.getName());
+        }
+        Utils.info(this, "dumpFileArray xxx");
+    }
+
+
     /**
      * open file in local storage.
      * @param file
@@ -375,9 +426,18 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         Utils.info(this, "openLocalFile +++");
         // directory
         if (file.isDirectory()) {
+            Utils.info(this, "openLocalFile: directory xxx " + file.getName());
+            Utils.info(this, "openLocalFile: directory path xxx " + file.getAbsolutePath());
+            dumpFileArray(file.listFiles());
             this.mLocalFileListInfo.updateFileList(Arrays.asList(file.listFiles()));
             this.mLocalCurrentPath = file.getAbsolutePath();
-            Utils.info(this, "openLocalFile: directory xxx");
+            return;
+        }
+
+        // check target exists
+        if (mUsbHelper.getFolder(true) == null) {
+            // no folder or usb device
+            Utils.showToast(this, "No folder or usb device");
             return;
         }
 
