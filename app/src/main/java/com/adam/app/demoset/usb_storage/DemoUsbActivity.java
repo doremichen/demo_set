@@ -89,6 +89,14 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         }
 
         /**
+         * Return list size
+         * @return
+         */
+        public int getListSize() {
+            return this.mList.size();
+        }
+
+        /**
          * init file list
          * @param list
          */
@@ -133,12 +141,16 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
     @Override
     public void onInsert(UsbDevice device) {
         Utils.info(this, "onInsert");
+        if (this.mUsbFileListInfo.getListSize() == 0) {
+            updateUsbList(0);
+        }
 
     }
 
     @Override
     public void onRemove(UsbDevice device) {
         Utils.info(this, "onRemove");
+        updateUsbList(0);
     }
 
     @Override
