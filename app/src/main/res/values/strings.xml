@@ -118,8 +118,10 @@
     <string name="label_hdthrd_info">Welcome to handler thread demo</string>
     <string name="title_activity_demo_wifi">Wifi demo item</string>
     <string name="no_ap_data">No data</string>
-    <string name="sart_wifi_scan">Sart scan</string>
+    <string name="sart_wifi_scan">Start scan</string>
     <string name="label_hello_floating_window">Hello floating window</string>
     <string name="label_close_float_window">Close window</string>
     <string name="title_activity_demo_xml_parser">DemoXmlParserAct</string>
+    <string name="title_local_file">Local file</string>
+    <string name="title_usb_file">Usb file</string>
 </resources>

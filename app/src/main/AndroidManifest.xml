@@ -40,7 +40,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <!--
@@ -50,6 +51,7 @@
          doesn't derive physical location.
     -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
     <!--
  Needed only if your app makes the device discoverable to Bluetooth
          devices.
@@ -59,8 +61,12 @@
  Needed only if your app communicates with already-paired Bluetooth
          devices.
     -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Needed only if your app uses Bluetooth scan results to derive physical location. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.hardware.usb.host" android:required="false"/>
+    <uses-feature android:name="android.hardware.usb.host" android:required="true"/>
 
     <application
         android:allowBackup="true"
@@ -243,6 +249,11 @@
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".usb_storage.DemoUsbActivity"
+            android:exported="true"
+            android:label="Demo Usb device"
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="preloaded_fonts"
