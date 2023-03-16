@@ -75,7 +75,6 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
                 Utils.showToast(this, "Permission granted");
             } else {
                 Utils.showToast(this, "Permission not granted");
-                // Finish UI
                 this.finish();
             }
         }

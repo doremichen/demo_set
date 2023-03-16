@@ -196,8 +196,6 @@ public class DemoCamera2Act2 extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
             if (grantResults.length == CAMERA_PERMISSION.length) {
                 for (int result : grantResults) {
@@ -205,8 +203,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         Utils.showToast(this, "Camera permission is not granted");
                         mCanOpenCamera = false;
-                        // finish UI
-                        DemoCamera2Act2.this.finish();
+                        this.finish();
                         break;
                     } else {
                         Utils.showToast(this, "Camera permission is granted");

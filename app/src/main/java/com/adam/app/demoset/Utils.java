@@ -97,38 +97,38 @@ public abstract class Utils {
      * @return
      */
     public static boolean askPermission(final Activity context, @NonNull final String permission, final int requestcode) {
-        boolean ret = false;
-        if (ContextCompat.checkSelfPermission(context,
-                permission)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(context,
-                    permission)) {
-
-                AlertDialog.Builder builder = buildAlertDialog(context, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(context,
-                                new String[]{permission},
-                                requestcode);
-                    }
-                });
-
-                builder.create().show();
-
-            } else {
-                ActivityCompat.requestPermissions(context,
-                        new String[]{permission},
-                        requestcode);
-            }
-        } else {
-            ret = true;
-            // Permission granted
+        info(Utils.class, "[askPermission] +++");
+        // check permission state
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            info(Utils.class, "permission granted!!!");
+            info(Utils.class, "[askPermission] xxx");
+            return true;
         }
 
-        return ret;
-    }
+        // request permission
+        if (ActivityCompat.shouldShowRequestPermissionRationale(context,
+                permission)) {
+            info(Utils.class, "should show request dialog!!!");
+            // show Alert dialog
+            AlertDialog.Builder builder = buildAlertDialog(context, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(context,
+                            new String[]{permission},
+                            requestcode);
+                }
+            });
+            builder.create().show();
+        } else {
+            info(Utils.class, "do not need to show request dialog!!!");
+            ActivityCompat.requestPermissions(context,
+                    new String[]{permission},
+                    requestcode);
+        }
 
+        info(Utils.class, "[askPermission] xxx");
+        return false;
+    }
 
     public static boolean askPermission(final Activity context, @NonNull final String[] permissions, final int requestcode) {
         Utils.info(Utils.class, "askPermission enter");
@@ -179,9 +179,12 @@ public abstract class Utils {
     }
 
     private static AlertDialog.Builder buildAlertDialog(Context context, DialogInterface.OnClickListener listener) {
+        StringBuilder stb = new StringBuilder();
+        stb.append("Please press ok to request permission again.\n");
+        stb.append("Important: Do not ask permission again if you still press not allow.\n");
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Rational permission request");
-        builder.setMessage("Please press ok to request permission.");
+        builder.setMessage(stb.toString());
         builder.setCancelable(false);
         builder.setPositiveButton("ok", listener);
 
