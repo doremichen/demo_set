@@ -90,14 +90,12 @@ public class DemoDatabaseAct extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 
-
-        // Click listener
+                // Click listener
         mTouchListener = new MyTouchItemListener();
         mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
             @Override
             public void onLongClick(int position) {
                 Utils.info(this, "onLongClick");
-
                 triggerVibrator();
 
                 Message msg = Message.obtain();
@@ -105,6 +103,8 @@ public class DemoDatabaseAct extends AppCompatActivity {
                 msg.arg1 = position;
                 mUIHandler.sendMessage(msg);
             }
+
+
         });
         mRecyclerView.addOnItemTouchListener(mTouchListener);
 
@@ -115,16 +115,16 @@ public class DemoDatabaseAct extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(mFabClickListener);
+
+        loadData(mNotes);
+
+        showEmptyIfNoData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Utils.info(this, "onResume enter");
-
-        loadData(mNotes);
-
-        showEmptyIfNoData();
     }
 
 
@@ -173,10 +173,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         // loop all data and add to list
         if (c.moveToFirst()) {
             do {
-                String id = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_ID));
-                String timeStamp = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
-                String content = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
-                Note note = new Note(id, timeStamp, content);
+                Note note = new Note(c);
                 notes.add(note);
             } while (c.moveToNext());
         }
@@ -214,10 +211,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
 
                 if (c != null) {
                     c.moveToFirst();
-                    String id = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_ID));
-                    String timeStamp = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
-                    String note = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
-                    Note newNote = new Note(id, timeStamp, note);
+                    Note newNote = new Note(c);
                     mNotes.add(newNote);
 
                     // Notify list adapter
@@ -276,11 +270,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
 
                 if (c != null) {
                     c.moveToFirst();
-                    String strNote = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
-                    String strTime = c.getString(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
-                    // Update note content
-                    note.updateNote(strNote);
-                    note.updateTimeStamp(strTime);
+                    note.updateData(c);
                     mNotes.set(position, note);
 
                     // Notify list adapter

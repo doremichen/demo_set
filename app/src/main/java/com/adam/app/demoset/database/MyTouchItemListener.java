@@ -52,7 +52,7 @@ public class MyTouchItemListener implements OnItemTouchListener {
             int position = recyclerView.getChildAdapterPosition(child);
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                Utils.info(this, "Start long click timer");
+                Utils.info(this, "Start long click timer: position " + String.valueOf(position));
                 // Start long click timer
                 mFuture = mService.schedule(new LongClickTask(position), 2L, TimeUnit.SECONDS);
             } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
