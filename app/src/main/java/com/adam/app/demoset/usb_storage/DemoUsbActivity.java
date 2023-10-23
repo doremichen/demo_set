@@ -180,7 +180,6 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         if (Utils.askPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE_PERMISSION_CODE)) {
             // permission pass
             initLocalView();
-            initUsbView();
         }
 
         Utils.info(this, "onCreate xxx");
@@ -227,7 +226,6 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
 //                }
 //                // debug
                 initLocalView();
-                initUsbView();
 
             } else {
                 Utils.showToast(this, "Permission not granted");
@@ -242,10 +240,15 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
      */
     private void initLocalView() {
         Utils.info(this, "initLocalView +++");
+        Utils.info(this, "mLocalRootPath: " + mLocalRootPath);
         mLocalFileListInfo = new FileListInfo<>(this);
         this.mLocalCurrentPath = this.mLocalRootPath;
         // init file list
         File[] files = new File(this.mLocalRootPath).listFiles();
+        if (files == null) {
+            Utils.showToast(this, "No file!!!");
+            return;
+        }
         mLocalFileListInfo.initFileList(Arrays.asList(files));
         // build list view
         this.mLocalFilesLV.setAdapter(mLocalFileListInfo.getListAdapter());
@@ -260,6 +263,8 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
                 openLocalFile(file);
             }
         });
+
+        initUsbView();
         Utils.info(this, "initLocalView xxx");
     }
 
