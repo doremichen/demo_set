@@ -11,12 +11,13 @@ package com.adam.app.demoset;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String LOG_STATUS = "log.status";
     private ListView mList;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.info(this, "onCreate");
         setContentView(R.layout.activity_main);
 
         this.mList = this.findViewById(R.id.list_view);
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -116,7 +118,77 @@ public class MainActivity extends AppCompatActivity {
                 enableLogcat(Utils.FALSE);
                 break;
             case R.id.exit:
-                this.finish();
+                Utils.info(this, "press exit item!!!");
+                //overridePendingTransition(0, 0);
+                Utils.restartMainActivity(this.getApplicationContext(), new Utils.PARAMS() {
+                    @Override
+                    public void needFinish() {
+                        MainActivity.this.finish();
+                        MainActivity.this.overridePendingTransition(0, 0);
+                    }
+
+                    @Override
+                    public String onPackageName() {
+                        return "com.adam.app.demoset";
+                    }
+
+                    @Override
+                    public String onClasName() {
+                        return "com.adam.app.demoset.MainActivity";
+                    }
+                });
+                //                startActivity(getIntent());
+//                try {
+//                    MainActivity.this.finish();
+//                    Process proc = Runtime.getRuntime().exec("am start -n com.adam.app.demoset/com.adam.app.demoset.MainActivity");
+//                    InputStream stdout = proc.getInputStream();
+//                    InputStreamReader isr = new InputStreamReader(stdout);
+//                    BufferedReader br = new BufferedReader(isr);
+//                    String line = null;
+//                    StringBuilder stb = new StringBuilder();
+//                    while ((line = br.readLine()) != null) {
+//                        stb.append(line);
+//                    }
+//                    Utils.info(MainActivity.this, "line:" + stb.toString());
+//
+//                    proc.waitFor();
+//                } catch (IOException e) {
+//
+//                    e.printStackTrace();
+//
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Utils.info(MainActivity.this, "run!!!");
+//                        try {
+//                            MainActivity.this.finish();
+//                            Process proc = Runtime.getRuntime().exec("am start -n com.adam.app.demoset/com.adam.app.demoset.MainActivity");
+//                            InputStream stdout = proc.getInputStream();
+//                            InputStreamReader isr = new InputStreamReader(stdout);
+//                            BufferedReader br = new BufferedReader(isr);
+//                            String line = null;
+//                            StringBuilder stb = new StringBuilder();
+//                            while ((line = br.readLine()) != null) {
+//                                stb.append(line);
+//                            }
+//                            Utils.info(MainActivity.this, "line:" + stb.toString());
+//
+//                            proc.waitFor();
+//                        } catch (IOException e) {
+//
+//                            e.printStackTrace();
+//
+//                        } catch (InterruptedException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    }
+//
+//                }).start();
+
                 return true;
         }
 

@@ -37,6 +37,10 @@ android {
         enabled = true
     }
 
+    buildFeatures {
+        dataBinding true
+    }
+
     configurations {
         cleanedAnnotations
         compile.exclude group: 'org.jetbrains' , module:'annotations'
@@ -71,5 +75,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     // libanums lib for usb
     implementation 'com.github.mjdev:libaums:+'
+    // logger
+    implementation 'com.orhanobut:logger:+'
 
 }

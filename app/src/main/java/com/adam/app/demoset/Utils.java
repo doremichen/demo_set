@@ -26,12 +26,6 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import androidx.annotation.NonNull;
-import androidx.annotation.WorkerThread;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +33,18 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -79,12 +85,21 @@ public abstract class Utils {
 
     private static final long DELAY_TIME_MILLIS = 3000L;
 
+    // reference: https://github.com/orhanobut/logger/tree/master
+    static {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().
+                tag(TAG).
+                build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+    }
+
+
     public static void info(Object obj, String str) {
-        Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
+        Logger.i(obj.getClass().getSimpleName() + ": " + str);
     }
 
     public static void info(Class<?> clazz, String str) {
-        Log.i(TAG, clazz.getSimpleName() + ": " + str);
+        Logger.i(clazz.getSimpleName() + ": " + str);
     }
 
     /**
@@ -429,6 +444,24 @@ public abstract class Utils {
         } catch (InterruptedException e) {
             Log.d(TAG, e.getMessage());
         }
+    }
+
+    interface PARAMS {
+        void needFinish();
+        String onPackageName();
+        String onClasName();
+    }
+    public static void restartMainActivity(Context ctx, @NonNull PARAMS params) {
+        // precondition
+        params.needFinish();
+
+        Intent it = new Intent(Intent.ACTION_MAIN);
+        it.addCategory(Intent.CATEGORY_LAUNCHER);
+        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        it.setClassName(params.onPackageName(), params.onClasName());
+        ctx.startActivity(it);
     }
 
 }

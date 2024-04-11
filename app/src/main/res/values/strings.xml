@@ -122,6 +122,8 @@
     <string name="label_hello_floating_window">Hello floating window</string>
     <string name="label_close_float_window">Close window</string>
     <string name="title_activity_demo_xml_parser">DemoXmlParserAct</string>
+    <string name="title_activity_demo_databinding">DemoDataBindingAct</string>
+    <string name="label_demo_databinding_button1">Press Me</string>
     <string name="title_local_file">Local file</string>
     <string name="title_usb_file">Usb file</string>
 </resources>
