@@ -119,77 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.exit:
                 Utils.info(this, "press exit item!!!");
-                //overridePendingTransition(0, 0);
-                Utils.restartMainActivity(this.getApplicationContext(), new Utils.PARAMS() {
-                    @Override
-                    public void needFinish() {
-                        MainActivity.this.finish();
-                        MainActivity.this.overridePendingTransition(0, 0);
-                    }
-
-                    @Override
-                    public String onPackageName() {
-                        return "com.adam.app.demoset";
-                    }
-
-                    @Override
-                    public String onClasName() {
-                        return "com.adam.app.demoset.MainActivity";
-                    }
-                });
-                //                startActivity(getIntent());
-//                try {
-//                    MainActivity.this.finish();
-//                    Process proc = Runtime.getRuntime().exec("am start -n com.adam.app.demoset/com.adam.app.demoset.MainActivity");
-//                    InputStream stdout = proc.getInputStream();
-//                    InputStreamReader isr = new InputStreamReader(stdout);
-//                    BufferedReader br = new BufferedReader(isr);
-//                    String line = null;
-//                    StringBuilder stb = new StringBuilder();
-//                    while ((line = br.readLine()) != null) {
-//                        stb.append(line);
-//                    }
-//                    Utils.info(MainActivity.this, "line:" + stb.toString());
-//
-//                    proc.waitFor();
-//                } catch (IOException e) {
-//
-//                    e.printStackTrace();
-//
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Utils.info(MainActivity.this, "run!!!");
-//                        try {
-//                            MainActivity.this.finish();
-//                            Process proc = Runtime.getRuntime().exec("am start -n com.adam.app.demoset/com.adam.app.demoset.MainActivity");
-//                            InputStream stdout = proc.getInputStream();
-//                            InputStreamReader isr = new InputStreamReader(stdout);
-//                            BufferedReader br = new BufferedReader(isr);
-//                            String line = null;
-//                            StringBuilder stb = new StringBuilder();
-//                            while ((line = br.readLine()) != null) {
-//                                stb.append(line);
-//                            }
-//                            Utils.info(MainActivity.this, "line:" + stb.toString());
-//
-//                            proc.waitFor();
-//                        } catch (IOException e) {
-//
-//                            e.printStackTrace();
-//
-//                        } catch (InterruptedException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                    }
-//
-//                }).start();
-
-                return true;
+                finish();
         }
 
         return false;

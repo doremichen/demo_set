@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/timestamp_color</item>
+        <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/montserrat</item>
     </style>
 
     <style name="Theme.Demo.Material" parent="Theme.MaterialComponents.Light.NoActionBar">
