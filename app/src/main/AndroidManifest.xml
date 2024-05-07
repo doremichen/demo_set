@@ -43,6 +43,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        android:minSdkVersion="30" />
     <!--
  Needed only if your app looks for Bluetooth devices.
          If your app doesn't use Bluetooth scan results to derive physical
@@ -74,6 +77,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -89,9 +93,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".databinding.DemoDataBindingAct"
+            android:name=".filemanager.FileExploreAct"
             android:exported="true"
-            android:label="@string/title_activity_demo_databinding"
+            android:label="@string/title_activity_demo_file_explore"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".xml_parser.DemoXmlParserAct"
@@ -264,7 +268,15 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.adam.app.demoset.filemanager.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.adam.app.demoset.fileprovider"
