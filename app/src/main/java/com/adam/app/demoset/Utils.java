@@ -53,8 +53,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class Utils {
 
@@ -308,13 +312,52 @@ public abstract class Utils {
         }
     }
 
+
     private static void executeCommend(String cmd) {
-        try {
-            Process process = Runtime.getRuntime().exec(cmd);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        int pid = android.os.Process.myPid();
+        Utils.info(Utils.class, "pid: " + pid);
+
+        ExecutorService executorSvr = Executors.newSingleThreadExecutor();
+        executorSvr.execute(new Runnable() {
+            @Override
+            public void run() {
+                Process process = null;
+                try {
+                    process = Runtime.getRuntime().exec(cmd);
+                    String inStr = consumeInputStream(process.getInputStream());
+                    String errStr = consumeInputStream(process.getErrorStream());
+
+                    int exitCode = process.waitFor();
+                    Utils.info(Utils.class, "cmd: " + cmd + " " + "exitCode: " + String.valueOf(exitCode));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (process != null) {
+                        process.destroy();
+                    }
+                }
+            }
+        });
+
+        executorSvr.shutdown();
+
     }
+
+
+    private static String consumeInputStream(InputStream is) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String s ;
+        StringBuilder sb = new StringBuilder();
+        while((s=br.readLine())!=null){
+            System.out.println(s);
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
+
 
     /**
      * Blurs the given Bitmap image

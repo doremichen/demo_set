@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         File fileDir = this.getFilesDir();
         String filePath = fileDir.getPath() + "/" + System.currentTimeMillis() + ".log";
-
+        Utils.info(this, "log path: " + filePath);
         Utils.enableLog(enable, filePath);
 
     }
