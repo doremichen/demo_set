@@ -89,7 +89,7 @@ public class DemoServiceAct extends AppCompatActivity {
         });
 
         // register show snackbar receiver
-        this.registerReceiver(this.mReceiver, new IntentFilter(Utils.ACTION_SHOW_SNACKBAR));
+        this.registerReceiver(this.mReceiver, new IntentFilter(Utils.ACTION_SHOW_SNACKBAR), RECEIVER_NOT_EXPORTED);
 
     }
 

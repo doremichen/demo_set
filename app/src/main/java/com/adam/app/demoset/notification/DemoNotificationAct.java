@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import androidx.core.app.NotificationCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,16 +35,29 @@ public class DemoNotificationAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.info(this, "onCreate");
         setContentView(R.layout.activity_demo_notification);
-
+        mManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = notificationBuilder();
 
+        // enable notification permission
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+        } else {
+            intent.setAction("android.settings.ACTION_APP_NOTIFICATION_SETTINGS");
+            intent.putExtra("app_package", getPackageName());
+            intent.putExtra("app_uid", getApplicationInfo().uid);
+        }
+        startActivity(intent);
 
     }
 
     private NotificationCompat.Builder notificationBuilder() {
+        Utils.info(this, "notificationBuilder");
 
-        mManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Create notification channel id
@@ -88,18 +102,19 @@ public class DemoNotificationAct extends AppCompatActivity {
     }
 
     private PendingIntent getPendingIntent() {
+        Utils.info(this, "getPendingIntent");
         Intent resultIntent = new Intent(this, NotifyResultAct.class);
         // ensures that navigating backward from the Activity leads out of application to Home screen
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(NotifyResultAct.class);
         stackBuilder.addNextIntent(resultIntent);
 
-        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
 
     public void onNotification(View v) {
-
+        Utils.info(this, "onNotification!!!");
         mManager.notify(NOTIFICATION_ID, mBuilder.build());
 
     }

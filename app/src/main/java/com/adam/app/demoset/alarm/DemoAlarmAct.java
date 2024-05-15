@@ -140,7 +140,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
         mUIRecv = new UIReceiver();
         IntentFilter filter = new IntentFilter(ACTION_UPDATE_INFO);
-        this.registerReceiver(mUIRecv, filter);
+        this.registerReceiver(mUIRecv, filter, RECEIVER_NOT_EXPORTED);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     private void startAlarm() {
         Utils.info(this, "startAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent,  PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
         long triggerTime = SystemClock.elapsedRealtime() + mOffset;
         switch (mRadioGroup.getCheckedRadioButtonId()) {
@@ -226,7 +226,7 @@ public class DemoAlarmAct extends AppCompatActivity {
     private void stopAlarm() {
         Utils.info(this, "stopAlarm enter");
         Intent intent = new Intent(this, MyAlarmReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent,  PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         // Cancel alarm
         this.mAlarmManager.cancel(alarmIntent);
 

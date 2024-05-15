@@ -100,7 +100,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     //camera  permission
     private static final String[] CAMERA_PERMISSION = {
             Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            //Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override
@@ -119,10 +119,9 @@ public class DemoCamera2Act2 extends AppCompatActivity {
         // Ask camera permission
         if (Utils.askPermission(this, CAMERA_PERMISSION, REQUEST_CAMERA_PERMISSION_CODE)) {
             mCanOpenCamera = true;
+            //Start camera work thread
+            mCameraController.startCameraThread();
         }
-
-        //Start camera work thread
-        mCameraController.startCameraThread();
 
     }
 
@@ -196,6 +195,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Utils.info(this, "onRequestPermissionsResult");
         if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
             if (grantResults.length == CAMERA_PERMISSION.length) {
                 for (int result : grantResults) {

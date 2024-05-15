@@ -280,7 +280,7 @@ public class DemoBTAct extends AppCompatActivity {
         uiFilter.addAction(BTReceiver.ACTION_UPDATE_BT_BOUND_STATE);
         uiFilter.addAction(ConnectTask.ACTION_UPDATE_CONNECT_INFO);
         Utils.info(this, "register BT receiver");
-        registerReceiver(mUIReceiver, uiFilter);
+        registerReceiver(mUIReceiver, uiFilter, RECEIVER_EXPORTED);
 
         // Register BT receiver
         IntentFilter btFilter = new IntentFilter();
@@ -289,7 +289,7 @@ public class DemoBTAct extends AppCompatActivity {
         btFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         btFilter.addAction(BluetoothDevice.ACTION_FOUND);
         btFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBTReceiver, btFilter);
+        registerReceiver(mBTReceiver, btFilter, RECEIVER_EXPORTED);
 
         handleBTPowerState();
         Utils.info(this, "onCreate Done!!!");

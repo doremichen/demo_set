@@ -157,6 +157,7 @@ public final class MyCameraController {
                                     @NonNull CaptureRequest request,
                                     @NonNull CaptureFailure failure) {
             super.onCaptureFailed(session, request, failure);
+            Utils.info(this, "onCaptureFailed enter");
         }
 
         @Override
@@ -335,12 +336,13 @@ public final class MyCameraController {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-
+                    Utils.info(this, "preview config: onConfigureFailed enter");
                 }
             }, null);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
+            Utils.info(this, "reason: " + e.getReason());
         }
 
     }
@@ -380,6 +382,7 @@ public final class MyCameraController {
             mCaptureSession.capture(builder.build(), captureCallBack, null);
 
         } catch (CameraAccessException e) {
+            Utils.info(this, "reason: "+ e.getReason());
             e.printStackTrace();
         }
     }
