@@ -53,6 +53,7 @@ public class FileExploreAct extends AppCompatActivity {
         // show ui according to permission state
         if (!hasPermission) {
             this.mBinding.rationaleView.setVisibility(View.VISIBLE);
+            this.mBinding.permissionButton.setVisibility(View.VISIBLE);
             this.mBinding.filesTreeView.setVisibility(View.GONE);
             return;
         }
@@ -62,12 +63,14 @@ public class FileExploreAct extends AppCompatActivity {
             if (!Environment.isExternalStorageLegacy()) {
                 info("!Environment.isExternalStorageLegacy()");
                 this.mBinding.rationaleView.setVisibility(View.GONE);
+                this.mBinding.permissionButton.setVisibility(View.GONE);
                 this.mBinding.legacyStorageView.setVisibility(View.VISIBLE);
                 return;
             }
         }
 
         this.mBinding.rationaleView.setVisibility(View.GONE);
+        this.mBinding.permissionButton.setVisibility(View.GONE);
         this.mBinding.filesTreeView.setVisibility(View.VISIBLE);
         // OPEN
         open(Environment.getExternalStorageDirectory());
