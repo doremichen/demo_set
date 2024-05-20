@@ -13,3 +13,4 @@ captures
 app/.externalNativeBuild
 app/.cxx
 dump.txt
+lob.txt

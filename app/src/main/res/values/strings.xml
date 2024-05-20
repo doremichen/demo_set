@@ -10,6 +10,7 @@
     <string name="label_permission_label">direct use the service</string>
     <string name="label_permission_description">this is demo permission</string>
     <string name="label_ok_btn">Ok</string>
+    <string name="label_cancel_btn">Cancel</string>
     <string name="label_open_float_window">Open window</string>
     <string name="label_hello_floating_dialog">Hello floating dialog</string>
     <string name="label_hello_bt">Hello BT</string>
@@ -141,4 +142,13 @@
     <string name="permission_granted_info">Permission granted: %1$s</string>
     <string name="open_settings_button_label">Open settings</string>
     <string name="request_permission_button_label">Request permission</string>
+    <string name="action_scan_wifi">Scan wifi</string>
+    <string name="action_exit_wifi">Exxit</string>
+    <string name="label_wifi_result_item_ssid">SSID</string>
+    <string name="label_wifi_result_item_bssid">BSSID</string>
+    <string name="label_wifi_result_item_capabilities">Capabilities</string>
+    <string name="label_wifi_result_item_frequency">Frequency</string>
+    <string name="label_wifi_result_item_level">Level</string>
+    <string name="label_edit_title">Please input password</string>
+    <string name="hint_input_password">12345678</string>
 </resources>
