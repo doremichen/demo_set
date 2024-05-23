@@ -91,15 +91,17 @@ public class FloatingWindowSvr extends Service {
         // start inflat
         LayoutInflater inflater = LayoutInflater.from(this.getApplicationContext());
         this.mLayout = (FrameLayout)inflater.inflate(R.layout.float_layout, null);
-        // add view by window service
-        this.mWM.addView(this.mLayout, this.mLayoutParams);
-        // get circle view handler
-        this.mCircleView = this.mLayout.findViewById(R.id.float_id);
 
         // measure layout
         int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         this.mLayout.measure(width, height);
+
+        // add view by window service
+        this.mWM.addView(this.mLayout, this.mLayoutParams);
+        // get circle view handler
+        this.mCircleView = this.mLayout.findViewById(R.id.float_id);
+
         // monitor touch event of the circle view
         this.mCircleView.setOnTouchListener(new View.OnTouchListener() {
 
