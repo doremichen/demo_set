@@ -77,6 +77,7 @@ public class XmlPullParserManager {
 
     private void buildList(int eventType, XmlPullParser parser) {
         info("[buildList]");
+        info("[buildList]");
         // preCheck
         if ((eventType == -1) || (parser == null)) {
             return;

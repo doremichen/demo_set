@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String LOG_STATUS = "log.status";
-    private ListView mList;
 
 
     @Override
@@ -48,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         Utils.info(this, "onCreate");
         setContentView(R.layout.activity_main);
 
-        this.mList = this.findViewById(R.id.list_view);
+        ListView list = this.findViewById(R.id.list_view);
 
         // prepare item list
-        List<ItemContent> itemDatas = new ArrayList<>();
+        List<ItemContent> items = new ArrayList<>();
 
         // parse config xml file to general item data
         try {
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 Element itemData = (Element) nodes.item(i);
                 ItemContent dataContent = new ItemContent(itemData.getAttribute("title"),
                         itemData.getAttribute("clsname"), itemData.getAttribute("pkgname"));
-                itemDatas.add(dataContent);
+                items.add(dataContent);
             }
 
         } catch (IOException e) {
@@ -82,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set list adapter
-        this.mList.setAdapter(new MainListAdapter(this, itemDatas));
+        list.setAdapter(new MainListAdapter(this, items));
 
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ItemContent data = (ItemContent) parent.getItemAtPosition(position);

@@ -103,11 +103,13 @@ public abstract class Utils {
 
 
     public static void info(Object obj, String str) {
-        Logger.i(obj.getClass().getSimpleName() + ": " + str);
+        Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
+        //Logger.i(obj.getClass().getSimpleName() + ": " + str);
     }
 
     public static void info(Class<?> clazz, String str) {
-        Logger.i(clazz.getSimpleName() + ": " + str);
+        Log.i(TAG, clazz.getSimpleName() + ": " + str);
+        //Logger.i(clazz.getSimpleName() + ": " + str);
     }
 
     /**
