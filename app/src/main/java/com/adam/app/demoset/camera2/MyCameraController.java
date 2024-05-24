@@ -1,8 +1,12 @@
+/**
+ * Camera controller
+ */
 package com.adam.app.demoset.camera2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.ImageFormat;
+import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -14,6 +18,7 @@ import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
+import android.hardware.camera2.params.MeteringRectangle;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
@@ -21,6 +26,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;
 import android.util.Size;
+import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 
@@ -179,6 +185,8 @@ public final class MyCameraController {
         }
     };
     private CaptureRequest mPreviewReq;
+
+    private static final Byte JPEG_QUALITY = 90;
 
     private MyCameraController() {
     }
@@ -354,11 +362,50 @@ public final class MyCameraController {
 
     }
 
+
+    /** Zero weight 3A region, to reset regions per API. */
+    private static final MeteringRectangle[] ZERO_WEIGHT_3A_REGION = new MeteringRectangle[]{
+            new MeteringRectangle(0, 0, 0, 0, 0)
+    };
+
+    /**
+     * Calculates sensor crop region for a zoom level (zoom >= 1.0).
+     *
+     * @return Crop region.
+     */
+    private Rect cropRegionForZoom(CameraCharacteristics characteristics, float zoom) {
+        Rect sensor = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
+        int xCenter = sensor.width() / 2;
+        int yCenter = sensor.height() / 2;
+        int xDelta = (int) (0.5f * sensor.width() / zoom);
+        int yDelta = (int) (0.5f * sensor.height() / zoom);
+        return new Rect(xCenter - xDelta, yCenter - yDelta, xCenter + xDelta, yCenter + yDelta);
+    }
+    /**
+     * Adds current regions to CaptureRequest and base AF mode +
+     * AF_TRIGGER_IDLE.
+     *
+     * @param builder Build for the CaptureRequest
+     */
+    private void addBaselineCaptureKeysToRequest(CaptureRequest.Builder builder) {
+        builder.set(CaptureRequest.CONTROL_AF_REGIONS, ZERO_WEIGHT_3A_REGION);
+        builder.set(CaptureRequest.CONTROL_AE_REGIONS, ZERO_WEIGHT_3A_REGION);
+        builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+        builder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_IDLE);
+        // Enable face detection
+        builder.set(CaptureRequest.STATISTICS_FACE_DETECT_MODE,
+                CaptureRequest.STATISTICS_FACE_DETECT_MODE_FULL);
+        builder.set(CaptureRequest.CONTROL_SCENE_MODE,
+                CaptureRequest.CONTROL_SCENE_MODE_FACE_PRIORITY);
+    }
     private void captureStillPicture() {
         Utils.info(this, "captureStillPicture enter");
         try {
             // Take a picture request
             final CaptureRequest.Builder builder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            addBaselineCaptureKeysToRequest(builder);
+            builder.set(CaptureRequest.JPEG_QUALITY, JPEG_QUALITY);
+            builder.set(CaptureRequest.JPEG_ORIENTATION, 90);
             builder.addTarget(mReader.getSurface());
 
             // set AF mode

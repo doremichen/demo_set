@@ -1,4 +1,4 @@
-package com.adam.app.demoset;
+package com.adam.app.demoset.filemanager;
 
 
 import android.Manifest;
@@ -22,9 +22,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.adam.app.demoset.filemanager.FileExploreAct;
+import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
 
-public abstract class FileUtils {
+abstract class FileUtils {
 
     private static final String AUTHORITY = "com.adam.app.demoset.filemanager.provider";
 
@@ -122,7 +123,7 @@ public abstract class FileUtils {
         );
     }
 
-    public static String getMimeType(String uriStr) {
+    private static String getMimeType(String uriStr) {
         String ext = MimeTypeMap.getFileExtensionFromUrl(uriStr);
         String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
         return (mime != null)? mime: "text/plain";

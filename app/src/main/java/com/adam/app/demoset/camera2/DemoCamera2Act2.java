@@ -21,7 +21,6 @@ import androidx.core.content.FileProvider;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.FileUtils;
 
 import java.io.File;
 

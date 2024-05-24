@@ -1,4 +1,4 @@
-package com.adam.app.demoset.camera2;
+package com.adam.app.demoset.camera2.legacy;
 
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;

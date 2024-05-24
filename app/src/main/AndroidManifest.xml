@@ -185,7 +185,7 @@
             android:label="Demo Device admin"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".camera2.DemoCamera2Act"
+            android:name=".camera2.legacy.DemoCamera2Act"
             android:exported="true"
             android:label="Demo Camera"
             android:screenOrientation="nosensor" />

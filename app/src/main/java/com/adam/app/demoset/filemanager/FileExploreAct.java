@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.adam.app.demoset.FileUtils;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoDataBindingExBinding;
@@ -25,8 +24,8 @@ import java.util.stream.Collectors;
 
 public class FileExploreAct extends AppCompatActivity {
 
-    public static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
-    public static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 2;
+    static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
+    static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 2;
 
     private ActivityDemoDataBindingExBinding mBinding;
 

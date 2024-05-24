@@ -237,6 +237,7 @@ public class MyRecordVideoController {
             mRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
             mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            mRecorder.setOrientationHint(90);
             mRecorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
                 @Override
                 public void onError(MediaRecorder mr, int what, int extra) {
