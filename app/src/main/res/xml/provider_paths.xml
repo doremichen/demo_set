@@ -16,5 +16,14 @@
   -->
 
 <paths>
+    <files-path
+        name="shared_images"
+        path="images/"/>
+    <files-path
+        name="shared_videos"
+        path="videos/"/>
+    <files-path
+        name="share_image"
+        path="blur_filter_outputs/"/>
     <external-path name="filespath" path="/" />
 </paths>

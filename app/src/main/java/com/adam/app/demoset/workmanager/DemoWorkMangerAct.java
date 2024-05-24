@@ -66,7 +66,7 @@ public class DemoWorkMangerAct extends AppCompatActivity {
         File file = new File(Utils.sImagePath);
         if (file.exists()) {
             Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.fileprovider", file);
-            Utils.showToast(this, "<content>" + contentUri);
+            Utils.info(this, "<content>" + contentUri);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "image/*");

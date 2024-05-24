@@ -98,7 +98,14 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         public String getPath() {
             Utils.info(this, "getPath enter");
             File fileDir = DemoVideoRecordAct.this.getFilesDir();
-            mFilePath = fileDir.getPath() + "/" + System.currentTimeMillis() + ".mp4";
+            String fileName =  System.currentTimeMillis() + ".mp4";
+            File outputDir = new File(fileDir, "videos");
+            if (!outputDir.exists()) {
+                outputDir.mkdirs(); // should succeed
+            }
+            File outputFile = new File(outputDir, fileName);
+
+            mFilePath = outputFile.getPath();
             return mFilePath;
         }
     };
@@ -237,9 +244,8 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         if (!file.exists()) {
             Utils.showToast(this, "No this file");
         } else {
-            Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.fileprovider", file);
+            Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
             Utils.showToast(this, "<content>" + contentUri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "video/*");
 

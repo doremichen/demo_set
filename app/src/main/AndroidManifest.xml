@@ -289,15 +289,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.adam.app.demoset.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/share_file" />
-        </provider>
+
         <provider
             android:name=".database.provider.MyDBProvider"
             android:authorities="com.adam.app.demoset.provider.MyNote"

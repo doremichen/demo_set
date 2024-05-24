@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.FileUtils;
 
 import java.io.File;
 
@@ -55,6 +56,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
         @Override
         public void onDeviceStateError(int code) {
+            Utils.showToast(DemoCamera2Act2.this, "Device state error!!!");
             // Finish UI
             DemoCamera2Act2.this.finish();
         }
@@ -62,9 +64,20 @@ public class DemoCamera2Act2 extends AppCompatActivity {
         @Override
         public String getPath() {
             File fileDir = DemoCamera2Act2.this.getFilesDir();
-            mFilePath = fileDir.getPath() + "/" +
-                    System.currentTimeMillis() + ".jpg";
+            String fileName =  System.currentTimeMillis() + ".jpg";
+            File outputDir = new File(fileDir, "images");
+            if (!outputDir.exists()) {
+                outputDir.mkdirs(); // should succeed
+            }
+            File outputFile = new File(outputDir, fileName);
+
+            mFilePath = outputFile.getPath();
             return mFilePath;
+        }
+
+        @Override
+        public void onSaveImageComplete() {
+            Utils.showToast(DemoCamera2Act2.this, "Save image Done!!!");
         }
     };
 
@@ -248,19 +261,20 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     private Intent playImageIntent() {
         Utils.info(this, "playVideoIntent");
-        Utils.info(this, "mFilePath = " + mFilePath);
+        Utils.showToast(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         // Check file exists
         File file = new File(mFilePath);
         if (!file.exists()) {
             Utils.showToast(this, "No this file");
         } else {
-            Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.fileprovider", file);
+            Uri contentUri = FileProvider.getUriForFile(this,
+                    "com.adam.app.demoset.filemanager.provider", file);
+            Utils.info(this, "<content>" + contentUri);
             Utils.showToast(this, "<content>" + contentUri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "image/*");
-
         }
         return intent;
     }

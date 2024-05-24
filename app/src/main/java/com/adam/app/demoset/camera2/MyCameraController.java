@@ -264,6 +264,8 @@ public final class MyCameraController {
                 }
 
                 private void save(byte[] bytes) throws IOException {
+                    Utils.info(this, "save +++");
+                    Utils.info(this, "file: " + file.getPath());
                     OutputStream output = null;
                     try {
                         output = new FileOutputStream(file);
@@ -273,6 +275,11 @@ public final class MyCameraController {
                             output.close();
                         }
                     }
+                    // Tell UI
+                    if (mCallBack != null) {
+                        mCallBack.onSaveImageComplete();
+                    }
+                    Utils.info(this, "save xxx");
                 }
             }, mBgHandler);
 
@@ -480,6 +487,8 @@ public final class MyCameraController {
         void onDeviceStateError(int code);
 
         String getPath();
+
+        void onSaveImageComplete();
     }
 
     /**
