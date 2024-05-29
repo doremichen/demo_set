@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:context=".alarm.DemoAlarmAct"
     tools:layout_editor_absoluteY="81dp">
 
@@ -19,11 +20,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="48sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/delay_time_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/radioGroup" />
 
     <Button
         android:id="@+id/btn_alarm"
@@ -41,8 +42,8 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/delay_time_layout"/>
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -52,10 +53,10 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/title_alarm"
+        app:layout_constraintBottom_toTopOf="@id/tv_alarm_info">
 
         <RadioButton
             android:id="@+id/Repeat"
@@ -95,15 +96,9 @@
             android:textColor="@android:color/black" />
     </RadioGroup>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="209dp" />
-
     <TextView
-        android:layout_width="0dp"
+        android:id="@+id/title_alarm"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -111,86 +106,62 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/cabin_bold"
         android:text="@string/label_set_trigger_alrm_type"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/delay_time_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="303dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="394dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="444dp" />
-
-    <TextView
-        android:id="@+id/offsetTimeInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_offset_time"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/offsetTimeUnit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_time_unit"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/offsetTimeInfo"
-        app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <SeekBar
-        android:id="@+id/seekBaroffSetTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline11"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm_info"
+        app:layout_constraintBottom_toTopOf="@id/btn_alarm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/offsetTimeInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/cabin_bold"
+            android:text="@string/label_offset_time"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/input_delay_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="@string/hint_input_delay_number"
+            android:maxLength="50"
+            android:singleLine="true"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:fontFamily="@font/cabin_bold"
+            android:text="@string/label_time_unit"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

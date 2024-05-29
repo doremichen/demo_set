@@ -69,11 +69,11 @@
     <string name="label_sample">Sample</string>
     <string name="label_btn_update_notification">Update notification</string>
     <string name="label_btn_cancel_notification">Cancel notification</string>
-    <string name="label_set_trigger_alrm_type">Set trigger type:</string>
-    <string name="radio_setinexactrepeating">setInexactRepeating</string>
-    <string name="radio_setandallowwhileidle">setAndAllowWhileIdle</string>
-    <string name="radio_setexactandallowwhileidle">setExactAndAllowWhileIdle</string>
-    <string name="radio_setrepeating">setRepeating</string>
+    <string name="label_set_trigger_alrm_type">Set Alarm:</string>
+    <string name="radio_setinexactrepeating">setInexactRepeating(SdkVersion &lt; API_19)</string>
+    <string name="radio_setandallowwhileidle">setAndAllowWhileIdle(SdkVersion &gt; API_19)</string>
+    <string name="radio_setexactandallowwhileidle">setExactAndAllowWhileIdle(SdkVersion &gt; API_19)</string>
+    <string name="radio_setrepeating">setRepeating(SdkVersion &lt; API_19)</string>
     <string name="label_hello_job_service_demo">Hello job service demo</string>
     <string name="label_require_jobsvr">Require:</string>
     <string name="label_switch_idle">Idle</string>
@@ -92,7 +92,7 @@
     <string name="label_qs_cancel">cancel</string>
     <string name="label_meter">Time:</string>
     <string name="label_period_title">Period:</string>
-    <string name="label_time_unit">N/A</string>
+    <string name="label_time_unit">Second</string>
     <string name="label_bt_status">BT status</string>
     <string name="label_show_non_zero_input_info">Please input the non zero value...</string>
     <string name="label_welcome_to_demo_work_manager">Welcome to demo Work Manager</string>
@@ -151,4 +151,5 @@
     <string name="label_wifi_result_item_level">Level</string>
     <string name="label_edit_title">Please input password</string>
     <string name="hint_input_password">12345678</string>
+    <string name="hint_input_delay_number">please input delay number...</string>
 </resources>
