@@ -29,6 +29,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -235,6 +236,20 @@ public abstract class Utils {
 
     public static void showToast(Context context, String message) {
         Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showCustomizedToast(Context context, String message) {
+        // create customized toast view
+        View toastView = LayoutInflater.from(context).inflate(R.layout.custom_toast, null);
+        TextView toastText = toastView.findViewById(R.id.toast_text);
+        toastText.setText(message);
+
+        // show
+        Toast customToast = new Toast(context);
+        customToast.setView(toastView);
+        customToast.setDuration(Toast.LENGTH_SHORT);
+        customToast.setGravity(Gravity.CENTER, 0, 0);
+        customToast.show();
     }
 
     public static void showAlertDialog(Context context, String msg, DialogInterface.OnClickListener listener) {

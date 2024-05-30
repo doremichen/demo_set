@@ -151,7 +151,7 @@ public class DemoAlarmAct extends AppCompatActivity {
             }
             this.mAlarmAction.toggle();
         } catch (NumberFormatException e) {
-            Utils.showToast(this, "No valid input offset time!!!");
+            Utils.showToast(this, "InValid input offset time!!!");
         }
 
     }
@@ -311,7 +311,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         public void setAlarm(int type, long triggerTime) {
             Utils.info(this, "setAlarm@RepeatAlarmStrategy");
             if (mOffset < 60000) {
-                Utils.showToast(DemoAlarmAct.this, "Please input the value is \nlarge than 60 sec!!!");
+                Utils.showCustomizedToast(DemoAlarmAct.this, "Please input the value is large than 60 sec!!!");
                 throw new ArithmeticException("the input value is invalid!!!");
             }
             mAlarmManager.setRepeating(type, triggerTime, mOffset, mAlarmIntent);
@@ -324,7 +324,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         public void setAlarm(int type, long triggerTime) {
             Utils.info(this, "setAlarm@InexactRepeatAlarmStrategy");
             if (mOffset < AlarmManager.INTERVAL_FIFTEEN_MINUTES) {
-                Utils.showToast(DemoAlarmAct.this, "Please input the value is \nlarge than 15 min!!!");
+                Utils.showCustomizedToast(DemoAlarmAct.this, "Please input the value is large than 15 min!!!");
                 throw new ArithmeticException("the input value is invalid!!!");
             }
             mAlarmManager.setInexactRepeating(type, triggerTime, mOffset, mAlarmIntent);
