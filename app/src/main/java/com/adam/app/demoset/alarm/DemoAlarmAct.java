@@ -72,8 +72,6 @@ public class DemoAlarmAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_alarm);
 
-        startEnableNotifySetting();
-
 
         this.mInputDelayNumber = findViewById(R.id.input_delay_number);
         mAlarmButton = findViewById(R.id.btn_alarm);
@@ -94,19 +92,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         this.registerReceiver(mUIRecv, filter, RECEIVER_EXPORTED);
     }
 
-    private void startEnableNotifySetting() {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-        } else {
-            intent.setAction("android.settings.ACTION_APP_NOTIFICATION_SETTINGS");
-            intent.putExtra("app_package", getPackageName());
-            intent.putExtra("app_uid", getApplicationInfo().uid);
-        }
-        startActivity(intent);
-    }
+
 
     @Override
     protected void onResume() {

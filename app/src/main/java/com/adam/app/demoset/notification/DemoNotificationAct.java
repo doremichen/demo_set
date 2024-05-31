@@ -40,18 +40,6 @@ public class DemoNotificationAct extends AppCompatActivity {
         mManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = notificationBuilder();
 
-        // enable notification permission
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
-        } else {
-            intent.setAction("android.settings.ACTION_APP_NOTIFICATION_SETTINGS");
-            intent.putExtra("app_package", getPackageName());
-            intent.putExtra("app_uid", getApplicationInfo().uid);
-        }
-        startActivity(intent);
 
     }
 
