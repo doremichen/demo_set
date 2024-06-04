@@ -3,6 +3,9 @@ package com.adam.app.demoset.scheduler;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,11 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class DemoScheduleServiceAct extends AppCompatActivity {
 
@@ -37,8 +45,25 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         mCounterAction = findViewById(R.id.btn_action_counter);
         mMeter = findViewById(R.id.chronometer);
+
         mSbPeriodic = findViewById(R.id.seekBar_periodic);
         mPeriodic = findViewById(R.id.label_periodic_unit);
+
+        mMeter.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                // format hh:mm:ss
+                int h   = (int)(time /3600000);
+                int m = (int)(time  - h*3600000)/60000;
+                int s= (int)(time  - h*3600000 - m*60000)/1000 ;
+                String hh = h < 10 ? "0"+h: h+"";
+                String mm = m < 10 ? "0"+m: m+"";
+                String ss = s < 10 ? "0"+s: s+"";
+                // update info
+                chronometer.setText(TextUtils.concat(hh, ":", mm, ":", ss));
+            }
+        });
 
         mSbPeriodic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -113,35 +138,26 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
     public void onCounterAction(View v) {
         Utils.info(this, "onCounterAction enter");
-        // Range check
+
         if (mPeriodicTime == 0L) {
             Utils.showToast(this, getString(R.string.label_show_non_zero_input_info));
             return;
         }
 
-        if (!mStartCounter) {
+        boolean isStarting = !mStartCounter;
+        mSbPeriodic.setEnabled(!isStarting);
 
-            // disable seekbar
-            mSbPeriodic.setEnabled(false);
-
+        if (isStarting) {
             mController.startCount(mPeriodicTime);
-
             mMeter.setBase(SystemClock.elapsedRealtime());
             mMeter.start();
-
-            mCounterAction.setText(getString(R.string.action_stop_counter));
-            mStartCounter = true;
         } else {
-
             mController.stopCount();
             mMeter.stop();
-
-            // enable seekbar
-            mSbPeriodic.setEnabled(true);
-
-            mCounterAction.setText(getString(R.string.action_start_counter));
-            mStartCounter = false;
         }
+
+        mCounterAction.setText(isStarting ? R.string.action_stop_counter : R.string.action_start_counter);
+        mStartCounter = isStarting;
     }
 
 }

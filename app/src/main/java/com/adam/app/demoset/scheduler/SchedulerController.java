@@ -37,10 +37,6 @@ public class SchedulerController {
     public void startCount(long period) {
         Utils.info(this, "startCount enter");
 
-        if (period == 0L) {
-            throw new IllegalArgumentException("Please input the nonzero value");
-        }
-
         // Check if task is running
         cancelTask();
 
