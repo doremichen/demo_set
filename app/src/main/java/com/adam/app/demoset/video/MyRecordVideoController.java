@@ -25,6 +25,7 @@ import com.adam.app.demoset.Utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MyRecordVideoController {
 
@@ -154,70 +155,88 @@ public class MyRecordVideoController {
         }
     }
 
+    // CaptureRequestStrategy interface
+    interface CaptureRequestStrategy {
+        CaptureRequest.Builder createCaptureRequest(CameraDevice device) throws CameraAccessException;
+        List<Surface> getSurfaces();
+    }
+
+    // RecordCaptureRequestStrategy implementation
+    class RecordCaptureRequestStrategy implements CaptureRequestStrategy {
+        @Override
+        public CaptureRequest.Builder createCaptureRequest(CameraDevice device) throws CameraAccessException {
+            CaptureRequest.Builder builder = device.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+
+            // Set up preview and record surfaces
+            SurfaceTexture texture = mTextureView.getSurfaceTexture();
+            assert texture != null;
+            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+
+            Surface previewSurface = new Surface(texture);
+            Surface recordSurface = mRecorder.getSurface();
+            builder.addTarget(previewSurface);
+            builder.addTarget(recordSurface);
+
+            return builder;
+        }
+
+        @Override
+        public List<Surface> getSurfaces() {
+            Surface previewSurface = new Surface(mTextureView.getSurfaceTexture());
+            Surface recordSurface = mRecorder.getSurface();
+            return new ArrayList<>(Arrays.asList(previewSurface, recordSurface));
+        }
+    }
+
+    private void startRecordSession(final Activity activity, CaptureRequestStrategy captureRequestStrategy) throws CameraAccessException {
+        mDevice.createCaptureSession(captureRequestStrategy.getSurfaces(), new CameraCaptureSession.StateCallback() {
+            @Override
+            public void onConfigured(@NonNull CameraCaptureSession session) {
+                Utils.info(this, "onConfigred");
+                mPreviewSession = session;
+                updatePreview();
+
+                activity.runOnUiThread(() -> {
+                    Utils.info(this, "runOnUiThread...");
+                    mRecorder.start();
+                    Utils.showToast(activity, "Start recording...");
+                });
+            }
+
+            @Override
+            public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                if (mListener != null) {
+                    mListener.onFail("record config fail");
+                }
+            }
+        }, mHandler);
+    }
+
     public void startRecord(final Activity activity) {
         Utils.info(this, "startRecord");
+
         // Check data validity
         if (mDevice == null || !mTextureView.isAvailable() || mPreviewSize == null) {
             return;
         }
 
         try {
-            // Cloase preview session
+            // Close preview session
             closePreviewSession();
+
+            // Set up video configuration
             setUpVideoConfig();
-            SurfaceTexture texture = mTextureView.getSurfaceTexture();
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            // Create record request
-            mRequestBuilder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
 
-            // Set up preview surface to request
-            Surface previewSurface = new Surface(texture);
-            mRequestBuilder.addTarget(previewSurface);
-
-            // Set up video surface to request
-            Surface recordSurface = mRecorder.getSurface();
-            mRequestBuilder.addTarget(recordSurface);
-
-            // Prepare surface array list
-            ArrayList<Surface> surfaces = new ArrayList<Surface>();
-            surfaces.add(previewSurface);
-            surfaces.add(recordSurface);
+            // Create capture request using a strategy
+            CaptureRequestStrategy captureRequestStrategy = new RecordCaptureRequestStrategy();
+            mRequestBuilder = captureRequestStrategy.createCaptureRequest(mDevice);
 
             // Start record session
-            mDevice.createCaptureSession(surfaces, new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession session) {
-                    Utils.info(this, "onConfigred");
-                    mPreviewSession = session;
-                    updatePreview();
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Utils.info(this, "runOnUiThread...");
-                            // Start recording
-                            mRecorder.start();
-                            Utils.showToast(activity, "Start recording....");
-                        }
-                    });
-                }
-
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-
-                    // Tell UI
-                    if (mListener != null) {
-                        mListener.onFail("record config fail");
-                    }
-                }
-            }, mHandler);
-
+            startRecordSession(activity, captureRequestStrategy);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void setUpVideoConfig() {
