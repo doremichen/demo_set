@@ -157,15 +157,15 @@ public class MyRecordVideoController {
 
     // CaptureRequestStrategy interface
     interface CaptureRequestStrategy {
-        CaptureRequest.Builder createCaptureRequest(CameraDevice device) throws CameraAccessException;
+        void createCaptureRequest() throws CameraAccessException;
         List<Surface> getSurfaces();
     }
 
     // RecordCaptureRequestStrategy implementation
     class RecordCaptureRequestStrategy implements CaptureRequestStrategy {
         @Override
-        public CaptureRequest.Builder createCaptureRequest(CameraDevice device) throws CameraAccessException {
-            CaptureRequest.Builder builder = device.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
+        public void createCaptureRequest() throws CameraAccessException {
+            mRequestBuilder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
 
             // Set up preview and record surfaces
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
@@ -174,10 +174,8 @@ public class MyRecordVideoController {
 
             Surface previewSurface = new Surface(texture);
             Surface recordSurface = mRecorder.getSurface();
-            builder.addTarget(previewSurface);
-            builder.addTarget(recordSurface);
-
-            return builder;
+            mRequestBuilder.addTarget(previewSurface);
+            mRequestBuilder.addTarget(recordSurface);
         }
 
         @Override
@@ -189,6 +187,7 @@ public class MyRecordVideoController {
     }
 
     private void startRecordSession(final Activity activity, CaptureRequestStrategy captureRequestStrategy) throws CameraAccessException {
+       Utils.info(this, "startRecordSession +++");
         mDevice.createCaptureSession(captureRequestStrategy.getSurfaces(), new CameraCaptureSession.StateCallback() {
             @Override
             public void onConfigured(@NonNull CameraCaptureSession session) {
@@ -210,13 +209,35 @@ public class MyRecordVideoController {
                 }
             }
         }, mHandler);
+        Utils.info(this, "startRecordSession xxx");
     }
 
+    private enum RecordState {
+        START,
+        STOP;
+    }
+
+    private RecordState mRecordState = RecordState.STOP;
+
+
+    public boolean isRecording() {
+        return this.mRecordState == RecordState.START;
+    }
+
+
     public void startRecord(final Activity activity) {
-        Utils.info(this, "startRecord");
+        Utils.info(this, "startRecord +++");
 
         // Check data validity
-        if (mDevice == null || !mTextureView.isAvailable() || mPreviewSize == null) {
+        if (!Utils.areAllNotNull(mDevice, mPreviewSize, mListener)
+                || !mTextureView.isAvailable()) {
+            Utils.info(this, "check data fail!!!");
+            return;
+        }
+
+        // check state
+        if (isRecording()) {
+            mListener.onInfo("Video is recording....");
             return;
         }
 
@@ -229,19 +250,25 @@ public class MyRecordVideoController {
 
             // Create capture request using a strategy
             CaptureRequestStrategy captureRequestStrategy = new RecordCaptureRequestStrategy();
-            mRequestBuilder = captureRequestStrategy.createCaptureRequest(mDevice);
+            captureRequestStrategy.createCaptureRequest();
 
             // Start record session
             startRecordSession(activity, captureRequestStrategy);
+            // change state
+            this.mRecordState = RecordState.START;
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
+            Utils.info(this, "CameraAccessException: " + e.getReason());
         }
+
+        Utils.info(this, "startRecord xxx");
     }
 
     private void setUpVideoConfig() {
         Utils.info(this, "setUpVideoConfig enter");
-        if (mRecorder == null || mListener == null) {
+        if (!Utils.areAllNotNull(mRecorder, mListener)) {
+            Utils.info(this, "check data fail!!!");
             return;
         }
 
@@ -274,18 +301,31 @@ public class MyRecordVideoController {
     public void stopRecord() {
         Utils.info(this, "stopRecord");
 
+        if (!Utils.areAllNotNull(mRecorder, mListener)) {
+            Utils.info(this, "check data fail!!!");
+            return;
+        }
+
+        // check state
+        if (!isRecording()) {
+            mListener.onInfo("Video has been stopped!!!");
+            return;
+        }
+
         mRecorder.setOnErrorListener(null);
         mRecorder.setOnInfoListener(null);
 
         mRecorder.stop();
         mRecorder.reset();
 
-        if (mListener != null) {
-            mListener.onInfo("Stop record...");
-        }
+        mListener.onInfo("Stop record...");
 
         // start preview
         startPreview();
+
+        // change state
+        this.mRecordState = RecordState.STOP;
+
     }
 
     public void registerListener(ControllerListener listener) {

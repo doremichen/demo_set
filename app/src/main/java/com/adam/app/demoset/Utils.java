@@ -557,4 +557,18 @@ public abstract class Utils {
         return null;
     }
 
+    /**
+     * Used to check the validity of object.
+     * @param objects
+     * @return
+     */
+    public static boolean areAllNotNull(Object ... objects) {
+        for (Object obj: objects) {
+            if (obj == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

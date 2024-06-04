@@ -10,9 +10,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.SystemClock;
+import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -23,8 +27,11 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 0x2467;
     private static final String KEY_PERMISSION = "key.permission";
-    private boolean mStartRec;
-    private Button mBtn_recod;
+
+    private Button mBtnRecorder;
+    private Button mBtnPlayVideo;
+
+    private Chronometer mTimer;
 
     private boolean mIsAllow;
 
@@ -117,7 +124,26 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         setContentView(R.layout.activity_demo_video_record);
 
         mSurfaceView = this.findViewById(R.id.surface_record);
-        mBtn_recod = this.findViewById(R.id.btn_start_rec);
+        mBtnRecorder = this.findViewById(R.id.btn_start_rec);
+        mBtnPlayVideo = this.findViewById(R.id.play_vedio);
+        mTimer = this.findViewById(R.id.timer);
+        // update timer info
+        this.mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                int h   = (int)(time /3600000);
+                int m = (int)(time  - h*3600000)/60000;
+                int s= (int)(time  - h*3600000 - m*60000)/1000 ;
+                String hh = h < 10 ? "0"+h: h+"";
+                String mm = m < 10 ? "0"+m: m+"";
+                String ss = s < 10 ? "0"+s: s+"";
+                // update info
+                mTimer.setText(TextUtils.concat(hh, ":", mm, ":", ss));
+
+            }
+        });
+
 
         mController = MyRecordVideoController.newInstance();
 
@@ -185,6 +211,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         super.onPause();
         Utils.info(this, "onPause mIsAllow = " + mIsAllow);
         if (mIsAllow) {
+            setEnabledRecording(false);
             mController.closeCamera();
         }
     }
@@ -193,32 +220,36 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Utils.info(this, "onDestroy mIsAllow = " + mIsAllow);
-        if (mIsAllow) {
-
-        }
-
         mController.stopCameraThread();
     }
 
     public void onRecord(View v) {
-        Utils.info(this, "onRecord");
-        if (!mStartRec) {
+        Utils.info(this, "onRecord: " + String.valueOf(mController.isRecording()));
+        setEnabledRecording(!mController.isRecording());
+        // change play button function
+        int visibility = (!mController.isRecording())? View.VISIBLE: View.INVISIBLE;
+        mBtnPlayVideo.setVisibility(visibility);
+
+    }
+
+    private void setEnabledRecording(boolean enabled) {
+        Utils.info(this, "setEnabledRecording: " + String.valueOf(enabled));
+        if (enabled) {
+            // start timer
+            this.mTimer.setBase(SystemClock.elapsedRealtime());
+            this.mTimer.start();
             mController.startRecord(this);
-            mBtn_recod.setText(this.getResources().getString(R.string.action_stop_record));
-            mStartRec = true;
+            mBtnRecorder.setText(this.getResources().getString(R.string.action_stop_record));
         } else {
+            // stop timer
+            this.mTimer.stop();
             mController.stopRecord();
-            mBtn_recod.setText(this.getResources().getString(R.string.action_start_record));
-            mStartRec = false;
+            mBtnRecorder.setText(this.getResources().getString(R.string.action_start_record));
         }
     }
 
     public void onPlayVideo(View v) {
         Utils.info(this, "onPlayVideo");
-        if (mStartRec) {
-            Utils.showToast(this, "Recording. Do not play");
-            return;
-        }
 
         // Start play video app
         Intent intent = playVideo();
