@@ -1,3 +1,6 @@
+/**
+ * Demo job service activity
+ */
 package com.adam.app.demoset.jobService;
 
 import android.app.job.JobInfo;
@@ -19,7 +22,11 @@ import android.widget.TextView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 public class DemoJobSvrAct extends AppCompatActivity {
 
@@ -178,26 +185,56 @@ public class DemoJobSvrAct extends AppCompatActivity {
         });
     }
 
+
+    // Strategy Interface
+    interface NetworkStrategy {
+        int getNetworkType();
+    }
+
+    // Concrete Strategies
+    class NoNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_NONE;
+        }
+    }
+
+    class AnyNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_ANY;
+        }
+    }
+
+    class WifiNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_UNMETERED;
+        }
+    }
+
+    private Map<Integer, NetworkStrategy> mNetworkStretagyMap = new HashMap<>() {
+        {
+            put(R.id.no_network_opt, new NoNetworkStrategy());
+            put(R.id.any_network_opt, new AnyNetworkStrategy());
+            put(R.id.wifi_network_opt, new WifiNetworkStrategy());
+        }
+    };
+
     /**
      * Network require option
      */
     private void setNetWorkRequire(JobInfo.Builder builder) {
-        Utils.info(this, "setNetWorkRequire enter");
-        switch (mNetworkRequireOption.getCheckedRadioButtonId()) {
-            case R.id.no_network_opt:
-                Utils.info(this, "no_network_opt");
-                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
-                break;
-            case R.id.any_network_opt:
-                Utils.info(this, "any_network_opt");
-                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_ANY;
-                break;
-            case R.id.wifi_network_opt:
-                Utils.info(this, "wifi_network_opt");
-                ConstraintSet.sNetWorkType = JobInfo.NETWORK_TYPE_UNMETERED;
-                break;
+        int checkedId = mNetworkRequireOption.getCheckedRadioButtonId();
+        NetworkStrategy strategy = this.mNetworkStretagyMap.get(checkedId);
+        if (!Utils.areAllNotNull(strategy)) {
+            Utils.showToast(this, "No network strategy!!!");
+            return;
         }
-        builder.setRequiredNetworkType(ConstraintSet.sNetWorkType);
+
+        Utils.info(this, "Network option selected: " + checkedId);
+        builder.setRequiredNetworkType(strategy.getNetworkType());
+
     }
 
 
@@ -271,6 +308,17 @@ public class DemoJobSvrAct extends AppCompatActivity {
         void execute();
     }
 
+    private boolean shouldSetJobRequirements() {
+        List<BooleanSupplier> conditions = Arrays.asList(
+                () -> ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE,
+                () -> mSwitchIdle.isChecked(),
+                () -> mSwitchCharging.isChecked(),
+                () -> mCanSetTrigger
+        );
+
+        return conditions.stream().anyMatch(BooleanSupplier::getAsBoolean);
+    }
+
     private class StartSvrItem implements ItemType {
 
         @Override
@@ -292,10 +340,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
             setTriggerInterval(builder);
 
             // Check job constrain set
-            if ((ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE) ||
-                    mSwitchIdle.isChecked() ||
-                    mSwitchCharging.isChecked() ||
-                    mCanSetTrigger) {
+            if (shouldSetJobRequirements()) {
                 mJobId++;
 
                 //Schedule job
@@ -335,10 +380,7 @@ public class DemoJobSvrAct extends AppCompatActivity {
         public void execute() {
             Utils.info(this, "execute enter");
             // Check job constrain set
-            if ((ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE) ||
-                    mSwitchIdle.isChecked() ||
-                    mSwitchCharging.isChecked() ||
-                    mCanSetTrigger) {
+            if (shouldSetJobRequirements()) {
                 //cancel all job
                 JobScheduler jobService = (JobScheduler) DemoJobSvrAct.this.getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 jobService.cancelAll();

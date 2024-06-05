@@ -56,7 +56,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -563,12 +565,7 @@ public abstract class Utils {
      * @return
      */
     public static boolean areAllNotNull(Object ... objects) {
-        for (Object obj: objects) {
-            if (obj == null) {
-                return false;
-            }
-        }
-        return true;
+        return Arrays.stream(objects).allMatch(Objects::nonNull);
     }
 
 }
