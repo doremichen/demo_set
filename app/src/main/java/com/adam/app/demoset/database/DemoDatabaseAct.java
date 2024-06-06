@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -41,23 +42,19 @@ public class DemoDatabaseAct extends AppCompatActivity {
     private UIListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
 
-    private Handler mUIHandler = new Handler() {
+    private final Handler mUIHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Utils.info(this, "UI handleMessage enter");
-            switch (msg.what) {
-                case ACTION_SHOW_OPTION:
-                    int position = msg.arg1;
-                    showOptionDlg(position);
-                    break;
-                default:
-                    break;
+            if (msg.what == ACTION_SHOW_OPTION) {
+                int position = msg.arg1;
+                showOptionDlg(position);
             }
         }
     };
 
-    private View.OnClickListener mFabClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Utils.info(this, "Floating button clicked....");

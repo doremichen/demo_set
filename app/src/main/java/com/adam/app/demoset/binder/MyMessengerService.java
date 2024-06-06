@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -15,42 +16,37 @@ public class MyMessengerService extends Service {
     public static final int ACTION_ADD = 0x1357;
     public static final int ACTION_REPLY_RESULT = 0X2468;
 
-    private Handler mIncomingHancler = new Handler() {
+    private Handler mIncomingHancler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Utils.info(this, "service handler");
-            int flag = msg.what;
 
-            if (flag == ACTION_ADD) {
-                // Get arg from UI
-                int a = msg.arg1;
-                int b = msg.arg2;
-                // Service operation
-                int c = 0;
-
-                // Overflow check
-                if (a > 0 && b > 0 && a > Integer.MAX_VALUE - b) {
-                    c = -1;
-                } else {
-                    c = a + b;
-                }
-
-                try {
-                    // Get UI messenger
-                    Messenger uiMessenger = msg.replyTo;
-                    // Get message
-                    Message replymsg = Message.obtain();
-                    replymsg.what = ACTION_REPLY_RESULT;
-                    replymsg.arg1 = c;
-                    // Reply to UI
-                    uiMessenger.send(replymsg);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
+            if (msg.what == ACTION_ADD) {
+                int result = calculateResult(msg.arg1, msg.arg2);
+                sendReply(msg.replyTo, result);
             }
         }
+
+        private int calculateResult(int a, int b) {
+            try {
+                return Math.addExact(a, b);
+            } catch (ArithmeticException e) {
+                return -1;
+            }
+        }
+
+        private void sendReply(Messenger uiMessenger, int result) {
+            try {
+                Message replyMsg = Message.obtain();
+                replyMsg.what = ACTION_REPLY_RESULT;
+                replyMsg.arg1 = result;
+                uiMessenger.send(replyMsg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
     };
 
     private Messenger mMessenger = new Messenger(mIncomingHancler);

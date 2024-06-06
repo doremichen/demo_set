@@ -39,12 +39,11 @@ public class MyAidlService extends Service {
 
     public int add(int a, int b) {
         Utils.info(this, "add method is executed.");
-        // Overflow check
-        if (a > 0 && b > 0 && a > Integer.MAX_VALUE - b) return -1;
-
-        int c = a + b;
-
-        return c;
+        try {
+            return Math.addExact(a, b);
+        } catch (ArithmeticException e) {
+            return -1;
+        }
     }
 
     private ServiceStub mSvrStub = new ServiceStub(this);

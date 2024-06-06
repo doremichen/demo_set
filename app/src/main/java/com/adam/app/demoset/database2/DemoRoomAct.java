@@ -1,11 +1,13 @@
 package com.adam.app.demoset.database2;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -32,6 +34,7 @@ import com.adam.app.demoset.database2.room.Note;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DemoRoomAct extends AppCompatActivity {
 
@@ -43,23 +46,19 @@ public class DemoRoomAct extends AppCompatActivity {
     private NoteListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
 
-    private Handler mUIHandler = new Handler() {
+    private final Handler mUIHandler = new Handler(Looper.getMainLooper()) {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             Utils.info(this, "UI handleMessage enter");
-            switch (msg.what) {
-                case ACTION_SHOW_OPTION:
-                    int position = msg.arg1;
-                    showOptionDlg(position);
-                    break;
-                default:
-                    break;
+            if (msg.what == ACTION_SHOW_OPTION) {
+                int position = msg.arg1;
+                showOptionDlg(position);
             }
         }
     };
 
-    private View.OnClickListener mFabClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Utils.info(this, "Floating button clicked....");
@@ -89,6 +88,7 @@ public class DemoRoomAct extends AppCompatActivity {
                 mAllNotes = notes;
 
                 // Update list
+                assert mAllNotes != null;
                 mAdapter.setNotes(mAllNotes);
                 mAdapter.notifyDataSetChanged();
 
@@ -206,7 +206,7 @@ public class DemoRoomAct extends AppCompatActivity {
                 Utils.info(this, "content = " + content);
                 Note note = new Note();
                 note.setNote(content);
-                note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                 // Insert data
                 mViewModel.insert(note);
 
@@ -217,30 +217,29 @@ public class DemoRoomAct extends AppCompatActivity {
 
     private void showOptionDlg(final int position) {
         Utils.info(this, "showOptionDlg enter position = " + position);
-        CharSequence[] items = new CharSequence[]{"Update", "Delete"};
+        CharSequence[] items = {"Update", "Delete"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Option:");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.info(this, "onClick enter which = " + which);
-                switch (which) {
-                    case 0:     // Update
+        new AlertDialog.Builder(this)
+                .setTitle("Option:")
+                .setItems(items, (dialog, which) -> {
+                    Utils.info(this, "onClick enter which = " + which);
+                    if (which == 0) {
                         showUpdateDlg(position);
-                        break;
-                    case 1:     // Delete
+                    } else if (which == 1) {
                         deleteNote(position);
-                        break;
-                }
-            }
-        });
+                    }
+                })
+                .show();
+
         Utils.info(this, "showOptionDlg show");
-        builder.create().show();
     }
 
     private void showUpdateDlg(final int position) {
         Utils.info(this, "showUpdateDlg enter");
+        if (!Utils.areAllNotNull(mAllNotes)) {
+            Utils.showToast(this, "No data to update!!!");
+            return;
+        }
 
         final Note note = mAllNotes.get(position);
 
@@ -256,7 +255,7 @@ public class DemoRoomAct extends AppCompatActivity {
             public void updateList(String content) {
                 Utils.info(this, "updateList enter");
                 note.setNote(content);
-                note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                note.setTimeStamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                 // Update note
                 mViewModel.update(note);
 
@@ -267,7 +266,7 @@ public class DemoRoomAct extends AppCompatActivity {
 
     private void deleteNote(int position) {
         Utils.info(this, "deleteNote enter");
-        if (mAllNotes != null) {
+        if (Utils.areAllNotNull(mAllNotes)) {
             Note note = mAllNotes.get(position);
             // Delete note
             mViewModel.delete(note);
