@@ -37,11 +37,7 @@ public class MyHandlerThread extends HandlerThread {
                 }
 
                 // sleep 1 sec
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Utils.delay(1000L);
             }
         }
     }
@@ -93,13 +89,12 @@ public class MyHandlerThread extends HandlerThread {
     public void registerObserver(HandlerObserver observer) {
         Utils.info(this, "[registerObserver] enter");
 
-        if (observer == null) {
+        if (!Utils.areAllNotNull(observer)) {
             Utils.info(this, "observer is null.......");
             return;
         }
 
         mObvList.add(observer);
-
         Utils.info(this, "[registerObserver] exit");
     }
 
@@ -108,13 +103,12 @@ public class MyHandlerThread extends HandlerThread {
     //
     public void unregisterObserver(HandlerObserver observer) {
         Utils.info(this, "[unregisterObserver] enter");
-        if (observer == null) {
+        if (!Utils.areAllNotNull(observer)) {
             Utils.info(this, "observer is null.......");
             return;
         }
 
         mObvList.remove(observer);
-
         Utils.info(this, "[unregisterObserver] exit");
     }
 }

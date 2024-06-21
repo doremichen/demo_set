@@ -38,7 +38,7 @@ public class SaveToFileWorker extends Worker {
         Context appCtx = getApplicationContext();
 
         Utils.makeStatusNotification("Saving data!!!", appCtx);
-        Utils.delay();
+        Utils.delay(Utils.DELAY_TIME_MILLIS);
 
         // get resolver
         ContentResolver resolver = appCtx.getContentResolver();

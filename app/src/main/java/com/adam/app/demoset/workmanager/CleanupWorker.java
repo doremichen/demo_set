@@ -26,7 +26,7 @@ public class CleanupWorker extends Worker {
         // Make a notification when the work start and slows down the work
         // so that see each workRequest start
         Utils.makeStatusNotification("Clean up old temporary files", appCtx);
-        Utils.delay();
+        Utils.delay(Utils.DELAY_TIME_MILLIS);
 
         boolean pass = false;
 

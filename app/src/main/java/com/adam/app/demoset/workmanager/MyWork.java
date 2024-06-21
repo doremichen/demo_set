@@ -14,7 +14,6 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 import java.io.FileNotFoundException;
@@ -33,7 +32,7 @@ public class MyWork extends Worker {
         Context appCtx = this.getApplicationContext();
 
         Utils.makeStatusNotification("Blurring Image!!!", appCtx);
-        Utils.delay();
+        Utils.delay(Utils.DELAY_TIME_MILLIS);
 
         String resUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
 

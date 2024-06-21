@@ -274,27 +274,36 @@ public class DemoBTAct extends AppCompatActivity {
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // Register snack listener
-        IntentFilter uiFilter = new IntentFilter();
-        uiFilter.addAction(Utils.ACTION_SHOW_SNACKBAR);
-        uiFilter.addAction(BTReceiver.ACTION_FOUND_BT_DEVICE);
-        uiFilter.addAction(BTReceiver.ACTION_UPDATE_BT_BOUND_STATE);
-        uiFilter.addAction(ConnectTask.ACTION_UPDATE_CONNECT_INFO);
-        Utils.info(this, "register BT receiver");
-        registerReceiver(mUIReceiver, uiFilter, RECEIVER_EXPORTED);
+        String[] uiActions = {
+                Utils.ACTION_SHOW_SNACKBAR,
+                BTReceiver.ACTION_FOUND_BT_DEVICE,
+                BTReceiver.ACTION_UPDATE_BT_BOUND_STATE,
+                ConnectTask.ACTION_UPDATE_CONNECT_INFO,
+        };
+        registerUIReceiver(mUIReceiver, uiActions);
 
         // Register BT receiver
-        IntentFilter btFilter = new IntentFilter();
-        btFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        btFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        btFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        btFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        btFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBTReceiver, btFilter, RECEIVER_EXPORTED);
+        String[] btActions = {
+                BluetoothAdapter.ACTION_STATE_CHANGED,
+                BluetoothAdapter.ACTION_DISCOVERY_STARTED,
+                BluetoothAdapter.ACTION_DISCOVERY_FINISHED,
+                BluetoothDevice.ACTION_FOUND,
+                BluetoothDevice.ACTION_BOND_STATE_CHANGED
+        };
+        registerUIReceiver(mBTReceiver, btActions);
 
         handleBTPowerState();
         Utils.info(this, "onCreate Done!!!");
     }
 
+
+    private void registerUIReceiver(BroadcastReceiver receiver, String ... actions) {
+        IntentFilter filter = new IntentFilter();
+        for (String action: actions) {
+            filter.addAction(action);
+        }
+        registerReceiver(receiver, filter, RECEIVER_EXPORTED);
+    }
 
     /**
      * Process BT power state

@@ -58,7 +58,7 @@ public enum BTController {
      */
     public void showAlertDialog() {
         //null check
-        if (this.mDialog == null) {
+        if (!Utils.areAllNotNull(this.mDialog)) {
             Utils.info(this, "Not valid dialog instance!!!");
             return;
         }
@@ -70,7 +70,7 @@ public enum BTController {
      */
     public void closeAlertDialog() {
         //null check
-        if (this.mDialog == null) {
+        if (!Utils.areAllNotNull(this.mDialog)) {
             Utils.info(this, "Not valid dialog instance!!!");
             return;
         }

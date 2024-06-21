@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.adam.app.demoset.Utils;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 public class BTReceiver extends BroadcastReceiver {
 
@@ -96,17 +97,19 @@ public class BTReceiver extends BroadcastReceiver {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 Utils.info(this, "bound state: " + state);
                 Utils.info(this, "bound prevstate: " + prevState);
-                if (device != null) {
-                    Utils.info(this, "address: " + device.getAddress());
-
-                    // update bt information
-                    Intent it = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable(KEY_BT_DEVICE, device);
-                    it.putExtra(KEY_BUNDLE_DEVICE, bundle);
-                    it.setAction(ACTION_UPDATE_BT_BOUND_STATE);
-                    context.sendBroadcast(it);
+                if (!Utils.areAllNotNull(device)) {
+                    return;
                 }
+
+                Utils.info(this, "address: " + device.getAddress());
+
+                // update bt information
+                Intent it = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(KEY_BT_DEVICE, device);
+                it.putExtra(KEY_BUNDLE_DEVICE, bundle);
+                it.setAction(ACTION_UPDATE_BT_BOUND_STATE);
+                context.sendBroadcast(it);
             }
         };
 
@@ -117,12 +120,10 @@ public class BTReceiver extends BroadcastReceiver {
         }
 
         public static BTAction by(String key) {
-            for (BTAction act: BTAction.values()) {
-                if (act.mKey == key) {
-                    return act;
-                }
-            }
-            return null;
+            return Arrays.stream(BTAction.values())
+                    .filter(act -> act.mKey.equals(key))
+                    .findFirst()
+                    .orElse(null);
         }
 
         public abstract void process(Context context, Intent intent);
@@ -137,10 +138,11 @@ public class BTReceiver extends BroadcastReceiver {
         Utils.info(this, "BTReceiver action = " + action);
 
         BTAction btAction = BTAction.by(action);
-
-        if (btAction != null) {
-            btAction.process(context, intent);
+        if (!Utils.areAllNotNull(btAction)) {
+            return;
         }
+
+        btAction.process(context, intent);
 
     }
 

@@ -94,7 +94,7 @@ public abstract class Utils {
 
     public static volatile String sImagePath;
 
-    private static final long DELAY_TIME_MILLIS = 3000L;
+    public static final long DELAY_TIME_MILLIS = 3000L;
 
     // reference: https://github.com/orhanobut/logger/tree/master
     static {
@@ -504,9 +504,9 @@ public abstract class Utils {
     /**
      * Method for sleeping for a fixed amount of time to emulate slower work
      */
-    public static void delay() {
+    public static void delay(long time) {
         try {
-            Thread.sleep(DELAY_TIME_MILLIS, 0);
+            Thread.sleep(time, 0);
         } catch (InterruptedException e) {
             Log.d(TAG, e.getMessage());
         }
