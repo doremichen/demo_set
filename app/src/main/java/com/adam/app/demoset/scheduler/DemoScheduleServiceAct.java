@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,15 +16,10 @@ import android.widget.TextView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 public class DemoScheduleServiceAct extends AppCompatActivity {
 
     public static final String KEY_TIME = "key.time";
-    private boolean mStartCounter;
+    private boolean mEnableCounter;
 
     private Button mCounterAction;
     private Chronometer mMeter;
@@ -69,14 +63,8 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Utils.info(this, "onProgressChanged enter");
-                if (progress > 0) {
-                    mPeriodic.setText(progress + " s");
-                    mPeriodicTime = progress;
-                } else {
-                    mPeriodic.setText(getString(R.string.label_time_unit));
-                    mPeriodicTime = 0L;
-                }
-
+                mPeriodic.setText(progress > 0 ? progress + " s" : getString(R.string.label_time_unit));
+                mPeriodicTime = progress > 0 ? progress : 0L;
             }
 
             @Override
@@ -143,10 +131,9 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
             return;
         }
 
-        boolean isStarting = !mStartCounter;
-        mSbPeriodic.setEnabled(!isStarting);
+        mSbPeriodic.setEnabled(mEnableCounter);
 
-        if (isStarting) {
+        if (!mEnableCounter) {
             mController.startCount(mPeriodicTime);
             mMeter.setBase(SystemClock.elapsedRealtime());
             mMeter.start();
@@ -155,8 +142,9 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
             mMeter.stop();
         }
 
-        mCounterAction.setText(isStarting ? R.string.action_stop_counter : R.string.action_start_counter);
-        mStartCounter = isStarting;
+        // update button info
+        mCounterAction.setText(!mEnableCounter ? R.string.action_stop_counter : R.string.action_start_counter);
+        mEnableCounter = !mEnableCounter;
     }
 
 }

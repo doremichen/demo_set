@@ -287,12 +287,11 @@ public class DemoJobSvrAct extends AppCompatActivity {
         }
 
         public static String getName(int id) {
-            for (SpinnerItem item : values()) {
-                if (id == item.mId) {
-                    return item.mName;
-                }
-            }
-            return null;
+            return Arrays.stream(SpinnerItem.values())
+                    .filter(item -> id == item.mId)
+                    .findFirst()
+                    .map(item -> item.mName)
+                    .orElse(null);
         }
 
         public int getId() {

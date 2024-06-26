@@ -138,9 +138,7 @@ public class XmlPullParserManager {
 
 
     public static void dumpList(List<ItemData> list) {
-        for (ItemData item: list) {
-            info(item.toString());
-        }
+        list.stream().forEach(item -> info(item.toString()));
     }
 
 }

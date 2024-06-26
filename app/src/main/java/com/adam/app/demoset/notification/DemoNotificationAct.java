@@ -22,6 +22,8 @@ import android.view.View;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
+import java.util.Arrays;
+
 public class DemoNotificationAct extends AppCompatActivity {
 
 
@@ -128,7 +130,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     public void updateNotify(View view) {
         Utils.info(this, "updateNotify");
-        if (hasNotification()) return;
+        if (!hasNotification()) return;
 
         Bitmap notifyImg = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         NotificationCompat.Builder builder = notificationBuilder();
@@ -141,7 +143,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     public void cancelNotify(View view) {
         Utils.info(this, "cancelNotify enter");
-        if (hasNotification()) return;
+        if (!hasNotification()) return;
 
         // cancel notification
         mManager.cancel(NOTIFICATION_ID);
@@ -149,20 +151,11 @@ public class DemoNotificationAct extends AppCompatActivity {
     }
 
     private boolean hasNotification() {
-        boolean hasNotification = false;
-        // Get active notification
-        StatusBarNotification[] notifications = mManager.getActiveNotifications();
-        // Check whether or not the notification exists
-        for (StatusBarNotification notify : notifications) {
-            if (notify.getId() == NOTIFICATION_ID) {
-                hasNotification = true;
-            }
-        }
-
-        if (hasNotification == false) {
+        boolean hasNotification = Arrays.stream(mManager.getActiveNotifications())
+                .anyMatch(notify -> notify.getId() == NOTIFICATION_ID);
+        if (!hasNotification) {
             Utils.showToast(this, "No notification...");
-            return true;
         }
-        return false;
+        return hasNotification;
     }
 }

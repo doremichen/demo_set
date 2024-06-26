@@ -7,12 +7,13 @@ import com.adam.app.demoset.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MyHandlerThread extends HandlerThread {
 
     // Record handler observer
-    List<HandlerObserver> mObvList = new ArrayList<HandlerObserver>();
+    List<HandlerObserver> mObvList = new CopyOnWriteArrayList<HandlerObserver>();
 
     // Used to cancel the task
     private AtomicBoolean mIsCancel = new AtomicBoolean(false);
@@ -32,9 +33,8 @@ public class MyHandlerThread extends HandlerThread {
                 WorkData.newInstance().setCounter(mId);
 
                 // Notify observer
-                for (HandlerObserver observer: mObvList) {
-                    observer.updateTaskInfo();
-                }
+                mObvList.stream()
+                        .forEach(observer -> observer.updateTaskInfo());
 
                 // sleep 1 sec
                 Utils.delay(1000L);
