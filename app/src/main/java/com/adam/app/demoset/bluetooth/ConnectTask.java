@@ -10,6 +10,7 @@ import android.os.ParcelUuid;
 import com.adam.app.demoset.Utils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class ConnectTask implements Runnable {
@@ -23,26 +24,26 @@ public class ConnectTask implements Runnable {
     private Context mContext;
 
     public ConnectTask(Context context, BluetoothDevice device) {
-
         Utils.info(this, "Connect task construct");
         this.mContext = context;
-
         this.mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-
         this.mDevice = device;
+        connectToDevice(device);
+    }
 
+    private void connectToDevice(BluetoothDevice device) {
         ParcelUuid[] uuids = device.getUuids();
-
-        //Test
-        for (ParcelUuid uuid : uuids) {
-            Utils.info(this, "uuid: " + uuid.toString());
-            try {
-                mSocket = mDevice.createRfcommSocketToServiceRecord(UUID.fromString(String.valueOf(uuid)));
-            } catch (IOException e) {
-                Utils.info(this, "Socket's create() method failed");
-            }
+        if (uuids != null) {
+            Arrays.stream(uuids)
+                    .forEach(uuid -> {
+                        Utils.info(this, "uuid: " + uuid.toString());
+                        try {
+                            mSocket = device.createRfcommSocketToServiceRecord(UUID.fromString(uuid.toString()));
+                        } catch (IOException e) {
+                            Utils.info(this, "Socket's create() method failed");
+                        }
+                    });
         }
-
     }
 
     @Override
@@ -54,16 +55,13 @@ public class ConnectTask implements Runnable {
         // until it succeeds or throws an exception.
         try {
             mSocket.connect();
+            Utils.info(this, "Connect succeeded");
+            Utils.info(this, "Connect status: " + mSocket.isConnected());
         } catch (IOException e) {
+            Utils.info(this, "IOException!!!");
             // Unable to connect; close the socket and return.
-            try {
-                mSocket.close();
-            } catch (IOException e1) {
-                Utils.info(this, "Could not close the client socket");
-            }
+            closeSocket();
         }
-        Utils.info(this, "Connect succeeded");
-        Utils.info(this, "Connect status: " + mSocket.isConnected());
 
         // test
         if (!mSocket.isConnected()) {
@@ -73,14 +71,18 @@ public class ConnectTask implements Runnable {
         sendConnectInfo();
     }
 
-    // Closes the client socket and causes the thread to finish.
-    public void cancel() {
-        Utils.info(this, "cancel enter....");
+    private void closeSocket() {
         try {
             mSocket.close();
         } catch (IOException e) {
             Utils.info(this, "Could not close the client socket");
         }
+    }
+
+    // Closes the client socket and causes the thread to finish.
+    public void cancel() {
+        Utils.info(this, "cancel enter....");
+        closeSocket();
 
         sendConnectInfo();
         Utils.info(this, "Connect status: " + mSocket.isConnected());

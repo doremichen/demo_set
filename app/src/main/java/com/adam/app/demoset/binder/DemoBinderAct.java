@@ -11,6 +11,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -169,68 +171,61 @@ public class DemoBinderAct extends AppCompatActivity {
     public void onExecuteBinderCall(View v) {
         Utils.info(this, "onExecuteBinderCall enter");
 
-        // Check if the text is valid
-        if (mETInputA.getText() == null || mETInputB.getText() == null) {
-            Utils.showToast(this, "please input the valid number.");
+        if (!isValidInput(mETInputA) || !isValidInput(mETInputB)) {
             return;
         }
 
-        // Check if the text is valid
-        if (mETInputA.getText().toString().equals("") || mETInputB.getText().toString().equals("")) {
-            Utils.showToast(this, "please input the valid number.");
-            return;
-        }
-
-        // Hide soft keyboard
         Utils.hideSoftKeyBoardFrom(this, v);
 
         try {
-            // Get value from edit text
             int a = Integer.parseInt(mETInputA.getText().toString());
             int b = Integer.parseInt(mETInputB.getText().toString());
             Utils.info(this, "a = " + a);
             Utils.info(this, "b = " + b);
 
             if (isMessenger) {
-                Utils.showToast(this, "Messenger binder call");
-                Utils.info(this, "Messenger binder call");
-                try {
-                    // Get message
-                    Message msg = Message.obtain();
-                    msg.what = MyMessengerService.ACTION_ADD;
-                    msg.arg1 = a;
-                    msg.arg2 = b;
-                    msg.replyTo = mUIMessenger;
-                    // Send message to the remote service by service proxy
-                    mMessenger.send(msg);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
-
+                executeMessengerBinderCall(a, b);
             } else {
-                Utils.showToast(this, "AIDL binder call");
-                Utils.info(this, "AIDL binder call");
-                try {
-                    mProxyAidl.add(a, b);
-
-                    // send data to the remote service
-                    MyBinderData data = new MyBinderData("Binder data");
-                    mProxyAidl.sendRequest(data);
-
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
+                executeAidlBinderCall(a, b);
             }
         } catch (NumberFormatException ex) {
-
             Utils.showToast(this, "please input the value between the integer range!!!");
-
-        } finally {
-
         }
+    }
 
+    private boolean isValidInput(EditText editText) {
+        if (editText.getText() == null || TextUtils.isEmpty(editText.getText().toString())) {
+            Utils.showToast(this, "please input the valid number.");
+            return false;
+        }
+        return true;
+    }
+
+    private void executeMessengerBinderCall(int a, int b) {
+        Utils.showToast(this, "Messenger binder call");
+        Utils.info(this, "Messenger binder call");
+        try {
+            Message msg = Message.obtain();
+            msg.what = MyMessengerService.ACTION_ADD;
+            msg.arg1 = a;
+            msg.arg2 = b;
+            msg.replyTo = mUIMessenger;
+            mMessenger.send(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void executeAidlBinderCall(int a, int b) {
+        Utils.showToast(this, "AIDL binder call");
+        Utils.info(this, "AIDL binder call");
+        try {
+            mProxyAidl.add(a, b);
+            MyBinderData data = new MyBinderData("Binder data");
+            mProxyAidl.sendRequest(data);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showResult(int value) {
