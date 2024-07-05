@@ -73,14 +73,18 @@ public class FloatingWindowSvr extends Service {
         super.onDestroy();
         Utils.info(this, "onDestroy");
         // removew circle view to dismiss the floating view
-        if (this.mLayout != null
-            || this.mLayoutParams != null) {
+        if (Utils.areAllNotNull(this.mWM, this.mLayout)) {
             this.mWM.removeView(this.mLayout);
         }
     }
 
     private void buildFloatingView() {
         Utils.info(this, "buildFloatingView");
+        // precondiftion
+        if (!Utils.areAllNotNull(this.mWM)) {
+            Utils.showToast(this, "No window manager!!!!");
+            return;
+        }
 
         // Use Builder pattern to create WindowManager.LayoutParams
         this.mLayoutParams = new LayoutParamsBuilder()
@@ -94,6 +98,11 @@ public class FloatingWindowSvr extends Service {
 
         // Use Factory pattern to create FrameLayout
         this.mLayout = LayoutFactory.createFloatingLayout(getApplicationContext());
+
+        if (!Utils.areAllNotNull(this.mLayout)) {
+            Utils.showToast(this, "null layout!!!!");
+            return;
+        }
 
         // Measure the size of the floating view
         this.mLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),

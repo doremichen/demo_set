@@ -71,44 +71,40 @@ public class CircleView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         Utils.info(this, "onTouchEvent");
         int action = event.getAction();
-//        StringBuilder stb = new StringBuilder("Refresh UI: \n");
 
-        if (action == MotionEvent.ACTION_CANCEL
-            || action == MotionEvent.ACTION_UP) {
-            // Assign circle1 position is circle2 position
-            Circle2.sX = Circle1.sX;
-            Circle2.sY = Circle1.sY;
-
-        } else if (action == MotionEvent.ACTION_MOVE
-                || action == MotionEvent.ACTION_DOWN) {
-            // Update circle2 position
-            if (lessThanRadius(Circle2.sX, event.getX())
-                && lessThanRadius(Circle2.sY, event.getY())) {
-
-                if (lessThanRadius(Circle1.sX, Circle2.sX)
-                    && lessThanRadius(Circle1.sY, Circle2.sY)) {
-                    Circle2.sX = event.getX();
-                    Circle2.sY = event.getY();
-                } else {
-                    // Assign circle1 position is circle2 position
-                    Circle2.sX = Circle1.sX;
-                    Circle2.sY = Circle1.sY;
+        switch (action) {
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                // Assign circle1 position is circle2 position
+                Circle2.sX = Circle1.sX;
+                Circle2.sY = Circle1.sY;
+                break;
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_DOWN:
+                if (inRange(Circle2.sX, Circle2.sY, event.getX(), event.getY())) {
+                    if (inRange(Circle1.sX, Circle1.sY, Circle2.sX, Circle2.sY)) {
+                        Circle2.sX = event.getX();
+                        Circle2.sY = event.getY();
+                    } else {
+                        // Assign circle1 position is circle2 position
+                        Circle2.sX = Circle1.sX;
+                        Circle2.sY = Circle1.sY;
+                    }
                 }
-
-//                stb.append("Circle1: ").append(Circle1.sX).append(" ").append(Circle1.sY);
-//                stb.append("\n");
-//                stb.append("Circle2: ").append(Circle2.sX).append(" ").append(Circle2.sY);
-//                stb.append("\n");
-            }
+                break;
 
         }
 
-//        Utils.inFo(this, stb.toString());
         // refresh ui
         invalidate();
 
         return true;
     }
+
+    private boolean inRange(float v1, float v2, float v3, float v4) {
+        return lessThanRadius(v1, v3) && lessThanRadius(v2, v4);
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
