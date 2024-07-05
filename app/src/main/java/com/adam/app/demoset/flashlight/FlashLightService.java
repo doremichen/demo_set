@@ -92,6 +92,6 @@ public class FlashLightService extends JobIntentService {
         new FlashFightSwitchContext().process(cmd);
 
     }
-    
+
 
 }

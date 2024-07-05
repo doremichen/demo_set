@@ -26,6 +26,8 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
     private FlashLightViewModel mFlViewModel;
 
 
+    private static final boolean USE_SERVICE = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,11 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
                     Utils.showToast(DemoFlashLightAct.this, "action: " + action);
                     System.setProperty(PROP_FLASH_LIGHT_ENABLE, action);
                     // enable flash
-                    mFlViewModel.enableFlashlight(isChecked);
+                    if (USE_SERVICE) {
+                        FlashLightService.execute(DemoFlashLightAct.this, action);
+                    } else {
+                        mFlViewModel.enableFlashlight(isChecked);
+                    }
                 }
             });
         }
