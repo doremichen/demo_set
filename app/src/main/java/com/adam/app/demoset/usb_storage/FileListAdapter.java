@@ -17,7 +17,11 @@ import com.adam.app.demoset.Utils;
 import com.github.mjdev.libaums.fs.UsbFile;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class FileListAdapter<T> extends BaseAdapter {
 
@@ -126,21 +130,28 @@ public class FileListAdapter<T> extends BaseAdapter {
         public static int getResourceIdBy(boolean isFolder, @NonNull String fileName) {
             Utils.info(RESICONITEMS.class, "getResourceIdBy +++");
             fileName = fileName.toLowerCase();
+
             if (isFolder) {
                 Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: folder");
                 return R.drawable.folder;
-            } else {
-                for (RESICONITEMS item: RESICONITEMS.values()) {
-                    if (fileName.endsWith(item.mImgType)) {
-                        Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: fileName " + fileName);
-                        return item.mResId;
-                    }
-                }
             }
-            Utils.info(RESICONITEMS.class, "getResourceIdBy xxx");
-            return R.drawable.unkown_file;
+
+            String finalFileName = fileName;
+            return Arrays.stream(RESICONITEMS.values())
+                    .filter(item -> finalFileName.endsWith(item.mImgType))
+                    .mapToInt(item -> item.mResId)
+                    .findFirst()
+                    .orElse(R.drawable.unkown_file);
         }
 
+    }
+
+
+    private static final Map<Long, Function<Long, String>> FORMATTERS = new HashMap<>();
+    static {
+        FORMATTERS.put(1L, size -> size + " B");
+        FORMATTERS.put(1024L, size -> String.format("%.2f kB", (double) size / 1024));
+        FORMATTERS.put(1024L * 1024, size -> String.format("%.2f MB", (double) size / 1024 / 1024));
     }
 
     /**
@@ -149,15 +160,13 @@ public class FileListAdapter<T> extends BaseAdapter {
      * @return file size string
      */
     private String toFileSizeInfo(long size) {
-        if (size < 1024) {
-            return size + " B";
-        } else if (size < 1024 * 1024) {
-            return (size / 1024) + " kB";
-        } else {
-            return (size / 1024 / 1024) + " MB";
-        }
+        return FORMATTERS.entrySet().stream()
+                .filter(entry -> size >= entry.getKey())
+                .max(Map.Entry.comparingByKey())
+                .map(Map.Entry::getValue)
+                .map(formatter -> formatter.apply(size))
+                .orElse(size + " B");
     }
-
 
 
     /**

@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 
 
 public class DemoServiceAct extends AppCompatActivity {
@@ -67,12 +68,11 @@ public class DemoServiceAct extends AppCompatActivity {
         mLayout = this.findViewById(R.id.content_view);
 
         // Covert arrayList to array string
-        String[] itemDatas = new String[Item.values().length];
-        for (int i = 0; i < itemDatas.length; i++) {
-            itemDatas[i] = Item.values()[i].getType();
-        }
+        String[] items = Arrays.stream(Item.values())
+                .map(Item::getType)
+                .toArray(String[]::new);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, itemDatas);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
 
         mListView.setAdapter(adapter);
 
@@ -82,7 +82,7 @@ public class DemoServiceAct extends AppCompatActivity {
                 String item = (String) parent.getItemAtPosition(position);
                 Utils.showToast(DemoServiceAct.this, "Item: " + item);
                 Item executeItem = Item.getItemBy(item);
-                if (executeItem != null) {
+                if (Utils.areAllNotNull(executeItem)) {
                     executeItem.execute();
                 }
             }
@@ -153,11 +153,11 @@ public class DemoServiceAct extends AppCompatActivity {
             public void execute() {
                 Intent it = new Intent();
                 if (Utils.sIsRemoteService) {
-                    it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), RemoteService.class.getName());
                 } else {
-                    it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), LocalService.class.getName());
                 }
-                mActRef.get().startService(it);
+                sActRef.get().startService(it);
 
             }
         }, STOP_SERVICE(Utils.ITEM_STOP_SERVICE) {
@@ -165,11 +165,11 @@ public class DemoServiceAct extends AppCompatActivity {
             public void execute() {
                 Intent it = new Intent();
                 if (Utils.sIsRemoteService) {
-                    it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), RemoteService.class.getName());
                 } else {
-                    it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), LocalService.class.getName());
                 }
-                mActRef.get().stopService(it);
+                sActRef.get().stopService(it);
             }
         }, BIND_SERVICE(Utils.ITEM_BIND_SERVICE) {
 
@@ -217,20 +217,20 @@ public class DemoServiceAct extends AppCompatActivity {
             public void execute() {
                 Intent it = new Intent();
                 if (Utils.sIsRemoteService) {
-                    it.setClassName(mActRef.get().getPackageName(), RemoteService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), RemoteService.class.getName());
                     Utils.sConnection = mRemoteConnection;
                 } else {
-                    it.setClassName(mActRef.get().getPackageName(), LocalService.class.getName());
+                    it.setClassName(sActRef.get().getPackageName(), LocalService.class.getName());
                     Utils.sConnection = mLocalConnection;
                 }
-                mActRef.get().bindService(it, Utils.sConnection, Context.BIND_AUTO_CREATE);
+                sActRef.get().bindService(it, Utils.sConnection, Context.BIND_AUTO_CREATE);
                 Utils.sIsBound = true;
             }
         }, UNBIND_SERVICE(Utils.ITEM_UNBIND_SERVICE) {
             @Override
             public void execute() {
                 if (Utils.sIsBound) {
-                    mActRef.get().unbindService(Utils.sConnection);
+                    sActRef.get().unbindService(Utils.sConnection);
                     Utils.sIsBound = false;
                     if (Utils.sIsRemoteService) {
                         Utils.sMessenger = null;
@@ -261,7 +261,7 @@ public class DemoServiceAct extends AppCompatActivity {
         };
 
 
-        private static WeakReference<Activity> mActRef;
+        private static WeakReference<Activity> sActRef;
         private String mType;
 
         Item(String type) {
@@ -269,17 +269,15 @@ public class DemoServiceAct extends AppCompatActivity {
         }
 
         public static void setActivityContext(Activity act) {
-            mActRef = new WeakReference<Activity>(act);
+            sActRef = new WeakReference<Activity>(act);
         }
 
         public static Item getItemBy(String str) {
 
-            for (Item i : values()) {
-                if (i.getType().equals(str)) {
-                    return i;
-                }
-            }
-            return null;
+            return Arrays.stream(Item.values())
+                    .filter(item -> item.getType().equals(str))
+                    .findFirst()
+                    .orElse(null);
         }
 
         public String getType() {

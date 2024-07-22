@@ -47,7 +47,8 @@ public class SchedulerController {
         mScheduleTask = new MyScheduleTask();
 
         // Start schedule
-        mFuture = mService.scheduleAtFixedRate(mScheduleTask, period, period, TimeUnit.SECONDS);
+        this.mFuture = this.mService.scheduleWithFixedDelay(this.mScheduleTask, period, period, TimeUnit.SECONDS);
+        //mFuture = mService.scheduleAtFixedRate(mScheduleTask, period, period, TimeUnit.SECONDS);
 
     }
 

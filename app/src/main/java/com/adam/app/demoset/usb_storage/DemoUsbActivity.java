@@ -245,7 +245,7 @@ public class DemoUsbActivity extends AppCompatActivity implements USBBroadCastRe
         this.mLocalCurrentPath = this.mLocalRootPath;
         // init file list
         File[] files = new File(this.mLocalRootPath).listFiles();
-        if (files == null) {
+        if ((files == null) || (files.length == 0)) {
             Utils.showToast(this, "No file!!!");
             return;
         }

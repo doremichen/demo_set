@@ -42,23 +42,25 @@ public class DemoShareProvidAct extends AppCompatActivity {
         Utils.info(this, "mShareAction = " + mShareAction);
         boolean ret = false;
 
-        if (mShareAction != null) {
+        if (!Utils.areAllNotNull(this.mShareAction)) {
+            Utils.showToast(this, "No share action!!!");
+            return ret;
+        }
 
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Demo text");
 
-            // Query useful app
-            PackageManager pm = getPackageManager();
-            List<ResolveInfo> infos = pm.queryIntentActivities(sendIntent, 0);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Demo text");
 
-            Utils.info(this, "infos.isEmpty = " + infos.isEmpty());
+        // Query useful app
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> infos = pm.queryIntentActivities(sendIntent, 0);
 
-            if (!infos.isEmpty()) {
-                mShareAction.setShareIntent(sendIntent);
-                ret = true;
-            }
+        Utils.info(this, "infos.isEmpty = " + infos.isEmpty());
 
+        if (!infos.isEmpty()) {
+            mShareAction.setShareIntent(sendIntent);
+            ret = true;
         }
 
         return ret;

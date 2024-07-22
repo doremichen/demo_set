@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -20,7 +21,9 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -143,21 +146,17 @@ abstract class FileUtils {
     }
 
 
-    public static List<File> getFiles(File selectedItem) throws FileNotFoundException {
+    public static List<File> getFiles(@NonNull File selectedItem) throws FileNotFoundException {
         List<File> resultList = new ArrayList<>();
         // filter not hidden file in list
         File[] files = selectedItem.listFiles();
-        if (files == null) {
+        if ((files == null) || (files.length == 0)) {
             throw new FileNotFoundException("No files!!!");
         }
 
-        List<File> filterFiles = new ArrayList<>();
-        for (File file: files) {
-            if (!file.isHidden()) {
-                // add
-                filterFiles.add(file);
-            }
-        }
+        List<File> filterFiles = Arrays.stream(files)
+                .filter(file -> !file.isHidden())
+                .collect(Collectors.toList());
 
         // is directory?
         if (selectedItem.equals(Environment.getExternalStorageDirectory())) {

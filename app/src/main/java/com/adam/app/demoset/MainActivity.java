@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list = this.findViewById(R.id.list_view);
 
-        // prepare item list
-        List<ItemContent> items = new ArrayList<>();
-
         // parse config xml file to general item data
         try {
             // Open xml file
@@ -66,13 +65,32 @@ public class MainActivity extends AppCompatActivity {
             Element root = document.getDocumentElement();
             NodeList nodes = root.getElementsByTagName("data");
 
-            final int length = nodes.getLength();
-            for (int i = 0; i < length; i++) {
-                Element itemData = (Element) nodes.item(i);
-                ItemContent dataContent = new ItemContent(itemData.getAttribute("title"),
-                        itemData.getAttribute("clsname"), itemData.getAttribute("pkgname"));
-                items.add(dataContent);
-            }
+            List<ItemContent> items = IntStream.range(0, nodes.getLength())
+                    .mapToObj(nodes::item)
+                    .map(node -> (Element) node)
+                    .map(itemData -> new ItemContent(
+                            itemData.getAttribute("title"),
+                            itemData.getAttribute("clsname"),
+                            itemData.getAttribute("pkgname")))
+                    .collect(Collectors.toList());
+
+            // Set list adapter
+            list.setAdapter(new MainListAdapter(this, items));
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ItemContent data = (ItemContent) parent.getItemAtPosition(position);
+                    Utils.info(this, "the item: " + data.getTitle());
+
+                    // Go to the specified demo item
+                    Intent it = new Intent();
+                    it.setClassName(data.getPkgName(), data.getClassName());
+                    MainActivity.this.startActivity(it);
+
+                }
+            });
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,23 +99,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-
-        // Set list adapter
-        list.setAdapter(new MainListAdapter(this, items));
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemContent data = (ItemContent) parent.getItemAtPosition(position);
-                Utils.info(this, "the item: " + data.getTitle());
-
-                // Go to the specified demo item
-                Intent it = new Intent();
-                it.setClassName(data.getPkgName(), data.getClassName());
-                MainActivity.this.startActivity(it);
-
-            }
-        });
 
         startEnableNotifySetting();
 
