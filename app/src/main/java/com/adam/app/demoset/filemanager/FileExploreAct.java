@@ -117,29 +117,22 @@ public class FileExploreAct extends AppCompatActivity {
         }
 
         // update list view
-        boolean hasFile = true;
         try {
             this.mFileList = FileUtils.getFiles(selectedItem);
+            // clear adapter
+            this.mStrAdapter.clear();
+            this.mStrAdapter.addAll(mapItems(selectedItem));
         } catch (FileNotFoundException e) {
             Utils.showToast(this, "No file!!!");
-            hasFile = false;
         }
-
-        if (!hasFile) {
-            // no file so do not need to open!!!
-            return;
-        }
-
-        // clear adapter
-        this.mStrAdapter.clear();
-        this.mStrAdapter.addAll(mapItems(selectedItem));
-
     }
 
     private List<String> mapItems(File seletctedFile) {
         info("mapItems");
         return this.mFileList.stream()
-                .map(file -> file.getPath().equals(Objects.requireNonNull(seletctedFile.getParentFile()).getPath()) ? FileUtils.ParentLinkLabel(this) : FileUtils.ItemLabel(this, file))
+                .map(file -> file.getPath().equals(Objects.requireNonNull(seletctedFile.getParentFile()).getPath())?
+                        FileUtils.ParentLinkLabel(this):
+                        FileUtils.ItemLabel(this, file))
                 .collect(Collectors.toList());
     }
 

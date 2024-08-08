@@ -50,13 +50,13 @@ public class MyAidlService extends Service {
 
     private static class ServiceStub extends IMyAidlInterface.Stub {
 
-        private WeakReference<MyAidlService> mRef_svr;
+        private WeakReference<MyAidlService> mRefSvr;
 
         private RemoteCallbackList<IMyAidlCBInterface> mCallbacks = new RemoteCallbackList<IMyAidlCBInterface>();
 
         public ServiceStub(MyAidlService svr) {
             Utils.info(this, "constructor enter");
-            mRef_svr = new WeakReference<MyAidlService>(svr);
+            mRefSvr = new WeakReference<MyAidlService>(svr);
         }
 
         @Override
@@ -84,7 +84,7 @@ public class MyAidlService extends Service {
             // Set service uid pid
             long tokenId = Binder.clearCallingIdentity();
             // service operation process
-            int ret = mRef_svr.get().add(a, b);
+            int ret = mRefSvr.get().add(a, b);
 
             final int N = mCallbacks.beginBroadcast();
             // Call back to UI
@@ -105,7 +105,7 @@ public class MyAidlService extends Service {
             String msg = data.getMessage();
 
             // Show notification to tell user
-            Utils.makeStatusNotification("I got the data from UI: " + msg, mRef_svr.get());
+            Utils.makeStatusNotification("I got the data from UI: " + msg, mRefSvr.get());
             Binder.restoreCallingIdentity(tokenId);
         }
     }

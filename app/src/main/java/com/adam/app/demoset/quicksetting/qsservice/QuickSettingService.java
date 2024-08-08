@@ -2,6 +2,7 @@ package com.adam.app.demoset.quicksetting.qsservice;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
@@ -9,6 +10,9 @@ import android.service.quicksettings.TileService;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressLint("Override")
 @TargetApi(Build.VERSION_CODES.O)
@@ -45,37 +49,104 @@ public class QuickSettingService extends TileService {
         updateTitle();
     }
 
+    /**
+     * State pattern
+     */
+    static abstract class UpdateState {
+        void process(Context context, Tile tile) {
+            // notification
+            Utils.makeStatusNotification(onMsg(), context);
+            // tile config
+            Icon icon = Icon.createWithResource(context, onResId());
+            tile.setLabel(onMsg());
+            tile.setIcon(icon);
+            tile.setState(onState());
+            // update
+            tile.updateTile();
+        }
+
+        abstract String onMsg();
+        abstract int onResId();
+        abstract int onState();
+    }
+
+    static class Active extends UpdateState {
+
+        @Override
+        String onMsg() {
+            return "Demo quick setting1: active";
+        }
+
+        @Override
+        int onResId() {
+            return R.drawable.ic_demo_qs1_active;
+        }
+
+        @Override
+        int onState() {
+            return Tile.STATE_ACTIVE;
+        }
+    }
+
+    static class InActive extends UpdateState {
+
+        @Override
+        String onMsg() {
+            return "Demo quick setting1: inactive";
+        }
+
+        @Override
+        int onResId() {
+            return R.drawable.ic_demo_qs1_inactive;
+        }
+
+        @Override
+        int onState() {
+            return Tile.STATE_INACTIVE;
+        }
+    }
+
+    /**
+     * Update state Context
+     */
+    enum UpdateContext {
+
+        INSTANCE;
+        private Tile mTile;
+
+        // state map
+        Map<Integer , UpdateState> mMap = new HashMap<>() {
+            {
+                put(Tile.STATE_INACTIVE, new Active());
+                put(Tile.STATE_ACTIVE, new InActive());
+            }
+        };
+
+        void setTile(Tile tile) {
+            this.mTile = tile;
+        }
+
+
+        void update(Context context) {
+            UpdateState which = this.mMap.get(this.mTile.getState());
+            if (!Utils.areAllNotNull(which)) {
+                Utils.info(this, "This item is no in map!!!");
+                return;
+            }
+
+            which.process(context, this.mTile);
+        }
+
+    }
+
+
     private void updateTitle() {
         Utils.info(this, "updateTitle enter");
         Tile tile = this.getQsTile();
-        boolean updateSetting = tile.getState() == Tile.STATE_ACTIVE;
-        Icon icon;
-        String label;
-        int state;
 
-        if (!updateSetting) {
-            label = "Demo quick setting1: active";
-            icon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_demo_qs1_active);
-            state = Tile.STATE_ACTIVE;
-            // Notification
-            Utils.makeStatusNotification("Quick setting1 is active", getApplicationContext());
+        UpdateContext.INSTANCE.setTile(tile);
+        UpdateContext.INSTANCE.update(getApplicationContext());
 
-        } else {
-
-            label = "Demo quick setting1: inactive";
-            icon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_demo_qs1_inactive);
-            state = Tile.STATE_INACTIVE;
-            // Notification
-            Utils.makeStatusNotification("Quick setting1 is inactive", getApplicationContext());
-        }
-
-        // Change UI of the tile
-        tile.setLabel(label);
-        tile.setIcon(icon);
-        tile.setState(state);
-
-        // Update Title
-        tile.updateTile();
 
     }
 

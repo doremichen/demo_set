@@ -48,21 +48,26 @@ public class MyTouchItemListener implements OnItemTouchListener {
         Utils.info(this, "onInterceptTouchEvent enter");
         View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
         Utils.info(this, "child = " + child);
-        if (child != null) {
-            int position = recyclerView.getChildAdapterPosition(child);
+        if (!Utils.areAllNotNull(child)) {
+            return false;
+        }
 
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+        int position = recyclerView.getChildAdapterPosition(child);
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
                 Utils.info(this, "Start long click timer: position " + String.valueOf(position));
                 // Start long click timer
                 mFuture = mService.schedule(new LongClickTask(position), 2L, TimeUnit.SECONDS);
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                break;
+            case MotionEvent.ACTION_UP:
                 // Cancel long click timer
                 Utils.info(this, "cancel long click timer");
                 mFuture.cancel(true);
-            }
+                break;
         }
 
-        return false;
+        return true;
     }
 
     @Override
