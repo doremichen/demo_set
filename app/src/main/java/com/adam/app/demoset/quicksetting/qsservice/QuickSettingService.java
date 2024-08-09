@@ -50,9 +50,9 @@ public class QuickSettingService extends TileService {
     }
 
     /**
-     * State pattern
+     * template pattern
      */
-    static abstract class UpdateState {
+    static abstract class UpdateTemplate {
         void process(Context context, Tile tile) {
             // notification
             Utils.makeStatusNotification(onMsg(), context);
@@ -70,7 +70,7 @@ public class QuickSettingService extends TileService {
         abstract int onState();
     }
 
-    static class Active extends UpdateState {
+    static class Active extends UpdateTemplate {
 
         @Override
         String onMsg() {
@@ -88,7 +88,7 @@ public class QuickSettingService extends TileService {
         }
     }
 
-    static class InActive extends UpdateState {
+    static class InActive extends UpdateTemplate {
 
         @Override
         String onMsg() {
@@ -107,34 +107,28 @@ public class QuickSettingService extends TileService {
     }
 
     /**
-     * Update state Context
+     * Update tile Context
      */
     enum UpdateContext {
 
         INSTANCE;
-        private Tile mTile;
 
         // state map
-        Map<Integer , UpdateState> mMap = new HashMap<>() {
+        Map<Integer , UpdateTemplate> mMap = new HashMap<>() {
             {
                 put(Tile.STATE_INACTIVE, new Active());
                 put(Tile.STATE_ACTIVE, new InActive());
             }
         };
 
-        void setTile(Tile tile) {
-            this.mTile = tile;
-        }
-
-
-        void update(Context context) {
-            UpdateState which = this.mMap.get(this.mTile.getState());
+        void update(Tile tile, Context context) {
+            UpdateTemplate which = this.mMap.get(tile.getState());
             if (!Utils.areAllNotNull(which)) {
                 Utils.info(this, "This item is no in map!!!");
                 return;
             }
 
-            which.process(context, this.mTile);
+            which.process(context, tile);
         }
 
     }
@@ -143,11 +137,12 @@ public class QuickSettingService extends TileService {
     private void updateTitle() {
         Utils.info(this, "updateTitle enter");
         Tile tile = this.getQsTile();
+        if (!Utils.areAllNotNull(tile)) {
+            Utils.info(this, "tile is null!!!");
+            return;
+        }
 
-        UpdateContext.INSTANCE.setTile(tile);
-        UpdateContext.INSTANCE.update(getApplicationContext());
-
-
+        UpdateContext.INSTANCE.update(tile, getApplicationContext());
     }
 
 
