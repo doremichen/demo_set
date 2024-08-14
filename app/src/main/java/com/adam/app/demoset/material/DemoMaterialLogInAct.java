@@ -4,6 +4,8 @@ import android.os.Bundle;
 import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.TextUtils;
 import android.view.View;
 
 import com.adam.app.demoset.R;
@@ -31,8 +33,6 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
     }
 
     public void onNext(View view) {
-//        Utils.showToast(this, "onNext enter");
-
         // check input valid
         if (checkInputValid()) {
             Utils.showAlertDialog(this, "Not implemented next UI yet...", null);
@@ -41,7 +41,6 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
     }
 
     public void onExit(View view) {
-//        Utils.showToast(this, "onExit enter");
         this.finish();
     }
 
@@ -51,7 +50,7 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
         String name = mName.getText().toString();
         String password = mPassword.getText().toString();
 
-        if (name == null || password == null) {
+        if (!Utils.areAllNotNull(name, password)) {
             // show toast info user
             Utils.showToast(this, "Please input non-empty data");
             return false;
@@ -63,13 +62,13 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
             return false;
         }
 
-        if (password.equals(DEFAULT_PASSWORD)) {
-            return true;
-        } else {
+        if (!TextUtils.equals(password, DEFAULT_PASSWORD)) {
             // Show toast to info user
             Utils.showToast(this, "Password error...");
+            return false;
         }
 
-        return false;
+        Utils.showToast(this, "Pass!!!");
+        return true;
     }
 }
