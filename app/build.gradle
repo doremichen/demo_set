@@ -25,9 +25,6 @@ android {
         }
     }
 
-    lintOptions {
-        abortOnError false
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -52,8 +49,12 @@ android {
         }
     }
 
-    buildToolsVersion '30.0.3'
+    buildToolsVersion '34.0.0'
     ndkVersion '21.4.7075529'
+    namespace 'com.adam.app.demoset'
+    lint {
+        abortOnError false
+    }
 }
 
 dependencies {

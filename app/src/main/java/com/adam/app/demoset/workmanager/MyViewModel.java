@@ -22,13 +22,14 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class MyViewModel extends ViewModel {
 
-    private Uri mImageUri;
-    private WorkManager mManager;
-    private LiveData<List<WorkInfo>> mSaveWorkInfo;
+    private @NonNull Uri mImageUri;
+    private @NonNull WorkManager mManager;
+    private @NonNull LiveData<List<WorkInfo>> mSaveWorkInfo;
     private Uri mOutputUri;
 
 
@@ -79,70 +80,97 @@ public class MyViewModel extends ViewModel {
     }
 
 
+    /**
+     *
+     *      chain of work example
+     *         // clean up
+     *         OneTimeWorkRequest cleanupRequest = OneTimeWorkRequest.from(CleanupWorker.class);
+     *
+     *         // blurred image
+     *         OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class)
+     *                 .setInputData(createInputDataForUri())
+     *                 .build();
+     *
+     *         // save to file
+     *         OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).build();
+     *
+     *         // chain of work task
+     *         WorkContinuation continuation = this.mManager.beginWith(cleanupRequest);
+     *         continuation = continuation.then(blurRequest);
+     *         continuation = continuation.then(saveRequest);
+     *
+     *         // start to work
+     *         continuation.enqueue();
+     *
+     *         single work example
+     *         // enqueue single task
+     *         this.mManager.enqueue(blurRequest);
+     * @param level
+     */
     void applyBlur(int level) {
         Utils.info(this, "applyBlur enter leve: " + level);
-        // clean up work request
-        OneTimeWorkRequest cleanupReq = OneTimeWorkRequest.from(CleanupWorker.class);
-        // Add start request to work manager
-        WorkContinuation continuation = this.mManager.beginUniqueWork(Utils.IMAGE_MANIPULATION_WORK_NAME,
+        Utils.info(this, "applyBlur enter level: " + level);
+
+        // Start with cleanup work request
+        WorkContinuation continuation = mManager.beginUniqueWork(
+                Utils.IMAGE_MANIPULATION_WORK_NAME,
                 ExistingWorkPolicy.REPLACE,
-                cleanupReq);
+                OneTimeWorkRequest.from(CleanupWorker.class)
+        );
 
-        // Add my work request to work manager depend on the level
-        int i = 0;
-        while (i < level) {
-            // my work request builder
-            OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
-            // Input Uri for the first blur image request
-            if (i == 0) {
-                myWorkBuilder.setInputData(createInputDataForUri());
-            }
+        // Chain blur work requests based on the level
+        continuation = IntStream.range(0, level)
+                .mapToObj(i -> new OneTimeWorkRequest.Builder(MyWork.class)
+                        .setInputData(i == 0 ? createInputDataForUri() : Data.EMPTY)
+                        .build())
+                .reduce(continuation, WorkContinuation::then, (a, b) -> b);
 
-            // Add my work request to work manager
-            continuation = continuation.then(myWorkBuilder.build());
-            i++;
-        }
-
-        // Create constraint for work request
-        Constraints constraints = new Constraints.Builder()
-                .setRequiresCharging(false)
-                .build();
-
-        // save image work request
+        // Constraints and save request
         OneTimeWorkRequest saveReq = new OneTimeWorkRequest.Builder(SaveToFileWorker.class)
-                .setConstraints(constraints)
+                .setConstraints(new Constraints.Builder().setRequiresCharging(false).build())
                 .addTag(Utils.TAG_IMG_OUTPUT)
                 .build();
 
-        // Add save image work request to work manager
-        continuation = continuation.then(saveReq);
-
-        // start work process
-        continuation.enqueue();
-
-//      chain of work example
-//        // clean up
-//        OneTimeWorkRequest cleanupRequest = OneTimeWorkRequest.from(CleanupWorker.class);
+        // Chain save request and start work process
+        continuation.then(saveReq).enqueue();
+//        // clean up work request
+//        OneTimeWorkRequest cleanupReq = OneTimeWorkRequest.from(CleanupWorker.class);
+//        // Add start request to work manager
+//        WorkContinuation continuation = this.mManager.beginUniqueWork(Utils.IMAGE_MANIPULATION_WORK_NAME,
+//                ExistingWorkPolicy.REPLACE,
+//                cleanupReq);
 //
-//        // blurred image
-//        OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class)
-//                .setInputData(createInputDataForUri())
+//        // Add my work request to work manager depend on the level
+//        int i = 0;
+//        while (i < level) {
+//            // my work request builder
+//            OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
+//            // Input Uri for the first blur image request
+//            if (i == 0) {
+//                myWorkBuilder.setInputData(createInputDataForUri());
+//            }
+//
+//            // Add my work request to work manager
+//            continuation = continuation.then(myWorkBuilder.build());
+//            i++;
+//        }
+//
+//        // Create constraint for work request
+//        Constraints constraints = new Constraints.Builder()
+//                .setRequiresCharging(false)
 //                .build();
 //
-//        // save to file
-//        OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).build();
+//        // save image work request
+//        OneTimeWorkRequest saveReq = new OneTimeWorkRequest.Builder(SaveToFileWorker.class)
+//                .setConstraints(constraints)
+//                .addTag(Utils.TAG_IMG_OUTPUT)
+//                .build();
 //
-//        // chain of work task
-//        WorkContinuation continuation = this.mManager.beginWith(cleanupRequest);
-//        continuation = continuation.then(blurRequest);
-//        continuation = continuation.then(saveRequest);
+//        // Add save image work request to work manager
+//        continuation = continuation.then(saveReq);
 //
-//        // start to work
+//        // start work process
 //        continuation.enqueue();
-
-//        single work example
-//        // enqueue single task
-//        this.mManager.enqueue(blurRequest);
 
     }
 
@@ -166,10 +194,7 @@ public class MyViewModel extends ViewModel {
     private Data createInputDataForUri() {
         Utils.info(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
         Data.Builder builder = new Data.Builder();
-        if (mImageUri != null) {
-            builder.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());
-        }
-
+        builder.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());
         return builder.build();
     }
 

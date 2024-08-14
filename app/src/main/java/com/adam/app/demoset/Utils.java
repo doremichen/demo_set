@@ -83,7 +83,7 @@ public abstract class Utils {
     public static boolean sIsBound = false;
 
     public static final String OUTPUT_PATH = "blur_filter_outputs";
-    public static final String TAG_IMG_OUTPUT = "OUTPUT";
+    public static final String  TAG_IMG_OUTPUT = "OUTPUT";
     // The name of the image manipulation work
     public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
 
@@ -567,5 +567,16 @@ public abstract class Utils {
     public static boolean areAllNotNull(Object ... objects) {
         return Arrays.stream(objects).allMatch(Objects::nonNull);
     }
+
+    /**
+     * Checks if the array is null or empty.
+     * @param array The array to check.
+     * @param <T> The type of the array elements.
+     * @return true if the array is null or empty; false otherwise.
+     */
+    public static <T> boolean isArrayNullOrEmpty(T[] array) {
+        return array == null || array.length == 0;
+    }
+
 
 }

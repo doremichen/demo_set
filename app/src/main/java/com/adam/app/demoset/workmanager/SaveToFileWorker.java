@@ -58,7 +58,7 @@ public class SaveToFileWorker extends Worker {
                 return Result.failure();
             }
 
-            // Return ouptput for the temp file
+            // Return output for the temp file
             Data outputData = new Data.Builder()
                     .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
                     .build();

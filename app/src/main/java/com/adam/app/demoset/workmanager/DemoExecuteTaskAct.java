@@ -1,3 +1,6 @@
+/**
+ * Demo work manager UI
+ */
 package com.adam.app.demoset.workmanager;
 
 import android.content.Intent;
@@ -15,6 +18,7 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoExecuteTaskBinding;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -38,7 +42,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
             public void onChanged(List<WorkInfo> ListOfWorkInfo) {
                 Utils.info(DemoExecuteTaskAct.this, "View modele onChange!!!");
                 // preprocess
-                if (ListOfWorkInfo == null || ListOfWorkInfo.isEmpty()) {
+                if (ListOfWorkInfo.isEmpty()) {
                     Utils.info(DemoExecuteTaskAct.this, "No work info list!!!");
                     return;
                 }
@@ -47,11 +51,12 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 WorkInfo workInfo = ListOfWorkInfo.get(0);
                 boolean isFinished = workInfo.getState().isFinished();
                 Utils.info(DemoExecuteTaskAct.this, "isFinished: " + isFinished);
-                if (!isFinished) {
-                    updateButtonView(true);
-                    mBinding.seeFileButton.setVisibility(ViewState.findby(false).toValue());
-                } else {
-                    updateButtonView(false);
+
+                updateButtonVisibility(!isFinished);
+
+                mBinding.seeFileButton.setVisibility(ViewState.by(false).toValue());
+
+                if (isFinished) {
                     Data outputData = workInfo.getOutputData();
                     // get output image uri
                     String OutputImageUriStr = outputData.getString(Utils.THE_SELECTED_IMAGE);
@@ -59,7 +64,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                     // the see file button is visble when the file exists
                     if (!TextUtils.isEmpty(OutputImageUriStr)) {
                         mViewModel.setOutputUri(OutputImageUriStr);
-                        mBinding.seeFileButton.setVisibility(ViewState.findby(true).toValue());
+                        mBinding.seeFileButton.setVisibility(ViewState.by(true).toValue());
                     }
                 }
 
@@ -83,7 +88,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 Utils.info(DemoExecuteTaskAct.this, "seeFileButton is clicked!!!");
                 Uri currentUri = mViewModel.getOutputUri();
                 Utils.info(DemoExecuteTaskAct.this, "currentUri: " + currentUri);
-                if (currentUri != null) {
+                if (Utils.areAllNotNull(currentUri)) {
                     Intent actionView = new Intent(Intent.ACTION_VIEW, currentUri);
                     if (actionView.resolveActivity(getPackageManager()) != null) {
                         startActivity(actionView);
@@ -124,13 +129,11 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
             this.mKey = key;
         }
 
-        public static ViewState findby(boolean key) {
-            for (ViewState e: ViewState.values()) {
-                if (e.mKey == key) {
-                    return e;
-                }
-            }
-            return null;
+        public static ViewState by(boolean key) {
+            return Arrays.stream(ViewState.values())
+                    .filter(e -> e.mKey == key)
+                    .findFirst()
+                    .orElse(null);
         }
 
         abstract int toValue();
@@ -142,10 +145,10 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
      *      process: progressBar, cancel Visible and go, see file Gone
      *      finish: progressBar, cancel Gone and go, see file Visible
      */
-    private void updateButtonView(boolean isShow) {
-        this.mBinding.progressBar.setVisibility(ViewState.findby(isShow).toValue());
-        this.mBinding.cancelButton.setVisibility(ViewState.findby(isShow).toValue());
-        this.mBinding.goButton.setVisibility(ViewState.findby(!isShow).toValue());
+    private void updateButtonVisibility(boolean isShow) {
+        this.mBinding.progressBar.setVisibility(ViewState.by(isShow).toValue());
+        this.mBinding.cancelButton.setVisibility(ViewState.by(isShow).toValue());
+        this.mBinding.goButton.setVisibility(ViewState.by(!isShow).toValue());
 
     }
 

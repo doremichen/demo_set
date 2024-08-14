@@ -36,25 +36,20 @@ public class MyWork extends Worker {
 
         String resUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
 
-        try {
-            // check the non empty resUri
-            if (TextUtils.isEmpty(resUri)) {
-                Utils.info(this, "Invalid input uri...");
-                throw new IllegalArgumentException("Invalid input uri!!!");
-            }
+        if (TextUtils.isEmpty(resUri)) {
+            Utils.info(this, "Invalid input uri...");
+            Utils.makeStatusNotification("Invalid input uri...", appCtx);
+            return Result.failure();
+        }
 
-            //Bitmap picture = BitmapFactory.decodeResource(appCtx.getResources(), R.drawable.test);
-            Bitmap picture = BitmapFactory.decodeStream(appCtx
-                    .getContentResolver()
-                    .openInputStream(Uri.parse(resUri)));
+        try {
+            Bitmap picture = BitmapFactory.decodeStream(appCtx.getContentResolver().openInputStream(Uri.parse(resUri)));
 
             // Blur the bitmap
             Bitmap output = Utils.blurBitmap(picture, appCtx);
 
-            // Write bitmap to a temp file
+            // Write bitmap to a temp file and show notification
             Uri outputUri = Utils.writeBitmapToFile(appCtx, output);
-
-            // show notification
             Utils.makeStatusNotification("Output: " + outputUri.toString(), appCtx);
 
             // Prepare Result Data to pass
@@ -62,14 +57,12 @@ public class MyWork extends Worker {
                     .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
                     .build();
 
-            // return success
-            return  Result.success(outputData);
+            return Result.success(outputData);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return Result.failure();
         }
-
-        return Result.failure();
     }
 
 }

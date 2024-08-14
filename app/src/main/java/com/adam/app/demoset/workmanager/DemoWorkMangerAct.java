@@ -35,46 +35,50 @@ public class DemoWorkMangerAct extends AppCompatActivity {
         mWorkManger = WorkManager.getInstance();
     }
 
-    boolean mIshow;
+    boolean mShowImage;
 
     public void onMyWork(View v) {
-        if (!mIshow) {
+        if (mShowImage && !Utils.areAllNotNull(Utils.sImagePath)) {
+            Utils.showToast(this, "the file path does not exist.");
+            return;
+        }
+
+
+        if (!mShowImage) {
             // reset
             Utils.sImagePath = null;
 
             mWorkManger.enqueue(OneTimeWorkRequest.from(MyWork.class));
             mBtnTest.setText(this.getResources().getString(R.string.action_show_img));
-            mIshow = true;
         } else {
             showImage();
         }
+
+        mShowImage = !mShowImage;
 
     }
 
     private void showImage() {
         Utils.info(this, "showImage enter");
-        if (Utils.sImagePath == null) {
-            Utils.showToast(this, "the file path does not exist.");
+
+        File file = new File(Utils.sImagePath);
+
+        if (!file.exists()) {
+            Utils.showToast(this, "No image to show");
             return;
         }
 
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
+        Utils.info(this, "<content>" + contentUri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setDataAndType(contentUri, "image/*");
+        this.startActivity(intent);
+
         // Switch button states
         mBtnTest.setText(this.getResources().getString(R.string.action_test_blur_img));
-        mIshow = false;
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        File file = new File(Utils.sImagePath);
-        if (file.exists()) {
-            Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.fileprovider", file);
-            Utils.info(this, "<content>" + contentUri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(contentUri, "image/*");
-
-            this.startActivity(intent);
-        } else {
-            Utils.showToast(this, "No image to show");
-        }
     }
 
     @Override
