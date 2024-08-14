@@ -30,7 +30,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mBinding =  ActivityDemoExecuteTaskBinding.inflate(getLayoutInflater());
+        this.mBinding = ActivityDemoExecuteTaskBinding.inflate(getLayoutInflater());
         setContentView(this.mBinding.getRoot());
 
         // instance view model
@@ -40,7 +40,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         this.mViewModel.getMyWorkInfo().observe(this, new Observer<List<WorkInfo>>() {
             @Override
             public void onChanged(List<WorkInfo> ListOfWorkInfo) {
-                Utils.info(DemoExecuteTaskAct.this, "View modele onChange!!!");
+                Utils.info(DemoExecuteTaskAct.this, "ViewModel onChange!!!");
                 // preprocess
                 if (ListOfWorkInfo.isEmpty()) {
                     Utils.info(DemoExecuteTaskAct.this, "No work info list!!!");
@@ -109,6 +109,45 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
 
     }
 
+    /**
+     * update Button according the work status
+     * process: progressBar, cancel Visible and go, see file Gone
+     * finish: progressBar, cancel Gone and go, see file Visible
+     */
+    private void updateButtonVisibility(boolean isShow) {
+        this.mBinding.progressBar.setVisibility(ViewState.by(isShow).toValue());
+        this.mBinding.cancelButton.setVisibility(ViewState.by(isShow).toValue());
+        this.mBinding.goButton.setVisibility(ViewState.by(!isShow).toValue());
+
+    }
+
+    /**
+     * Finish state
+     */
+    private void showWorkFinish() {
+
+    }
+
+    /**
+     * Depend on user choice
+     *
+     * @return
+     */
+    private int getLevel() {
+        int choiceId = this.mBinding.radioBlurGroup.getCheckedRadioButtonId();
+
+        switch (choiceId) {
+            case R.id.radio_blur_lv_1:
+                return 1;
+            case R.id.radio_blur_lv_2:
+                return 2;
+            case R.id.radio_blur_lv_3:
+                return 3;
+        }
+
+        return 1;
+    }
+
 
     private enum ViewState {
         SHOW(true) {
@@ -125,6 +164,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         };
 
         private boolean mKey;
+
         private ViewState(boolean key) {
             this.mKey = key;
         }
@@ -137,46 +177,6 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         }
 
         abstract int toValue();
-    }
-
-
-    /**
-     * update Button according the work status
-     *      process: progressBar, cancel Visible and go, see file Gone
-     *      finish: progressBar, cancel Gone and go, see file Visible
-     */
-    private void updateButtonVisibility(boolean isShow) {
-        this.mBinding.progressBar.setVisibility(ViewState.by(isShow).toValue());
-        this.mBinding.cancelButton.setVisibility(ViewState.by(isShow).toValue());
-        this.mBinding.goButton.setVisibility(ViewState.by(!isShow).toValue());
-
-    }
-
-    /**
-     * Finish state
-     */
-    private void showWorkFinish() {
-
-    }
-
-
-    /**
-     * Depend on user choice
-     * @return
-     */
-    private int getLevel() {
-        int choiceId = this.mBinding.radioBlurGroup.getCheckedRadioButtonId();
-
-        switch (choiceId) {
-            case R.id.radio_blur_lv_1:
-                return 1;
-            case R.id.radio_blur_lv_2:
-                return 2;
-            case R.id.radio_blur_lv_3:
-                return 3;
-        }
-
-        return 1;
     }
 
 }
