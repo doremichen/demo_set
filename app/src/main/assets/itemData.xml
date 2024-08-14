@@ -23,6 +23,7 @@
     <data title="Demo System UI" clsname="com.adam.app.demoset.systemUI.DemoSysUIAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Work manager" clsname="com.adam.app.demoset.workmanager.DemoExecuteTaskAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Work manager&#10; legacy 1" clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct" pkgname="com.adam.app.demoset"/>
+    <data title="Demo Work manager&#10; legacy 2" clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Quick setting" clsname="com.adam.app.demoset.quicksetting.DemoQuickSetting" pkgname="com.adam.app.demoset"/>
     <data title="Demo Material Widget" clsname="com.adam.app.demoset.material.DemoMaterialLogInAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Handler thread" clsname="com.adam.app.demoset.myHandlerThread.DemoMyHandlerThreadAct" pkgname="com.adam.app.demoset"/>

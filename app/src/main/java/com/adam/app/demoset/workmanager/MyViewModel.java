@@ -38,11 +38,17 @@ public class MyViewModel extends ViewModel {
         Utils.info(this, "MyViewModel constructor");
         // work manager instance
         this.mManager = WorkManager.getInstance(app);
+        // prune work
+        this.mManager.pruneWork();
         // image uri
         this.mImageUri = buildImageUri(app.getApplicationContext());
 
         // UI listen to work change
         this.mSaveWorkInfo = this.mManager.getWorkInfosByTagLiveData(Utils.TAG_IMG_OUTPUT);
+    }
+
+    public void updateImgUri(@NonNull Uri imgUri) {
+        this.mImageUri = imgUri;
     }
 
     /**
@@ -193,9 +199,9 @@ public class MyViewModel extends ViewModel {
      */
     private Data createInputDataForUri() {
         Utils.info(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
-        Data.Builder builder = new Data.Builder();
-        builder.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());
-        return builder.build();
+        Data.Builder data = new Data.Builder();
+        data.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());
+        return data.build();
     }
 
     /**

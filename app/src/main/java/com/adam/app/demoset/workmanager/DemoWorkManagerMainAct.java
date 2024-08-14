@@ -25,10 +25,10 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_work_manager_main);
 
-        // Write external permission request
-        Utils.askPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                REQUEST_WRITE_EXTERNAL_CODE);
+//        // Write external permission request
+//        Utils.askPermission(this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                REQUEST_WRITE_EXTERNAL_CODE);
 
     }
 

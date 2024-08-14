@@ -33,8 +33,15 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         this.mBinding = ActivityDemoExecuteTaskBinding.inflate(getLayoutInflater());
         setContentView(this.mBinding.getRoot());
 
-        // instance view model
+        // create view model
         this.mViewModel = new MyViewModel(getApplication());
+        // update image uri if intent needed
+        String uriStr = this.getIntent().getStringExtra(Utils.THE_SELECTED_IMAGE);
+        if (!TextUtils.isEmpty(uriStr)) {
+            Utils.info(this, "uriStr: " + uriStr);
+            Uri ImagUri = Uri.parse(uriStr);
+            this.mViewModel.updateImgUri(ImagUri);
+        }
 
         // Ui observer according to work process
         this.mViewModel.getMyWorkInfo().observe(this, new Observer<List<WorkInfo>>() {
