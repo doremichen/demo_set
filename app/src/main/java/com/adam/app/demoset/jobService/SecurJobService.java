@@ -18,7 +18,7 @@ import com.adam.app.demoset.Utils;
 public class SecurJobService extends JobService {
 
 
-    private Handler mJobH = new Handler() {
+    private Handler mJobH = new Handler(getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

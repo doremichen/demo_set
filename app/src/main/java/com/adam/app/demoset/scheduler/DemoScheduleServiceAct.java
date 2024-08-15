@@ -1,5 +1,6 @@
 package com.adam.app.demoset.scheduler;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+
+import java.util.Optional;
 
 public class DemoScheduleServiceAct extends AppCompatActivity {
 
@@ -80,7 +83,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         mController = new SchedulerController();
 
-        mController.registeronControllerListener(new SchedulerController.onControllerListener() {
+        mController.registerListener(new SchedulerController.onControllerListener() {
             @Override
             public void TimeArrive(long millisecond) {
                 Utils.info(this, "TimeArrive enter");
@@ -117,7 +120,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.demo_exit) {
-            mController.finishTask();
+            mController.finishScheduledTask();
             return true;
         }
         return false;
@@ -133,14 +136,31 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
 
         mSbPeriodic.setEnabled(mEnableCounter);
 
-        if (!mEnableCounter) {
-            mController.startCount(mPeriodicTime);
-            mMeter.setBase(SystemClock.elapsedRealtime());
-            mMeter.start();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Optional.of(mEnableCounter)
+                    .filter(enable -> !enable)
+                    .ifPresentOrElse(
+                            enable -> {
+                                mController.startScheduledTask(mPeriodicTime);
+                                mMeter.setBase(SystemClock.elapsedRealtime());
+                                mMeter.start();
+                            },
+                            () -> {
+                                mController.stopScheduledTask();
+                                mMeter.stop();
+                            }
+                    );
         } else {
-            mController.stopCount();
-            mMeter.stop();
+            if (!mEnableCounter) {
+                mController.startScheduledTask(mPeriodicTime);
+                mMeter.setBase(SystemClock.elapsedRealtime());
+                mMeter.start();
+            } else {
+                mController.stopScheduledTask();
+                mMeter.stop();
+            }
         }
+
 
         // update button info
         mCounterAction.setText(!mEnableCounter ? R.string.action_stop_counter : R.string.action_start_counter);

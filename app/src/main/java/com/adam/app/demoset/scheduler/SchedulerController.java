@@ -24,7 +24,7 @@ public class SchedulerController {
      *
      * @param listener
      */
-    public void registeronControllerListener(onControllerListener listener) {
+    public void registerListener(onControllerListener listener) {
         Utils.info(this, "registeronControllerListener enter");
         mListener = listener;
     }
@@ -34,11 +34,11 @@ public class SchedulerController {
      *
      * @param period
      */
-    public void startCount(long period) {
+    public void startScheduledTask(long period) {
         Utils.info(this, "startCount enter");
 
         // Check if task is running
-        cancelTask();
+        cancelScheduledTask();
 
         // Record the current time
         mStartTime = System.currentTimeMillis();
@@ -55,18 +55,18 @@ public class SchedulerController {
     /**
      * Stop counter
      */
-    public void stopCount() {
+    public void stopScheduledTask() {
         Utils.info(this, "stopCount enter");
-        cancelTask();
+        cancelScheduledTask();
 
     }
 
     /**
      * Release resource
      */
-    public void finishTask() {
+    public void finishScheduledTask() {
         Utils.info(this, "finishTask enter");
-        cancelTask();
+        cancelScheduledTask();
 
         mService.shutdown();
 
@@ -90,7 +90,7 @@ public class SchedulerController {
     /**
      * Cancel counter task
      */
-    private void cancelTask() {
+    private void cancelScheduledTask() {
         Utils.info(this, "cancelTask enter");
         if (mFuture != null && mFuture.isCancelled() == false) {
             mFuture.cancel(true);
