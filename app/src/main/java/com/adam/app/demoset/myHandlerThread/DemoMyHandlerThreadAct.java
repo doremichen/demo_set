@@ -1,12 +1,12 @@
 package com.adam.app.demoset.myHandlerThread;
 
 import android.os.Bundle;
-import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -20,22 +20,6 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     // My handler thread
     private MyHandlerThread mWorkThread;
 
-    // UI handler
-    private Handler mUIHandler = new Handler();
-
-    // UI task
-    private class UITask implements Runnable {
-
-        @Override
-        public void run() {
-            // Update infomation
-            int value = WorkData.newInstance().getCounter();
-            mTaskInfo.setText("Work: " + value + " time");
-        }
-    }
-
-    private UITask mUITask;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +27,6 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
 
         //Initial text view
         mTaskInfo = findViewById(R.id.tv_work_info);
-
-
-        mUITask = new UITask();
 
         // start my handler thread
         mWorkThread = new MyHandlerThread();
@@ -103,10 +84,15 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     // This is callback when the handler thread notification is triggered
     //
     @Override
-    public void updateTaskInfo() {
+    public void updateTaskInfo(WorkData data) {
         Utils.info(this, "[update] enter");
 
-        mUIHandler.post(mUITask);
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mTaskInfo.setText("Work: " + data.getCounter() + " time");
+            }
+        });
 
         Utils.info(this, "[update] exit");
     }

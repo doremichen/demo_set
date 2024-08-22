@@ -5,7 +5,6 @@ import android.os.HandlerThread;
 
 import com.adam.app.demoset.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,18 +22,21 @@ public class MyHandlerThread extends HandlerThread {
     //
     private class WorkTask implements Runnable {
 
-        private int mId;
+        private int mTaskId;
 
         @Override
         public void run() {
-            while (mIsCancel.get() == false) {
-                mId++;
+
+            WorkData data = WorkData.newInstance();
+
+            while (!mIsCancel.get()) {
+                mTaskId++;
                 // Add one task time
-                WorkData.newInstance().setCounter(mId);
+                data.setCounter(mTaskId);
 
                 // Notify observer
                 mObvList.stream()
-                        .forEach(observer -> observer.updateTaskInfo());
+                        .forEach(observer -> observer.updateTaskInfo(data));
 
                 // sleep 1 sec
                 Utils.delay(1000L);

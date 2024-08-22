@@ -1,3 +1,6 @@
+/**
+ * Demo Bind service
+ */
 package com.adam.app.demoset.binder;
 
 import android.content.ComponentName;
@@ -92,10 +95,10 @@ public class DemoBinderAct extends AppCompatActivity {
         mTVOutputC = this.findViewById(R.id.tv_output_c);
 
 
-        // Binde aidl service
+        // Bind aidl service
         binderMyService(this, MyAidlService.class, mAidlConn);
 
-        // Binder messenger service
+        // Bind messenger service
         binderMyService(this, MyMessengerService.class, mMessengerConn);
 
     }
@@ -171,32 +174,41 @@ public class DemoBinderAct extends AppCompatActivity {
     public void onExecuteBinderCall(View v) {
         Utils.info(this, "onExecuteBinderCall enter");
 
-        if (!isValidInput(mETInputA) || !isValidInput(mETInputB)) {
+        if (!areAllInputsValid(mETInputA, mETInputB)) {
+            Utils.showToast(this, "Please enter numbers!"); // More user-friendly message
             return;
         }
 
         Utils.hideSoftKeyBoardFrom(this, v);
 
         try {
-            int a = Integer.parseInt(mETInputA.getText().toString());
-            int b = Integer.parseInt(mETInputB.getText().toString());
-            Utils.info(this, "a = " + a);
-            Utils.info(this, "b = " + b);
+            int inputA = Integer.parseInt(mETInputA.getText().toString());
+            int inputB = Integer.parseInt(mETInputB.getText().toString());
+            Utils.info(this, "inputA = " + inputA); // More descriptive variable names
+            Utils.info(this, "inputB = " + inputB);
 
             if (isMessenger) {
-                executeMessengerBinderCall(a, b);
+                executeMessengerBinderCall(inputA, inputB);
             } else {
-                executeAidlBinderCall(a, b);
+                executeAidlBinderCall(inputA, inputB);
             }
         } catch (NumberFormatException ex) {
-            Utils.showToast(this, "please input the value between the integer range!!!");
+            Utils.showToast(this, "Please enter values within the integer range!"); // Clearer error message
         }
     }
 
-    private boolean isValidInput(EditText editText) {
-        if (editText.getText() == null || TextUtils.isEmpty(editText.getText().toString())) {
-            Utils.showToast(this, "please input the valid number.");
-            return false;
+    /**
+     * Checks if all the provided EditText views contain non-empty text.
+     * @Params:
+     * editTexts - The EditText views to validate.
+     * @Returns:
+     * True if all EditTexts contain non-empty text, false otherwise.
+     */
+    private boolean areAllInputsValid(EditText ... editTexts) {
+        for (EditText editText: editTexts) {
+            if (TextUtils.isEmpty(editText.getText())) {
+                return false;
+            }
         }
         return true;
     }
