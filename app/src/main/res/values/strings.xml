@@ -143,7 +143,7 @@
     <string name="open_settings_button_label">Open settings</string>
     <string name="request_permission_button_label">Request permission</string>
     <string name="action_scan_wifi">Scan wifi</string>
-    <string name="action_exit_wifi">Exxit</string>
+    <string name="action_exit_wifi">Exit</string>
     <string name="label_wifi_result_item_ssid">SSID</string>
     <string name="label_wifi_result_item_bssid">BSSID</string>
     <string name="label_wifi_result_item_capabilities">Capabilities</string>

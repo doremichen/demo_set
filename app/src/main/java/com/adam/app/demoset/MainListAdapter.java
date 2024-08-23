@@ -15,13 +15,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 
 public class MainListAdapter extends BaseAdapter {
 
-    private List<ItemContent> mDatas;
-    private LayoutInflater mInflater;
+    private final List<ItemContent> mDatas;
+    private final LayoutInflater mInflater;
 
     public MainListAdapter(Context context, List<ItemContent> datas) {
         mInflater = LayoutInflater.from(context);
@@ -45,11 +47,11 @@ public class MainListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        @NotNull ViewHolder holder;
 
         if (convertView == null) {
 
-            convertView = this.mInflater.inflate(R.layout.item_data_layout, null);
+            convertView = this.mInflater.inflate(R.layout.item_data_layout, parent, false);
             holder = new ViewHolder();
             // get view id
             holder.mTitle = convertView.findViewById(R.id.item_data);

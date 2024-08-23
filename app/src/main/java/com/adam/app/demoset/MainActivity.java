@@ -51,13 +51,36 @@ public class MainActivity extends AppCompatActivity {
         Utils.info(this, "onCreate");
         setContentView(R.layout.activity_main);
 
-        ListView list = this.findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.list_view); // More descriptive variable name
 
-        // parse config xml file to general item data
-        try {
-            // Open xml file
-            InputStream iStream = this.getResources().getAssets().open("itemData.xml");
+        List<ItemContent> items = parseItemData(); // Extract parsing logic to a separate method
+        if (items != null) {
+            MainListAdapter adapter = new MainListAdapter(this, items); // Create adapter instance
+            listView.setAdapter(adapter);
 
+            listView.setOnItemClickListener((parent, view, position, id) -> {
+                ItemContent data = (ItemContent) parent.getItemAtPosition(position);
+                Utils.info(this, "the item: " + data.getTitle());
+
+                // Go to the specified demo item
+                Intent intent = new Intent(); // Rename 'it' to 'intent' for clarity
+                intent.setClassName(data.getPkgName(), data.getClassName());
+                startActivity(intent);
+            });
+        }
+
+        startEnableNotifySetting();
+    }
+
+    /**
+     * This method reads an XML file ("itemData.xml") from the assets folder,
+     * parses it using a DOM parser, extracts relevant attributes
+     * from elements tagged "data", creates ItemContent objects representing
+     * this data
+     * @return a list of these objects or null if the some exception is occurred.
+     */
+    private List<ItemContent> parseItemData() {
+        try (InputStream iStream = getResources().getAssets().open("itemData.xml")) { // Use try-with-resources for automatic resource closure
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(iStream);
@@ -65,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Element root = document.getDocumentElement();
             NodeList nodes = root.getElementsByTagName("data");
 
-            List<ItemContent> items = IntStream.range(0, nodes.getLength())
+            return IntStream.range(0, nodes.getLength())
                     .mapToObj(nodes::item)
                     .map(node -> (Element) node)
                     .map(itemData -> new ItemContent(
@@ -74,34 +97,10 @@ public class MainActivity extends AppCompatActivity {
                             itemData.getAttribute("pkgname")))
                     .collect(Collectors.toList());
 
-            // Set list adapter
-            list.setAdapter(new MainListAdapter(this, items));
-
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ItemContent data = (ItemContent) parent.getItemAtPosition(position);
-                    Utils.info(this, "the item: " + data.getTitle());
-
-                    // Go to the specified demo item
-                    Intent it = new Intent();
-                    it.setClassName(data.getPkgName(), data.getClassName());
-                    MainActivity.this.startActivity(it);
-
-                }
-            });
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace(); // Handle exceptions appropriately (e.g., log, display error message)
+            return null; // Indicate parsing failure
         }
-
-        startEnableNotifySetting();
-
     }
 
     @Override
@@ -130,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method aims to open the notification settings for the current app.
+     * It handles the differences in how to launch this setting screen between
+     * Android versions before and after Oreo (8.0).
+     */
     private void startEnableNotifySetting() {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
