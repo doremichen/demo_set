@@ -59,7 +59,7 @@ public abstract class NoteDialog {
                 if (TextUtils.isEmpty(strInput)) {
                     // Info UI
                     if (mListener != null) {
-                        mListener.info("Please input the valid and nonempty message.");
+                        mListener.onShowMessage("Please input the valid and nonempty message.");
                     }
                     return;
                 }
@@ -97,7 +97,7 @@ public abstract class NoteDialog {
 
 
     public interface OnControllerCallBack {
-        void info(String msg);
+        void onShowMessage(String msg);
 
         void updateList(String content);
     }

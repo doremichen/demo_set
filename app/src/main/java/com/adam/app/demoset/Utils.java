@@ -342,6 +342,30 @@ public abstract class Utils {
             public void run() {
                 Process process = null;
                 try {
+                    // Use ProcessBuilder for better control and security
+                    ProcessBuilder processBuilder = new ProcessBuilder(cmd.split(" ")); // Assuming cmd is a space-separated command string
+                    processBuilder.redirectErrorStream(true); // Merge error stream into input stream
+                    process = processBuilder.start();
+
+                    // Consume the combined output stream
+                    String output = consumeInputStream(process.getInputStream());
+                    Utils.info(Utils.class, "Command output: " + output);
+
+                    int exitCode = process.waitFor();
+                    Utils.info(Utils.class, "Command: " + cmd + ", Exit code: " + exitCode);
+                } catch (IOException | InterruptedException e) {
+                    // Handle exceptions more specifically if possible
+                    throw new RuntimeException("Error executing command: " + cmd, e);
+                } finally {
+                    if (process != null) {
+                        process.destroy();
+                    }
+                }
+            }
+
+            private void backUpMethod() {
+                Process process = null;
+                try {
                     process = Runtime.getRuntime().exec(cmd);
                     String inStr = consumeInputStream(process.getInputStream());
                     String errStr = consumeInputStream(process.getErrorStream());

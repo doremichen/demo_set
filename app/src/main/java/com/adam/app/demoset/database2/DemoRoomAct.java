@@ -1,28 +1,27 @@
 package com.adam.app.demoset.database2;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -30,6 +29,7 @@ import com.adam.app.demoset.database2.dialog.CreateNoteDialog;
 import com.adam.app.demoset.database2.dialog.NoteDialog;
 import com.adam.app.demoset.database2.dialog.UpdateNoteDialog;
 import com.adam.app.demoset.database2.room.Note;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,7 +45,8 @@ public class DemoRoomAct extends AppCompatActivity {
 
     private NoteListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
-
+    private List<Note> mAllNotes;
+    private NoteViewModel mViewModel;
     private final Handler mUIHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -57,7 +58,6 @@ public class DemoRoomAct extends AppCompatActivity {
             }
         }
     };
-
     private final View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -65,9 +65,6 @@ public class DemoRoomAct extends AppCompatActivity {
             showAddNoteDlg();
         }
     };
-
-    private List<Note> mAllNotes;
-    private NoteViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,8 +170,19 @@ public class DemoRoomAct extends AppCompatActivity {
 
     private void triggerVibrator() {
         Utils.info(this, "triggerVibrator enter");
-        Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
+        Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        if (!Utils.areAllNotNull(vibrator)) {
+            Utils.info(this, "Vibrator service not available.");
+            return; // Early return if vibrator service is not available
+        }
+
+        if (!vibrator.hasVibrator()) {
+            Utils.info(this, "Device does not have a vibrator.");
+            return; // Early return if device lacks a vibrator
+        }
+
+        // Vibrator is available, proceed with vibration
+        vibrator.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
 
@@ -182,11 +190,8 @@ public class DemoRoomAct extends AppCompatActivity {
         Utils.info(this, "showEmptyIfNoData enter");
         Utils.info(this, "mAllNotes = " + mAllNotes);
         Utils.info(this, "mEmptyNoteView = " + mEmptyNoteView);
-        if ((mAllNotes != null) && (mAllNotes.size() != 0)) {
-            mEmptyNoteView.setVisibility(View.GONE);
-        } else {
-            mEmptyNoteView.setVisibility(View.VISIBLE);
-        }
+        boolean hasNotes = (mAllNotes != null) && (!mAllNotes.isEmpty());
+        mEmptyNoteView.setVisibility(hasNotes ? View.GONE : View.VISIBLE);
     }
 
     private void showAddNoteDlg() {
@@ -195,7 +200,7 @@ public class DemoRoomAct extends AppCompatActivity {
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
 
             @Override
-            public void info(String msg) {
+            public void onShowMessage(String msg) {
                 Utils.info(this, "info enter");
                 Utils.showToast(DemoRoomAct.this, msg);
             }
@@ -246,7 +251,7 @@ public class DemoRoomAct extends AppCompatActivity {
         NoteDialog dlg = new UpdateNoteDialog(DemoRoomAct.this);
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
-            public void info(String msg) {
+            public void onShowMessage(String msg) {
                 Utils.info(this, "info enter");
                 Utils.showToast(DemoRoomAct.this, msg);
             }

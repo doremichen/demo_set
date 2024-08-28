@@ -18,32 +18,30 @@ import java.util.List;
 public class XmlPullParserManager {
 
     private static final String TAG = XmlPullParserManager.class.getSimpleName();
-
-    private static class Singleton {
-        private static final XmlPullParserManager INSTANCE = new XmlPullParserManager();
-    }
-
-    public static XmlPullParserManager newInstance() {
-        return  Singleton.INSTANCE;
-    }
-
-    private XmlPullParserManager() {}
-
-    private interface XmItemContent {
-        String TAG = "item";
-        String ID = "id";
-        String NAME = "name";
-    }
-
     private Context mContext;
-
     private List<ItemData> mList = new ArrayList<>();
     private ItemData mData;
     private String mStrOfXml;
 
+    private XmlPullParserManager() {
+    }
+
+    public static XmlPullParserManager newInstance() {
+        return Singleton.INSTANCE;
+    }
+
+    private static void info(String msg) {
+        Log.i(TAG, msg);
+    }
+
+    public static void dumpList(List<ItemData> list) {
+        list.stream().forEach(item -> info(item.toString()));
+    }
+
     /**
      * The context must be the activity or service
      * Otherwise the xml file parser will occur exception.
+     *
      * @param context
      */
     public void init(Context context) {
@@ -53,6 +51,7 @@ public class XmlPullParserManager {
 
     /**
      * parse xml file and generate list data
+     *
      * @return
      */
     public List<ItemData> parse() {
@@ -119,9 +118,7 @@ public class XmlPullParserManager {
             // next event type
             try {
                 eventType = parser.next();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
+            } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
         }
@@ -132,13 +129,14 @@ public class XmlPullParserManager {
     }
 
 
-    private static void info(String msg) {
-        Log.i(TAG, msg);
+    private interface XmItemContent {
+        String TAG = "item";
+        String ID = "id";
+        String NAME = "name";
     }
 
-
-    public static void dumpList(List<ItemData> list) {
-        list.stream().forEach(item -> info(item.toString()));
+    private static class Singleton {
+        private static final XmlPullParserManager INSTANCE = new XmlPullParserManager();
     }
 
 }

@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableLogcat(String enable) {
         Utils.info(this, "enableLogcat enter");
-        String logstatus = System.getProperty(LOG_STATUS);
-        if (logstatus != null && logstatus.equals(enable)) {
-            Utils.showToast(this, "The log status has " +
-                    (Utils.TRUE.equals(enable) ? "enable" : "disable"));
+        String logStatus = System.getProperty(LOG_STATUS);
+        if (logStatus != null && logStatus.equals(enable)) {
+            Utils.showToast(this, "The log status has been " +
+                    (Utils.TRUE.equals(enable) ? "enabled" : "disabled"));
             return;
         }
 

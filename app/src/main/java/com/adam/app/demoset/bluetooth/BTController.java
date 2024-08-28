@@ -30,7 +30,7 @@ public enum BTController {
      */
     public void init(Context ctx) {
         mBTAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBTDevices = new ArrayList<BluetoothDevice>();
+        mBTDevices = new ArrayList<>();
         mDialog = buildAlertDialog(ctx);
     }
 

@@ -6,16 +6,13 @@ package com.adam.app.demoset.wifi2;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.WIFI_SERVICE;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiEnterpriseConfig;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiNetworkSpecifier;
 import android.os.Build;
@@ -23,7 +20,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 
 import com.adam.app.demoset.Utils;
 
@@ -34,23 +30,11 @@ class WifiController {
     private ConnectivityManager mConnectMgr;
     private WifiManager mWifiManager;
     private ConnectivityManager.NetworkCallback mNetWorkCallnack;
-
-    private enum WIFISTATE {
-        CONNECTED,
-        DISCONNECTED;
-    }
-
     private WIFISTATE mState = WIFISTATE.DISCONNECTED;
-
 
     public WifiController(Context context) {
         this.mWifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         this.mConnectMgr = (ConnectivityManager) context.getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
-    }
-
-
-    interface WifiScanListener {
-        void onUpdateWifiList(List<ScanResult> list);
     }
 
     public void wifiScan(@NonNull WifiScanListener listener) {
@@ -64,12 +48,6 @@ class WifiController {
         Utils.info(this, "list: " + list.toString());
         // notify ui
         listener.onUpdateWifiList(list);
-    }
-
-    interface ConnectListener {
-        void onSuccess();
-
-        void onFail(String msg);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -192,11 +170,26 @@ class WifiController {
         }
         assert this.mWifiManager != null;
         List<WifiConfiguration> list = this.mWifiManager.getConfiguredNetworks();
-        for (WifiConfiguration config: list) {
+        for (WifiConfiguration config : list) {
             this.mWifiManager.removeNetwork(config.networkId);
         }
         this.mWifiManager.disconnect();
         this.mState = WIFISTATE.DISCONNECTED;
+    }
+
+    private enum WIFISTATE {
+        CONNECTED,
+        DISCONNECTED;
+    }
+
+    interface WifiScanListener {
+        void onUpdateWifiList(List<ScanResult> list);
+    }
+
+    interface ConnectListener {
+        void onSuccess();
+
+        void onFail(String msg);
     }
 
 }
