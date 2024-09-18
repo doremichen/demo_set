@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
+/**
+ * This is a demo of handler thread
+ */
 public class DemoMyHandlerThreadAct extends AppCompatActivity implements HandlerObserver {
 
     // Task info
@@ -69,29 +72,38 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
         return false;
     }
 
+    /**
+     * Execute task by press button
+     * @param view button view
+     */
     public void executeTask(View view) {
         Utils.showToast(this, "execute button is pressed");
         mWorkThread.executeTask();
     }
 
 
+    /**
+     * Cancel task by press button
+     * @param view
+     */
     public void cancelTask(View view) {
         Utils.showToast(this, "cancel button is pressed");
         mWorkThread.cancelTask();
     }
 
-    //
-    // This is callback when the handler thread notification is triggered
-    //
+    /**
+     * This is callback when the handler thread notification is triggered
+     * @param data work data
+     */
     @Override
     public void updateTaskInfo(WorkData data) {
         Utils.info(this, "[update] enter");
 
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTaskInfo.setText("Work: " + data.getCounter() + " time");
-            }
+        // Perform network request
+        String result = "Work: " + data.getCounter() + " time";
+        // update task info
+        runOnUiThread(() -> {
+            mTaskInfo.setText(result);
         });
 
         Utils.info(this, "[update] exit");

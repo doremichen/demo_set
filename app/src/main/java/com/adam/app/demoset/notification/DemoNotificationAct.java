@@ -11,13 +11,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.service.notification.StatusBarNotification;
-import androidx.core.app.NotificationCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -27,9 +26,8 @@ import java.util.Arrays;
 public class DemoNotificationAct extends AppCompatActivity {
 
 
-    private static final String NOTIFY_CHANNEL_ID = "test_notification_channel_id";
     public static final int NOTIFICATION_ID = 1;
-
+    private static final String NOTIFY_CHANNEL_ID = "test_notification_channel_id";
     private NotificationManager mManager;
     private NotificationCompat.Builder mBuilder;
 
@@ -45,6 +43,10 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     }
 
+    /**
+     * Create notification builder
+     * @return notification builder
+     */
     private NotificationCompat.Builder notificationBuilder() {
         Utils.info(this, "notificationBuilder");
 
@@ -60,7 +62,8 @@ public class DemoNotificationAct extends AppCompatActivity {
             channel.setLightColor(Color.GREEN);
 
             channel.enableVibration(true);
-            channel.setVibrationPattern(new long[]{100L, 200L, 300L, 400L, 500L, 400L, 300L, 200L, 400L});
+            channel.setVibrationPattern(new long[]{100L, 200L, 300L, 400L, 500L
+                    , 400L, 300L, 200L, 400L});
 
             channel.setSound(null, null);
 
@@ -91,6 +94,10 @@ public class DemoNotificationAct extends AppCompatActivity {
         return builder;
     }
 
+    /**
+     * Get pending intent
+     * @return pending intent
+     */
     private PendingIntent getPendingIntent() {
         Utils.info(this, "getPendingIntent");
         Intent resultIntent = new Intent(this, NotifyResultAct.class);
@@ -128,6 +135,13 @@ public class DemoNotificationAct extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Updates an existing notification with new content.
+     * If a notification is already active, it replaces the current notification
+     * with an updated one that includes a new image and title.
+     *
+     * @param view the view that triggers the update (typically from a UI interaction).
+     */
     public void updateNotify(View view) {
         Utils.info(this, "updateNotify");
         if (!hasNotification()) return;
@@ -141,6 +155,12 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     }
 
+    /**
+     * Cancels an existing notification.
+     * If a notification is currently active, this method will dismiss it.
+     *
+     * @param view the view that triggers the cancellation (typically from a UI interaction).
+     */
     public void cancelNotify(View view) {
         Utils.info(this, "cancelNotify enter");
         if (!hasNotification()) return;
@@ -150,6 +170,14 @@ public class DemoNotificationAct extends AppCompatActivity {
 
     }
 
+    /**
+     * Checks if a notification with the specified ID is currently active.
+     * This method retrieves the active notifications from the notification manager and checks
+     * if any of them matches the predefined NOTIFICATION_ID. If no matching notification is found,
+     * a toast message is displayed to inform the user.
+     *
+     * @return true if the notification with NOTIFICATION_ID is active, false otherwise.
+     */
     private boolean hasNotification() {
         boolean hasNotification = Arrays.stream(mManager.getActiveNotifications())
                 .anyMatch(notify -> notify.getId() == NOTIFICATION_ID);

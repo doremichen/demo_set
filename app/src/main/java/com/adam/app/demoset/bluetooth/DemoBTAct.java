@@ -412,6 +412,12 @@ public class DemoBTAct extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates the list of paired Bluetooth devices.
+     * This method retrieves the set of bonded (paired) Bluetooth devices from the Bluetooth adapter,
+     * updates the internal list of paired devices, and configures the list adapter to display the devices.
+     * It also sets up listeners for button clicks and name clicks on the paired devices.
+     */
     private void updatePairedList() {
         Set<BluetoothDevice> btSet = mBTAdapter.getBondedDevices();
         mPairedDevices = new ArrayList<BluetoothDevice>(btSet);
@@ -434,9 +440,11 @@ public class DemoBTAct extends AppCompatActivity {
     }
 
     /**
-     * Paired BT device
+     * Pairs with the specified Bluetooth device.
+     * This method initiates the pairing process by calling the `createBond` method on the given BluetoothDevice.
+     * It triggers a bonding request, allowing the local device to pair with the specified Bluetooth device.
      *
-     * @param device
+     * @param device the Bluetooth device to be paired.
      */
     private void pairDevice(BluetoothDevice device) {
         Utils.info(this, "[pairDevice]");
@@ -444,9 +452,12 @@ public class DemoBTAct extends AppCompatActivity {
     }
 
     /**
-     * Unpaired BT device
+     * Unpairs the specified Bluetooth device.
+     * This method uses reflection to invoke the hidden "removeBond" method in the BluetoothDevice class,
+     * which removes the bond (unpairing) between the current device and the specified Bluetooth device.
+     * If an exception occurs during the process, it is caught and printed to the stack trace.
      *
-     * @param device
+     * @param device the Bluetooth device to be unpaired.
      */
     private void unpairDevice(BluetoothDevice device) {
         Utils.info(this, "unpairDevice enter");

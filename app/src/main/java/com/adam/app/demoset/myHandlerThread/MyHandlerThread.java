@@ -22,6 +22,7 @@ public class MyHandlerThread extends HandlerThread {
     //
     private class WorkTask implements Runnable {
 
+        public static final long TIME = 1000L;
         private int mTaskId;
 
         @Override
@@ -39,7 +40,7 @@ public class MyHandlerThread extends HandlerThread {
                         .forEach(observer -> observer.updateTaskInfo(data));
 
                 // sleep 1 sec
-                Utils.delay(1000L);
+                Utils.delay(TIME);
             }
         }
     }

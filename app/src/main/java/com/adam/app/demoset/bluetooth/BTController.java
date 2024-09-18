@@ -12,6 +12,7 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Singleton
@@ -47,9 +48,9 @@ public enum BTController {
      * Return the list of bt device
      * @return
      */
-    public ArrayList<BluetoothDevice> getListOfBTDevice() {
+    public ArrayList<BluetoothDevice> getBluetoothDevices() {
         Utils.info(this, "getListOfBTDevice");
-        return this.mBTDevices;
+        return new ArrayList<>(this.mBTDevices);
     }
 
 

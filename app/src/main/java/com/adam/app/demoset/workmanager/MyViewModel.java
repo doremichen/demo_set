@@ -125,6 +125,21 @@ public class MyViewModel extends ViewModel {
         );
 
         // Chain blur work requests based on the level
+        /**
+            int i = 0;
+            while (i < level) {
+                // my work request builder
+                OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
+                // Input Uri for the first blur image request
+                if (i == 0) {
+                    myWorkBuilder.setInputData(createInputDataForUri());
+                }
+
+                   // Add my work request to work manager
+                continuation = continuation.then(myWorkBuilder.build());
+                i++;
+            }
+        */
         continuation = IntStream.range(0, level)
                 .mapToObj(i -> new OneTimeWorkRequest.Builder(MyWork.class)
                         .setInputData(i == 0 ? createInputDataForUri() : Data.EMPTY)

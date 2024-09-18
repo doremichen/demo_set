@@ -72,7 +72,7 @@ public class BTReceiver extends BroadcastReceiver {
                 // Send bt device list to UI receiver
                 Intent it = new Intent();
                 it.setAction(ACTION_FOUND_BT_DEVICE);
-                it.putParcelableArrayListExtra(KEY_DEVICE_LIST, BTController.INSTANCE.getListOfBTDevice());
+                it.putParcelableArrayListExtra(KEY_DEVICE_LIST, BTController.INSTANCE.getBluetoothDevices());
                 context.sendBroadcast(it);
             }
         },
@@ -84,7 +84,7 @@ public class BTReceiver extends BroadcastReceiver {
                 // Bt device bound state
                 int state = device.getBondState();
                 if (state == BluetoothDevice.BOND_NONE) {
-                    BTController.INSTANCE.getListOfBTDevice().add(device);
+                    BTController.INSTANCE.getBluetoothDevices().add(device);
                 }
             }
         },
