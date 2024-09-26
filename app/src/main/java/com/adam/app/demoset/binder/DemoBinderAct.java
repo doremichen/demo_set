@@ -39,7 +39,7 @@ public class DemoBinderAct extends AppCompatActivity {
     // Messenger proxy
     private Messenger mMessenger;
 
-    private ServiceConnection mMessengerConn = new ServiceConnection() {
+    private final ServiceConnection mMessengerConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Utils.info(this, "onServiceConnected");
@@ -57,7 +57,7 @@ public class DemoBinderAct extends AppCompatActivity {
     private IMyAidlInterface mProxyAidl;
 
     // Aidl connection
-    private ServiceConnection mAidlConn = new ServiceConnection() {
+    private final ServiceConnection mAidlConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Utils.info(this, "onServiceConnected");
@@ -121,10 +121,10 @@ public class DemoBinderAct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Unbinder aidl service
+        // Unbind aidl service
         this.unbindService(mAidlConn);
 
-        // Unbinder messenger service
+        // Unbind messenger service
         this.unbindService(mMessengerConn);
 
         mProxyAidl = null;

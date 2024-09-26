@@ -1,15 +1,10 @@
 package com.adam.app.demoset;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import android.os.IBinder;
 import android.os.Message;
@@ -20,6 +15,12 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.binder.DemoBinderAct;
 import com.adam.app.demoset.binder.IMyAidlInterface;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Field;
 
