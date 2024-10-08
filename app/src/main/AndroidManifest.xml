@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sharedUserMaxSdkVersion="33"
+    android:sharedUserId="android.uid.system">
 
     <permission
         android:name="com.adam.app.permission.SECUR_SERVICE"
@@ -25,10 +27,9 @@
         android:required="true" />
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="true" />
-
-    <!-- Application holds CPU wakelock while working in background -->
+        android:required="true" /> <!-- Application holds CPU wakelock while working in background -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SHUTDOWN" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -37,10 +38,7 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -64,7 +62,6 @@
          devices.
     -->
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-
     <uses-permission
         android:name="android.hardware.usb.host"
         android:required="false" />
@@ -72,6 +69,7 @@
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="true" />
+
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -79,12 +77,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
 
     <application
         android:allowBackup="true"
+        android:extractNativeLibs="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -92,6 +91,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".shutdown.DemoMainActivity"
+            android:exported="false" />
         <activity
             android:name=".wifi2.DemoWifiAct2"
             android:exported="false" />
@@ -120,11 +122,6 @@
             android:name=".animation.DemoGifAct"
             android:exported="true"
             android:hardwareAccelerated="false"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".wifi.DemoWifiAct"
-            android:exported="true"
-            android:label="@string/title_activity_demo_wifi"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".myHandlerThread.DemoMyHandlerThreadAct"
@@ -292,7 +289,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
         <provider
             android:name=".database.provider.MyDBProvider"
             android:authorities="com.adam.app.demoset.provider.MyNote"
@@ -335,6 +331,7 @@
             android:name=".SecurService"
             android:enabled="true"
             android:exported="true"
+            android:foregroundServiceType="specialUse"
             android:permission="com.adam.app.permission.SECUR_SERVICE">
             <intent-filter>
                 <action android:name="com.adam.app.demo.start.secur_servcie" />

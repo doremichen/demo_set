@@ -66,7 +66,7 @@ public class BTDeviceListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_bt_scan_layout, null);
+            convertView = mInflater.inflate(R.layout.item_bt_scan_layout, parent, false);
             mHolder = new ViewHolder();
 
             // get View handler

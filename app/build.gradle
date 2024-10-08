@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('E:\\AndroidStudioProjects\\DemoApp\\SingApk\\SignDemo.jks')
+            storePassword '123456'
+            keyAlias 'SignDemo'
+            keyPassword '123456'
+        }
+        release {
+            storeFile file('E:\\AndroidStudioProjects\\DemoApp\\SingApk\\SignDemo.jks')
+            storePassword '123456'
+            keyAlias 'SignDemo'
+            keyPassword '123456'
+        }
+    }
     compileSdk 34
     defaultConfig {
         applicationId "com.adam.app.demoset"
@@ -9,6 +23,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        signingConfig signingConfigs.release
 
     }
     buildTypes {
@@ -36,6 +51,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        aidl true
     }
 
     configurations {
@@ -62,6 +78,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.activity:activity:1.9.2'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.robolectric:robolectric:4.7'
     testImplementation 'org.mockito:mockito-core:3.11.2'
@@ -89,5 +106,7 @@ dependencies {
     implementation 'com.orhanobut:logger:+'
     // material
     implementation 'com.google.android.material:material:1.4.0'
+
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
 }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <List>
+    <!-- Not system app would not execute shutdown process in Android 14
+    <data title="Demo Shutdown" clsname="com.adam.app.demoset.shutdown.DemoMainActivity" pkgname="com.adam.app.demoset"/>
+    -->
     <data title="Demo FileExplore" clsname="com.adam.app.demoset.filemanager.FileExploreAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
     <data title="Demo Animation" clsname="com.adam.app.demoset.animation.DemoGifAct" pkgname="com.adam.app.demoset"/>

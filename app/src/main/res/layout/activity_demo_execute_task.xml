@@ -82,7 +82,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/action_cnacel"
                     android:visibility="gone"
-                    android:onClick="onCancel"
                     />
             </LinearLayout>
 
@@ -90,7 +89,6 @@
                 android:id="@+id/go_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onExecute"
                 android:text="@string/action_execute"
                 />
 
@@ -98,7 +96,6 @@
                 android:id="@+id/see_file_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onResult"
                 android:text="@string/action_result"
                 android:visibility="gone"
                 tools:visibility="visible" />

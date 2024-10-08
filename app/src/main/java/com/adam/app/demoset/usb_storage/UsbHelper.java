@@ -71,7 +71,7 @@ public class UsbHelper {
         PendingIntent graint = PendingIntent.getBroadcast(this.mContext
                 , 0
                 , new Intent(USBBroadCastReceiver.USB_PERMISSION)
-                , 0);
+                , PendingIntent.FLAG_IMMUTABLE);
 
         Utils.info(this, "Need graint permission Usb device name: " + device.getDeviceName());
         // check permission
