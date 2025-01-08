@@ -24,11 +24,11 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
-import androidx.annotation.NonNull;
 import android.util.Size;
-import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
+
+import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.Utils;
 
@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -499,7 +500,8 @@ public final class MyCameraController {
      * @param view:
      */
     public void setPreviewContent(TextureView view) {
-        mView = view;
+        WeakReference<TextureView> weakRef = new WeakReference<>(view);
+        mView = weakRef.get();
     }
 
     public void registerCallBack(MyCameraCallBack callBack) {

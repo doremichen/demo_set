@@ -46,7 +46,12 @@ public class DemoBTAct extends AppCompatActivity {
     private BluetoothAdapter mBTAdapter;
     private ArrayList<BluetoothDevice> mScanDevices;
     private ArrayList<BluetoothDevice> mPairedDevices;
-
+    private BTReceiver mBTReceiver;
+    ;
+    private ListView mScanList;
+    private BTDeviceListAdapter mScanAdapter;
+    private ListView mPairedList;
+    private BTDeviceListAdapter mPairedAdapter;
     /**
      * BT CheckBox Listener
      */
@@ -81,88 +86,7 @@ public class DemoBTAct extends AppCompatActivity {
                 mPairedAdapter.notifyDataSetChanged();
             }
         }
-    };;
-
-
-    /**
-     * Callback for the name pressed of the item in paired list
-     */
-    private class PairedItemNameClickListener implements BTDeviceListAdapter.OnItemNameClickListener {
-        private ArrayList<BluetoothDevice> mDevices;
-
-        private ConnectTask mTask;
-
-
-        public PairedItemNameClickListener(ArrayList<BluetoothDevice> devices) {
-            mDevices = devices;
-        }
-
-        @Override
-        public void onClick(int position) {
-            Utils.info(this, "the item button " + position + " is pressed");
-            BluetoothDevice device = this.mDevices.get(position);
-
-            if (mTask == null) {
-                mTask = new ConnectTask(DemoBTAct.this, (device));
-                new Thread(mTask).start();
-            } else {
-                // disconnect
-                mTask.cancel();
-                mTask = null;
-            }
-            Utils.info(this, "connect down....");
-        }
-    }
-
-    /**
-     * Callback for the button pressed of the item in list
-     */
-    private class ScanItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
-
-        private ArrayList<BluetoothDevice> mDevices;
-
-        public ScanItemButtonClick(ArrayList<BluetoothDevice> devices) {
-            mDevices = devices;
-        }
-
-        @Override
-        public void onClick(int position) {
-            Utils.info(this, "the item button " + position + " is pressed");
-            BluetoothDevice device = this.mDevices.get(position);
-
-            // Check BT status bound/unbound
-            Utils.info(this, "bound state = " + device.getBondState());
-            if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                unpairDevice(device);
-            } else {
-                pairDevice(device);
-            }
-        }
-    }
-
-    /**
-     * Callback for the button pressed of the item in list
-     */
-    private class PairedItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
-
-        private ArrayList<BluetoothDevice> mDevices;
-
-        public PairedItemButtonClick(ArrayList<BluetoothDevice> devices) {
-            mDevices = devices;
-        }
-
-        @Override
-        public void onClick(int position) {
-            Utils.info(this, "the item button " + position + " is pressed");
-            BluetoothDevice device = this.mDevices.get(position);
-
-            // Check BT status bound/unbound
-            Utils.info(this, "bound state = " + device.getBondState());
-            unpairDevice(device);
-        }
-    }
-
-
+    };
     private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -195,7 +119,8 @@ public class DemoBTAct extends AppCompatActivity {
                 BluetoothDevice device = bundle.getParcelable(BTReceiver.KEY_BT_DEVICE);
 
                 // null check
-                if (!checkValidObject(mPairedDevices, mScanDevices, mScanAdapter, mPairedAdapter)) return;
+                if (!checkValidObject(mPairedDevices, mScanDevices, mScanAdapter, mPairedAdapter))
+                    return;
 
                 Utils.info(this, "Bond state = " + device.getBondState());
                 int state = device.getBondState();
@@ -224,12 +149,6 @@ public class DemoBTAct extends AppCompatActivity {
 
         }
     };
-
-    private BTReceiver mBTReceiver;
-    private ListView mScanList;
-    private BTDeviceListAdapter mScanAdapter;
-    private ListView mPairedList;
-    private BTDeviceListAdapter mPairedAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,10 +215,9 @@ public class DemoBTAct extends AppCompatActivity {
         Utils.info(this, "onCreate Done!!!");
     }
 
-
-    private void registerUIReceiver(BroadcastReceiver receiver, String ... actions) {
+    private void registerUIReceiver(BroadcastReceiver receiver, String... actions) {
         IntentFilter filter = new IntentFilter();
-        for (String action: actions) {
+        for (String action : actions) {
             filter.addAction(action);
         }
         registerReceiver(receiver, filter, RECEIVER_EXPORTED);
@@ -332,7 +250,6 @@ public class DemoBTAct extends AppCompatActivity {
             autoDiscoveryIfBTOn();
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -371,7 +288,6 @@ public class DemoBTAct extends AppCompatActivity {
 
         return false;
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -470,20 +386,98 @@ public class DemoBTAct extends AppCompatActivity {
         }
     }
 
-
     /**
      * Check the object validity
+     *
      * @param objs
      * @return
      */
     private boolean checkValidObject(Object... objs) {
-        for (Object o: objs) {
+        for (Object o : objs) {
             if (o == null) {
                 return false;
             }
 
         }
         return true;
+    }
+
+    /**
+     * Callback for the name pressed of the item in paired list
+     */
+    private class PairedItemNameClickListener implements BTDeviceListAdapter.OnItemNameClickListener {
+        private ArrayList<BluetoothDevice> mDevices;
+
+        private ConnectTask mTask;
+
+
+        public PairedItemNameClickListener(ArrayList<BluetoothDevice> devices) {
+            mDevices = devices;
+        }
+
+        @Override
+        public void onClick(int position) {
+            Utils.info(this, "the item button " + position + " is pressed");
+            BluetoothDevice device = this.mDevices.get(position);
+
+            if (mTask == null) {
+                mTask = new ConnectTask(DemoBTAct.this, (device));
+                new Thread(mTask).start();
+            } else {
+                // disconnect
+                mTask.cancel();
+                mTask = null;
+            }
+            Utils.info(this, "connect down....");
+        }
+    }
+
+    /**
+     * Callback for the button pressed of the item in list
+     */
+    private class ScanItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
+
+        private ArrayList<BluetoothDevice> mDevices;
+
+        public ScanItemButtonClick(ArrayList<BluetoothDevice> devices) {
+            mDevices = devices;
+        }
+
+        @Override
+        public void onClick(int position) {
+            Utils.info(this, "the item button " + position + " is pressed");
+            BluetoothDevice device = this.mDevices.get(position);
+
+            // Check BT status bound/unbound
+            Utils.info(this, "bound state = " + device.getBondState());
+            if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                unpairDevice(device);
+            } else {
+                pairDevice(device);
+            }
+        }
+    }
+
+    /**
+     * Callback for the button pressed of the item in list
+     */
+    private class PairedItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
+
+        private ArrayList<BluetoothDevice> mDevices;
+
+        public PairedItemButtonClick(ArrayList<BluetoothDevice> devices) {
+            mDevices = devices;
+        }
+
+        @Override
+        public void onClick(int position) {
+            Utils.info(this, "the item button " + position + " is pressed");
+            BluetoothDevice device = this.mDevices.get(position);
+
+            // Check BT status bound/unbound
+            Utils.info(this, "bound state = " + device.getBondState());
+            unpairDevice(device);
+        }
     }
 
 }
