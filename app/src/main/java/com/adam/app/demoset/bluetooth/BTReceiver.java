@@ -84,7 +84,7 @@ public class BTReceiver extends BroadcastReceiver {
                 // Bt device bound state
                 int state = device.getBondState();
                 if (state == BluetoothDevice.BOND_NONE) {
-                    BTController.INSTANCE.getBluetoothDevices().add(device);
+                    BTController.INSTANCE.add(device);
                 }
             }
         },

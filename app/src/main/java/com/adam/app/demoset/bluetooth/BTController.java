@@ -50,7 +50,12 @@ public enum BTController {
      */
     public ArrayList<BluetoothDevice> getBluetoothDevices() {
         Utils.info(this, "getListOfBTDevice");
-        return new ArrayList<>(this.mBTDevices);
+        return this.mBTDevices;
+    }
+
+
+    public void add(BluetoothDevice device) {
+        this.mBTDevices.add(device);
     }
 
 

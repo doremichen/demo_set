@@ -99,8 +99,9 @@ public class DemoBTAct extends AppCompatActivity {
                 Snackbar.make(mLayout, "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
 
             } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
-                Utils.info(this, "Get ACTION_FOUND_BT_DEVICE....");
+                Utils.info(DemoBTAct.this, "Get ACTION_FOUND_BT_DEVICE....");
                 mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
+                Utils.info(DemoBTAct.this, mScanDevices.toString());
                 // null check
                 if (!checkValidObject(mScanDevices, mScanAdapter, mScanList)) return;
 
