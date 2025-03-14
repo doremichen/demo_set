@@ -6,6 +6,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -21,25 +22,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
+import org.robolectric.annotation.Config;
 
 import java.lang.reflect.Field;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = Build.VERSION_CODES.Q)
 public class DemoBinderActTest {
 
     private DemoBinderAct activity;
-    private IBinder mockBinder;
     private IMyAidlInterface mockAidlInterface;
 
     @Before
     public void setup() {
-        activity = Robolectric.buildActivity(DemoBinderAct.class)
-                .create()
-                .start()
-                .resume()
-                .get();
+        try (ActivityController<DemoBinderAct> controller = Robolectric.buildActivity(DemoBinderAct.class)) {
+            controller.setup();
+            activity = controller.get();
+        }
 
-        mockBinder = mock(IBinder.class);
         mockAidlInterface = mock(IMyAidlInterface.class);
     }
 

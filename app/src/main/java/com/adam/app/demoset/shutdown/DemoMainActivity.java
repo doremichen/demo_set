@@ -3,10 +3,7 @@
  */
 package com.adam.app.demoset.shutdown;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;

@@ -15,7 +15,7 @@ android {
             keyPassword '123456'
         }
     }
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
         applicationId "com.adam.app.demoset"
         minSdkVersion 26
@@ -75,38 +75,41 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.activity:activity:1.9.2'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.10.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.core:core:1.15.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.robolectric:robolectric:4.7'
-    testImplementation 'org.mockito:mockito-core:3.11.2'
-    testImplementation 'org.robolectric:shadows-multidex:4.7'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation 'org.robolectric:robolectric:4.14'
+    testImplementation 'org.mockito:mockito-core:5.16.0'
+    testImplementation 'org.robolectric:shadows-multidex:4.14.1'
+    testImplementation 'androidx.test:core:1.6.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     // implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // Room components
-    implementation 'androidx.room:room-runtime:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
-    androidTestImplementation 'androidx.room:room-testing:2.0.0'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    androidTestImplementation 'androidx.room:room-testing:2.6.1'
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.5.1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.8.7'
     // Working manager components
     // (Java only)
     implementation "androidx.work:work-runtime:$rootProject.work_version"
     // Glid lib
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
     // libanums lib for usb
     implementation 'com.github.mjdev:libaums:+'
     // logger
     implementation 'com.orhanobut:logger:+'
     // material
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.12.0'
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
 
 }

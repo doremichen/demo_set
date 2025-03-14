@@ -62,6 +62,9 @@ public class DemoBinderAct extends AppCompatActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             Utils.info(this, "onServiceConnected");
             mProxyAidl = IMyAidlInterface.Stub.asInterface(service);
+
+            if (!Utils.areAllNotNull(mProxyAidl)) return;
+
             // register call back
             try {
                 mProxyAidl.registerServiceCB(mAidlCB);
@@ -73,7 +76,8 @@ public class DemoBinderAct extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Utils.info(this, "onServiceDisconnected");
-            // register call back
+            if (!Utils.areAllNotNull(mProxyAidl)) return;
+            // unregister call back
             try {
                 mProxyAidl.unregisterServiceCB(mAidlCB);
             } catch (RemoteException e) {
@@ -113,13 +117,6 @@ public class DemoBinderAct extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Utils.info(this, "onDestroy enter");
-
-        // Unregister callback
-        try {
-            mProxyAidl.unregisterServiceCB(mAidlCB);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
 
         // Unbind aidl service
         this.unbindService(mAidlConn);

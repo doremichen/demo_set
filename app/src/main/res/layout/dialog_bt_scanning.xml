@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:fontFamily="@font/cabin_bold"
-        android:text="Scannig...."
+        android:text="@string/bt_scannig"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="24sp"

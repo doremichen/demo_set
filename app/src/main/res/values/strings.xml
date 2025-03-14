@@ -152,4 +152,6 @@
     <string name="label_edit_title">Please input password</string>
     <string name="hint_input_password">12345678</string>
     <string name="hint_input_delay_number">please input delay number...</string>
+    <string name="bt_scannig">Scannig....</string>
+    <string name="welcome_to_demo_binder">Welcome to demo binder</string>
 </resources>
