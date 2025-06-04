@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2018 Adam. All rights reserved.
+ *
+ */
 package com.adam.app.demoset.tablelayout;
 
 import android.os.Bundle;
@@ -11,85 +15,45 @@ import com.adam.app.demoset.Utils;
 public class DemoTableAct extends AppCompatActivity {
 
     private boolean mIsCircle;
-    private Button mBtn1;
-    private Button mBtn2;
-    private Button mBtn3;
-    private Button mBtn4;
-    private Button mBtn5;
-    private Button mBtn6;
-    private Button mBtn7;
-    private Button mBtn8;
-    private Button mBtn9;
+    // button array size 9
+    private final Button[] mButtons = new Button[9];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_table);
-        mBtn1 = this.findViewById(R.id.btnItem1);
-        mBtn2 = this.findViewById(R.id.btnItem2);
-        mBtn3 = this.findViewById(R.id.btnItem3);
-        mBtn4 = this.findViewById(R.id.btnItem4);
-        mBtn5 = this.findViewById(R.id.btnItem5);
-        mBtn6 = this.findViewById(R.id.btnItem6);
-        mBtn7 = this.findViewById(R.id.btnItem7);
-        mBtn8 = this.findViewById(R.id.btnItem8);
-        mBtn9 = this.findViewById(R.id.btnItem9);
+
+        // initial buttons and set listener
+        initButtons();
+
 
     }
 
-    public void Button1(View v) {
-        Utils.info(this, "Button1 enter");
-        mBtn1.setText(updateInfo());
+    /**
+     * Init buttons
+     */
+    private void initButtons() {
+        Utils.info(this, "initButtons enter");
+        // loop
+        for (int i = 0; i < mButtons.length; i++) {
+            String btnId = "btnItem" + (i + 1);
+            int id = getResources().getIdentifier(btnId, "id", getPackageName());
+            mButtons[i] = findViewById(id);
+            // set click listener
+            mButtons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.info(DemoTableAct.this, "onClick enter");
+                    // get button
+                    Button btn = (Button) v;
+                    // update button text
+                    btn.setText(updateInfo());
+                }
+            });
+        }
 
     }
 
-    public void Button2(View v) {
-        Utils.info(this, "Button2 enter");
-        mBtn2.setText(updateInfo());
-
-    }
-
-    public void Button3(View v) {
-        Utils.info(this, "Button3 enter");
-        mBtn3.setText(updateInfo());
-
-    }
-
-    public void Button4(View v) {
-        Utils.info(this, "Button4 enter");
-        mBtn4.setText(updateInfo());
-
-    }
-
-    public void Button5(View v) {
-        Utils.info(this, "Button5 enter");
-        mBtn5.setText(updateInfo());
-
-    }
-
-    public void Button6(View v) {
-        Utils.info(this, "Button6 enter");
-        mBtn6.setText(updateInfo());
-
-    }
-
-    public void Button7(View v) {
-        Utils.info(this, "Button7 enter");
-        mBtn7.setText(updateInfo());
-
-    }
-
-    public void Button8(View v) {
-        Utils.info(this, "Button8 enter");
-        mBtn8.setText(updateInfo());
-
-    }
-
-    public void Button9(View v) {
-        Utils.info(this, "Button9 enter");
-        mBtn9.setText(updateInfo());
-
-    }
 
     /**
      * Exit UI
@@ -99,9 +63,13 @@ public class DemoTableAct extends AppCompatActivity {
         this.finish();
     }
 
+    /**
+     * Reset UI
+     * @param v
+     */
     public void Reset(View v) {
         Utils.info(this, "Reset enter");
-        resetButton();
+        resetButtons();
     }
 
     private String updateInfo() {
@@ -111,16 +79,14 @@ public class DemoTableAct extends AppCompatActivity {
         return mIsCircle ? "X" : "O";
     }
 
-    private void resetButton() {
+    /**
+     * Reset buttons
+     */
+    private void resetButtons() {
         Utils.info(this, "Reset enter");
-        mBtn1.setText("");
-        mBtn2.setText("");
-        mBtn3.setText("");
-        mBtn4.setText("");
-        mBtn5.setText("");
-        mBtn6.setText("");
-        mBtn7.setText("");
-        mBtn8.setText("");
-        mBtn9.setText("");
+        // foreach loop
+        for (Button btn : mButtons) {
+            btn.setText("");
+        }
     }
 }

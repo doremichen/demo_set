@@ -23,22 +23,19 @@
                 android:id="@+id/btnItem1"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button1" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem2"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button2" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem3"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button3" />
+                android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow
@@ -50,22 +47,19 @@
                 android:id="@+id/btnItem4"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button4" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem5"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button5" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem6"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button6" />
+                android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow
@@ -77,22 +71,19 @@
                 android:id="@+id/btnItem7"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button7" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem8"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button8" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/btnItem9"
                 style="@android:style/Widget.Material.Light.Button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="Button9" />
+                android:layout_height="wrap_content" />
         </TableRow>
 
     </TableLayout>
