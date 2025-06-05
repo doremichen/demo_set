@@ -10,7 +10,7 @@
         <item name="fontFamily">@font/montserrat</item>
     </style>
 
-    <style name="Theme.Demo.Material" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Demo.Material" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -36,5 +36,12 @@
         <item name="colorAccent">#546E7A</item>
         <item name="android:textColorPrimary">#37474F</item>
         <item name="android:background">#B0BEC5</item>
+    </style>
+
+    <!-- Define the expanded title style for the CollapsingToolbarLayout -->
+    <style name="ExpandedAppBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">24sp</item> <!-- You can change this size -->
+        <item name="android:textColor">@android:color/white</item> <!-- Adjust text color as needed -->
+        <item name="android:fontFamily">@font/montserrat_medium</item> <!-- Use your preferred font -->
     </style>
 </resources>

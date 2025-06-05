@@ -154,4 +154,10 @@
     <string name="hint_input_delay_number">please input delay number...</string>
     <string name="bt_scannig">Scannig....</string>
     <string name="welcome_to_demo_binder">Welcome to demo binder</string>
+    <string name="demo_materail_widget_fab_help_info">Help</string>
+    <string name="demo_material_widget_login_title">Login</string>
+    <string name="demo_material_widget_username">Username</string>
+    <string name="demo_material_widget_hint_password">Password</string>
+    <string name="demo_material_widget_checkbox_me">Remember Me</string>
+    <string name="demo_material_widget_btn_login">Login</string>
 </resources>
