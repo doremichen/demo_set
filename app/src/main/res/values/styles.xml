@@ -42,6 +42,17 @@
     <style name="ExpandedAppBar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">24sp</item> <!-- You can change this size -->
         <item name="android:textColor">@android:color/white</item> <!-- Adjust text color as needed -->
-        <item name="android:fontFamily">@font/montserrat_medium</item> <!-- Use your preferred font -->
+        <!--
+        <item name="android:fontFamily">@font/montserrat_medium</item>
+        -->
     </style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="TextAppearance.App.CollapsingToolbar.Collapsed" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+    </style>
+
 </resources>

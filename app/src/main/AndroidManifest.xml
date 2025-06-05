@@ -267,7 +267,6 @@
             android:name=".material.DemoMaterialLogInAct"
             android:exported="true"
             android:label="@string/title_activity_demo_material_log_in"
-            android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

@@ -160,4 +160,6 @@
     <string name="demo_material_widget_hint_password">Password</string>
     <string name="demo_material_widget_checkbox_me">Remember Me</string>
     <string name="demo_material_widget_btn_login">Login</string>
+    <string name="label_card_view_test_item">Card view Test Item</string>
+    <string name="label_collapsing_toolbar_info">This is Toolbar</string>
 </resources>

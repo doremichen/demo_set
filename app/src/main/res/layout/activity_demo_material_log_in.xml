@@ -10,27 +10,64 @@
     <!-- AppBarLayout with CollapsingToolbarLayout -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_scrollFlags="scroll|enterAlways"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="128dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:collapsedTitleTextColor="@android:color/white"
-            app:expandedTitleTextAppearance="@style/ExpandedAppBar"
-            app:layout_scrollFlags="scroll|enterAlways">
-            <androidx.appcompat.widget.Toolbar
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="72dp"
+            app:expandedTitleMarginBottom="28dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Expanded"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.App.CollapsingToolbar.Collapsed"
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/one_power"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                android:contentDescription="@string/label_collapsing_toolbar_info"
+                />
+
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                android:elevation="0dp"
+                android:background="@android:color/transparent"
+                app:title="@string/title_activity_demo_material_log_in"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Main content layout -->
     <include layout="@layout/content_demo_material_log_in" />
+
+
+
+    <!-- FAB for help -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_help"
+        android:layout_gravity="end|bottom"
+        app:elevation="6dp"
+        android:contentDescription="@string/demo_materail_widget_fab_help_info" />
+
+    <!-- Snackbar container for messages -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!-- Button -->
     <LinearLayout
@@ -58,21 +95,5 @@
             android:text="@string/label_material_button_cancel"
             android:onClick="onExit" />
     </LinearLayout>
-
-    <!-- FAB for help -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_help"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_help"
-        android:layout_gravity="end|bottom"
-        app:elevation="6dp"
-        android:contentDescription="@string/demo_materail_widget_fab_help_info" />
-
-    <!-- Snackbar container for messages -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/snackbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
