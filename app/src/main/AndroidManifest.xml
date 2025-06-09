@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sharedUserMaxSdkVersion="33"
-    android:sharedUserId="android.uid.system">
+    android:sharedUserId="android.uid.system"
+    android:sharedUserMaxSdkVersion="33">
 
     <permission
         android:name="com.adam.app.permission.SECUR_SERVICE"
@@ -80,7 +80,6 @@
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
-
     <application
         android:allowBackup="true"
         android:extractNativeLibs="true"
@@ -90,7 +89,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.Material3.DynamicColors.Light">
         <activity
             android:name=".shutdown.DemoMainActivity"
             android:exported="false" />
@@ -269,6 +268,12 @@
             android:label="@string/title_activity_demo_material_log_in"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".material.Next1Activity"
+            android:exported="false" 
+            android:label="@string/title_activity_demo_material_log_in"
+            android:screenOrientation="nosensor"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".usb_storage.DemoUsbActivity"
             android:exported="true"

@@ -107,7 +107,7 @@
     <string name="action_result">Result</string>
     <string name="label_offset_time">Offset Time:</string>
     <string name="label_button_camera_result">Result</string>
-    <string name="title_activity_demo_material_log_in">Log in</string>
+    <string name="title_activity_demo_material_log_in">Login</string>
     <string name="label_edit_input_your_name">Name: </string>
     <string name="label_edit_input_password">Password: </string>
     <string name="label_material_button_next">Next</string>
@@ -162,4 +162,14 @@
     <string name="demo_material_widget_btn_login">Login</string>
     <string name="label_card_view_test_item">Card view Test Item</string>
     <string name="label_collapsing_toolbar_info">This is Toolbar</string>
+    <string name="page_title">Second page</string>
+    <string name="favorite">favorite</string>
+    <string name="content_description_favorite">favorite item</string>
+    <string name="search">search</string>
+    <string name="content_description_search">search item</string>
+    <string name="more">more</string>
+    <string name="content_description_more">more item</string>
+    <string name="exit_button_label">Exit</string>
+    <string name="label_login_hello_next">Hello Next</string>
+    <string name="btn_login_finsh">Finsh</string>
 </resources>

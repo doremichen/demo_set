@@ -1,5 +1,6 @@
 package com.adam.app.demoset.material;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.button.MaterialButton;
@@ -94,8 +95,7 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
         }
 
         // start progressbar indicator
-        this.mProgressBar.setVisibility(View.VISIBLE);
-        this.mLoginButton.setEnabled(false);
+        updateLogInStatus(false);
         // Simulate login process
         Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
@@ -105,6 +105,7 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
                     // Show toast to info user
                     Utils.showToast(DemoMaterialLogInAct.this, "Password error...");
                     showSnackbar("Login Failed!!!");
+                    updateLogInStatus(true);
                     return;
                 }
 
@@ -129,13 +130,23 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
                 Utils.showToast(DemoMaterialLogInAct.this, "Pass!!!");
                 showSnackbar("Login Successful!!!");
                 // Login success
-                mProgressBar.setVisibility(View.INVISIBLE);
-                mLoginButton.setEnabled(true);
-                // Go to next activity
+                updateLogInStatus(true);
+                // Go to second activity
+                Intent intent = new Intent(DemoMaterialLogInAct.this, Next1Activity.class);
+                startActivity(intent);
 
 
             }}, 2000L);
 
+    }
+
+    /**
+     * Update login status
+     * @param isComplete: true if login complete
+     */
+    private void updateLogInStatus(boolean isComplete) {
+        this.mProgressBar.setVisibility(isComplete ? View.INVISIBLE : View.VISIBLE);
+        this.mLoginButton.setEnabled(isComplete);
     }
 
     private void showSnackbar(String message) {
