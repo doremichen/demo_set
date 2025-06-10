@@ -22,8 +22,7 @@
             android:background="?attr/colorPrimary"
             app:title="Next page"
             app:titleTextColor="@android:color/white"
-            app:navigationIcon="@drawable/ic_menu_24dp"
-            app:menu="@menu/top_app_bar" />
+            app:navigationIcon="@drawable/ic_menu_24dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

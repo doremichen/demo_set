@@ -1,6 +1,7 @@
 package com.adam.app.demoset.material;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
@@ -29,21 +30,13 @@ public class Next1Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_next1);
-        // EdgeToEdge 正確用法
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
 
         mTopAppBar = findViewById(R.id.next_topAppBar);
         mTextView = findViewById(R.id.tv_login_hello_next);
         mBtnFinish = findViewById(R.id.btn_finsh);
 
-        // setSupportActionBar(mTopAppBar); //need to use onCreateOptionsMenu handle menu。
+        setSupportActionBar(mTopAppBar); //need to use onCreateOptionsMenu handle menu。
         mTopAppBar.setNavigationOnClickListener(v -> {
             // Handle navigation icon press
             Utils.info(Next1Activity.class, "navigation icon pressed");
@@ -59,6 +52,14 @@ public class Next1Activity extends AppCompatActivity {
             finish();
         });
     }
+
+    // override menu inflate
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.top_app_bar, menu);
+        return true;
+    }
+
 
     private boolean onMenuItemClick(MenuItem menuItem) {
         Utils.info(Next1Activity.class, "menu item pressed");
