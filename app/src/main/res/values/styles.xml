@@ -57,4 +57,8 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+        <item name="buttonTint">@drawable/button_tint</item>
+    </style>
+
 </resources>
