@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
@@ -16,6 +17,8 @@ import com.adam.app.demoset.Utils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
+
+import java.util.Objects;
 
 public class Next1Activity extends AppCompatActivity {
 
@@ -37,10 +40,15 @@ public class Next1Activity extends AppCompatActivity {
         mBtnFinish = findViewById(R.id.btn_finsh);
 
         setSupportActionBar(mTopAppBar); //need to use onCreateOptionsMenu handle menu。
+        // get support action bar to enable back button
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         mTopAppBar.setNavigationOnClickListener(v -> {
             // Handle navigation icon press
             Utils.info(Next1Activity.class, "navigation icon pressed");
             showInfo("navigation icon");
+            // navigate to previous activity
+            NavUtils.navigateUpFromSameTask(Next1Activity.this);
         });
 
         mTopAppBar.setOnMenuItemClickListener(this::onMenuItemClick);
@@ -48,8 +56,9 @@ public class Next1Activity extends AppCompatActivity {
         mBtnFinish.setOnClickListener(v -> {
             Utils.info(Next1Activity.class, "finish button pressed");
             showInfo("finish button");
-            // exit this activity
-            finish();
+            // show finish toast
+            Utils.showToast(this, "finish");
+
         });
     }
 

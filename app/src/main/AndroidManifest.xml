@@ -273,7 +273,13 @@
             android:exported="false" 
             android:label="@string/title_activity_demo_material_log_in"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="com.adam.app.demoset.material.DemoMaterialLogInAct">
+            <!-- Support old API: below api level 21. -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.adam.app.demoset.material.DemoMaterialLogInAct" />
+        </activity>
         <activity
             android:name=".usb_storage.DemoUsbActivity"
             android:exported="true"
