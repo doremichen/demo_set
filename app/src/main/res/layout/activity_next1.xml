@@ -25,10 +25,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- 中間內容 -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- 用 LinearLayout 包住 ConstraintLayout，並放在 AppBarLayout 下面 -->
+    <!-- 用 LinearLayout 直接包住 TextView 與 Button -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_login_hello_next"
@@ -37,21 +41,80 @@
             android:text="@string/label_login_hello_next"
             android:textSize="24sp"
             android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_gravity="center_horizontal" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_text_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_login_text_button"
+            android:layout_gravity="center"
+            app:icon="@drawable/ic_add_24dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            />
 
-    <!-- 右下角完成按鈕 -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_finsh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_login_finsh"
-        android:textColor="@color/android:white"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_outlined_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_login_outlined_button"
+            android:layout_gravity="center"
+            app:shapeAppearance="?attr/shapeAppearanceSmallComponent"
+            app:icon="@drawable/ic_add_24dp"
+            style="?attr/materialButtonOutlinedStyle"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_contained_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_login_contained_button"
+            android:textColor="@color/android:white"
+            android:layout_gravity="center"
+            app:icon="@drawable/ic_add_24dp"
+            style="@style/Widget.MaterialComponents.Button.Icon"/>
+
+        <!-- Toggle button -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/btn_toggle_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_login_button_toggle_button_1"
+                android:contentDescription="@string/btn_login_button_toggle_button_1"
+                app:icon="@drawable/ic_favorite_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_login_button_toggle_button_2"
+                android:contentDescription="@string/btn_login_button_toggle_button_2"
+                app:icon="@drawable/ic_remove_red_eye_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_login_button_toggle_button_3"
+                android:contentDescription="@string/btn_login_button_toggle_button_3"
+                app:icon="@drawable/ic_notifications_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </LinearLayout>
+
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

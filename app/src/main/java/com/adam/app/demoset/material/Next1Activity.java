@@ -3,19 +3,16 @@ package com.adam.app.demoset.material;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
@@ -28,6 +25,10 @@ public class Next1Activity extends AppCompatActivity {
     private MaterialToolbar mTopAppBar;
     private MaterialTextView mTextView;
     private MaterialButton mBtnFinish;
+    private Button mBtnTextButton;
+    private Button mBtnOutlinedButton;
+    // button toggle group
+    private MaterialButtonToggleGroup mBtnToggleGroup;
 
 
     @Override
@@ -37,7 +38,10 @@ public class Next1Activity extends AppCompatActivity {
 
         mTopAppBar = findViewById(R.id.next_topAppBar);
         mTextView = findViewById(R.id.tv_login_hello_next);
-        mBtnFinish = findViewById(R.id.btn_finsh);
+        mBtnFinish = findViewById(R.id.btn_login_contained_button);
+        mBtnTextButton = findViewById(R.id.btn_text_button);
+        mBtnOutlinedButton = findViewById(R.id.btn_outlined_button);
+        mBtnToggleGroup = findViewById(R.id.btn_toggle_group);
 
         setSupportActionBar(mTopAppBar); //need to use onCreateOptionsMenu handle menu。
         // get support action bar to enable back button
@@ -54,10 +58,40 @@ public class Next1Activity extends AppCompatActivity {
         mTopAppBar.setOnMenuItemClickListener(this::onMenuItemClick);
 
         mBtnFinish.setOnClickListener(v -> {
-            Utils.info(Next1Activity.class, "finish button pressed");
-            showInfo("finish button");
+            Utils.info(Next1Activity.class, "Contained button pressed");
+            showInfo("Contained button");
             // show finish toast
-            Utils.showToast(this, "finish");
+            Utils.showToast(this, "Contained button");
+
+        });
+
+        mBtnTextButton.setOnClickListener(v -> {
+            Utils.info(Next1Activity.class, "text button pressed");
+            showInfo("text button");
+            // show finish toast
+            Utils.showToast(this, "text button");
+        });
+
+        mBtnOutlinedButton.setOnClickListener(v -> {
+           Utils.info(Next1Activity.class, "outlined button pressed");
+           showInfo("outlined button");
+           // show finish toast
+           Utils.showToast(this, "outlined button");
+        });
+
+        mBtnToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            // log
+            Utils.info(Next1Activity.class, "button toggle group pressed");
+            // log with button title
+            Utils.info(Next1Activity.class, "button title: "
+                    + group.findViewById(checkedId).getContentDescription()
+                    + " isChecked: " + isChecked);
+            if (isChecked) {
+                // show text view
+                showInfo("button toggle group: " + group.findViewById(checkedId).getContentDescription());
+                // show finish toast
+                Utils.showToast(this, "button toggle group");
+            }
 
         });
     }
