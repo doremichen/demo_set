@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<List>
+    <!-- Not system app would not execute shutdown process in Android 14
+    <data titleRes="title_demo_Shutdown" clsname="com.adam.app.demoset.shutdown.DemoMainActivity" pkgname="com.adam.app.demoset"/>
+    -->
+    <data titleRes="title_demo_file_expore" clsname="com.adam.app.demoset.filemanager.FileExploreAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_animation" clsname="com.adam.app.demoset.animation.DemoGifAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_job_service" clsname="com.adam.app.demoset.jobService.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_floating_alert_dialog" clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_floating_alert_window" clsname="com.adam.app.demoset.floatingwindow.DemoFloatingWindowAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_bluetooth" clsname="com.adam.app.demoset.bluetooth.DemoBTAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_notification" clsname="com.adam.app.demoset.notification.DemoNotificationAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_share_provide_action" clsname="com.adam.app.demoset.DemoShareProvidAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_hello_jni" clsname="com.adam.app.demoset.jnidemo.DemoJNIAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_flash_light" clsname="com.adam.app.demoset.flashlight.DemoFlashLightAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_device_admin" clsname="com.adam.app.demoset.lockscreen.DemoDeviceAdminAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_camera" clsname="com.adam.app.demoset.camera2.DemoCamera2Act2" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_video_record" clsname="com.adam.app.demoset.video.DemoVideoRecordAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_alarm" clsname="com.adam.app.demoset.alarm.DemoAlarmAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_binder_Call" clsname="com.adam.app.demoset.binder.DemoBinderAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_scheduler_service" clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_table_layout" clsname="com.adam.app.demoset.tablelayout.DemoTableAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_database" clsname="com.adam.app.demoset.database.DemoDatabaseAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_room_database" clsname="com.adam.app.demoset.database2.DemoRoomAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_system_ui" clsname="com.adam.app.demoset.systemUI.DemoSysUIAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_work_manager" clsname="com.adam.app.demoset.workmanager.DemoExecuteTaskAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_work_manager_legacy_1" clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_work_manager_legacy_2" clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_quick_setting" clsname="com.adam.app.demoset.quicksetting.DemoQuickSetting" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_material_widget" clsname="com.adam.app.demoset.material.DemoMaterialLogInAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_handler_thread" clsname="com.adam.app.demoset.myHandlerThread.DemoMyHandlerThreadAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_xml_parser" clsname="com.adam.app.demoset.xml_parser.DemoXmlParserAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_wifi" clsname="com.adam.app.demoset.wifi2.DemoWifiAct2" pkgname="com.adam.app.demoset"/>
+    <!--                 
+    <data titleRes="title_demo_Usb device" clsname="com.adam.app.demoset.usb_storage.DemoUsbActivity" pkgname="com.adam.app.demoset"/>
+    -->
+</List>

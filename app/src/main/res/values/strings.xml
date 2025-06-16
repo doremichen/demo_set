@@ -1,4 +1,40 @@
 <resources>
+    <!-- title string-->
+    <!-- string for Demo shutdown (commented out) -->
+    <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->
+
+    <string name="title_demo_file_expore">Demo FileExplore</string>
+    <string name="title_demo_service">Demo Service</string>
+    <string name="title_demo_animation">Demo Animation</string>
+    <string name="title_demo_job_service">Demo Job Service</string>
+    <string name="title_demo_floating_alert_dialog">Demo Floating Alert Dialog</string>
+    <string name="title_demo_floating_alert_window">Demo Floating Alert Window</string>
+    <string name="title_demo_bluetooth">Demo Bluetooth</string>
+    <string name="title_demo_notification">Demo Notification</string>
+    <string name="title_demo_share_provide_action">Demo Share Provide Action</string>
+    <string name="title_demo_hello_jni">Demo Hello JNI</string>
+    <string name="title_demo_flash_light">Demo Flash Light</string>
+    <string name="title_demo_device_admin">Demo Device Admin</string>
+    <string name="title_demo_camera">Demo Camera</string>
+    <string name="title_demo_video_record">Demo Video Record</string>
+    <string name="title_demo_alarm">Demo Alarm</string>
+    <string name="title_demo_binder_Call">Demo Binder Call</string>
+    <string name="title_demo_scheduler_service">Demo Scheduler Service</string>
+    <string name="title_demo_table_layout">Demo Table Layout</string>
+    <string name="title_demo_database">Demo Database</string>
+    <string name="title_demo_room_database">Demo Room Database</string>
+    <string name="title_demo_system_ui">Demo System UI</string>
+    <string name="title_demo_work_manager">Demo Work Manager</string>
+    <string name="title_demo_work_manager_legacy_1">Demo Work Manager&#10; Legacy 1</string>
+    <string name="title_demo_work_manager_legacy_2">Demo Work Manager&#10; Legacy 2</string>
+    <string name="title_demo_quick_setting">Demo Quick Setting</string>
+    <string name="title_demo_material_widget">Demo Material Widget</string>
+    <string name="title_demo_handler_thread">Demo Handler Thread</string>
+    <string name="title_demo_xml_parser">Demo XML Parser</string>
+    <string name="title_demo_wifi">Demo Wi-Fi</string>
+    <!-- string for Demo USB device (commented out) -->
+    <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
+    <!-- -->
     <string name="app_name">DemoSet</string>
     <string name="label_welcome_to_demo">Welcome to Demo</string>
     <string name="title_activity_demo_service">DemoServiceAct</string>

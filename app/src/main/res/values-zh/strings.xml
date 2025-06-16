@@ -1,4 +1,41 @@
 <resources>
+    <!-- title string -->
+    <!-- string for Demo shutdown (註解掉) -->
+    <!-- <string name="title_demo_Shutdown">關機範例</string> -->
+
+    <string name="title_demo_file_expore">檔案瀏覽範例</string>
+    <string name="title_demo_service">服務範例</string>
+    <string name="title_demo_animation">動畫範例</string>
+    <string name="title_demo_job_service">排程服務範例</string>
+    <string name="title_demo_floating_alert_dialog">浮動對話框範例</string>
+    <string name="title_demo_floating_alert_window">浮動視窗範例</string>
+    <string name="title_demo_bluetooth">藍牙範例</string>
+    <string name="title_demo_notification">通知範例</string>
+    <string name="title_demo_share_provide_action">分享供應範例</string>
+    <string name="title_demo_hello_jni">JNI 範例</string>
+    <string name="title_demo_flash_light">手電筒範例</string>
+    <string name="title_demo_device_admin">設備管理員範例</string>
+    <string name="title_demo_camera">相機範例</string>
+    <string name="title_demo_video_record">錄影範例</string>
+    <string name="title_demo_alarm">鬧鐘範例</string>
+    <string name="title_demo_binder_Call">Binder 呼叫範例</string>
+    <string name="title_demo_scheduler_service">排程服務範例</string>
+    <string name="title_demo_table_layout">表格佈局範例</string>
+    <string name="title_demo_database">資料庫範例</string>
+    <string name="title_demo_room_database">Room 資料庫範例</string>
+    <string name="title_demo_system_ui">系統 UI 範例</string>
+    <string name="title_demo_work_manager">工作管理範例</string>
+    <string name="title_demo_work_manager_legacy_1">工作管理&#10;舊版一</string>
+    <string name="title_demo_work_manager_legacy_2">工作管理&#10;舊版二</string>
+    <string name="title_demo_quick_setting">快速設定範例</string>
+    <string name="title_demo_material_widget">Material 控制元件登入範例</string>
+    <string name="title_demo_handler_thread">Handler 執行緒範例</string>
+    <string name="title_demo_xml_parser">XML 解析範例</string>
+    <string name="title_demo_wifi">Wi-Fi 範例</string>
+
+    <!-- string for Demo USB device (註解掉) -->
+    <!-- <string name="title_demo_Usb device">USB 裝置範例</string> -->
+    <!-- -->
     <string name="app_name">範例集</string>
     <string name="label_welcome_to_demo">歡迎使用範例</string>
     <string name="title_activity_demo_service">範例服務頁面</string>

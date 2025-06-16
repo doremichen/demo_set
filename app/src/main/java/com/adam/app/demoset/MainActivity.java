@@ -10,6 +10,7 @@
 package com.adam.app.demoset;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -23,14 +24,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -80,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
      * @return a list of these objects or null if the some exception is occurred.
      */
     private List<ItemContent> parseItemData() {
-        try (InputStream iStream = getResources().getAssets().open("itemData.xml")) { // Use try-with-resources for automatic resource closure
+        try (InputStream iStream = getResources().getAssets().open("itemDataRes.xml")) { // Use try-with-resources for automatic resource closure
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(iStream);
@@ -88,13 +93,23 @@ public class MainActivity extends AppCompatActivity {
             Element root = document.getDocumentElement();
             NodeList nodes = root.getElementsByTagName("data");
 
+            Resources res = getResources();
+            //String packageName = getPackageName();
+
+            Map<String, Integer> titleResMap = buildTitleResMap();
             return IntStream.range(0, nodes.getLength())
                     .mapToObj(nodes::item)
+                    .filter(node -> node.getNodeType() == Node.ELEMENT_NODE)
                     .map(node -> (Element) node)
-                    .map(itemData -> new ItemContent(
-                            itemData.getAttribute("title"),
-                            itemData.getAttribute("clsname"),
-                            itemData.getAttribute("pkgname")))
+                    .map(itemData -> {
+                        String titleResKey = itemData.getAttribute("titleRes");
+                        int titleResId = titleResMap.getOrDefault(titleResKey, 0); //res.getIdentifier(titleResKey, "string", packageName);
+                        String localizedTitle = titleResId != 0 ? res.getString(titleResId) : titleResKey;
+                        return new ItemContent(
+                                localizedTitle,
+                                itemData.getAttribute("clsname"),
+                                itemData.getAttribute("pkgname"));
+                    })
                     .collect(Collectors.toList());
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
@@ -102,6 +117,25 @@ public class MainActivity extends AppCompatActivity {
             return null; // Indicate parsing failure
         }
     }
+
+    private static Map<String, Integer> buildTitleResMap() {
+        Map<String, Integer> map = new HashMap<>();
+        try {
+            // Use reflection to get all the fields in R.string
+            Field[] fields = R.string.class.getFields();
+            for (Field field : fields) {
+                String name = field.getName();
+                if (name.startsWith("title_demo_")) {
+                    int resId = field.getInt(null); // use null in static field
+                    map.put(name, resId);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
