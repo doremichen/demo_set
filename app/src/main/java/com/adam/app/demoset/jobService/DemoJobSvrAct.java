@@ -150,8 +150,15 @@ public class DemoJobSvrAct extends AppCompatActivity {
 
                 // show information when select the periodic item
                 if (SpinnerItemName.Periodic.equals(name)) {
-                    String msg = "You must increased the Interval Time to 15 minutes under this item otherwise the job service can not work.";
-                    Utils.showAlertDialog(DemoJobSvrAct.this, msg, null);
+                    // position dialog button
+                    Utils.DialogButton okButton = new Utils.DialogButton(
+                            getResources().getString(R.string.label_ok_btn),
+                            null);
+                    Utils.showAlertDialog(DemoJobSvrAct.this,
+                            R.string.label_dialog_info,
+                            R.string.label_job_spinner_info,
+                            okButton);
+
                 }
             }
 
@@ -163,12 +170,19 @@ public class DemoJobSvrAct extends AppCompatActivity {
     }
 
     private void buildMainList() {
-        mMap.put(Utils.ITEM_START_SERVICE, new StartSvrItem());
-        mMap.put(Utils.ITEM_STOP_SERVICE, new StopSvrItem());
-        mMap.put(Utils.ITEM_EXIT, new ExitItem());
+        // build string map key -> value
+        Map<String, String> stringMap = Utils.buildStringMap(this);
 
+        mMap.put(stringMap.get(Utils.ITEM_START_SERVICE), new StartSvrItem());
+        mMap.put(stringMap.get(Utils.ITEM_STOP_SERVICE), new StopSvrItem());
+        mMap.put(stringMap.get(Utils.ITEM_EXIT), new ExitItem());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mItems);
+        // items array
+        String[] itemValues = Arrays.stream(mItems)
+                .map(key -> stringMap.getOrDefault(key, key))
+                .toArray(String[]::new);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemValues);
 
         mList.setAdapter(adapter);
 
@@ -184,6 +198,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     // Strategy Interface

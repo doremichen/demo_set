@@ -58,8 +58,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -72,7 +75,7 @@ public abstract class Utils {
     public static final String ITEM_BIND_SERVICE = "bind_service";
     public static final String ITEM_UNBIND_SERVICE = "unbind_service";
     public static final String ITEM_SERVICE_REQUEST = "service_request";
-    public static final String ITEM_EXIT = "exit";
+    public static final String ITEM_EXIT = "label_exit";
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
     public static final String KEY_MSG = "service status";
     public static final String THE_SELECTED_IMAGE = "The selected image";
@@ -265,6 +268,57 @@ public abstract class Utils {
 
         builder.create().show();
     }
+
+    public static class DialogButton {
+        private String mText;
+        private DialogInterface.OnClickListener mListener;
+
+        public DialogButton(String text, DialogInterface.OnClickListener listener) {
+            this.mText = text;
+            this.mListener = listener;
+        }
+
+        public String getText() {
+            return this.mText;
+        }
+
+        public DialogInterface.OnClickListener getListener() {
+            return this.mListener;
+        }
+    }
+
+    /**
+     * Show alert dialog with two buttons
+     * @param context context
+     * @param titleRes title resource
+     * @param msgRes message resource
+     * @param nagitiveBtn nagitive button
+     * @param positiveBtn positive button
+     */
+    public static void showAlertDialog(Context context, int titleRes, int msgRes, DialogButton nagitiveBtn, DialogButton positiveBtn) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(titleRes));
+        builder.setMessage(context.getResources().getString(msgRes));
+        builder.setNegativeButton(nagitiveBtn.getText(), nagitiveBtn.getListener());
+        builder.setPositiveButton(positiveBtn.getText(), positiveBtn.getListener());
+        builder.create().show();
+    }
+
+    /**
+     * Show alert dialog with one buttons
+     * @param context context
+     * @param titleRes title resource
+     * @param msgRes message resource
+     * @param positiveBtn positive button
+     */
+    public static void showAlertDialog(Context context, int titleRes, int msgRes, DialogButton positiveBtn) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(titleRes));
+        builder.setMessage(context.getResources().getString(msgRes));
+        builder.setPositiveButton(positiveBtn.getText(), positiveBtn.getListener());
+        builder.create().show();
+    }
+
 
     public static void showAlertDialog(Context context,
                                        String msg,
@@ -605,4 +659,30 @@ public abstract class Utils {
         return array == null || array.length == 0;
     }
 
+
+    /**
+     * Build string map: key -> actual string in enum
+     * @param context: Context
+     * @return Map<String, String>
+     */
+    public static  Map<String, String> buildStringMap(Context context) {
+        Map<String, String> stringMap = new HashMap<>();
+        Class<?> rStringClass = R.string.class;
+
+        for (Field field : rStringClass.getDeclaredFields()) {
+            try {
+                String key = field.getName(); // e.g., "start_service"
+                int resId = field.getInt(null); // get the resource id
+                String value = context.getApplicationContext().getString(resId); // get the string from the resource
+                stringMap.put(key, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return stringMap;
+    }
+
+
 }
+

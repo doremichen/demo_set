@@ -71,7 +71,7 @@ public class DemoServiceAct extends AppCompatActivity {
         mLayout = this.findViewById(R.id.content_view);
 
         // build string map: key -> actual string in enum
-        Map<String, String> stringMap = this.buildStringMap(this);
+        Map<String, String> stringMap = Utils.buildStringMap(this);
 
         // Covert arrayList to array string
         String[] items = Arrays.stream(Item.values())
@@ -100,23 +100,7 @@ public class DemoServiceAct extends AppCompatActivity {
 
     }
 
-    private Map<String, String> buildStringMap(Context context) {
-        Map<String, String> stringMap = new HashMap<>();
-        Class<?> rStringClass = R.string.class;
 
-        for (Field field : rStringClass.getDeclaredFields()) {
-            try {
-                String key = field.getName(); // e.g., "start_service"
-                int resId = field.getInt(null); // get the resource id
-                String value = context.getString(resId); // get the string from the resource
-                stringMap.put(key, value);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return stringMap;
-    }
 
 
     @Override

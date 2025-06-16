@@ -218,4 +218,5 @@
     <string name="btn_login_button_toggle_button_1">Button 1</string>
     <string name="btn_login_button_toggle_button_2">Button 2</string>
     <string name="btn_login_button_toggle_button_3">Button 3</string>
+    <string name="label_job_spinner_info">You must increased the Interval Time to 15 minutes under this item otherwise the job service can not work.</string>
 </resources>
