@@ -245,4 +245,9 @@
     <string name="title_activity_demo_work_manager_main">Demo work manager main</string>
     <string name="title_activity_execute_task_activity">Execute task activity</string>
     <string name="tile_activity_demo_usb_device">Demo Usb device</string>
+    <string name="toast_execute_hdthrd">execute button is pressed</string>
+    <string name="toast_cancel_hdthrd">cancel button is pressed</string>
+    <string name="tv_demo_thrdhd_welcome_to_demo_thread_handler">Welcome to demo thread handler</string>
+    <string name="tv_demo_thrdhd_work_info">Work:</string>
+    <string name="tv_demo_thrdhd_times_info">times</string>
 </resources>

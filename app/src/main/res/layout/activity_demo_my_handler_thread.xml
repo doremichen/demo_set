@@ -4,62 +4,106 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".myHandlerThread.DemoMyHandlerThreadAct" >
+    tools:context=".myHandlerThread.DemoMyHandlerThreadAct">
 
+    <!-- Title -->
     <TextView
-        android:id="@+id/tv_work_info"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/cabin_bold"
-        android:gravity="center_horizontal"
-        android:text="@string/label_hdthrd_info"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
+        android:text="@string/tv_demo_thrdhd_welcome_to_demo_thread_handler"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/cabin_bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.44" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Horizontal LinearLayout）-->
+    <LinearLayout
+        android:id="@+id/layout_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/tv_label_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_demo_thrdhd_work_info"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/cabin_bold" />
+
+        <TextView
+            android:id="@+id/tv_work_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/cabin_bold" />
+
+        <TextView
+            android:id="@+id/tv_label_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_demo_thrdhd_times_info"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_blue_dark"
+            android:fontFamily="@font/cabin_bold" />
+    </LinearLayout>
+
+    <!-- 執行按鈕 -->
     <Button
+        android:id="@+id/btn_execute"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/action_execute_hdthrd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/item_selector"
         android:fontFamily="@font/cabin_bold"
-        android:onClick="executeTask"
-        android:text="@string/action_execute_hdthrd"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btn_cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:onClick="executeTask"
 
+        app:layout_constraintBottom_toTopOf="@id/btn_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 取消按鈕 -->
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/action_cancel_hdthrd"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/item_selector"
         android:fontFamily="@font/cabin_bold"
-        android:onClick="cancelTask"
-        android:text="@string/action_cancel_hdthrd"
         android:textColor="@android:color/background_light"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:onClick="cancelTask"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

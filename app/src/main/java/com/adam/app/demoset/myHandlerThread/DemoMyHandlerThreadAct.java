@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.bumptech.glide.load.engine.Resource;
 
 /**
  * This is a demo of handler thread
@@ -29,7 +30,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
         setContentView(R.layout.activity_demo_my_handler_thread);
 
         //Initial text view
-        mTaskInfo = findViewById(R.id.tv_work_info);
+        mTaskInfo = findViewById(R.id.tv_work_value);
 
         // start my handler thread
         mWorkThread = new MyHandlerThread();
@@ -77,7 +78,9 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
      * @param view button view
      */
     public void executeTask(View view) {
-        Utils.showToast(this, "execute button is pressed");
+        // get string from resource
+        String msg = getResources().getString(R.string.toast_execute_hdthrd);
+        Utils.showToast(this, msg);
         mWorkThread.executeTask();
     }
 
@@ -87,7 +90,8 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
      * @param view
      */
     public void cancelTask(View view) {
-        Utils.showToast(this, "cancel button is pressed");
+        String msg = getResources().getString(R.string.toast_cancel_hdthrd);
+        Utils.showToast(this, msg);
         mWorkThread.cancelTask();
     }
 
@@ -100,7 +104,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
         Utils.info(this, "[update] enter");
 
         // Perform network request
-        String result = "Work: " + data.getCounter() + " time";
+        String result = String.valueOf(data.getCounter()); //"Work: " + data.getCounter() + " time";
         // update task info
         runOnUiThread(() -> {
             mTaskInfo.setText(result);

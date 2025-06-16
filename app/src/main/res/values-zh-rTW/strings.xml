@@ -246,4 +246,9 @@
     <string name="title_activity_demo_work_manager_main">演示工作管理器主要</string>
     <string name="title_activity_execute_task_activity">執行任務活動</string>
     <string name="tile_activity_demo_usb_device">示範 USB 裝置</string>
+    <string name="toast_execute_hdthrd">執行按鈕被按下</string>
+    <string name="toast_cancel_hdthrd">取消按鈕被按下</string>
+    <string name="tv_demo_thrdhd_welcome_to_demo_thread_handler">歡迎使用演示線程處理程序</string>
+    <string name="tv_demo_thrdhd_work_info">工作：</string>
+    <string name="tv_demo_thrdhd_times_info">次</string>
 </resources>
