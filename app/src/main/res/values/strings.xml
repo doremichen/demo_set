@@ -255,4 +255,7 @@
     <string name="item_disable_admin">Disable admin</string>
     <string name="item_lock_screen">Force Lock screen</string>
     <string name="item_security_lock">Security lock</string>
+    <!-- quick setting item -->
+    <string name="welcome_to_demo_quick_setting">Welcome to quick setting demo.</string>
+    <string name="dialog_info">Info:</string>
 </resources>

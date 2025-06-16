@@ -256,4 +256,7 @@
     <string name="item_disable_admin">停用管理員</string>
     <string name="item_lock_screen">強制鎖定螢幕</string>
     <string name="item_security_lock">安全鎖定</string>
+    <!-- quick setting item -->
+    <string name="welcome_to_demo_quick_setting">歡迎來到快速設定演示</string>
+    <string name="dialog_info">資訊:</string>
 </resources>

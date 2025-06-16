@@ -261,7 +261,7 @@ public abstract class Utils {
 
     public static void showAlertDialog(Context context, String msg, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Info:");
+        builder.setTitle(context.getResources().getString(R.string.dialog_info));
         builder.setMessage(msg);
         builder.setPositiveButton(context.getResources().getString(R.string.label_ok_btn),
                 listener);

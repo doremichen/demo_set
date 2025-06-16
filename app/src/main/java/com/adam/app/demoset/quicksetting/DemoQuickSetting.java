@@ -14,7 +14,7 @@ public class DemoQuickSetting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_quick_setting);
 
-        Utils.showAlertDialog(this, "Welcome to quick setting demo.", null);
+        Utils.showAlertDialog(this,  getResources().getString(R.string.welcome_to_demo_quick_setting), null);
     }
 
     @Override
