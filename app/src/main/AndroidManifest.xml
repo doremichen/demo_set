@@ -136,87 +136,87 @@
         <activity
             android:name=".jobService.DemoJobSvrAct"
             android:exported="true"
-            android:label="DemoJobSvrAct"
+            android:label="@string/titls_actovoty_demojobsvract"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".floatingDlg.DemoFloatingDialogAct"
             android:exported="true"
-            android:label="Demo floation dialog activity"
+            android:label="@string/title_activity_demo_floation_dialog_activity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".floatingwindow.DemoFloatingWindowAct"
             android:exported="true"
-            android:label="Demo floation dialog activity"
+            android:label="@string/title_activity_demo_floation_window_activity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".bluetooth.DemoBTAct"
             android:exported="true"
-            android:label="Demo bt activity"
+            android:label="@string/title_activity_demo_bt_activity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".notification.DemoNotificationAct"
             android:exported="true"
-            android:label="Demo notification"
+            android:label="@string/title_activity_demo_notification"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".notification.NotifyResultAct"
             android:exported="true"
-            android:label="Notify result UI"
+            android:label="@string/title_activity_notify_result_ui"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".DemoShareProvidAct"
             android:exported="true"
-            android:label="Demo share action provider"
+            android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".jnidemo.DemoJNIAct"
             android:exported="true"
-            android:label="Demo hello jni"
+            android:label="@string/title_activity_demo_hello_jni"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:exported="true"
-            android:label="Demo flash light"
+            android:label="@string/title_activity_demo_flash_light"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"
             android:exported="true"
-            android:label="Demo Device admin"
+            android:label="@string/title_activity_demo_device_admin"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.legacy.DemoCamera2Act"
             android:exported="true"
-            android:label="Demo Camera"
+            android:label="@string/title_activity_demo_camera"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.DemoCamera2Act2"
             android:exported="true"
-            android:label="Demo Camera 2"
+            android:label="@string/title_activity_demo_camera_2"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".alarm.DemoAlarmAct"
             android:exported="true"
-            android:label="Demo alarm"
+            android:label="@string/title_activity_demo_alarm"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".video.DemoVideoRecordAct"
             android:exported="true"
-            android:label="Demo record video"
+            android:label="@string/title_activity_demo_record_video"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".binder.DemoBinderAct"
             android:exported="true"
-            android:label="Demo binder call"
+            android:label="@string/title_activity_demo_binder_call"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".scheduler.DemoScheduleServiceAct"
             android:exported="true"
-            android:label="Demo scheduler counter"
+            android:label="@string/title_activity_demo_scheduler_counter"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".tablelayout.DemoTableAct"
             android:exported="true"
-            android:label="Demo table layout"
+            android:label="@string/title_activity_demo_table_layout"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".database.DemoDatabaseAct"
@@ -227,39 +227,39 @@
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:exported="true"
-            android:label="Demo system UI"
+            android:label="@string/title_activity_demo_system_ui"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkMangerAct"
             android:exported="true"
-            android:label="Demo work manager"
+            android:label="@string/title_activity_demo_work_manager"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".database2.DemoRoomAct"
             android:exported="true"
-            android:label="Demo Room"
+            android:label="@string/title_activity_demo_room"
             android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".quicksetting.DemoQuickSetting"
             android:exported="true"
-            android:label="Demo quick setting"
+            android:label="@string/title_activity_demo_quick_setting"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".quicksetting.QuickSettingResultAct"
             android:exported="true"
-            android:label="Result activity"
+            android:label="@string/title_activity_result_activity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoWorkManagerMainAct"
             android:exported="true"
-            android:label="Demo work manager main"
+            android:label="@string/title_activity_demo_work_manager_main"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".workmanager.DemoExecuteTaskAct"
             android:exported="true"
-            android:label="Execute task activity"
+            android:label="@string/title_activity_execute_task_activity"
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor" />
         <activity
@@ -283,7 +283,7 @@
         <activity
             android:name=".usb_storage.DemoUsbActivity"
             android:exported="true"
-            android:label="Demo Usb device"
+            android:label="@string/tile_activity_demo_usb_device"
             android:screenOrientation="nosensor" />
 
         <meta-data
