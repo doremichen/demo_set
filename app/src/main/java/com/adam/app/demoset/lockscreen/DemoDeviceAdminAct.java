@@ -24,13 +24,6 @@ import java.util.stream.Collectors;
 
 public class DemoDeviceAdminAct extends AppCompatActivity {
 
-
-    private static final String ITEM_ENABLE_ADMIN = "Enale admin";
-    private static final String ITEM_DISABLE_ADMIN = "Disale admin";
-    private static final String ITEM_LOCK_SCREEN = "Force Lock screen";
-    private static final String ITEM_SECURITY_LOCK = "Security lock";
-    private static final String ITEM_EXIT = "Exit";
-
     public static final int REQUEST_ENABLE_ADMIN_CODE = 0x0224;
     public static final int REQUEST_SECURE_LOCK_CODE = 0x0112;
 
@@ -116,15 +109,7 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
     }
 
     // Strategy list
-    private List<ItemStrategy> mItemStrategyList = new ArrayList<>() {
-        {
-            add(new ExitStrategy(ITEM_EXIT));
-            add(new EnableAdaminStrategy(ITEM_ENABLE_ADMIN));
-            add(new DisableAdminStrategy(ITEM_DISABLE_ADMIN));
-            add(new LockScreenStrategy(ITEM_LOCK_SCREEN));
-            add(new SecurityLockStrategy(ITEM_SECURITY_LOCK));
-        }
-    };
+    private List<ItemStrategy> mItemStrategyList = new ArrayList<>();
 
     // Item list
     private List<String> getList() {
@@ -138,6 +123,9 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_device_admin);
+
+        // build mItemStrategyList
+        buildItemStratagyList();
 
         mDevPolicyManager = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mCompName = new ComponentName(this, MyAdminReceiver.class);
@@ -166,6 +154,17 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Build item strategy list
+     */
+    private void buildItemStratagyList() {
+        mItemStrategyList.add(new ExitStrategy(getResources().getString(R.string.label_exit)));
+        mItemStrategyList.add(new EnableAdaminStrategy(getResources().getString(R.string.item_enable_admin)));
+        mItemStrategyList.add(new DisableAdminStrategy(getResources().getString(R.string.item_disable_admin)));
+        mItemStrategyList.add(new LockScreenStrategy(getResources().getString(R.string.item_lock_screen)));
+        mItemStrategyList.add(new SecurityLockStrategy(getResources().getString(R.string.item_security_lock)));
     }
 
     @Override

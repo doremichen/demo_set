@@ -250,4 +250,9 @@
     <string name="tv_demo_thrdhd_welcome_to_demo_thread_handler">Welcome to demo thread handler</string>
     <string name="tv_demo_thrdhd_work_info">Work:</string>
     <string name="tv_demo_thrdhd_times_info">times</string>
+    <!-- device admin item -->
+    <string name="item_enable_admin">Enable admin</string>
+    <string name="item_disable_admin">Disable admin</string>
+    <string name="item_lock_screen">Force Lock screen</string>
+    <string name="item_security_lock">Security lock</string>
 </resources>

@@ -251,4 +251,9 @@
     <string name="tv_demo_thrdhd_welcome_to_demo_thread_handler">歡迎使用演示線程處理程序</string>
     <string name="tv_demo_thrdhd_work_info">工作：</string>
     <string name="tv_demo_thrdhd_times_info">次</string>
+    <!-- device admin item -->
+    <string name="item_enable_admin">啟用管理員</string>
+    <string name="item_disable_admin">停用管理員</string>
+    <string name="item_lock_screen">強制鎖定螢幕</string>
+    <string name="item_security_lock">安全鎖定</string>
 </resources>
