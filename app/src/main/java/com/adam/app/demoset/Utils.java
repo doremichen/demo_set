@@ -67,11 +67,11 @@ import java.util.concurrent.Executors;
 
 public abstract class Utils {
 
-    public static final String ITEM_START_SERVICE = "start service";
-    public static final String ITEM_STOP_SERVICE = "stop service";
-    public static final String ITEM_BIND_SERVICE = "bind service";
-    public static final String ITEM_UNBIND_SERVICE = "unbind service";
-    public static final String ITEM_SERVICE_REQUEST = "service request";
+    public static final String ITEM_START_SERVICE = "start_service";
+    public static final String ITEM_STOP_SERVICE = "stop_service";
+    public static final String ITEM_BIND_SERVICE = "bind_service";
+    public static final String ITEM_UNBIND_SERVICE = "unbind_service";
+    public static final String ITEM_SERVICE_REQUEST = "service_request";
     public static final String ITEM_EXIT = "exit";
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
     public static final String KEY_MSG = "service status";

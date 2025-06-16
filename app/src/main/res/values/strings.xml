@@ -2,7 +2,6 @@
     <!-- title string-->
     <!-- string for Demo shutdown (commented out) -->
     <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->
-
     <string name="title_demo_file_expore">Demo FileExplore</string>
     <string name="title_demo_service">Demo Service</string>
     <string name="title_demo_animation">Demo Animation</string>
@@ -34,7 +33,13 @@
     <string name="title_demo_wifi">Demo Wi-Fi</string>
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
-    <!-- -->
+    <!-- Demo service item -->
+    <string name="start_service">Start service</string>
+    <string name="stop_service">Stop service</string>
+    <string name="bind_service">Bind service</string>
+    <string name="unbind_service">Unbind service</string>"
+    <string name="service_request">Service request</string>
+    <!-- UI -->
     <string name="app_name">DemoSet</string>
     <string name="label_welcome_to_demo">Welcome to Demo</string>
     <string name="title_activity_demo_service">DemoServiceAct</string>

@@ -32,7 +32,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DemoServiceAct extends AppCompatActivity {
@@ -67,9 +70,13 @@ public class DemoServiceAct extends AppCompatActivity {
         mListView = this.findViewById(R.id.list_action);
         mLayout = this.findViewById(R.id.content_view);
 
+        // build string map: key -> actual string in enum
+        Map<String, String> stringMap = this.buildStringMap(this);
+
         // Covert arrayList to array string
         String[] items = Arrays.stream(Item.values())
                 .map(Item::getType)
+                .map(key -> stringMap.getOrDefault(key, key))
                 .toArray(String[]::new);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
@@ -92,6 +99,25 @@ public class DemoServiceAct extends AppCompatActivity {
         this.registerReceiver(this.mReceiver, new IntentFilter(Utils.ACTION_SHOW_SNACKBAR), RECEIVER_NOT_EXPORTED);
 
     }
+
+    private Map<String, String> buildStringMap(Context context) {
+        Map<String, String> stringMap = new HashMap<>();
+        Class<?> rStringClass = R.string.class;
+
+        for (Field field : rStringClass.getDeclaredFields()) {
+            try {
+                String key = field.getName(); // e.g., "start_service"
+                int resId = field.getInt(null); // get the resource id
+                String value = context.getString(resId); // get the string from the resource
+                stringMap.put(key, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return stringMap;
+    }
+
 
     @Override
     protected void onDestroy() {
