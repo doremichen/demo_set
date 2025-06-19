@@ -258,4 +258,5 @@
     <!-- quick setting item -->
     <string name="welcome_to_demo_quick_setting">Welcome to quick setting demo.</string>
     <string name="dialog_info">Info:</string>
+    <string name="btn_login_switch_button">Material Switch</string>
 </resources>

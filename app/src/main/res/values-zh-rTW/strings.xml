@@ -259,4 +259,5 @@
     <!-- quick setting item -->
     <string name="welcome_to_demo_quick_setting">歡迎來到快速設定演示</string>
     <string name="dialog_info">資訊:</string>
+    <string name="btn_login_switch_button">Material 開關</string>
 </resources>

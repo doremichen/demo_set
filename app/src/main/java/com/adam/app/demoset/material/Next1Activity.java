@@ -13,6 +13,7 @@ import com.adam.app.demoset.Utils;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class Next1Activity extends AppCompatActivity {
     private Button mBtnOutlinedButton;
     // button toggle group
     private MaterialButtonToggleGroup mBtnToggleGroup;
+    private SwitchMaterial mBtnSwitchButton;
 
 
     @Override
@@ -42,6 +44,7 @@ public class Next1Activity extends AppCompatActivity {
         mBtnTextButton = findViewById(R.id.btn_text_button);
         mBtnOutlinedButton = findViewById(R.id.btn_outlined_button);
         mBtnToggleGroup = findViewById(R.id.btn_toggle_group);
+        mBtnSwitchButton = findViewById(R.id.switch_button);
 
         setSupportActionBar(mTopAppBar); //need to use onCreateOptionsMenu handle menu。
         // get support action bar to enable back button
@@ -92,6 +95,19 @@ public class Next1Activity extends AppCompatActivity {
                 // show finish toast
                 Utils.showToast(this, "button toggle group");
             }
+
+        });
+        mBtnSwitchButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // log
+            Utils.info(Next1Activity.class, "switch button pressed");
+            // log with button title
+            Utils.info(Next1Activity.class, "isChecked: " + isChecked);
+
+            String checked = isChecked ? "checked" : "unchecked";
+            // show text view
+            showInfo("switch button: " + checked);
+            // show finish toast
+            Utils.showToast(this, "switch button");
 
         });
     }
