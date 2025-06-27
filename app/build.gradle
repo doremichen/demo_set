@@ -49,8 +49,11 @@ android {
         enabled = true
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildFeatures {
-        dataBinding true
         aidl true
     }
 

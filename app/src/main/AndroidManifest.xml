@@ -91,11 +91,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.Light">
         <activity
+            android:name=".data_binding.WelcomeBindingAct"
+            android:exported="false"
+            android:screenOrientation="nosensor"/>
+        <activity
+            android:name=".data_binding.DemoBindingAct"
+            android:exported="false"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".shutdown.DemoMainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".wifi2.DemoWifiAct2"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -270,11 +280,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".material.Next1Activity"
-            android:exported="false" 
+            android:exported="false"
             android:label="@string/title_activity_demo_material_log_in"
+            android:parentActivityName=".material.DemoMaterialLogInAct"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.adam.app.demoset.material.DemoMaterialLogInAct">
+            android:theme="@style/AppTheme.NoActionBar">
+
             <!-- Support old API: below api level 21. -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

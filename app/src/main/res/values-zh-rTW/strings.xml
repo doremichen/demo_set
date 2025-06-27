@@ -32,6 +32,8 @@
     <string name="title_demo_handler_thread">Handler 執行緒範例</string>
     <string name="title_demo_xml_parser">XML 解析範例</string>
     <string name="title_demo_wifi">Wi-Fi 範例</string>
+    <string name="title_demo_binding">綁定範例</string>
+
 
     <!-- string for Demo USB device (註解掉) -->
     <!-- <string name="title_demo_Usb device">USB 裝置範例</string> -->
@@ -260,4 +262,13 @@
     <string name="welcome_to_demo_quick_setting">歡迎來到快速設定演示</string>
     <string name="dialog_info">資訊:</string>
     <string name="btn_login_switch_button">Material 開關</string>
+    <!-- -->
+    <string name="et_hint_please_input_name">請輸入姓名</string>
+    <string name="btn_label_go_to_welcome_page">前往歡迎頁面</string>
+    <string name="welcome_message">歡迎, %1$s！</string>
+    <string name="et_hint_please_input_nonempty_string">請輸入非空字串</string>
+    <string name="instruction_text">示範 View Binding，請按下「前往」按鈕進入下一個畫面</string>
+    <string name="btn_label_exit">離開</string>
+    <string name="welcome_instruction_text">示範 Data Binding：您可以看到編輯姓名欄位後，下方的文字會同步更新。</string>
+
 </resources>

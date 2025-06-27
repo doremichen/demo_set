@@ -31,6 +31,7 @@
     <string name="title_demo_handler_thread">Demo Handler Thread</string>
     <string name="title_demo_xml_parser">Demo XML Parser</string>
     <string name="title_demo_wifi">Demo Wi-Fi</string>
+    <string name="title_demo_binding">Demo Binding</string>
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
     <!-- Demo service item -->
@@ -259,4 +260,12 @@
     <string name="welcome_to_demo_quick_setting">Welcome to quick setting demo.</string>
     <string name="dialog_info">Info:</string>
     <string name="btn_login_switch_button">Material Switch</string>
+    <!-- -->
+    <string name="et_hint_please_input_name">Please input name</string>
+    <string name="btn_label_go_to_welcome_page">Go to welcome page</string>
+    <string name="welcome_message">Welcome, %1$s！</string>
+    <string name="et_hint_please_input_nonempty_string">please input nonempty string</string>
+    <string name="instruction_text">Demo view binding and press next button to go to the next activity</string>
+    <string name="btn_label_exit">Exit</string>
+    <string name="welcome_instruction_text">Demo data binding: You can see that the text view is changed by edit the name field.</string>
 </resources>
