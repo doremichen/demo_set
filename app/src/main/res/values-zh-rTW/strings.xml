@@ -34,6 +34,7 @@
     <string name="title_demo_wifi">Wi-Fi 範例</string>
     <string name="title_demo_binding">綁定範例</string>
     <string name="title_demo_simple_coroutine">簡單的協程範例\nKoltlin</string>
+    <string name="title_demo_retrofit_coroutine">Retrofit 協程範例\nKoltlin</string>
 
 
     <!-- string for Demo USB device (註解掉) -->
@@ -278,6 +279,11 @@
     <string name="demo_simple_coroutine_data_from_source_1">來自來源 1 的數據</string>
     <string name="demo_simple_coroutine_data_from_source_2">來自來源 2 的數據</string>
     <string name="demo_simple_coroutine_result">結果1: %1$s \n結果2: %2$s</string>
-
+    <string name="demo_retrofit_coroutine_instruction">輸入使用者 ID 並按下「載入資料」。\n這個範例展示了在底層使用 suspend 和 async 搭配 Retrofit 的用法。</string>
+    <string name="demo_retrofit_coroutine_user_id">使用者 ID</string>
+    <string name="demo_retrofit_coroutine_load_data">載入資料</string>
+    <string name="demo_retrofit_coroutine_waiting_for_result">等待結果中…</string>
+    <string name="demo_retrofit_coroutine_user">用戶：%1$s（%2$s）</string>
+    <string name="demo_retrofit_coroutine_error">錯誤：%1$s</string>
 
 </resources>

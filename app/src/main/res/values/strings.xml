@@ -32,7 +32,9 @@
     <string name="title_demo_xml_parser">Demo XML Parser</string>
     <string name="title_demo_wifi">Demo Wi-Fi</string>
     <string name="title_demo_binding">Demo Binding</string>
-    <string name="title_demo_simple_coroutine">Demo Simple Corouting\nKoltlin</string>"
+    <string name="title_demo_simple_coroutine">Demo Simple Corouting\nKoltlin</string>
+    <string name="title_demo_retrofit_coroutine">Demo Retrofit Corouting\nKoltlin</string>
+
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
     <!-- Demo service item -->
@@ -276,4 +278,10 @@
     <string name="demo_simple_coroutine_data_from_source_1">data from source 1</string>
     <string name="demo_simple_coroutine_data_from_source_2">data from source 2</string>
     <string name="demo_simple_coroutine_result">Result1: %1$s \nResult2: %2$s</string>
+    <string name="demo_retrofit_coroutine_instruction">Enter a user ID and press Load Data.\nThis demonstrates Retrofit + Coroutine using suspend and async under the hood.</string>
+    <string name="demo_retrofit_coroutine_user_id">User ID</string>
+    <string name="demo_retrofit_coroutine_load_data">Load Data</string>
+    <string name="demo_retrofit_coroutine_waiting_for_result">Waiting for result...</string>
+    <string name="demo_retrofit_coroutine_user">User: %1$s (%2$s)</string>
+    <string name="demo_retrofit_coroutine_error">Error: %1$s</string>
 </resources>

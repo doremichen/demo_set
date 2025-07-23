@@ -91,9 +91,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.Light">
         <activity
-            android:name=".coroutine.DemoSimpleCoroutineAct"
-            android:label="@string/title_demo_simple_coroutine"
+            android:name=".coroutine.DemoRetrofitCoroutineAct"
             android:exported="false"
+            android:label="@string/title_demo_retrofit_coroutine"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".coroutine.DemoSimpleCoroutineAct"
+            android:exported="false"
+            android:label="@string/title_demo_simple_coroutine"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".data_binding.WelcomeBindingAct"

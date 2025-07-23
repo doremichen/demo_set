@@ -354,7 +354,7 @@ public abstract class Utils {
         return builder.create();
     }
 
-    public static void hideSoftKeyBoardFrom(Context context, View v) {
+    public static void hideSoftKeyBoardFrom(@NonNull Context context, @NonNull View v) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }

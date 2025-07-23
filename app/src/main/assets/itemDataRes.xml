@@ -34,6 +34,8 @@
     <data titleRes="title_demo_wifi" clsname="com.adam.app.demoset.wifi2.DemoWifiAct2" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_binding" clsname="com.adam.app.demoset.data_binding.DemoBindingAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_simple_coroutine" clsname="com.adam.app.demoset.coroutine.DemoSimpleCoroutineAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_retrofit_coroutine" clsname="com.adam.app.demoset.coroutine.DemoRetrofitCoroutineAct" pkgname="com.adam.app.demoset"/>
+
 
     <!--
     <data titleRes="title_demo_Usb device" clsname="com.adam.app.demoset.usb_storage.DemoUsbActivity" pkgname="com.adam.app.demoset"/>
