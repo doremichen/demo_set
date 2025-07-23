@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoBindingBinding;
 
 public class DemoBindingAct extends AppCompatActivity {
@@ -29,6 +30,8 @@ public class DemoBindingAct extends AppCompatActivity {
 
         // button click
         mBinding.btnNext.setOnClickListener(v -> {
+            // hide soft keyboard
+            Utils.hideSoftKeyBoardFrom(this, v);
             // get input text: name
             String name = mBinding.nameInput.getText().toString();
             //check if name is empty
@@ -37,6 +40,9 @@ public class DemoBindingAct extends AppCompatActivity {
                 mBinding.nameInput.setError(getString(R.string.et_hint_please_input_nonempty_string));
                 return;
             }
+
+            // clear input text
+            mBinding.nameInput.setText("");
 
             // start welcome binding activity
             Intent intent = new Intent(this, WelcomeBindingAct.class);
