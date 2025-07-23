@@ -91,9 +91,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.Light">
         <activity
+            android:name=".coroutine.DemoSimpleCoroutineAct"
+            android:label="@string/title_demo_simple_coroutine"
+            android:exported="false"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".data_binding.WelcomeBindingAct"
             android:exported="false"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".data_binding.DemoBindingAct"
             android:exported="false"

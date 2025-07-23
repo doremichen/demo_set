@@ -32,6 +32,7 @@
     <string name="title_demo_xml_parser">Demo XML Parser</string>
     <string name="title_demo_wifi">Demo Wi-Fi</string>
     <string name="title_demo_binding">Demo Binding</string>
+    <string name="title_demo_simple_coroutine">Demo Simple Corouting\nKoltlin</string>"
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
     <!-- Demo service item -->
@@ -268,4 +269,11 @@
     <string name="instruction_text">Demo view binding and press next button to go to the next activity</string>
     <string name="btn_label_exit">Exit</string>
     <string name="welcome_instruction_text">Demo data binding: You can see that the text view is changed by edit the name field.</string>
+    <string name="demo_simple_coroutine_et_hint_input_user_id">Input User ID</string>
+    <string name="demo_simple_coroutine_btn_load_user_data">load user data</string>
+    <string name="demo_simple_coroutine_tv_loading">loading...</string>
+    <string name="demo_simple_coroutine_instruction">This demo uses Kotlin coroutines with suspend and async to load user data asynchronously. Tap the button below to start.</string>
+    <string name="demo_simple_coroutine_data_from_source_1">data from source 1</string>
+    <string name="demo_simple_coroutine_data_from_source_2">data from source 2</string>
+    <string name="demo_simple_coroutine_result">Result1: %1$s \nResult2: %2$s</string>
 </resources>
