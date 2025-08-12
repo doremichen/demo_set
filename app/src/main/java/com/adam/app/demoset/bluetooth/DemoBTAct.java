@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the main activity of the demo bluetooth.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.bluetooth;
 
 
@@ -55,38 +63,41 @@ public class DemoBTAct extends AppCompatActivity {
     /**
      * BT CheckBox Listener
      */
-    private CompoundButton.OnCheckedChangeListener mCheckBoxListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
-            Utils.info(DemoBTAct.this, "BT checkbox status: " + isChecked);
-            if (isChecked) {
-                if (!checkValidObject(mBTAdapter)) return;
+    private final CompoundButton.OnCheckedChangeListener mCheckBoxListener = (buttonView, isChecked) -> {
+        mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
+        Utils.info(DemoBTAct.this, "BT checkbox status: " + isChecked);
 
-                // Check bt power status
-                boolean enabled = mBTAdapter.isEnabled();
-                if (enabled == false) {
-                    enableBT();
-                }
-            } else {
-                Utils.info(DemoBTAct.this, "Reset status because the BT choice is off.");
+        if (!checkValidObject(mBTAdapter)) return;
 
-                // Check bt discovery status
-                if (mBTAdapter.isDiscovering()) {
-                    mBTAdapter.cancelDiscovery();
-                }
-                mBTAdapter.disable();
-
-                // clear list
-                if (checkValidObject(mPairedDevices))
-                    mPairedDevices.clear();
-                if (checkValidObject(mScanDevices))
-                    mScanDevices.clear();
-                mScanAdapter.notifyDataSetChanged();
-                mPairedAdapter.notifyDataSetChanged();
+        if (isChecked) {
+            if (!mBTAdapter.isEnabled()) {
+                askUserToEnableBluetooth();
             }
+            return;
         }
+
+        // BT is unchecked
+        Utils.info(DemoBTAct.this, "Reset status because the BT choice is off.");
+
+        if (mBTAdapter.isDiscovering()) {
+            mBTAdapter.cancelDiscovery();
+        }
+        mBTAdapter.disable();
+
+        clearDeviceLists();
     };
+
+    private void clearDeviceLists() {
+        if (checkValidObject(mPairedDevices)) {
+            mPairedDevices.clear();
+        }
+        if (checkValidObject(mScanDevices)) {
+            mScanDevices.clear();
+        }
+        mScanAdapter.notifyDataSetChanged();
+        mPairedAdapter.notifyDataSetChanged();
+    }
+
     private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -350,8 +361,8 @@ public class DemoBTAct extends AppCompatActivity {
     /**
      * Start bt enable/disable dialog
      */
-    private void enableBT() {
-        Utils.info(this, "[enableBT]");
+    private void askUserToEnableBluetooth() {
+        Utils.info(this, "[askUserToEnableBluetooth]");
         Intent actionRequestEnable = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(actionRequestEnable, REQUEST_ENABLE_BT_CODE);
     }
