@@ -284,4 +284,7 @@
     <string name="demo_retrofit_coroutine_waiting_for_result">Waiting for result...</string>
     <string name="demo_retrofit_coroutine_user">User: %1$s (%2$s)</string>
     <string name="demo_retrofit_coroutine_error">Error: %1$s</string>
+    <string name="demo_bt_unpair">Not pair</string>
+    <string name="demo_bt_pair">Pair</string>
+    <string name="demo_bt_connect">Connect...</string>
 </resources>

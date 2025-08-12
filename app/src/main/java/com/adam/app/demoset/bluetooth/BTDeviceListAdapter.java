@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) Adam Demo app Project
+ * All Rights Reserved
+ *
+ * Description: This class is for BT Device List Adapter
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.bluetooth;
 
 import android.bluetooth.BluetoothDevice;
@@ -15,16 +24,17 @@ import java.util.ArrayList;
 
 public class BTDeviceListAdapter extends BaseAdapter {
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private ArrayList<BluetoothDevice> mDevices;
     private OnItemButtonClickListener mButtonListener;
     private OnItemNameClickListener mNameListener;
-    private ViewHolder mHolder;
     private boolean mConnect;
+    private final Context mContext;
 
     public BTDeviceListAdapter(Context context) {
 
         mInflater = LayoutInflater.from(context);
+        mContext = context;
 
     }
 
@@ -65,32 +75,33 @@ public class BTDeviceListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_bt_scan_layout, parent, false);
-            mHolder = new ViewHolder();
+            holder = new ViewHolder();
 
             // get View handler
-            mHolder.mName = convertView.findViewById(R.id.tv_bt_name);
-            mHolder.mAddress = convertView.findViewById(R.id.tv_bt_address);
-            mHolder.mAction = convertView.findViewById(R.id.btn_bt_pair);
+            holder.mName = convertView.findViewById(R.id.tv_bt_name);
+            holder.mAddress = convertView.findViewById(R.id.tv_bt_address);
+            holder.mAction = convertView.findViewById(R.id.btn_bt_pair);
 
-            convertView.setTag(mHolder);
+            convertView.setTag(holder);
 
         } else {
 
-            mHolder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         BluetoothDevice device = mDevices.get(position);
 
-        mHolder.mName.setText(device.getName());
-//        mHolder.mAddress.setText(device.getAddress());
-        mHolder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? "Unpair" : "Pair");
-        mHolder.mAddress.setText((mConnect == true) ? "Connect..." : device.getAddress());
+        holder.mName.setText(device.getName());
+//        holder.mAddress.setText(device.getAddress());
+        holder.mAction.setText((device.getBondState() == BluetoothDevice.BOND_BONDED) ? mContext.getString(R.string.demo_bt_unpair) : mContext.getString(R.string.demo_bt_pair));
+        holder.mAddress.setText((mConnect == true) ? mContext.getString(R.string.demo_bt_connect) : device.getAddress());
         // register button click
-        mHolder.mAction.setOnClickListener(new ItemButtonListener(position));
+        holder.mAction.setOnClickListener(new ItemButtonListener(position));
         // register name item click
-        mHolder.mName.setOnClickListener(new ItemNameClickListener(position));
+        holder.mName.setOnClickListener(new ItemNameClickListener(position));
 
         return convertView;
     }
