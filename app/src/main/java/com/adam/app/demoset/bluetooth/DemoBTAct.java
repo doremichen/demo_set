@@ -46,6 +46,7 @@ import java.util.Set;
 public class DemoBTAct extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BT_CODE = 1000;
+    public static final  int REQUEST_DISABLE_BT_CODE = 1001;
     public static final int REQUEST_ACCESS_COARSE_PERMISSION_CODE = 1;
     private LinearLayout mLayout;
     private Switch mBTSwitch;
@@ -82,10 +83,13 @@ public class DemoBTAct extends AppCompatActivity {
         if (mBTAdapter.isDiscovering()) {
             mBTAdapter.cancelDiscovery();
         }
-        mBTAdapter.disable();
 
-        clearDeviceLists();
+        // mBTAdapter.disable();
+        requestBluetoothDisable();
+
+        //clearDeviceLists();
     };
+
 
     private void clearDeviceLists() {
         if (checkValidObject(mPairedDevices)) {
@@ -274,6 +278,14 @@ public class DemoBTAct extends AppCompatActivity {
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(false);
             }
+        } else if (requestCode == REQUEST_DISABLE_BT_CODE) {
+
+            // Reject to disable bt
+            if (resultCode == RESULT_CANCELED) {
+                mBTSwitch.setChecked(true);
+            } else {
+                clearDeviceLists();
+            }
         }
     }
 
@@ -366,6 +378,14 @@ public class DemoBTAct extends AppCompatActivity {
         Intent actionRequestEnable = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(actionRequestEnable, REQUEST_ENABLE_BT_CODE);
     }
+
+    private void requestBluetoothDisable() {
+        Utils.info(this, "[requestBluetoothDisable]");
+        Intent disableBtIntent = new Intent("android.bluetooth.adapter.action.REQUEST_DISABLE");
+        startActivityForResult(disableBtIntent, REQUEST_DISABLE_BT_CODE);
+    }
+
+
 
     /**
      * Pairs with the specified Bluetooth device.
