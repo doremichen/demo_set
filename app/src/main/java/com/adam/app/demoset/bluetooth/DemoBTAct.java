@@ -65,7 +65,7 @@ public class DemoBTAct extends AppCompatActivity {
      * BT CheckBox Listener
      */
     private final CompoundButton.OnCheckedChangeListener mCheckBoxListener = (buttonView, isChecked) -> {
-        mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
+        //mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
         Utils.info(DemoBTAct.this, "BT checkbox status: " + isChecked);
 
         if (!checkValidObject(mBTAdapter)) return;
@@ -86,8 +86,6 @@ public class DemoBTAct extends AppCompatActivity {
 
         // mBTAdapter.disable();
         requestBluetoothDisable();
-
-        //clearDeviceLists();
     };
 
 
@@ -277,6 +275,9 @@ public class DemoBTAct extends AppCompatActivity {
             // Reject to enable bt
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(false);
+            } else {
+                // update bt status
+                mBTResult.setText(getString(R.string.demo_bt_is_enable));
             }
         } else if (requestCode == REQUEST_DISABLE_BT_CODE) {
 
@@ -284,6 +285,8 @@ public class DemoBTAct extends AppCompatActivity {
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(true);
             } else {
+                // update bt status
+                mBTResult.setText(getString(R.string.demo_bt_is_disable));
                 clearDeviceLists();
             }
         }
@@ -348,7 +351,13 @@ public class DemoBTAct extends AppCompatActivity {
         Utils.info(this, "Bt power status: " + enabled);
         // Auto scan when permission is ok and bt power status is on state
         if (enabled) {
+            // update bt status
+            mBTResult.setText(R.string.demo_bt_is_enable);
+
             this.mBTAdapter.startDiscovery();
+        } else {
+            // update bt status
+            mBTResult.setText(R.string.demo_bt_is_disable);
         }
     }
 

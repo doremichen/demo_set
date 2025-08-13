@@ -287,4 +287,6 @@
     <string name="demo_bt_unpair">Not pair</string>
     <string name="demo_bt_pair">Pair</string>
     <string name="demo_bt_connect">Connect...</string>
+    <string name="demo_bt_is_enable">BT is enable</string>
+    <string name="demo_bt_is_disable">BT is disable</string>
 </resources>

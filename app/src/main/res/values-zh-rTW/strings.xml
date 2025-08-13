@@ -288,5 +288,7 @@
     <string name="demo_bt_unpair">未配對</string>
     <string name="demo_bt_pair">配對</string>
     <string name="demo_bt_connect">連接...</string>
+    <string name="demo_bt_is_enable">BT 已啟動</string>
+    <string name="demo_bt_is_disable">BT 已關閉</string>
 
 </resources>
