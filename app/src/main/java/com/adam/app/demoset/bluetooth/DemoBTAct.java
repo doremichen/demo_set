@@ -254,7 +254,7 @@ public class DemoBTAct extends AppCompatActivity {
             return;
         }
 
-        Utils.showToast(this, "BT adapter is valid...");
+        Utils.showToast(this, getString(R.string.demo_bt_adapter_is_valid));
         Utils.info(this, "check bt permission!!!");
         // ask permission
         String[] needPermissions = {Manifest.permission.BLUETOOTH_SCAN,
@@ -399,7 +399,7 @@ public class DemoBTAct extends AppCompatActivity {
     }
 
     /**
-     * Start bt enable/disable dialog
+     * Start bt enable dialog
      */
     private void requestBluetoothEnable() {
         Utils.info(this, "[requestBluetoothEnable]");
@@ -407,6 +407,9 @@ public class DemoBTAct extends AppCompatActivity {
         startActivityForResult(EnableBtIntent, REQUEST_ENABLE_BT_CODE);
     }
 
+    /**
+     * Start bt disable dialog
+     */
     private void requestBluetoothDisable() {
         Utils.info(this, "[requestBluetoothDisable]");
         Intent disableBtIntent = new Intent("android.bluetooth.adapter.action.REQUEST_DISABLE");

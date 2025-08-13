@@ -285,10 +285,11 @@
     <string name="demo_retrofit_coroutine_waiting_for_result">等待結果中…</string>
     <string name="demo_retrofit_coroutine_user">用戶：%1$s（%2$s）</string>
     <string name="demo_retrofit_coroutine_error">錯誤：%1$s</string>
-    <string name="demo_bt_unpair">未配對</string>
+    <string name="demo_bt_unpair">解除配對</string>
     <string name="demo_bt_pair">配對</string>
     <string name="demo_bt_connect">連接...</string>
     <string name="demo_bt_is_enable">BT 已啟動</string>
     <string name="demo_bt_is_disable">BT 已關閉</string>
+    <string name="demo_bt_adapter_is_valid">BT 合法適配器</string>
 
 </resources>

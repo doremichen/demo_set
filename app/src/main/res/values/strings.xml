@@ -284,9 +284,10 @@
     <string name="demo_retrofit_coroutine_waiting_for_result">Waiting for result...</string>
     <string name="demo_retrofit_coroutine_user">User: %1$s (%2$s)</string>
     <string name="demo_retrofit_coroutine_error">Error: %1$s</string>
-    <string name="demo_bt_unpair">Not pair</string>
-    <string name="demo_bt_pair">Pair</string>
+    <string name="demo_bt_unpair">Unpair BT</string>
+    <string name="demo_bt_pair">Pair BT</string>
     <string name="demo_bt_connect">Connect...</string>
     <string name="demo_bt_is_enable">BT is enable</string>
     <string name="demo_bt_is_disable">BT is disable</string>
+    <string name="demo_bt_adapter_is_valid">BT adapter is valid...</string>
 </resources>
