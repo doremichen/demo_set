@@ -1,12 +1,11 @@
 /**
  * The main UI of the Demo set app
  * <p>
- * info:
+ * info: This class is the main UI of the Demo set app.
  *
  * @author: AdamChen
  * @date: 2018/9/19
  */
-
 package com.adam.app.demoset;
 
 import android.content.Intent;
@@ -57,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView listView = findViewById(R.id.list_view); // More descriptive variable name
+        // empty text view
+        View emptyView = findViewById(android.R.id.empty);
+        // set empty view to listview
+        listView.setEmptyView(emptyView);
+
 
         List<ItemContent> items = parseItemData(); // Extract parsing logic to a separate method
         if (items != null) {

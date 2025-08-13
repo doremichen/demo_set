@@ -4,31 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="81dp">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/wellcome"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
         android:fontFamily="@font/cabin_bold"
         android:text="@string/label_welcome_to_demo"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="357dp"
-        android:layout_height="623dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,7 +36,8 @@
         <ListView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@android:id/empty"
@@ -48,8 +46,10 @@
             android:fontFamily="@font/cabin_bold"
             android:text="@string/label_no_data"
             android:textColor="@android:color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="16dp"/>
 
     </LinearLayout>
 

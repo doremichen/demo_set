@@ -1,7 +1,7 @@
 /**
  * Main list view adapter
  * <p>
- * info:
+ * info: This class is the main list view adapter.
  *
  * @author: AdamChen
  * @date: 2018/9/19
@@ -15,29 +15,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
+
 
 import java.util.List;
 
 
 public class MainListAdapter extends BaseAdapter {
 
-    private final List<ItemContent> mDatas;
+    private final List<ItemContent> mDataList;
     private final LayoutInflater mInflater;
 
-    public MainListAdapter(Context context, List<ItemContent> datas) {
-        mInflater = LayoutInflater.from(context);
-        this.mDatas = datas;
+    public MainListAdapter(@NonNull Context context, @NonNull List<ItemContent> dataList) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mDataList = dataList;
     }
 
     @Override
     public int getCount() {
-        return mDatas.size();
+        return mDataList != null ? mDataList.size() : 0;
     }
 
     @Override
-    public Object getItem(int position) {
-        return mDatas.get(position);
+    public ItemContent getItem(int position) {
+        return mDataList != null && position < mDataList.size() ? mDataList.get(position) : null;
     }
 
     @Override
@@ -46,33 +47,41 @@ public class MainListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        @NotNull ViewHolder holder;
+    public @NonNull View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder holder;
 
         if (convertView == null) {
-
-            convertView = this.mInflater.inflate(R.layout.item_data_layout, parent, false);
-            holder = new ViewHolder();
-            // get view id
-            holder.mTitle = convertView.findViewById(R.id.item_data);
-
-            //set tag
+            convertView = mInflater.inflate(R.layout.item_data_layout, parent, false);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-
         } else {
-
             holder = (ViewHolder) convertView.getTag();
-
         }
 
-        // set item text
-        holder.mTitle.setText(mDatas.get(position).getTitle());
-
+        // bind data
+        ItemContent item = getItem(position);
+        holder.bind(item);
 
         return convertView;
     }
 
-    private class ViewHolder {
-        public TextView mTitle;
+    /**
+     * ViewHolder class
+     */
+    private static class ViewHolder {
+
+        private final TextView mTitleTextView;
+
+        public ViewHolder(View itemView) {
+            mTitleTextView = itemView.findViewById(R.id.item_data);
+        }
+
+        public void bind(ItemContent item) {
+            if (item != null) {
+                mTitleTextView.setText(item.getTitle());
+            } else {
+                mTitleTextView.setText("");
+            }
+        }
     }
 }
