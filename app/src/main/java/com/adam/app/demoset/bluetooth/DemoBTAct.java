@@ -40,7 +40,10 @@ import com.adam.app.demoset.Utils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 
 public class DemoBTAct extends AppCompatActivity {
@@ -72,7 +75,7 @@ public class DemoBTAct extends AppCompatActivity {
 
         if (isChecked) {
             if (!mBTAdapter.isEnabled()) {
-                askUserToEnableBluetooth();
+                requestBluetoothEnable();
             }
             return;
         }
@@ -201,6 +204,8 @@ public class DemoBTAct extends AppCompatActivity {
 
         // Register switch listener
         mBTSwitch.setOnCheckedChangeListener(mCheckBoxListener);
+        // setup activity result handler
+        setupActivityResultHandler();
 
 
         mBTReceiver = new BTReceiver(this);
@@ -265,13 +270,14 @@ public class DemoBTAct extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    // create activity result map: key is request code, value is BiConsumer<Integer, Intent>
+    private final Map<Integer, BiConsumer<Integer, Intent>> mActivityResultMap = new HashMap<>();
 
-        if (requestCode == REQUEST_ENABLE_BT_CODE) {
-            Utils.info(this, "resultCode = " + resultCode);
-
+    /**
+     * setup activity result handler
+     */
+    private void setupActivityResultHandler() {
+        mActivityResultMap.put(REQUEST_ENABLE_BT_CODE, (resultCode, data) -> {
             // Reject to enable bt
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(false);
@@ -279,8 +285,8 @@ public class DemoBTAct extends AppCompatActivity {
                 // update bt status
                 mBTResult.setText(getString(R.string.demo_bt_is_enable));
             }
-        } else if (requestCode == REQUEST_DISABLE_BT_CODE) {
-
+        });
+        mActivityResultMap.put(REQUEST_DISABLE_BT_CODE, (resultCode, data) -> {
             // Reject to disable bt
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(true);
@@ -289,7 +295,20 @@ public class DemoBTAct extends AppCompatActivity {
                 mBTResult.setText(getString(R.string.demo_bt_is_disable));
                 clearDeviceLists();
             }
+        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // get activity result handler from mActivityResultMap
+        BiConsumer<Integer, Intent> handler = mActivityResultMap.get(requestCode);
+        if (handler != null) {
+            handler.accept(resultCode, data);
         }
+
     }
 
     @Override
@@ -382,10 +401,10 @@ public class DemoBTAct extends AppCompatActivity {
     /**
      * Start bt enable/disable dialog
      */
-    private void askUserToEnableBluetooth() {
-        Utils.info(this, "[askUserToEnableBluetooth]");
-        Intent actionRequestEnable = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(actionRequestEnable, REQUEST_ENABLE_BT_CODE);
+    private void requestBluetoothEnable() {
+        Utils.info(this, "[requestBluetoothEnable]");
+        Intent EnableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(EnableBtIntent, REQUEST_ENABLE_BT_CODE);
     }
 
     private void requestBluetoothDisable() {
