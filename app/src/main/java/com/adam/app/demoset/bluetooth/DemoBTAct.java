@@ -90,6 +90,7 @@ public class DemoBTAct extends AppCompatActivity {
         // mBTAdapter.disable();
         requestBluetoothDisable();
     };
+    private PairedItemNameClickListener mPairedItemNameClicklistener;
 
 
     private void clearDeviceLists() {
@@ -160,7 +161,7 @@ public class DemoBTAct extends AppCompatActivity {
                 // Update list
                 boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
                 Utils.info(this, "got connect status: " + isConnect);
-                mPairedAdapter.updateAdressContent(isConnect);
+                mPairedAdapter.updateConnectionState(mPairedItemNameClicklistener.getSelectedPosition(), isConnect);
                 mPairedAdapter.notifyDataSetChanged();
             }
 
@@ -392,7 +393,8 @@ public class DemoBTAct extends AppCompatActivity {
 
         mPairedAdapter.setData(mPairedDevices);
         mPairedAdapter.setButtonListener(new PairedItemButtonClick(mPairedDevices));
-        mPairedAdapter.setNameListner(new PairedItemNameClickListener(mPairedDevices));
+        mPairedItemNameClicklistener = new PairedItemNameClickListener(mPairedDevices);
+        mPairedAdapter.setNameListener(mPairedItemNameClicklistener);
 
 
         mPairedList.setAdapter(mPairedAdapter);
@@ -473,14 +475,28 @@ public class DemoBTAct extends AppCompatActivity {
 
         private ConnectTask mTask;
 
+        // Selected device position
+        private int mSelectedPosition = -1;
+
 
         public PairedItemNameClickListener(ArrayList<BluetoothDevice> devices) {
             mDevices = devices;
         }
 
+        /**
+         * getSelectedPosition
+         *
+         */
+        public int getSelectedPosition() {
+            return mSelectedPosition;
+        }
+
+
         @Override
         public void onClick(int position) {
             Utils.info(this, "the item button " + position + " is pressed");
+            mSelectedPosition = position;
+
             BluetoothDevice device = this.mDevices.get(position);
 
             if (mTask == null) {
