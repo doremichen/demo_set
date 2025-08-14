@@ -29,7 +29,7 @@ public class BTDeviceListAdapter extends BaseAdapter {
 
     private final LayoutInflater mInflater;
     private final Context mContext;
-    private ArrayList<BtDeviceItem> mDevices = new ArrayList<>();
+    private final ArrayList<BtDeviceItem> mDevices = new ArrayList<>();
     private OnItemButtonClickListener mButtonListener;
     private OnItemNameClickListener mNameListener;
 
@@ -50,8 +50,7 @@ public class BTDeviceListAdapter extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
-        // dump device list
-        Utils.dumpArrayList(mDevices);
+
     }
 
     /**
