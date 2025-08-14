@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the BT receiver of the demo bluetooth.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;

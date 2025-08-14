@@ -1,5 +1,10 @@
 /**
- * BT controller
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is BT controller for demo bluetooth.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
  */
 package com.adam.app.demoset.bluetooth;
 
