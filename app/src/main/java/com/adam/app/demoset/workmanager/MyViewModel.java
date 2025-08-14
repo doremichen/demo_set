@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.work.Constraints;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 
-public class MyViewModel extends ViewModel {
+public class MyViewModel extends AndroidViewModel {
 
     private @NonNull Uri mImageUri;
     private @NonNull WorkManager mManager;
@@ -34,7 +35,7 @@ public class MyViewModel extends ViewModel {
 
 
     public MyViewModel(@NonNull Application app) {
-        super();
+        super(app);
         Utils.info(this, "MyViewModel constructor");
         // work manager instance
         this.mManager = WorkManager.getInstance(app);

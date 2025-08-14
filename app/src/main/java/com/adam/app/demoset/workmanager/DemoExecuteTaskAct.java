@@ -11,6 +11,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.work.Data;
 import androidx.work.WorkInfo;
 
@@ -34,7 +35,8 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         setContentView(this.mBinding.getRoot());
 
         // create view model
-        this.mViewModel = new MyViewModel(getApplication());
+        this.mViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+
         // update image uri if intent needed
         String uriStr = this.getIntent().getStringExtra(Utils.THE_SELECTED_IMAGE);
         if (!TextUtils.isEmpty(uriStr)) {
