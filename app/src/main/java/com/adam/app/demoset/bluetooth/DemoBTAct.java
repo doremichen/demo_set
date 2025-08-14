@@ -94,14 +94,18 @@ public class DemoBTAct extends AppCompatActivity {
 
 
     private void clearDeviceLists() {
-        if (checkValidObject(mPairedDevices)) {
-            mPairedDevices.clear();
+
+        // check mScanAdapter and mPairedAdapter Validity
+        if (!checkValidObject(mScanAdapter, mPairedAdapter)) {
+            // show error message in toast
+            Utils.showToast(this, "mScanAdapter or mPairedAdapter is null");
+            return;
         }
-        if (checkValidObject(mScanDevices)) {
-            mScanDevices.clear();
-        }
-        mScanAdapter.notifyDataSetChanged();
-        mPairedAdapter.notifyDataSetChanged();
+
+        // clear device lists
+        mScanAdapter.clearItems();
+        mPairedAdapter.clearItems();
+
     }
 
     private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {

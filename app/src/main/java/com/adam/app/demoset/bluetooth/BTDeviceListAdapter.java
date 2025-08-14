@@ -50,8 +50,13 @@ public class BTDeviceListAdapter extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
-
     }
+
+    public void clearItems() {
+        mDevices.clear();
+        notifyDataSetChanged();
+    }
+
 
     /**
      * Update connect status
