@@ -1,5 +1,10 @@
 /**
- * Demo Bind service
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the main activity of the demo binder.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
  */
 package com.adam.app.demoset.binder;
 
@@ -144,11 +149,11 @@ public class DemoBinderAct extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.aidl_config:
-                Utils.showToast(this, "AIDL is configured.");
+                Utils.showToast(this, getString(R.string.demo_binder_aidl_is_configured));
                 isMessenger = false;
                 return true;
             case R.id.messenger_config:
-                Utils.showToast(this, "Messenger is configured.");
+                Utils.showToast(this, getString(R.string.demo_binder_messenger_is_configured));
                 isMessenger = true;
                 return true;
             case R.id.exit:
@@ -211,7 +216,7 @@ public class DemoBinderAct extends AppCompatActivity {
     }
 
     private void executeMessengerBinderCall(int a, int b) {
-        Utils.showToast(this, "Messenger binder call");
+        Utils.showToast(this, getString(R.string.demo_binder_messenger_binder_call));
         Utils.info(this, "Messenger binder call");
         try {
             Message msg = Message.obtain();
@@ -226,7 +231,7 @@ public class DemoBinderAct extends AppCompatActivity {
     }
 
     private void executeAidlBinderCall(int a, int b) {
-        Utils.showToast(this, "AIDL binder call");
+        Utils.showToast(this, getString(R.string.demo_binder_aidl_binder_call));
         Utils.info(this, "AIDL binder call");
         try {
             mProxyAidl.add(a, b);
@@ -240,7 +245,7 @@ public class DemoBinderAct extends AppCompatActivity {
     public void showResult(int value) {
         Utils.info(this, "showResult");
         if (value == -1) {
-            Utils.showToast(this, "The result is overflow!!!");
+            Utils.showToast(this, getString(R.string.demo_binder_the_result_is_overflow));
         }
 
         mTVOutputC.setText("c: " + value);

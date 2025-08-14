@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the aidl service of the demo binder.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.binder;
 
 import android.app.Service;
@@ -7,6 +15,7 @@ import android.os.IBinder;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
+import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 import java.lang.ref.WeakReference;
@@ -105,7 +114,7 @@ public class MyAidlService extends Service {
             String msg = data.getMessage();
 
             // Show notification to tell user
-            Utils.makeStatusNotification("I got the data from UI: " + msg, mRefSvr.get());
+            Utils.makeStatusNotification(mRefSvr.get(), mRefSvr.get().getString(R.string.demo_binder_i_got_the_data_from_ui) + msg);
             Binder.restoreCallingIdentity(tokenId);
         }
     }

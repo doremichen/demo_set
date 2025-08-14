@@ -291,5 +291,11 @@
     <string name="demo_bt_is_enable">BT 已啟動</string>
     <string name="demo_bt_is_disable">BT 已關閉</string>
     <string name="demo_bt_adapter_is_valid">BT 合法適配器</string>
+    <string name="demo_binder_messenger_binder_call">Messenger binder 呼叫</string>
+    <string name="demo_binder_aidl_binder_call">AIDL binder 呼叫</string>
+    <string name="demo_binder_aidl_is_configured">AIDL 已設定.</string>
+    <string name="demo_binder_messenger_is_configured">Messenger 已設定.</string>
+    <string name="demo_binder_i_got_the_data_from_ui">"來自UI的資料: "</string>
+    <string name="demo_binder_the_result_is_overflow">結果溢出了!!!</string>
 
 </resources>

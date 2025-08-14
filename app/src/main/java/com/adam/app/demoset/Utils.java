@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +43,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -540,10 +538,10 @@ public abstract class Utils {
      * For this codelab, this is used to show a notification so that you know when different steps
      * of the background work chain are starting
      *
-     * @param message Message shown on the notification
      * @param context Context needed to create Toast
+     * @param message Message shown on the notification
      */
-    public static void makeStatusNotification(String message, Context context) {
+    public static void makeStatusNotification(Context context, String message) {
 
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

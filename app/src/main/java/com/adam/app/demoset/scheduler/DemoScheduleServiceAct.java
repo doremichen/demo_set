@@ -89,7 +89,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
                 Utils.info(this, "TimeArrive enter");
                 Utils.info(this, "counter = " + millisecond);
                 // show notification
-                Utils.makeStatusNotification("Time is arrived", DemoScheduleServiceAct.this);
+                Utils.makeStatusNotification(DemoScheduleServiceAct.this, "Time is arrived");
 
             }
 

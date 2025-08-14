@@ -218,7 +218,7 @@ public class DemoAlarmAct extends AppCompatActivity {
                 }
                 strategy.setAlarm(type, triggerTime);
 
-                Utils.makeStatusNotification("Alarm count: " + mCount, getApplicationContext());
+                Utils.makeStatusNotification(getApplicationContext(), "Alarm count: " + mCount);
 
             }
         }

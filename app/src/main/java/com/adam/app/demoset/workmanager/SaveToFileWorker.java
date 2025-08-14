@@ -37,7 +37,7 @@ public class SaveToFileWorker extends Worker {
         Utils.info(this, "doWork enter");
         Context appCtx = getApplicationContext();
 
-        Utils.makeStatusNotification("Saving data!!!", appCtx);
+        Utils.makeStatusNotification(appCtx, "Saving data!!!");
         Utils.delay(Utils.DELAY_TIME_MILLIS);
 
         // get resolver
@@ -62,11 +62,11 @@ public class SaveToFileWorker extends Worker {
             Data outputData = new Data.Builder()
                     .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
                     .build();
-            Utils.makeStatusNotification("Save success", appCtx);
+            Utils.makeStatusNotification(appCtx, "Save success");
             return Result.success(outputData);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Utils.makeStatusNotification("File no found", appCtx);
+            Utils.makeStatusNotification(appCtx, "File no found");
         }
         return Result.failure();
     }

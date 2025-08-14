@@ -290,4 +290,10 @@
     <string name="demo_bt_is_enable">BT is enable</string>
     <string name="demo_bt_is_disable">BT is disable</string>
     <string name="demo_bt_adapter_is_valid">BT adapter is valid...</string>
+    <string name="demo_binder_messenger_binder_call">Messenger binder call</string>
+    <string name="demo_binder_aidl_binder_call">AIDL binder call</string>
+    <string name="demo_binder_aidl_is_configured">AIDL is configured.</string>
+    <string name="demo_binder_messenger_is_configured">Messenger is configured.</string>
+    <string name="demo_binder_i_got_the_data_from_ui">"I got the data from UI: "</string>
+    <string name="demo_binder_the_result_is_overflow">The result is overflow!!!</string>
 </resources>

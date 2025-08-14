@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the messenger service of the demo binder.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.binder;
 
 import android.app.Service;
@@ -16,7 +24,7 @@ public class MyMessengerService extends Service {
     public static final int ACTION_ADD = 0x1357;
     public static final int ACTION_REPLY_RESULT = 0X2468;
 
-    private Handler mIncomingHancler = new Handler(Looper.getMainLooper()) {
+    private final Handler mIncomingHancler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

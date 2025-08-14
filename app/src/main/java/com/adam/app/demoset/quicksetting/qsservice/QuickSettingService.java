@@ -55,7 +55,7 @@ public class QuickSettingService extends TileService {
     static abstract class UpdateTemplate {
         void process(Context context, Tile tile) {
             // notification
-            Utils.makeStatusNotification(onMsg(), context);
+            Utils.makeStatusNotification(context, onMsg());
             // tile config
             Icon icon = Icon.createWithResource(context, onResId());
             tile.setLabel(onMsg());

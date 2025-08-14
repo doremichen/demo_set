@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project
+ *
+ * Description: This class is the binder data of the demo binder.
+ *
+ * Author: Adam Chen
+ * Date: 2019/12/17
+ */
 package com.adam.app.demoset.binder;
 
 import android.os.Parcel;

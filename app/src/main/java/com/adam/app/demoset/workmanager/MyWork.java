@@ -31,14 +31,14 @@ public class MyWork extends Worker {
         Utils.info(this, "doWork enter");
         Context appCtx = this.getApplicationContext();
 
-        Utils.makeStatusNotification("Blurring Image!!!", appCtx);
+        Utils.makeStatusNotification(appCtx, "Blurring Image!!!");
         Utils.delay(Utils.DELAY_TIME_MILLIS);
 
         String resUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
 
         if (TextUtils.isEmpty(resUri)) {
             Utils.info(this, "Invalid input uri...");
-            Utils.makeStatusNotification("Invalid input uri...", appCtx);
+            Utils.makeStatusNotification(appCtx, "Invalid input uri...");
             return Result.failure();
         }
 
@@ -50,7 +50,7 @@ public class MyWork extends Worker {
 
             // Write bitmap to a temp file and show notification
             Uri outputUri = Utils.writeBitmapToFile(appCtx, output);
-            Utils.makeStatusNotification("Output: " + outputUri.toString(), appCtx);
+            Utils.makeStatusNotification(appCtx, "Output: " + outputUri.toString());
 
             // Prepare Result Data to pass
             Data outputData = new Data.Builder()
