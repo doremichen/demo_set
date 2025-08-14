@@ -83,10 +83,6 @@ public class DemoBTAct extends AppCompatActivity {
         // BT is unchecked
         Utils.info(DemoBTAct.this, "Reset status because the BT choice is off.");
 
-        if (mBTAdapter.isDiscovering()) {
-            mBTAdapter.cancelDiscovery();
-        }
-
         // mBTAdapter.disable();
         requestBluetoothDisable();
     };
@@ -105,7 +101,6 @@ public class DemoBTAct extends AppCompatActivity {
         // clear device lists
         mScanAdapter.clearItems();
         mPairedAdapter.clearItems();
-
     }
 
     private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
@@ -296,6 +291,11 @@ public class DemoBTAct extends AppCompatActivity {
             if (resultCode == RESULT_CANCELED) {
                 mBTSwitch.setChecked(true);
             } else {
+                // cancel discovery
+                if (mBTAdapter.isDiscovering()) {
+                    mBTAdapter.cancelDiscovery();
+                }
+
                 // update bt status
                 mBTResult.setText(getString(R.string.demo_bt_is_disable));
                 clearDeviceLists();
