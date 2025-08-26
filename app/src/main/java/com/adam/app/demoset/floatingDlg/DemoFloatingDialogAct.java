@@ -1,24 +1,25 @@
+/**
+ * Description: This class is used to show the demo floating dialog.
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/09/18
+ */
 package com.adam.app.demoset.floatingDlg;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 
 import com.adam.app.demoset.OverlayPermissionManager;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 /**
- * TODO: Descript the information of this file
- * <p>
- * info:
- *
- * @author: AdamChen
- * @date: 2018/9/27
+ * This class is the main activity of demo floating dialog.
  */
 public class DemoFloatingDialogAct extends AppCompatActivity {
 

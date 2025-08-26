@@ -1,9 +1,14 @@
+/**
+ * Description: This class is service that show the floating dialog.
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/09/18
+ */
 package com.adam.app.demoset.floatingDlg;
 
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.IBinder;
 import android.view.WindowManager;
