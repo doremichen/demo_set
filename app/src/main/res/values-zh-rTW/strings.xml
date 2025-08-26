@@ -297,5 +297,8 @@
     <string name="demo_binder_messenger_is_configured">Messenger 已設定.</string>
     <string name="demo_binder_i_got_the_data_from_ui">"來自UI的資料: "</string>
     <string name="demo_binder_the_result_is_overflow">結果溢出了!!!</string>
+    <string name="label_setting_btn">前往設定</string>
+    <string name="label_notification_permission_label">需要通知權限</string>
+    <string name="label_notification_permission_description">我們需要通知權限來提醒您重要事件，例如提醒、警示或背景任務完成。請前往設定頁面手動開啟通知權限。</string>
 
 </resources>

@@ -8,6 +8,7 @@
  */
 package com.adam.app.demoset;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.w3c.dom.Document;
@@ -78,7 +80,56 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        startEnableNotifySetting();
+        requestNotificationPermission();
+
+        //startEnableNotifySetting();
+    }
+
+    /**
+     * This method requests notification permission for the app.
+     */
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // notification post permission
+            String[] permissions = {
+                    Manifest.permission.POST_NOTIFICATIONS
+            };
+            // register for activity result
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                    result -> {
+                        boolean allGranted = true;
+                        for (Map.Entry<String, Boolean> entry : result.entrySet()) {
+                            String permission = entry.getKey();
+                            Boolean granted = entry.getValue();
+                            if (Boolean.TRUE.equals(granted)) {
+                                Utils.info(MainActivity.this, permission + " granted");
+                            } else {
+                                Utils.info(MainActivity.this, permission + " denied");
+                                if (Manifest.permission.POST_NOTIFICATIONS.equals(permission)) {
+                                    showPermissionExplanationDialog();
+                                }
+                                allGranted = false;
+                            }
+                        }
+
+                        if (allGranted) {
+                            // All permissions granted
+                            Utils.showToast(MainActivity.this, "All permissions granted");
+                        } else {
+                            // Some permissions denied
+                            Utils.showToast(MainActivity.this, "Some permissions denied");
+                        }
+                    }).launch(permissions);
+        }
+    }
+
+    private void showPermissionExplanationDialog() {
+        // post DialogButton
+        Utils.DialogButton okBtn = new Utils.DialogButton(getString(R.string.label_setting_btn),
+                (dialog, which) -> startEnableNotifySetting());
+        Utils.showAlertDialog(this, R.string.label_notification_permission_label,
+                R.string.label_notification_permission_description, okBtn);
+
     }
 
     /**

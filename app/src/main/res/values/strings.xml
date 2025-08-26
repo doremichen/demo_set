@@ -296,4 +296,7 @@
     <string name="demo_binder_messenger_is_configured">Messenger is configured.</string>
     <string name="demo_binder_i_got_the_data_from_ui">"I got the data from UI: "</string>
     <string name="demo_binder_the_result_is_overflow">The result is overflow!!!</string>
+    <string name="label_setting_btn">Go to Setting</string>
+    <string name="label_notification_permission_label">Need notification permission</string>
+    <string name="label_notification_permission_description">We need notification permissions to remind you of important events, such as reminders, alerts, or background task completion. Please manually enable notification permissions in Settings.</string>
 </resources>
