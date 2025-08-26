@@ -2,6 +2,7 @@ package com.adam.app.demoset.floatingDlg;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
 
     public void onStartFloatingDialog(View v) {
 
-        if (Settings.canDrawOverlays(this)) {
+        if (mOverlayPermissionManager.hasOverlayPermission()) {
             triggerDialog();
         }
 
@@ -62,25 +63,8 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
         this.startService(intent);
 
         //Delay 3 second and Close the current UI automatically
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                try {
-                    Thread.sleep(3000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    DemoFloatingDialogAct.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            DemoFloatingDialogAct.this.finish();
-                        }
-                    });
-                }
-
-            }
-        }).start();
+        // finish this activity
+        new Handler().postDelayed(this::finish, 3000L);
 
     }
 

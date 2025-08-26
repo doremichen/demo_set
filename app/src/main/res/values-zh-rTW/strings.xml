@@ -302,5 +302,7 @@
     <string name="label_notification_permission_description">我們需要通知權限來提醒您重要事件，例如提醒、警示或背景任務完成。請前往設定頁面手動開啟通知權限。</string>
     <string name="label_overlay_permission_label">需要浮動視窗權限</string>
     <string name="label_overlay_permission_description">我們需要此權限來顯示提示視窗或控制面板，請前往設定頁面開啟。</string>
+    <string name="demo_floating_system_dialog">系統對話框</string>
+    <string name="demo_floating_system_dialog_description">點選按鈕關閉對話框</string>
 
 </resources>

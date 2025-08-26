@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.view.WindowManager;
 
+import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 public class FloatingDialogSvr extends Service {
@@ -50,19 +51,12 @@ public class FloatingDialogSvr extends Service {
     private AlertDialog floatingDialog(Context context) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("System dialog");
-        builder.setMessage("Click the button to dismiss dialog ");
+        builder.setTitle(R.string.demo_floating_system_dialog);
+        builder.setMessage(R.string.demo_floating_system_dialog_description);
         builder.setCancelable(false);
-        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setPositiveButton(getString(R.string.label_ok_btn), (dialog, which) -> dialog.cancel());
 
-        AlertDialog sysDialog = builder.create();
-
-        return sysDialog;
+        return builder.create();
 
     }
 }
