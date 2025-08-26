@@ -1,13 +1,13 @@
 package com.adam.app.demoset.floatingDlg;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
+import com.adam.app.demoset.OverlayPermissionManager;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
@@ -22,16 +22,16 @@ import com.adam.app.demoset.Utils;
 public class DemoFloatingDialogAct extends AppCompatActivity {
 
     private static final int REQUEST_ALTER_WINDOW = 0;
+    private OverlayPermissionManager mOverlayPermissionManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_demo_floating_dialog);
 
-        if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
-            this.startActivityForResult(intent, REQUEST_ALTER_WINDOW);
-        }
+        // initial Overlay manager
+        mOverlayPermissionManager = new OverlayPermissionManager(this, REQUEST_ALTER_WINDOW);
+        mOverlayPermissionManager.checkAndRequestPermission();
 
     }
 
@@ -89,7 +89,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == REQUEST_ALTER_WINDOW) {
             Utils.info(this, "onActivityResult");
-            if (!Settings.canDrawOverlays(this)) {
+            if (mOverlayPermissionManager.hasOverlayPermission()) {
                 Utils.showToast(this, "Permission is not been granted yet");
             } else {
                 Utils.showToast(this, "Permission is been granted");
