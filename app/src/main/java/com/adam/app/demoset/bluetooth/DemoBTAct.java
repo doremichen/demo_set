@@ -18,8 +18,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -103,7 +105,7 @@ public class DemoBTAct extends AppCompatActivity {
         mPairedAdapter.clearItems();
     }
 
-    private BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Utils.info(DemoBTAct.this, "[onReceive@UI receiver]");
@@ -195,7 +197,7 @@ public class DemoBTAct extends AppCompatActivity {
         mScanAdapter = new BTDeviceListAdapter(this);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
-        //Set empty vliew
+        //Set empty view
         TextView emptyScanView = this.findViewById(R.id.nodata_scan_list);
         TextView emptyPairedView = this.findViewById(R.id.nodata_paired_list);
         mScanList.setEmptyView(emptyScanView);
@@ -257,17 +259,55 @@ public class DemoBTAct extends AppCompatActivity {
         Utils.showToast(this, getString(R.string.demo_bt_adapter_is_valid));
         Utils.info(this, "check bt permission!!!");
         // ask permission
-        String[] needPermissions = {Manifest.permission.BLUETOOTH_SCAN,
-                Manifest.permission.BLUETOOTH_CONNECT,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
+        String[] needPermissions = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            needPermissions = new String[]{
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        Utils.info(this, "Need check BT permission");
-        if (Utils.askPermission(DemoBTAct.this,
-                needPermissions,
-                REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
-            autoDiscoveryIfBTOn();
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                        result -> {
+                            // Used to check if all permissions are granted
+                            boolean allGranted = true;
+                            for (Map.Entry<String, Boolean> entry : result.entrySet()) {
+                                String permission = entry.getKey();
+                                Boolean granted = entry.getValue();
+                                if (Boolean.TRUE.equals(granted)) {
+                                    Utils.info(DemoBTAct.this, permission + " granted");
+                                } else {
+                                    Utils.info(DemoBTAct.this, permission + " denied");
+                                    allGranted = false;
+                                }
+                            }
+
+                            if (allGranted) {
+                                // All permissions granted
+                                Utils.showToast(this, "All permissions granted");
+
+                                // Permission granted
+                                autoDiscoveryIfBTOn();
+                            } else {
+                                // Some permissions denied
+                                Utils.showToast(this, "Some permissions denied");
+
+                            }
+                        }
+                    ).launch(needPermissions);
+        } else {
+            needPermissions = new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION};
+            Utils.info(this, "Need check BT permission");
+            if (Utils.askPermission(DemoBTAct.this,
+                    needPermissions,
+                    REQUEST_ACCESS_COARSE_PERMISSION_CODE)) {
+                autoDiscoveryIfBTOn();
+            }
         }
+
+
     }
 
     // create activity result map: key is request code, value is BiConsumer<Integer, Intent>
