@@ -43,6 +43,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.adam.app.demoset.bluetooth.DemoBLEActivity;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -117,6 +118,11 @@ public abstract class Utils {
     public static void info(Class<?> clazz, String str) {
         Log.i(TAG, clazz.getSimpleName() + ": " + str);
         //Logger.i(clazz.getSimpleName() + ": " + str);
+    }
+
+    public static void error(Object obj, String str) {
+        Log.e(TAG, obj.getClass().getSimpleName() + ": " + str);
+        //Logger.e(obj.getClass().getSimpleName() + ": " + str);
     }
 
     /**
@@ -268,6 +274,23 @@ public abstract class Utils {
         builder.create().show();
     }
 
+    /**
+     * Check the object validity
+     *
+     * @param objs
+     * @return
+     */
+    public static boolean checkValidObject(Object... objs) {
+        for (Object o : objs) {
+            if (o == null) {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+
     public static class DialogButton {
         private String mText;
         private DialogInterface.OnClickListener mListener;
@@ -314,6 +337,21 @@ public abstract class Utils {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(titleRes));
         builder.setMessage(context.getResources().getString(msgRes));
+        builder.setPositiveButton(positiveBtn.getText(), positiveBtn.getListener());
+        builder.create().show();
+    }
+
+    /**
+     * Show alert dialog with one buttons
+     * @param context context
+     * @param titleRes title resource
+     * @param msg message resource
+     * @param positiveBtn positive button
+     */
+    public static void showAlertDialog(Context context, int titleRes, String msg, DialogButton positiveBtn) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(titleRes));
+        builder.setMessage(msg);
         builder.setPositiveButton(positiveBtn.getText(), positiveBtn.getListener());
         builder.create().show();
     }

@@ -73,7 +73,7 @@ public class DemoBTAct extends AppCompatActivity {
         //mBTResult.setText("BT is " + (isChecked ? "enable" : "disable"));
         Utils.info(DemoBTAct.this, "BT checkbox status: " + isChecked);
 
-        if (!checkValidObject(mBTAdapter)) return;
+        if (!Utils.checkValidObject(mBTAdapter)) return;
 
         if (isChecked) {
             if (!mBTAdapter.isEnabled()) {
@@ -94,7 +94,7 @@ public class DemoBTAct extends AppCompatActivity {
     private void clearDeviceLists() {
 
         // check mScanAdapter and mPairedAdapter Validity
-        if (!checkValidObject(mScanAdapter, mPairedAdapter)) {
+        if (!Utils.checkValidObject(mScanAdapter, mPairedAdapter)) {
             // show error message in toast
             Utils.showToast(this, "mScanAdapter or mPairedAdapter is null");
             return;
@@ -121,7 +121,7 @@ public class DemoBTAct extends AppCompatActivity {
                 mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
                 Utils.info(DemoBTAct.this, mScanDevices.toString());
                 // null check
-                if (!checkValidObject(mScanDevices, mScanAdapter, mScanList)) return;
+                if (!Utils.checkValidObject(mScanDevices, mScanAdapter, mScanList)) return;
 
                 // Show scan list
                 mScanAdapter.setData(mScanDevices);
@@ -138,7 +138,7 @@ public class DemoBTAct extends AppCompatActivity {
                 BluetoothDevice device = bundle.getParcelable(BTReceiver.KEY_BT_DEVICE);
 
                 // null check
-                if (!checkValidObject(mPairedDevices, mScanDevices, mScanAdapter, mPairedAdapter))
+                if (!Utils.checkValidObject(mPairedDevices, mScanDevices, mScanAdapter, mPairedAdapter))
                     return;
 
                 Utils.info(this, "Bond state = " + device.getBondState());
@@ -157,7 +157,7 @@ public class DemoBTAct extends AppCompatActivity {
                 mPairedAdapter.notifyDataSetChanged();
             } else if (ConnectTask.ACTION_UPDATE_CONNECT_INFO.equals(action)) {
                 // null check
-                if (!checkValidObject(mScanAdapter, mPairedAdapter)) return;
+                if (!Utils.checkValidObject(mScanAdapter, mPairedAdapter)) return;
 
                 // Update list
                 boolean isConnect = intent.getBooleanExtra(ConnectTask.KEY_CONNECT_INFO, false);
@@ -250,7 +250,7 @@ public class DemoBTAct extends AppCompatActivity {
     private void handleBTPowerState() {
         Utils.info(this, "handleBTPowerState");
         // Check bt adapter is valid
-        if (!checkValidObject(mBTAdapter)) {
+        if (!Utils.checkValidObject(mBTAdapter)) {
             Utils.showToast(this, "BT adapter is invalid");
             mBTSwitch.setChecked(false);
             return;
@@ -265,8 +265,8 @@ public class DemoBTAct extends AppCompatActivity {
                     Manifest.permission.BLUETOOTH_SCAN,
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION};
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION};
 
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
                         result -> {
@@ -408,7 +408,7 @@ public class DemoBTAct extends AppCompatActivity {
     private void autoDiscoveryIfBTOn() {
         Utils.info(this, "autoDiscoveryIfBTOn");
         // null check
-        if (!checkValidObject(mBTAdapter, mBTSwitch)) return;
+        if (!Utils.checkValidObject(mBTAdapter, mBTSwitch)) return;
 
         // Check bt power status
         boolean enabled = mBTAdapter.isEnabled();
@@ -494,22 +494,6 @@ public class DemoBTAct extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Check the object validity
-     *
-     * @param objs
-     * @return
-     */
-    private boolean checkValidObject(Object... objs) {
-        for (Object o : objs) {
-            if (o == null) {
-                return false;
-            }
-
-        }
-        return true;
     }
 
     /**

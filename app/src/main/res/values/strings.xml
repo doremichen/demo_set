@@ -34,6 +34,7 @@
     <string name="title_demo_binding">Demo Binding</string>
     <string name="title_demo_simple_coroutine">Demo Simple Corouting\nKoltlin</string>
     <string name="title_demo_retrofit_coroutine">Demo Retrofit Corouting\nKoltlin</string>
+    <string name="title_demo_ble">"Demo BLE "</string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
@@ -303,4 +304,17 @@
     <string name="label_overlay_permission_description">We need this permission to display prompts or control panels. Please go to the settings page to enable it.</string>
     <string name="demo_floating_system_dialog">System dialog</string>
     <string name="demo_floating_system_dialog_description">Click the button to dismiss dialog </string>
+    <string name="demo_ble_scan_start_toast">Scan start</string>
+    <string name="demo_ble_scan_stop_toast">Stop BLE Scan</string>
+    <string name="demo_ble_connect_toast">Try to connect: %1$s</string>
+    <string name="demo_ble_error_connect_info_toast">Lack of connection permissions</string>
+    <string name="demo_ble_connect_success_toast">Connect success: %1$s</string>
+    <string name="demo_ble_connect_failed_toast">Connect failed: %1$s</string>
+    <string name="demo_ble_bonded_info">BONDED</string>
+    <string name="demo_ble_bonding_info">BONDING</string>
+    <string name="demo_ble_none_info">NONE</string>
+    <string name="demo_ble_unknown_info">Unknown</string>
+    <string name="demo_ble_device_info">Name: %1$s\n MAC address: %2$s\n State: %3$s</string>
+    <string name="demo_ble_device_info_title">Ble device infomation</string>
+
 </resources>

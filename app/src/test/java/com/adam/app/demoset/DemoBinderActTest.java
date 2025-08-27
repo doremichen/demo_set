@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config;
 import java.lang.reflect.Field;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Build.VERSION_CODES.Q)
+@Config(sdk = Build.VERSION_CODES.P)
 public class DemoBinderActTest {
 
     private DemoBinderAct activity;

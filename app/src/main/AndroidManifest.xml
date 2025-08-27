@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:sharedUserId="android.uid.system"
     android:sharedUserMaxSdkVersion="33">
 
@@ -51,17 +52,19 @@
          location information, you can strongly assert that your app
          doesn't derive physical location.
     -->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
     <!--
  Needed only if your app makes the device discoverable to Bluetooth
          devices.
     -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" tools:targetApi="s" />
     <!--
  Needed only if your app communicates with already-paired Bluetooth
          devices.
     -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" tools:targetApi="s" />
     <uses-permission
         android:name="android.hardware.usb.host"
         android:required="false" />
@@ -90,6 +93,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.Light">
+        <activity
+            android:name=".bluetooth.DemoBLEActivity"
+            android:exported="false"
+            android:label="@string/title_demo_ble"
+            android:screenOrientation="nosensor"/>
         <activity
             android:name=".coroutine.DemoRetrofitCoroutineAct"
             android:exported="false"

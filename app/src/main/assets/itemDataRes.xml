@@ -10,6 +10,7 @@
     <data titleRes="title_demo_floating_alert_dialog" clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_floating_alert_window" clsname="com.adam.app.demoset.floatingwindow.DemoFloatingWindowAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_bluetooth" clsname="com.adam.app.demoset.bluetooth.DemoBTAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_ble" clsname="com.adam.app.demoset.bluetooth.DemoBLEActivity" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_notification" clsname="com.adam.app.demoset.notification.DemoNotificationAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_share_provide_action" clsname="com.adam.app.demoset.DemoShareProvidAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_hello_jni" clsname="com.adam.app.demoset.jnidemo.DemoJNIAct" pkgname="com.adam.app.demoset"/>
