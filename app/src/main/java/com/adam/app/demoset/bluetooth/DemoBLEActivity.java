@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -44,6 +46,9 @@ public class DemoBLEActivity extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BT_CODE = 1000;
     public static final  int REQUEST_DISABLE_BT_CODE = 1001;
+
+    // SCAN_PERIOD: 5000L
+    private static final long SCAN_PERIOD = 5000L;
 
     // RFCOMM General SPP UUID
     private static final UUID SPP_UUID =
@@ -181,12 +186,12 @@ public class DemoBLEActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBTReceiver, filter);
 
+        configUIComponentListener();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
             requestPermissionsIfNeeded();
             return;
         }
-
-        configUIComponentListener();
 
         updateBTStateUI();
 
@@ -380,6 +385,12 @@ public class DemoBLEActivity extends AppCompatActivity {
             mScanAdapter.clearItems();
             // start scan
             mBLEScanner.startScan(mScanCallback);
+
+            // auto stop scan after SCAN_PERIOD
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                stopBLEScan();
+            }, SCAN_PERIOD);
+
             // show toast
             Utils.showToast(this, getString(R.string.demo_ble_scan_start_toast));
         }
@@ -391,7 +402,6 @@ public class DemoBLEActivity extends AppCompatActivity {
             mBLEScanner.stopScan(mScanCallback);
             Utils.showToast(this, getString(R.string.demo_ble_scan_stop_toast));
         }
-        
     }
 
     private void requestPermissionsIfNeeded() {
