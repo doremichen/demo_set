@@ -316,5 +316,6 @@
     <string name="demo_ble_unknown_info">Unknown</string>
     <string name="demo_ble_device_info">Name: %1$s\n MAC address: %2$s\n State: %3$s</string>
     <string name="demo_ble_device_info_title">Ble device infomation</string>
+    <string name="demo_bt_not_supported">Bt is not supported</string>
 
 </resources>

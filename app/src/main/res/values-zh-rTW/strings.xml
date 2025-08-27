@@ -316,7 +316,8 @@
     <string name="demo_ble_none_info">未配對</string>
     <string name="demo_ble_unknown_info">未知</string>
     <string name="demo_ble_device_info">名字: %1$s\n MAC 位址: %2$s\n 狀態: %3$s</string>
-    <string name="demo_ble_device_info_title">Ble device infomation</string>
+    <string name="demo_ble_device_info_title">Ble 裝置資訊</string>
+    <string name="demo_bt_not_supported">藍牙不支援</string>
 
 
 </resources>

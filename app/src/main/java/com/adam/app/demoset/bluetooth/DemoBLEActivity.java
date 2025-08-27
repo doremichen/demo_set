@@ -213,9 +213,9 @@ public class DemoBLEActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             Utils.info(this, "Bluetooth not supported");
-            Utils.showToast(this, "Bluetooth not supported");
+            Utils.showToast(this, getString(R.string.demo_bt_not_supported));
             // show bt status
-            this.mBinding.tvBtStatus.setText("Bluetooth not supported");
+            this.mBinding.tvBtStatus.setText(getString(R.string.demo_bt_not_supported));
             // switch bt function
             this.mBinding.switchBt.setEnabled(false);
             return false;
