@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:padding="5dp"
+    android:layout_margin="5dp">
 
     <Button
         android:id="@+id/btn_bt_pair"
@@ -32,7 +32,8 @@
         android:text="@string/label_bt_device_name"
         android:textColor="@android:color/black"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/tv_bt_address"
@@ -42,6 +43,7 @@
         android:layout_alignStart="@+id/tv_bt_name"
         android:layout_toStartOf="@+id/btn_bt_pair"
         android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_bt_address" />
+        android:text="@string/label_bt_address"
+        android:padding="5dp"/>
 
 </RelativeLayout>

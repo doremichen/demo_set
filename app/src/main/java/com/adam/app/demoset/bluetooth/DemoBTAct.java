@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +54,7 @@ public class DemoBTAct extends AppCompatActivity {
     public static final int REQUEST_ENABLE_BT_CODE = 1000;
     public static final  int REQUEST_DISABLE_BT_CODE = 1001;
     public static final int REQUEST_ACCESS_COARSE_PERMISSION_CODE = 1;
-    private LinearLayout mLayout;
+    private ConstraintLayout mLayout;
     private Switch mBTSwitch;
     private TextView mBTResult;
 
