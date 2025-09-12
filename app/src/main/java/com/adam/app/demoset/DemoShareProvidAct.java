@@ -1,3 +1,9 @@
+/**
+ * Description: This class is activity of demo share action provider.
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/08
+ */
 package com.adam.app.demoset;
 
 import android.content.Intent;
@@ -40,14 +46,13 @@ public class DemoShareProvidAct extends AppCompatActivity {
     private boolean setShareIntent() {
         Utils.info(this, "setShareIntent enter");
         Utils.info(this, "mShareAction = " + mShareAction);
-        boolean ret = false;
 
         if (!Utils.areAllNotNull(this.mShareAction)) {
             Utils.showToast(this, "No share action!!!");
-            return ret;
+            return false;
         }
 
-
+        // Create intent
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.setType("text/plain");
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Demo text");
@@ -56,14 +61,13 @@ public class DemoShareProvidAct extends AppCompatActivity {
         PackageManager pm = getPackageManager();
         List<ResolveInfo> infos = pm.queryIntentActivities(sendIntent, 0);
 
-        Utils.info(this, "infos.isEmpty = " + infos.isEmpty());
-
+        // check infos data
         if (!infos.isEmpty()) {
             mShareAction.setShareIntent(sendIntent);
-            ret = true;
+            return true;
         }
 
-        return ret;
+        return false;
     }
 
     @Override
