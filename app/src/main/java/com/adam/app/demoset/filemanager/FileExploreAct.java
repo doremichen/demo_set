@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2023 Adam Chen
+ *
+ * Description: This class is the main activity of the file explore demo.
+ *
+ * Author: Adam Chen
+ * Date: 2023/10/18
+ */
 package com.adam.app.demoset.filemanager;
 
 import android.os.Build;
@@ -123,7 +131,7 @@ public class FileExploreAct extends AppCompatActivity {
             this.mStrAdapter.clear();
             this.mStrAdapter.addAll(mapItems(selectedItem));
         } catch (FileNotFoundException e) {
-            Utils.showToast(this, "No file!!!");
+            Utils.showToast(this, getString(R.string.demo_file_explore_no_file));
         }
     }
 

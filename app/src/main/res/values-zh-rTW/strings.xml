@@ -324,6 +324,7 @@
     <string name="demo_alarm_no_action">沒有這個鬧鐘功能!!!</string>
     <string name="demo_alarm_set_time_LT_60">請輸入大於60秒的數值!!!</string>
     <string name="demo_alram_set_time_LT_15">請輸入大於15分的數值!!!</string>
+    <string name="demo_file_explore_no_file">沒有檔案!!!</string>
 
 
 </resources>
