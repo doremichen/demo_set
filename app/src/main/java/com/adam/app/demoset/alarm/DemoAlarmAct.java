@@ -132,12 +132,12 @@ public class DemoAlarmAct extends AppCompatActivity {
             this.mOffset = Long.parseLong(this.mInputDelayNumber.getText().toString()) * 1000L;
             Utils.info(this, "mOffset: " + String.valueOf(mOffset));
             if (mOffset == 0L) {
-                Utils.showToast(this, "Please config offset time first");
+                Utils.showToast(this, getString(R.string.demo_alarm_input_offset_zero));
                 return;
             }
             this.mAlarmAction.toggle();
         } catch (NumberFormatException e) {
-            Utils.showToast(this, "InValid input offset time!!!");
+            Utils.showToast(this, getString(R.string.demo_alarm_input_offset_invalid));
         }
 
     }
@@ -146,7 +146,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         Utils.info(this, "startAlarm enter");
 
         if (mOffset == 0L) {
-            Utils.showToast(this, "Please config offset time first");
+            Utils.showToast(this, getString(R.string.demo_alarm_input_offset_zero));
             throw new ArithmeticException("the input value is invalid!!!");
         }
 
@@ -168,7 +168,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         int id = mRadioGroup.getCheckedRadioButtonId();
         AlarmStrategy strategy = this.mAlarmStategyMap.get(id);
         if (strategy == null) {
-            Utils.showToast(this, "No this alarm function!!!");
+            Utils.showToast(this, getString(R.string.demo_alarm_no_action));
             throw new AndroidRuntimeException("No this alarm function!!!");
         }
         strategy.setAlarm(type, triggerTime);
@@ -202,10 +202,9 @@ public class DemoAlarmAct extends AppCompatActivity {
             if (AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED.equals(action)) {
                 Utils.info(this, "Got permission to use alarm!!!");
             } else if (ACTION_UPDATE_INFO.equals(action)) {
-
                 mCount++;
                 // Update alarm info
-                mAlarmInfo.setText("Alarm count: " + mCount);
+                runOnUiThread(() -> mAlarmInfo.setText(getString(R.string.alarm_count, mCount)));
 
                 int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
                 long triggerTime = SystemClock.elapsedRealtime() + mOffset;
@@ -297,7 +296,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         public void setAlarm(int type, long triggerTime) {
             Utils.info(this, "setAlarm@RepeatAlarmStrategy");
             if (mOffset < 60000) {
-                Utils.showCustomizedToast(DemoAlarmAct.this, "Please input the value is large than 60 sec!!!");
+                Utils.showCustomizedToast(DemoAlarmAct.this, getString(R.string.demo_alarm_set_time_LT_60));
                 throw new ArithmeticException("the input value is invalid!!!");
             }
             mAlarmManager.setRepeating(type, triggerTime, mOffset, mAlarmIntent);
@@ -310,7 +309,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         public void setAlarm(int type, long triggerTime) {
             Utils.info(this, "setAlarm@InexactRepeatAlarmStrategy");
             if (mOffset < AlarmManager.INTERVAL_FIFTEEN_MINUTES) {
-                Utils.showCustomizedToast(DemoAlarmAct.this, "Please input the value is large than 15 min!!!");
+                Utils.showCustomizedToast(DemoAlarmAct.this, getString(R.string.demo_alram_set_time_LT_15));
                 throw new ArithmeticException("the input value is invalid!!!");
             }
             mAlarmManager.setInexactRepeating(type, triggerTime, mOffset, mAlarmIntent);

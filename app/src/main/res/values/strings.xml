@@ -317,5 +317,11 @@
     <string name="demo_ble_device_info">Name: %1$s\n MAC address: %2$s\n State: %3$s</string>
     <string name="demo_ble_device_info_title">Ble device infomation</string>
     <string name="demo_bt_not_supported">Bt is not supported</string>
+    <string name="alarm_count">Alarm count: %1$d</string>
+    <string name="demo_alarm_input_offset_zero">Please config offset time first</string>
+    <string name="demo_alarm_input_offset_invalid">InValid input offset time!!!</string>
+    <string name="demo_alarm_no_action">No this alarm function!!!</string>
+    <string name="demo_alarm_set_time_LT_60">Please input the value is large than 60 sec!!!</string>
+    <string name="demo_alram_set_time_LT_15">Please input the value is large than 15 min!!!</string>
 
 </resources>

@@ -318,6 +318,12 @@
     <string name="demo_ble_device_info">名字: %1$s\n MAC 位址: %2$s\n 狀態: %3$s</string>
     <string name="demo_ble_device_info_title">Ble 裝置資訊</string>
     <string name="demo_bt_not_supported">藍牙不支援</string>
+    <string name="alarm_count">警報計數: %1$d</string>
+    <string name="demo_alarm_input_offset_zero">請先配置偏移時間</string>
+    <string name="demo_alarm_input_offset_invalid">輸入偏移時間無效!!!</string>
+    <string name="demo_alarm_no_action">沒有這個鬧鐘功能!!!</string>
+    <string name="demo_alarm_set_time_LT_60">請輸入大於60秒的數值!!!</string>
+    <string name="demo_alram_set_time_LT_15">請輸入大於15分的數值!!!</string>
 
 
 </resources>
