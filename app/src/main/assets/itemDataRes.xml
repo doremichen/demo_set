@@ -4,7 +4,7 @@
     <data titleRes="title_demo_Shutdown" clsname="com.adam.app.demoset.shutdown.DemoMainActivity" pkgname="com.adam.app.demoset"/>
     -->
     <data titleRes="title_demo_file_expore" clsname="com.adam.app.demoset.filemanager.FileExploreAct" pkgname="com.adam.app.demoset"/>
-    <data titleRes="title_demo_service" clsname="com.adam.app.demoset.DemoServiceAct" pkgname="com.adam.app.demoset"/>
+    <data titleRes="title_demo_service" clsname="com.adam.app.demoset.demoService.DemoServiceAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_animation" clsname="com.adam.app.demoset.animation.DemoGifAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_job_service" clsname="com.adam.app.demoset.jobService.DemoJobSvrAct" pkgname="com.adam.app.demoset"/>
     <data titleRes="title_demo_floating_alert_dialog" clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct" pkgname="com.adam.app.demoset"/>

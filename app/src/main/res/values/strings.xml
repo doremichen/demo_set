@@ -324,5 +324,7 @@
     <string name="demo_alarm_set_time_LT_60">Please input the value is large than 60 sec!!!</string>
     <string name="demo_alram_set_time_LT_15">Please input the value is large than 15 min!!!</string>
     <string name="demo_file_explore_no_file">No file!!!</string>
+    <string name="demo_service_service_is_bound">Service is bound.</string>
+    <string name="demo_service_service_is_unbound">Service is unBind.</string>
 
 </resources>

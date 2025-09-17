@@ -43,7 +43,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
-import com.adam.app.demoset.bluetooth.DemoBLEActivity;
+import com.adam.app.demoset.demoService.LocalService;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -124,6 +124,11 @@ public abstract class Utils {
         Log.e(TAG, obj.getClass().getSimpleName() + ": " + str);
         //Logger.e(obj.getClass().getSimpleName() + ": " + str);
     }
+
+    public static void log(String tag, String msg) {
+        Log.i(TAG, tag + ": " + msg);
+    }
+
 
     /**
      * When the activity use this method, it must override onRequestPermissionsResult method that
@@ -237,12 +242,17 @@ public abstract class Utils {
      * @param message
      */
     public static void showSnackBar(Context context, String message) {
+        // log
+        Utils.info(Utils.class, "showSnackBar enter");
+
         Intent intent = new Intent(ACTION_SHOW_SNACKBAR);
         if (!TextUtils.isEmpty(message)) {
             intent.putExtra(KEY_MSG, context.getClass().getSimpleName() + " " + message);
         }
+        // log
+        Utils.info(Utils.class, "showSnackBar send broadcast!!!");
         context.sendBroadcast(intent);
-
+        Utils.info(Utils.class, "showSnackBar exit");
     }
 
 
@@ -289,6 +299,7 @@ public abstract class Utils {
         }
         return true;
     }
+
 
 
     public static class DialogButton {

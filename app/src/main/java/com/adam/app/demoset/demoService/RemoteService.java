@@ -1,13 +1,12 @@
 /**
- * This is the remote service
+ * Copyright (C) Adam demo app Project
  * <p>
- * info:
- *
- * @author: AdamChen
- * @date: 2018/9/19
+ * Description: This class is the remote service that is used Messenger to communicate with client .
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/09/17
  */
-
-package com.adam.app.demoset;
+package com.adam.app.demoset.demoService;
 
 import android.app.Service;
 import android.content.Intent;
@@ -16,24 +15,25 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 
+import androidx.annotation.NonNull;
+
+import com.adam.app.demoset.Utils;
+
 public class RemoteService extends Service {
 
     public static final int ACTION_ONE = 1;
 
-    private class SvrHandler extends Handler {
+    private class ServiceHandler extends Handler {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-
-            switch (msg.what) {
-                case ACTION_ONE:
-                    Utils.showToast(RemoteService.this, "action one....");
-                    break;
+            if (msg.what == ACTION_ONE) {
+                Utils.showToast(RemoteService.this, "action one from remote service!!!");
             }
         }
     }
 
-    private Messenger mMessaenger = new Messenger(new SvrHandler());
+    private final Messenger mMessaenger = new Messenger(new ServiceHandler());
 
     @Override
     public void onCreate() {
@@ -62,7 +62,6 @@ public class RemoteService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Utils.showSnackBar(this, "onBind");
-
         return mMessaenger.getBinder();
     }
 }

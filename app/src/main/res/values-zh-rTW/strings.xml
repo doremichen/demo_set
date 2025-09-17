@@ -325,6 +325,8 @@
     <string name="demo_alarm_set_time_LT_60">請輸入大於60秒的數值!!!</string>
     <string name="demo_alram_set_time_LT_15">請輸入大於15分的數值!!!</string>
     <string name="demo_file_explore_no_file">沒有檔案!!!</string>
+    <string name="demo_service_service_is_bound">服務已綁定.</string>
+    <string name="demo_service_service_is_unbound">服務已解除綁定.</string>
 
 
 </resources>

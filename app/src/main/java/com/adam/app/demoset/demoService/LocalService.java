@@ -1,20 +1,23 @@
 /**
- * This is the local service
+ * Copyright (C) Adam demo app Project
  * <p>
- * info:
- *
- * @author: AdamChen
- * @date: 2018/9/19
+ * Description: This class is the local service.
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/09/17
  */
-
-package com.adam.app.demoset;
+package com.adam.app.demoset.demoService;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.adam.app.demoset.Utils;
+
 public class LocalService extends Service {
+
+    final private IBinder mBinder = new LocalBinder();
 
     @Override
     public void onCreate() {
@@ -45,20 +48,17 @@ public class LocalService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         Utils.showSnackBar(this, "onBind");
-
         return mBinder;
     }
 
-    final private IBinder mBinder = new LocalBinder();
-
-    public class LocalBinder extends Binder {
-
-        LocalService getService() {
-            return LocalService.this;
-        }
+    public void action1() {
+        Utils.showToast(this, "action one from local service!!!");
     }
 
-    public void action1() {
-        Utils.showToast(this, "action1");
+    class LocalBinder extends Binder {
+
+        public LocalService getService() {
+            return LocalService.this;
+        }
     }
 }
