@@ -4,164 +4,168 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    tools:context=".alarm.DemoAlarmAct"
-    tools:layout_editor_absoluteY="81dp">
+    android:background="@color/material_dynamic_neutral90"
+    android:padding="16dp"
+    tools:context=".alarm.DemoAlarmAct">
 
-    <TextView
-        android:id="@+id/tv_alarm_info"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/label_alarm_info"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/delay_time_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radioGroup" />
-
-    <Button
-        android:id="@+id/btn_alarm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="onAlarm"
-        android:text="@string/action_start"
-        android:textAllCaps="false"
-        android:textColor="@color/ic_launcher_background"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delay_time_layout"/>
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_alarm"
-        app:layout_constraintBottom_toTopOf="@id/tv_alarm_info">
-
-        <RadioButton
-            android:id="@+id/Repeat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/radio_setrepeating"
-            android:textColor="@android:color/black" />
-
-        <RadioButton
-            android:id="@+id/inexactRepeat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/radio_setinexactrepeating"
-            android:textColor="@android:color/black" />
-
-        <RadioButton
-            android:id="@+id/allWhileIdle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/radio_setandallowwhileidle"
-            android:textColor="@android:color/black" />
-
-        <RadioButton
-            android:id="@+id/exectAllowWhileIde"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/radio_setexactandallowwhileidle"
-            android:textColor="@android:color/black" />
-    </RadioGroup>
-
+    <!-- Title -->
     <TextView
         android:id="@+id/title_alarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/cabin_bold"
         android:text="@string/label_set_trigger_alrm_type"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/cabin_bold"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/radio_card"
+        android:layout_marginBottom="8dp"/>
 
-    <LinearLayout
-        android:id="@+id/delay_time_layout"
-        android:layout_width="match_parent"
+    <!-- Radio  -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/radio_card"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_alarm_info"
-        app:layout_constraintBottom_toTopOf="@id/btn_alarm"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/title_alarm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/offsetTimeInfo"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/label_offset_time"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="20sp"/>
+            android:orientation="vertical"
+            android:padding="12dp">
 
-        <EditText
-            android:id="@+id/input_delay_number"
-            android:layout_width="0dp"
+            <RadioButton
+                android:id="@+id/Repeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/radio_setrepeating"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold" />
+
+            <RadioButton
+                android:id="@+id/inexactRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_setinexactrepeating"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold" />
+
+            <RadioButton
+                android:id="@+id/allWhileIdle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_setandallowwhileidle"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold" />
+
+            <RadioButton
+                android:id="@+id/exectAllowWhileIde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/radio_setexactandallowwhileidle"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold" />
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Alarm Info -->
+    <TextView
+        android:id="@+id/tv_alarm_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_alarm_info"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/radio_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Delay Time -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/delay_time_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_alarm_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/delay_time_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="number"
-            android:hint="@string/hint_input_delay_number"
-            android:maxLength="50"
-            android:singleLine="true"
-            android:textAlignment="center" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="12dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:fontFamily="@font/cabin_bold"
-            android:text="@string/label_time_unit"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/offsetTimeInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_offset_time"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold"
+                android:layout_marginEnd="8dp"/>
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/input_delay_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:hint="@string/hint_input_delay_number"
+                android:textAlignment="center"
+                android:background="@drawable/edittext_rounded_bg"
+                android:padding="8dp"
+                android:textSize="16sp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_time_unit"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/cabin_bold"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-
-
+    <!-- Button -->
+    <Button
+        android:id="@+id/btn_alarm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/action_start"
+        android:fontFamily="@font/cabin_bold"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/teal_700"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

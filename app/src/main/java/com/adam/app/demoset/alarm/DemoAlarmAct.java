@@ -90,6 +90,14 @@ public class DemoAlarmAct extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(ACTION_UPDATE_INFO);
         filter.addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED);
         this.registerReceiver(mUIRecv, filter, RECEIVER_EXPORTED);
+
+        // set button click listener
+        mAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onAlarm(v);
+            }
+        });
     }
 
 
@@ -126,7 +134,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         return false;
     }
 
-    public void onAlarm(View v) {
+    private void onAlarm(View v) {
         Utils.info(this, "onAlarm enter");
         try {
             this.mOffset = Long.parseLong(this.mInputDelayNumber.getText().toString()) * 1000L;

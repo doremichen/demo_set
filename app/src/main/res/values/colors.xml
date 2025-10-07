@@ -9,4 +9,15 @@
     <color name="shrine_pink_900">#880E4F</color>
     <color name="shrine_pink_100">#F8BBD0</color>
     <color name="background_light">#AAA7CC</color>
+    <!-- Basic -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Main Color：Teal type -->
+    <color name="teal_700">#00796B</color> <!-- for button -->
+
+    <color name="button_pressed">#C0C4C4</color>
+
+    <!-- Optional  -->
+    <color name="material_dynamic_neutral90">#F2F2F2</color> <!-- 柔和背景灰 -->
 </resources>
