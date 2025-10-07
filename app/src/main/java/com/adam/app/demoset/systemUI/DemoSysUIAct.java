@@ -66,7 +66,7 @@ public class DemoSysUIAct extends AppCompatActivity {
             this.getSupportActionBar().show();
         }
 
-        mBtnHide.setText(mCanHide ? R.string.action_dim_system_ui
+        mBtnHide.setText(mCanHide ? R.string.action_hide_system_ui
                 : R.string.action_show_system_ui);
 
         decorView.setSystemUiVisibility(uiOptions);
