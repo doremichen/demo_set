@@ -6,37 +6,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:layout_margin="10dp">
+    android:padding="16dp"
+    android:background="@color/background_light"
+    tools:context=".bluetooth.DemoBTAct">
 
     <!-- BT status -->
     <TextView
         android:id="@+id/tv_bt_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@drawable/bg_header"
         android:gravity="center"
+        android:padding="12dp"
         android:text="@string/label_hello_bt"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- BT Switch -->
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_bt"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_dark"
+        android:layout_marginTop="16dp"
         android:text="@string/label_bt_on_off"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        android:padding="5dp"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/tv_bt_status"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -44,105 +43,102 @@
     <!-- Scan list label -->
     <TextView
         android:id="@+id/label_scan_list"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:fontFamily="@font/cabin_bold"
+        android:background="@drawable/bg_section"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
         android:text="@string/label_scan_list"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"
-        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/switch_bt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Scan list -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Scan list card -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/container_scan_list"
         android:layout_width="0dp"
-        android:layout_height="219dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
         app:layout_constraintTop_toBottomOf="@id/label_scan_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ListView
-            android:id="@+id/scan_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/darker_gray"
-            android:divider="@android:color/background_light"
-            android:dividerHeight="4dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/nodata_scan_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_no_data"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <ListView
+                android:id="@+id/scan_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/nodata_scan_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_no_data"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- Paired list label -->
     <TextView
         android:id="@+id/label_paired_list"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:fontFamily="@font/cabin_bold"
+        android:background="@drawable/bg_section"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
         android:text="@string/label_paired_list"
-        android:textColor="@android:color/background_light"
-        android:textSize="18sp"
-        android:padding="5dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/container_scan_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Paired list -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Paired list card -->
+    <androidx.cardview.widget.CardView
         android:id="@+id/container_paired_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
         app:layout_constraintTop_toBottomOf="@id/label_paired_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ListView
-            android:id="@+id/paired_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/darker_gray"
-            android:divider="@android:color/background_light"
-            android:dividerHeight="4dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/nodata_paired_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_no_data"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <ListView
+                android:id="@+id/paired_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/darker_gray"
+                android:dividerHeight="1dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/nodata_paired_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/label_no_data"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

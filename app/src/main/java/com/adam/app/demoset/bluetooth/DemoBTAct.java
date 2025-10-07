@@ -1,8 +1,8 @@
 /**
  * Copyright (C) Adam demo app Project
- *
+ * <p>
  * Description: This class is the main activity of the demo bluetooth.
- *
+ * <p>
  * Author: Adam Chen
  * Date: 2019/12/17
  */
@@ -20,26 +20,20 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.CompoundButton;
 
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.material.snackbar.Snackbar;
-
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoBluetoothBinding;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -52,21 +46,11 @@ import java.util.function.BiConsumer;
 public class DemoBTAct extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BT_CODE = 1000;
-    public static final  int REQUEST_DISABLE_BT_CODE = 1001;
+    public static final int REQUEST_DISABLE_BT_CODE = 1001;
     public static final int REQUEST_ACCESS_COARSE_PERMISSION_CODE = 1;
-    private ConstraintLayout mLayout;
-    private Switch mBTSwitch;
-    private TextView mBTResult;
-
+    // create activity result map: key is request code, value is BiConsumer<Integer, Intent>
+    private final Map<Integer, BiConsumer<Integer, Intent>> mActivityResultMap = new HashMap<>();
     private BluetoothAdapter mBTAdapter;
-    private ArrayList<BluetoothDevice> mScanDevices;
-    private ArrayList<BluetoothDevice> mPairedDevices;
-    private BTReceiver mBTReceiver;
-    ;
-    private ListView mScanList;
-    private BTDeviceListAdapter mScanAdapter;
-    private ListView mPairedList;
-    private BTDeviceListAdapter mPairedAdapter;
     /**
      * BT CheckBox Listener
      */
@@ -89,23 +73,14 @@ public class DemoBTAct extends AppCompatActivity {
         // mBTAdapter.disable();
         requestBluetoothDisable();
     };
+    private ArrayList<BluetoothDevice> mScanDevices;
+    private ArrayList<BluetoothDevice> mPairedDevices;
+    private BTReceiver mBTReceiver;
+    private BTDeviceListAdapter mScanAdapter;
+    private BTDeviceListAdapter mPairedAdapter;
     private PairedItemNameClickListener mPairedItemNameClicklistener;
-
-
-    private void clearDeviceLists() {
-
-        // check mScanAdapter and mPairedAdapter Validity
-        if (!Utils.checkValidObject(mScanAdapter, mPairedAdapter)) {
-            // show error message in toast
-            Utils.showToast(this, "mScanAdapter or mPairedAdapter is null");
-            return;
-        }
-
-        // clear device lists
-        mScanAdapter.clearItems();
-        mPairedAdapter.clearItems();
-    }
-
+    // view binding
+    private ActivityDemoBluetoothBinding mBinding;
     private final BroadcastReceiver mUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -115,19 +90,20 @@ public class DemoBTAct extends AppCompatActivity {
             if (Utils.ACTION_SHOW_SNACKBAR.equals(action)) {
                 String msg = intent.getStringExtra(Utils.KEY_MSG);
 
-                Snackbar.make(mLayout, "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mBinding.getRoot(), "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
 
             } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
                 Utils.info(DemoBTAct.this, "Get ACTION_FOUND_BT_DEVICE....");
-                mScanDevices = intent.getExtras().getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
-                Utils.info(DemoBTAct.this, mScanDevices.toString());
+                final Bundle data = intent.getExtras();
+                mScanDevices = data.getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
                 // null check
-                if (!Utils.checkValidObject(mScanDevices, mScanAdapter, mScanList)) return;
+                if (!Utils.checkValidObject(mScanDevices, mScanAdapter, mBinding.scanList)) return;
+                Utils.info(DemoBTAct.this, mScanDevices.toString());
 
                 // Show scan list
                 mScanAdapter.setData(mScanDevices);
                 mScanAdapter.setButtonListener(new ScanItemButtonClick(mScanDevices));
-                mScanList.setAdapter(mScanAdapter);
+                mBinding.scanList.setAdapter(mScanAdapter);
 
                 // Update paired list
                 updatePairedList();
@@ -170,11 +146,29 @@ public class DemoBTAct extends AppCompatActivity {
         }
     };
 
+    private void clearDeviceLists() {
+
+        // check mScanAdapter and mPairedAdapter Validity
+        if (!Utils.checkValidObject(mScanAdapter, mPairedAdapter)) {
+            // show error message in toast
+            Utils.showToast(this, "mScanAdapter or mPairedAdapter is null");
+            return;
+        }
+
+        // clear device lists
+        mScanAdapter.clearItems();
+        mPairedAdapter.clearItems();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "[onCreate]");
-        this.setContentView(R.layout.activity_demo_bluetooth);
+        // view binding
+        mBinding = ActivityDemoBluetoothBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
 
         // Use this check to determine whether Bluetooth classic is supported on the device.
         // Then you can selectively disable BLE-related features.
@@ -189,24 +183,16 @@ public class DemoBTAct extends AppCompatActivity {
             finish();
         }
 
-        mLayout = this.findViewById(R.id.btdemo_layout);
-        mBTSwitch = this.findViewById(R.id.switch_bt);
-        mBTResult = this.findViewById(R.id.tv_bt_status);
-        mScanList = this.findViewById(R.id.scan_list);
-        mPairedList = this.findViewById(R.id.paired_list);
-
         mScanAdapter = new BTDeviceListAdapter(this);
         mPairedAdapter = new BTDeviceListAdapter(this);
 
         //Set empty view
-        TextView emptyScanView = this.findViewById(R.id.nodata_scan_list);
-        TextView emptyPairedView = this.findViewById(R.id.nodata_paired_list);
-        mScanList.setEmptyView(emptyScanView);
-        mPairedList.setEmptyView(emptyPairedView);
+        mBinding.scanList.setEmptyView(mBinding.nodataScanList);
+        mBinding.pairedList.setEmptyView(mBinding.nodataPairedList);
 
 
         // Register switch listener
-        mBTSwitch.setOnCheckedChangeListener(mCheckBoxListener);
+        mBinding.switchBt.setOnCheckedChangeListener(mCheckBoxListener);
         // setup activity result handler
         setupActivityResultHandler();
 
@@ -237,6 +223,7 @@ public class DemoBTAct extends AppCompatActivity {
         Utils.info(this, "onCreate Done!!!");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void registerUIReceiver(BroadcastReceiver receiver, String... actions) {
         IntentFilter filter = new IntentFilter();
         for (String action : actions) {
@@ -253,7 +240,7 @@ public class DemoBTAct extends AppCompatActivity {
         // Check bt adapter is valid
         if (!Utils.checkValidObject(mBTAdapter)) {
             Utils.showToast(this, "BT adapter is invalid");
-            mBTSwitch.setChecked(false);
+            mBinding.switchBt.setChecked(false);
             return;
         }
 
@@ -270,33 +257,33 @@ public class DemoBTAct extends AppCompatActivity {
                     Manifest.permission.ACCESS_FINE_LOCATION};
 
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-                        result -> {
-                            // Used to check if all permissions are granted
-                            boolean allGranted = true;
-                            for (Map.Entry<String, Boolean> entry : result.entrySet()) {
-                                String permission = entry.getKey();
-                                Boolean granted = entry.getValue();
-                                if (Boolean.TRUE.equals(granted)) {
-                                    Utils.info(DemoBTAct.this, permission + " granted");
-                                } else {
-                                    Utils.info(DemoBTAct.this, permission + " denied");
-                                    allGranted = false;
-                                }
-                            }
-
-                            if (allGranted) {
-                                // All permissions granted
-                                Utils.showToast(this, "All permissions granted");
-
-                                // Permission granted
-                                autoDiscoveryIfBTOn();
+                    result -> {
+                        // Used to check if all permissions are granted
+                        boolean allGranted = true;
+                        for (Map.Entry<String, Boolean> entry : result.entrySet()) {
+                            String permission = entry.getKey();
+                            Boolean granted = entry.getValue();
+                            if (Boolean.TRUE.equals(granted)) {
+                                Utils.info(DemoBTAct.this, permission + " granted");
                             } else {
-                                // Some permissions denied
-                                Utils.showToast(this, "Some permissions denied");
-
+                                Utils.info(DemoBTAct.this, permission + " denied");
+                                allGranted = false;
                             }
                         }
-                    ).launch(needPermissions);
+
+                        if (allGranted) {
+                            // All permissions granted
+                            Utils.showToast(this, "All permissions granted");
+
+                            // Permission granted
+                            autoDiscoveryIfBTOn();
+                        } else {
+                            // Some permissions denied
+                            Utils.showToast(this, "Some permissions denied");
+
+                        }
+                    }
+            ).launch(needPermissions);
         } else {
             needPermissions = new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -312,9 +299,6 @@ public class DemoBTAct extends AppCompatActivity {
 
     }
 
-    // create activity result map: key is request code, value is BiConsumer<Integer, Intent>
-    private final Map<Integer, BiConsumer<Integer, Intent>> mActivityResultMap = new HashMap<>();
-
     /**
      * setup activity result handler
      */
@@ -322,16 +306,16 @@ public class DemoBTAct extends AppCompatActivity {
         mActivityResultMap.put(REQUEST_ENABLE_BT_CODE, (resultCode, data) -> {
             // Reject to enable bt
             if (resultCode == RESULT_CANCELED) {
-                mBTSwitch.setChecked(false);
+                mBinding.switchBt.setChecked(false);
             } else {
                 // update bt status
-                mBTResult.setText(getString(R.string.demo_bt_is_enable));
+                mBinding.tvBtStatus.setText(getString(R.string.demo_bt_is_enable));
             }
         });
         mActivityResultMap.put(REQUEST_DISABLE_BT_CODE, (resultCode, data) -> {
             // Reject to disable bt
             if (resultCode == RESULT_CANCELED) {
-                mBTSwitch.setChecked(true);
+                mBinding.switchBt.setChecked(true);
             } else {
                 // cancel discovery
                 if (mBTAdapter.isDiscovering()) {
@@ -339,7 +323,7 @@ public class DemoBTAct extends AppCompatActivity {
                 }
 
                 // update bt status
-                mBTResult.setText(getString(R.string.demo_bt_is_disable));
+                mBinding.tvBtStatus.setText(getString(R.string.demo_bt_is_disable));
                 clearDeviceLists();
             }
         });
@@ -373,10 +357,9 @@ public class DemoBTAct extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.demo_exit:
-                this.finish();
-                return true;
+        if (item.getItemId() == R.id.demo_exit) {
+            this.finish();
+            return true;
         }
 
         return false;
@@ -409,21 +392,21 @@ public class DemoBTAct extends AppCompatActivity {
     private void autoDiscoveryIfBTOn() {
         Utils.info(this, "autoDiscoveryIfBTOn");
         // null check
-        if (!Utils.checkValidObject(mBTAdapter, mBTSwitch)) return;
+        if (!Utils.checkValidObject(mBTAdapter, mBinding.switchBt)) return;
 
         // Check bt power status
         boolean enabled = mBTAdapter.isEnabled();
-        mBTSwitch.setChecked(enabled);
+        mBinding.switchBt.setChecked(enabled);
         Utils.info(this, "Bt power status: " + enabled);
         // Auto scan when permission is ok and bt power status is on state
         if (enabled) {
             // update bt status
-            mBTResult.setText(R.string.demo_bt_is_enable);
+            mBinding.tvBtStatus.setText(R.string.demo_bt_is_enable);
 
             this.mBTAdapter.startDiscovery();
         } else {
             // update bt status
-            mBTResult.setText(R.string.demo_bt_is_disable);
+            mBinding.tvBtStatus.setText(R.string.demo_bt_is_disable);
         }
     }
 
@@ -443,7 +426,7 @@ public class DemoBTAct extends AppCompatActivity {
         mPairedAdapter.setNameListener(mPairedItemNameClicklistener);
 
 
-        mPairedList.setAdapter(mPairedAdapter);
+        mBinding.pairedList.setAdapter(mPairedAdapter);
     }
 
     /**
@@ -463,7 +446,6 @@ public class DemoBTAct extends AppCompatActivity {
         Intent disableBtIntent = new Intent("android.bluetooth.adapter.action.REQUEST_DISABLE");
         startActivityForResult(disableBtIntent, REQUEST_DISABLE_BT_CODE);
     }
-
 
 
     /**
@@ -493,7 +475,7 @@ public class DemoBTAct extends AppCompatActivity {
             method.invoke(device, (Object[]) null);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Utils.info(this, e.toString());
         }
     }
 
@@ -501,7 +483,7 @@ public class DemoBTAct extends AppCompatActivity {
      * Callback for the name pressed of the item in paired list
      */
     private class PairedItemNameClickListener implements BTDeviceListAdapter.OnItemNameClickListener {
-        private ArrayList<BluetoothDevice> mDevices;
+        private final ArrayList<BluetoothDevice> mDevices;
 
         private ConnectTask mTask;
 
@@ -515,7 +497,6 @@ public class DemoBTAct extends AppCompatActivity {
 
         /**
          * getSelectedPosition
-         *
          */
         public int getSelectedPosition() {
             return mSelectedPosition;
@@ -546,7 +527,7 @@ public class DemoBTAct extends AppCompatActivity {
      */
     private class ScanItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
 
-        private ArrayList<BluetoothDevice> mDevices;
+        private final ArrayList<BluetoothDevice> mDevices;
 
         public ScanItemButtonClick(ArrayList<BluetoothDevice> devices) {
             mDevices = devices;
@@ -572,7 +553,7 @@ public class DemoBTAct extends AppCompatActivity {
      */
     private class PairedItemButtonClick implements BTDeviceListAdapter.OnItemButtonClickListener {
 
-        private ArrayList<BluetoothDevice> mDevices;
+        private final ArrayList<BluetoothDevice> mDevices;
 
         public PairedItemButtonClick(ArrayList<BluetoothDevice> devices) {
             mDevices = devices;
