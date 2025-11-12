@@ -327,6 +327,10 @@
     <string name="demo_file_explore_no_file">沒有檔案!!!</string>
     <string name="demo_service_service_is_bound">服務已綁定.</string>
     <string name="demo_service_service_is_unbound">服務已解除綁定.</string>
+    <string name="demo_tablelayout_game_start_msg">遊戲開始!!!</string>
+    <string name="demo_tablelayout_player_win_msg">你贏了!</string>
+    <string name="demo_tablelayout_tie_msg">平手!</string>
+    <string name="demo_tablelayout_computer_win_msg">電腦贏！</string>
 
 
 </resources>

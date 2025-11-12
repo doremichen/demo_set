@@ -1,140 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".tablelayout.DemoTableAct"
-    style="?android:attr/buttonBarStyle">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@android:color/darker_gray">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.adam.app.demoset.tablelayout.viewmodel.TicTacToeViewModel" />
 
-        <TableRow
+        <variable
+            name="activity"
+            type="com.adam.app.demoset.tablelayout.DemoTableAct" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".tablelayout.DemoTableAct"
+        android:padding="16dp">
+
+        <!-- TableLayout -->
+        <TableLayout
+            android:id="@+id/table_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp">
+            android:padding="4dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_exit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.45">
 
-            <Button
-                android:id="@+id/btnItem1"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!-- Row 1 -->
+            <TableRow>
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(0)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{0}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
 
-            <Button
-                android:id="@+id/btnItem2"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(1)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{1}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
 
-            <Button
-                android:id="@+id/btnItem3"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(2)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{2}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+            </TableRow>
 
-        <TableRow
-            android:layout_width="wrap_content"
+            <!-- Row 2 -->
+            <TableRow>
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(3)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{3}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(4)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{4}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(5)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{5}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+            </TableRow>
+
+            <!-- Row 3 -->
+            <TableRow>
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(6)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{6}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(7)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{7}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:onClick="@{() -> viewModel.playerMove(8)}"
+                    app:board="@{viewModel.boardLiveData}"
+                    app:cellIndex="@{8}"
+                    app:winningCells="@{viewModel.winningCellsLiveData}" />
+            </TableRow>
+        </TableLayout>
+
+        <!-- 離開按鈕 -->
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="2dp">
+            android:text="@string/label_exit"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:onClick="@{() -> activity.finish()}" />
 
-            <Button
-                android:id="@+id/btnItem4"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnItem5"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnItem6"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dp">
-
-            <Button
-                android:id="@+id/btnItem7"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnItem8"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btnItem9"
-                style="@android:style/Widget.Material.Light.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </TableRow>
-
-    </TableLayout>
-
-    <Button
-        android:id="@+id/btn_exit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="Exit"
-        android:text="@string/label_exit"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        style="?android:attr/buttonBarStyle"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_exit"
-        android:layout_alignStart="@+id/btn_exit"
-        android:layout_alignEnd="@+id/btn_exit"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="Reset"
-        android:text="@string/action_reset"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        style="?android:attr/buttonBarStyle"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_welcome_demo_table_layout"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

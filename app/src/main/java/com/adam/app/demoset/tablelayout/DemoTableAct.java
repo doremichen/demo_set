@@ -1,92 +1,54 @@
 /**
- * Copyright (C) 2018 Adam. All rights reserved.
+ * This class is the main activity of demo table view
  *
+ * @author Adam Chen
+ * @version 1.0
+ * @since 2025-11-11
  */
 package com.adam.app.demoset.tablelayout;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoTableBinding;
+import com.adam.app.demoset.tablelayout.viewmodel.TicTacToeViewModel;
 
 public class DemoTableAct extends AppCompatActivity {
 
-    private boolean mIsCircle;
     // button array size 9
     private final Button[] mButtons = new Button[9];
+
+    // view biding
+    private ActivityDemoTableBinding mBinding;
+    // view model
+    private TicTacToeViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_table);
+        // data binding
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_table);
 
-        // initial buttons and set listener
-        initButtons();
+        // init view model
+        mViewModel = new ViewModelProvider(this).get(TicTacToeViewModel.class);
+        // data binding view model and activity
+        mBinding.setViewModel(mViewModel);
+        mBinding.setActivity(this);
+        // data binding lifecycle owner
+        mBinding.setLifecycleOwner(this);
 
+        // update message
+        mViewModel.getMessageLiveData().observe(this, message -> {
+            if (message != null && !message.isEmpty()) {
+                Utils.showToast(this, message);
+            }
+        });
 
-    }
-
-    /**
-     * Init buttons
-     */
-    private void initButtons() {
-        Utils.info(this, "initButtons enter");
-        // loop
-        for (int i = 0; i < mButtons.length; i++) {
-            String btnId = "btnItem" + (i + 1);
-            int id = getResources().getIdentifier(btnId, "id", getPackageName());
-            mButtons[i] = findViewById(id);
-            // set click listener
-            mButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.info(DemoTableAct.this, "onClick enter");
-                    // get button
-                    Button btn = (Button) v;
-                    // update button text
-                    btn.setText(updateInfo());
-                }
-            });
-        }
-
-    }
-
-
-    /**
-     * Exit UI
-     */
-    public void Exit(View v) {
-        Utils.info(this, "Exit enter");
-        this.finish();
-    }
-
-    /**
-     * Reset UI
-     * @param v
-     */
-    public void Reset(View v) {
-        Utils.info(this, "Reset enter");
-        resetButtons();
-    }
-
-    private String updateInfo() {
-        Utils.info(this, "updateInfo enter");
-
-        mIsCircle = !mIsCircle;
-        return mIsCircle ? "X" : "O";
-    }
-
-    /**
-     * Reset buttons
-     */
-    private void resetButtons() {
-        Utils.info(this, "Reset enter");
-        // foreach loop
-        for (Button btn : mButtons) {
-            btn.setText("");
-        }
     }
 }

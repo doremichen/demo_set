@@ -22,6 +22,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Looper;
 import android.os.Messenger;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -256,8 +257,31 @@ public abstract class Utils {
     }
 
 
+    /**
+     * Show toast
+     *
+     * @param context context
+     * @param message message
+     */
     public static void showToast(Context context, String message) {
-        Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
+        // check if the main thread
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (context instanceof Activity) {
+            ((Activity) context).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            error(Utils.class, "context is not activity so it can not display toast!!!");
+        }
+
+//        Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
     }
 
     public static void showCustomizedToast(Context context, String message) {
