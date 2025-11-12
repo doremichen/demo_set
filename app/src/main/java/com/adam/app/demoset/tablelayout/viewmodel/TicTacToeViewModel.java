@@ -113,9 +113,48 @@ public class TicTacToeViewModel extends AndroidViewModel {
             handleMove(winIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
             return;
         }
-        // step3: random move
-        int index = empty.get(new Random().nextInt(empty.size()));
-        handleMove(index, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
+
+        // step3: prefer center -> corner -> edges
+        preferMove();
+
+    }
+
+    private void preferMove() {
+        int center = 4;
+        int[] coners = {0, 2, 6, 8};
+        int[] edges = {1, 3, 5, 7};
+
+        int moveIndex = -1;
+        if (mModel.isEmpty(center)) {
+            moveIndex = center;
+        } else {
+            List<Integer> availableConers = new ArrayList<>();
+            // coners
+            for (int coner : coners) {
+                if (mModel.isEmpty(coner)) {
+                    availableConers.add(coner);
+                }
+            }
+            if (!availableConers.isEmpty()) {
+                moveIndex = availableConers.get(new Random().nextInt(availableConers.size()));
+            } else {
+                // edges
+                List<Integer> availableEdges = new ArrayList<>();
+                for (int edge : edges) {
+                    if (mModel.isEmpty(edge)) {
+                        availableEdges.add(edge);
+                    }
+                }
+                if (!availableEdges.isEmpty()) {
+                    moveIndex = availableEdges.get(new Random().nextInt(availableEdges.size()));
+                }
+            }
+        }
+
+        // check move
+        if (moveIndex != -1) {
+            handleMove(moveIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
+        }
     }
 
     /**
