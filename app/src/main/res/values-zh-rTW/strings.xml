@@ -331,6 +331,7 @@
     <string name="demo_tablelayout_player_win_msg">你贏了!</string>
     <string name="demo_tablelayout_tie_msg">平手!</string>
     <string name="demo_tablelayout_computer_win_msg">電腦贏！</string>
+    <string name="demo_loading_progress_msg">載入中…</string>
 
 
 </resources>

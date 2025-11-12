@@ -101,7 +101,19 @@ public class TicTacToeViewModel extends AndroidViewModel {
             if (mModel.isEmpty(i)) empty.add(i);
         }
         if (empty.isEmpty()) return;
-
+        // step1: find player winner cell possibility
+        int blockIndex = mModel.findWinningMove(TicTacToeModel.PLAYER);
+        if (blockIndex != -1) {
+            handleMove(blockIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
+            return;
+        }
+        // step2: find computer winner cell possibility
+        int winIndex = mModel.findWinningMove(TicTacToeModel.COMPUTER);
+        if (winIndex != -1) {
+            handleMove(winIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
+            return;
+        }
+        // step3: random move
         int index = empty.get(new Random().nextInt(empty.size()));
         handleMove(index, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
     }

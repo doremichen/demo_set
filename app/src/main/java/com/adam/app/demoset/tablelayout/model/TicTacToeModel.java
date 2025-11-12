@@ -19,9 +19,9 @@ public class TicTacToeModel {
     public static final char COMPUTER = 'O';
     // win pattern
     private static final int[][] WIN_PATTERN = {
-            {0, 1, 2}, {3, 4, 5}, {6, 7, 8},
-            {0, 3, 6}, {1, 4, 7}, {2, 5, 8},
-            {0, 4, 8}, {2, 4, 6}
+            {0, 1, 2}, {3, 4, 5}, {6, 7, 8},  // horizontal
+            {0, 3, 6}, {1, 4, 7}, {2, 5, 8},  // vertical
+            {0, 4, 8}, {2, 4, 6}              // diagonal
     };
     // game board
     private final char[] mBoard = new char[9];
@@ -131,6 +131,32 @@ public class TicTacToeModel {
         }
 
         return false;
+    }
+
+    /**
+     * check if the computer wins
+     *
+     * @param player the mark of the player
+     * @return the index of the cell which will win the game
+     */
+    public int findWinningMove(char player) {
+        for (int[] pattern : WIN_PATTERN) {
+            int a = pattern[0];
+            int b = pattern[1];
+            int c = pattern[2];
+            // check if the move is possible
+            if (mBoard[a] == EMPTY && mBoard[b] == player && mBoard[c] == player) {
+                return a;
+            }
+            if (mBoard[b] == EMPTY && mBoard[a] == player && mBoard[c] == player) {
+                return b;
+            }
+            if (mBoard[c] == EMPTY && mBoard[a] == player && mBoard[b] == player) {
+                return c;
+            }
+        }
+
+        return -1;
     }
 
 }

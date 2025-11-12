@@ -330,5 +330,6 @@
     <string name="demo_tablelayout_player_win_msg">You win!</string>
     <string name="demo_tablelayout_tie_msg">Game ended in a tie!</string>
     <string name="demo_tablelayout_computer_win_msg">Computer Win！</string>
+    <string name="demo_loading_progress_msg">Loading...</string>
 
 </resources>

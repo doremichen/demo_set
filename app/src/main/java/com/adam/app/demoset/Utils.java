@@ -13,6 +13,7 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -414,16 +416,31 @@ public abstract class Utils {
         builder.create().show();
     }
 
+
+    /**
+     * Show progress dialog
+     * @param context context
+     * @param msg message
+     * @return AlertDialog
+     */
     public static AlertDialog showProgressDialog(Context context, String msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater LayoutInflater =
-                (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = LayoutInflater.inflate(R.layout.dialog_progress, null);
-        TextView info = dialogView.findViewById(R.id.progess_dlg_info);
-        info.setText(msg);
-        builder.setTitle("Info:");
-        builder.setView(dialogView);
-        return builder.create();
+        // customize Layout
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_progress_ex, null);
+
+        TextView textView = view.findViewById(R.id.progress_text);
+        textView.setText(msg);
+
+        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
+        progressBar.setIndeterminate(true);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(view)
+                .setCancelable(false)
+                .create();
+
+        dialog.show();
+        return dialog;
     }
 
     public static void hideSoftKeyBoardFrom(@NonNull Context context, @NonNull View v) {
