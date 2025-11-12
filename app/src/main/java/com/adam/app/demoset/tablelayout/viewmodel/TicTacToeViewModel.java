@@ -20,6 +20,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
+import com.adam.app.demoset.tablelayout.pattern.builder.MoveChainBuilder;
+import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.MoveHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,41 +122,17 @@ public class TicTacToeViewModel extends AndroidViewModel {
     }
 
     private void preferMove() {
-        int center = 4;
-        int[] coners = {0, 2, 6, 8};
-        int[] edges = {1, 3, 5, 7};
 
-        int moveIndex = -1;
-        if (mModel.isEmpty(center)) {
-            moveIndex = center;
-        } else {
-            List<Integer> availableConers = new ArrayList<>();
-            // coners
-            for (int coner : coners) {
-                if (mModel.isEmpty(coner)) {
-                    availableConers.add(coner);
-                }
-            }
-            if (!availableConers.isEmpty()) {
-                moveIndex = availableConers.get(new Random().nextInt(availableConers.size()));
-            } else {
-                // edges
-                List<Integer> availableEdges = new ArrayList<>();
-                for (int edge : edges) {
-                    if (mModel.isEmpty(edge)) {
-                        availableEdges.add(edge);
-                    }
-                }
-                if (!availableEdges.isEmpty()) {
-                    moveIndex = availableEdges.get(new Random().nextInt(availableEdges.size()));
-                }
-            }
-        }
+        // move handle
+        MoveHandler chain = MoveChainBuilder
+                .forDifficulty(MoveChainBuilder.Difficulty.HARD)
+                .build();
 
-        // check move
+        int moveIndex = chain.handle(mModel);
         if (moveIndex != -1) {
             handleMove(moveIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
         }
+
     }
 
     /**
