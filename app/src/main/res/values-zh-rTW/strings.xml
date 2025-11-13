@@ -332,6 +332,8 @@
     <string name="demo_tablelayout_tie_msg">平手!</string>
     <string name="demo_tablelayout_computer_win_msg">電腦贏！</string>
     <string name="demo_loading_progress_msg">載入中…</string>
+    <string name="demo_all_permissions_granted_msg">所有權限均已授予</string>
+    <string name="demo_some_permissions_denied_msg">部分權限被拒絕</string>
 
 
 </resources>

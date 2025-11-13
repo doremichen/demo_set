@@ -6,11 +6,8 @@
  */
 package com.adam.app.demoset.data_binding;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import java.util.Optional;
 
 public class WelcomeViewModel extends ViewModel {
     // Live data: user name

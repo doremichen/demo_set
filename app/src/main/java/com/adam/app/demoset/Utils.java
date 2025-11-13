@@ -282,8 +282,6 @@ public abstract class Utils {
         } else {
             error(Utils.class, "context is not activity so it can not display toast!!!");
         }
-
-//        Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
     }
 
     public static void showCustomizedToast(Context context, String message) {

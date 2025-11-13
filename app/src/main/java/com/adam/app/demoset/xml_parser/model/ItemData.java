@@ -1,7 +1,7 @@
 /**
  * Store data form xml_demo.xml file
  */
-package com.adam.app.demoset.xml_parser;
+package com.adam.app.demoset.xml_parser.model;
 
 import androidx.annotation.NonNull;
 
@@ -37,10 +37,8 @@ public class ItemData {
     @Override
     public String toString() {
         StringBuilder stb = new StringBuilder("\n");
-        stb.append("=================================\n");
         stb.append("id: ").append(this.mId).append("\n");
         stb.append("name: ").append(this.mName).append("\n");
-        stb.append("=================================\n");
         return stb.toString();
     }
 }

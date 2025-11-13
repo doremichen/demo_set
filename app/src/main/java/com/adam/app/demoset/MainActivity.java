@@ -17,11 +17,13 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.adam.app.demoset.databinding.ActivityMainBinding;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,7 +35,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,23 +45,46 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+@RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String LOG_STATUS = "log.status";
+    private static final String[] PERMISSIONS = {
+            Manifest.permission.POST_NOTIFICATIONS
+    };
+    // view binding
+    private ActivityMainBinding mBinding;
 
+    private static Map<String, Integer> buildTitleResMap() {
+        Map<String, Integer> map = new HashMap<>();
+        try {
+            // Use reflection to get all the fields in R.string
+            Field[] fields = R.string.class.getFields();
+            for (Field field : fields) {
+                String name = field.getName();
+                if (name.startsWith("title_demo_")) {
+                    int resId = field.getInt(null); // use null in static field
+                    map.put(name, resId);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate");
-        setContentView(R.layout.activity_main);
 
-        ListView listView = findViewById(R.id.list_view); // More descriptive variable name
-        // empty text view
-        View emptyView = findViewById(android.R.id.empty);
-        // set empty view to listview
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
+        ListView listView = mBinding.listView;
+        View emptyView = mBinding.empty;
         listView.setEmptyView(emptyView);
 
 
@@ -81,49 +105,49 @@ public class MainActivity extends AppCompatActivity {
         }
 
         requestNotificationPermission();
-
-        //startEnableNotifySetting();
     }
 
     /**
      * This method requests notification permission for the app.
      */
     private void requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // notification post permission
-            String[] permissions = {
-                    Manifest.permission.POST_NOTIFICATIONS
-            };
-            // register for activity result
-            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
-                    result -> {
-                        boolean allGranted = true;
-                        for (Map.Entry<String, Boolean> entry : result.entrySet()) {
-                            String permission = entry.getKey();
-                            Boolean granted = entry.getValue();
-                            if (Boolean.TRUE.equals(granted)) {
-                                Utils.info(MainActivity.this, permission + " granted");
-                            } else {
-                                Utils.info(MainActivity.this, permission + " denied");
-                                if (Manifest.permission.POST_NOTIFICATIONS.equals(permission)) {
-                                    showPermissionExplanationDialog();
-                                }
-                                allGranted = false;
-                            }
-                        }
-
-                        if (allGranted) {
-                            // All permissions granted
-                            Utils.showToast(MainActivity.this, "All permissions granted");
-                        } else {
-                            // Some permissions denied
-                            Utils.showToast(MainActivity.this, "Some permissions denied");
-                        }
-                    }).launch(permissions);
-        }
+        // register for activity result
+        registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                this::handlePermissionResult).launch(PERMISSIONS);
     }
 
-    private void showPermissionExplanationDialog() {
+    /**
+     * This method handles the result of the permission request.
+     *
+     * @param result a map of permissions and their granted status.
+     */
+    private void handlePermissionResult(Map<String, Boolean> result) {
+        boolean allGranted = true;
+        for (Map.Entry<String, Boolean> entry : result.entrySet()) {
+            String permission = entry.getKey();
+            Boolean granted = entry.getValue();
+
+            if (Boolean.TRUE.equals(granted)) {
+                Utils.info(MainActivity.this, permission + " granted");
+            } else {
+                Utils.info(MainActivity.this, permission + " denied");
+                if (Manifest.permission.POST_NOTIFICATIONS.equals(permission)) {
+                    showNotifyDialog();
+                }
+                allGranted = false;
+            }
+        }
+
+        String msg = allGranted ? getString(R.string.demo_all_permissions_granted_msg)
+                : getString(R.string.demo_some_permissions_denied_msg);
+        Utils.showToast(MainActivity.this, msg);
+
+    }
+
+    /**
+     * This method shows a dialog to the user to enable notification permission.
+     */
+    private void showNotifyDialog() {
         // post DialogButton
         Utils.DialogButton okBtn = new Utils.DialogButton(getString(R.string.label_setting_btn),
                 (dialog, which) -> startEnableNotifySetting());
@@ -137,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
      * parses it using a DOM parser, extracts relevant attributes
      * from elements tagged "data", creates ItemContent objects representing
      * this data
+     *
      * @return a list of these objects or null if the some exception is occurred.
      */
     private List<ItemContent> parseItemData() {
@@ -172,25 +197,6 @@ public class MainActivity extends AppCompatActivity {
             return null; // Indicate parsing failure
         }
     }
-
-    private static Map<String, Integer> buildTitleResMap() {
-        Map<String, Integer> map = new HashMap<>();
-        try {
-            // Use reflection to get all the fields in R.string
-            Field[] fields = R.string.class.getFields();
-            for (Field field : fields) {
-                String name = field.getName();
-                if (name.startsWith("title_demo_")) {
-                    int resId = field.getInt(null); // use null in static field
-                    map.put(name, resId);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return map;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

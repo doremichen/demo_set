@@ -8,11 +8,7 @@ package com.adam.app.demoset.data_binding;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityWelcomeBindingBinding;

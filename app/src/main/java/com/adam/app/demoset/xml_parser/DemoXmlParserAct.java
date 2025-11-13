@@ -11,6 +11,7 @@ import android.widget.ListView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.xml_parser.model.ItemData;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class DemoXmlParserAct extends AppCompatActivity {
         List<ItemData> dataSet = XmlPullParserManager.newInstance().parse();
         // build list view
         ArrayAdapter<ItemData> arrayAdapter = new ArrayAdapter<ItemData>(this, android.R.layout.simple_list_item_1, dataSet);
-        XmlPullParserManager.dumpList(dataSet);
+        //XmlPullParserManager.dumpList(dataSet);
         listView.setAdapter(arrayAdapter);
 
     }
