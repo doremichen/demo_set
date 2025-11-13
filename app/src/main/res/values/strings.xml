@@ -333,5 +333,7 @@
     <string name="demo_loading_progress_msg">Loading...</string>
     <string name="demo_all_permissions_granted_msg">All permissions granted</string>
     <string name="demo_some_permissions_denied_msg">Some permissions denied</string>
+    <string name="demo_handler_thread_work_task_is_active_msg">Work task is Active</string>
+    <string name="demo_handler_thread_work_task_is_idle_msg">Work task is Idle</string>
 
 </resources>

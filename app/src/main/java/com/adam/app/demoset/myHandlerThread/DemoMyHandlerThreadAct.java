@@ -1,25 +1,32 @@
+/**
+ * Copyright (C) 2021 Adam Chen
+ * <p>
+ * This class is the demo of handler thread
+ *
+ * @author Adam Chen
+ * @version 1.0
+ * @since 2021-11-11
+ */
 package com.adam.app.demoset.myHandlerThread;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.bumptech.glide.load.engine.Resource;
+import com.adam.app.demoset.databinding.ActivityDemoMyHandlerThreadBinding;
 
 /**
  * This is a demo of handler thread
  */
 public class DemoMyHandlerThreadAct extends AppCompatActivity implements HandlerObserver {
 
-    // Task info
-    private TextView mTaskInfo;
-
+    // view binding
+    private ActivityDemoMyHandlerThreadBinding mBinding;
 
     // My handler thread
     private MyHandlerThread mWorkThread;
@@ -27,10 +34,10 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_my_handler_thread);
 
-        //Initial text view
-        mTaskInfo = findViewById(R.id.tv_work_value);
+        mBinding = ActivityDemoMyHandlerThreadBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
 
         // start my handler thread
         mWorkThread = new MyHandlerThread();
@@ -75,6 +82,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
 
     /**
      * Execute task by press button
+     *
      * @param view button view
      */
     public void executeTask(View view) {
@@ -87,7 +95,8 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
 
     /**
      * Cancel task by press button
-     * @param view
+     *
+     * @param view button view
      */
     public void cancelTask(View view) {
         String msg = getResources().getString(R.string.toast_cancel_hdthrd);
@@ -97,6 +106,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
 
     /**
      * This is callback when the handler thread notification is triggered
+     *
      * @param data work data
      */
     @Override
@@ -107,9 +117,16 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
         String result = String.valueOf(data.getCounter()); //"Work: " + data.getCounter() + " time";
         // update task info
         runOnUiThread(() -> {
-            mTaskInfo.setText(result);
+            mBinding.tvWorkValue.setText(result);
         });
 
         Utils.info(this, "[update] exit");
+    }
+
+    @Override
+    public void updateTaskStatus(boolean isActive) {
+        String msg = (isActive)? getString(R.string.demo_handler_thread_work_task_is_active_msg)
+                : getString(R.string.demo_handler_thread_work_task_is_idle_msg);
+        Utils.showToast(this, msg);
     }
 }
