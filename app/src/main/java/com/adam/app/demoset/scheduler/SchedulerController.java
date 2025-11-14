@@ -92,7 +92,7 @@ public class SchedulerController {
      */
     private void cancelScheduledTask() {
         Utils.info(this, "cancelTask enter");
-        if (mFuture != null && mFuture.isCancelled() == false) {
+        if (mFuture != null && !mFuture.isCancelled()) {
             mFuture.cancel(true);
         }
     }

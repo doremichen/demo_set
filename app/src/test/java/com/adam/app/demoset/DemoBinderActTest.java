@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import android.os.Build;
-import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.view.View;

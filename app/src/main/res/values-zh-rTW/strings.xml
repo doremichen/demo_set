@@ -336,6 +336,7 @@
     <string name="demo_some_permissions_denied_msg">部分權限被拒絕</string>
     <string name="demo_handler_thread_work_task_is_active_msg">工作任務處於活動狀態</string>
     <string name="demo_handler_thread_work_task_is_idle_msg">工作任務處於空閒狀態</string>
+    <string name="demo_schedule_service_time_is_arrived_msg">時間已到達</string>
 
 
 </resources>

@@ -335,5 +335,6 @@
     <string name="demo_some_permissions_denied_msg">Some permissions denied</string>
     <string name="demo_handler_thread_work_task_is_active_msg">Work task is Active</string>
     <string name="demo_handler_thread_work_task_is_idle_msg">Work task is Idle</string>
+    <string name="demo_schedule_service_time_is_arrived_msg">Time is arrived</string>
 
 </resources>

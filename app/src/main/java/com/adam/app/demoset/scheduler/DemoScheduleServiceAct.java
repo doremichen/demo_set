@@ -1,3 +1,10 @@
+/**
+ * This class is used to demo schedule service
+ *
+ * @author Adam Chen
+ * @version 1.0
+ * @since 2018-10-25
+ */
 package com.adam.app.demoset.scheduler;
 
 import android.os.Build;
@@ -89,7 +96,7 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
                 Utils.info(this, "TimeArrive enter");
                 Utils.info(this, "counter = " + millisecond);
                 // show notification
-                Utils.makeStatusNotification(DemoScheduleServiceAct.this, "Time is arrived");
+                Utils.makeStatusNotification(DemoScheduleServiceAct.this, getString(R.string.demo_schedule_service_time_is_arrived_msg));
 
             }
 
