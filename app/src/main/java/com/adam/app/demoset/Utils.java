@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.Messenger;
 import android.renderscript.Allocation;
@@ -247,6 +248,11 @@ public abstract class Utils {
     public static void showSnackBar(Context context, String message) {
         // log
         Utils.info(Utils.class, "showSnackBar enter");
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
 
         Intent intent = new Intent(ACTION_SHOW_SNACKBAR);
         if (!TextUtils.isEmpty(message)) {
@@ -266,22 +272,18 @@ public abstract class Utils {
      * @param message message
      */
     public static void showToast(Context context, String message) {
+
+        String msg = context.getClass().getSimpleName() + " " + message;
+
         // check if the main thread
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (context instanceof Activity) {
-            ((Activity) context).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(context, context.getClass().getSimpleName() + " " + message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            error(Utils.class, "context is not activity so it can not display toast!!!");
-        }
+        // switch to main thread to show toast
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show());
     }
 
     public static void showCustomizedToast(Context context, String message) {
@@ -295,10 +297,30 @@ public abstract class Utils {
         customToast.setView(toastView);
         customToast.setDuration(Toast.LENGTH_SHORT);
         customToast.setGravity(Gravity.CENTER, 0, 0);
-        customToast.show();
+
+        // check if the main thread
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            customToast.show();
+            return;
+        }
+
+        // switch to main thread to show toast
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                customToast.show();
+            }
+        });
     }
 
     public static void showAlertDialog(Context context, String msg, DialogInterface.OnClickListener listener) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(R.string.dialog_info));
         builder.setMessage(msg);
@@ -353,6 +375,12 @@ public abstract class Utils {
      * @param positiveBtn positive button
      */
     public static void showAlertDialog(Context context, int titleRes, int msgRes, DialogButton nagitiveBtn, DialogButton positiveBtn) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(titleRes));
         builder.setMessage(context.getResources().getString(msgRes));
@@ -369,6 +397,12 @@ public abstract class Utils {
      * @param positiveBtn positive button
      */
     public static void showAlertDialog(Context context, int titleRes, int msgRes, DialogButton positiveBtn) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(titleRes));
         builder.setMessage(context.getResources().getString(msgRes));
@@ -384,6 +418,11 @@ public abstract class Utils {
      * @param positiveBtn positive button
      */
     public static void showAlertDialog(Context context, int titleRes, String msg, DialogButton positiveBtn) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getResources().getString(titleRes));
         builder.setMessage(msg);
@@ -396,6 +435,11 @@ public abstract class Utils {
                                        String msg,
                                        DialogInterface.OnClickListener listener1,
                                        DialogInterface.OnClickListener listener2) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater LayoutInflater =
@@ -422,6 +466,11 @@ public abstract class Utils {
      * @return AlertDialog
      */
     public static AlertDialog showProgressDialog(Context context, String msg) {
+        // check if context is activity
+        if (!(context instanceof Activity)) {
+            error(Utils.class, "context is not activity for showAlertDialog");
+            return null;
+        }
         // customize Layout
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_progress_ex, null);
