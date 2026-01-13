@@ -8,16 +8,16 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            storeFile = file("E:\\AndroidStudioProjects\\DemoApp\\SingApk\\SignDemo.jks")
-            storePassword = "123456"
-            keyAlias = "SignDemo"
-            keyPassword = "123456"
+            storeFile = file("$rootDir/SingApk/SignDemo.jks")
+            storePassword = project.findProperty("STORE_PASSWORD")
+            keyAlias = project.findProperty("KEY_ALIAS")
+            keyPassword = project.findProperty("KEY_PASSWORD")
         }
         create("release") {
-            storeFile = file("E:\\AndroidStudioProjects\\DemoApp\\SingApk\\SignDemo.jks")
-            storePassword = "123456"
-            keyAlias = "SignDemo"
-            keyPassword = "123456"
+            storeFile = file("$rootDir/SingApk/SignDemo.jks")
+            storePassword = project.findProperty("STORE_PASSWORD")
+            keyAlias = project.findProperty("KEY_ALIAS")
+            keyPassword = project.findProperty("KEY_PASSWORD")
         }
     }
 
@@ -30,7 +30,6 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
 
 
     buildTypes {
