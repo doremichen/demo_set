@@ -12,27 +12,43 @@ package com.adam.app.demoset;
 
 public class ItemContent {
 
-    private String mTitle;
-    private String mClassName;
-    private String mPkgName;
+    private final String mCategoryResKey;
+    private final String mCategory;
+    private final String mTitle;
+    private final String mClassName;
+    private final String mPkgName;
 
-    public ItemContent(String title, String className, String pkgName) {
+
+    public ItemContent(String categoryResKey,
+                       String title,
+                       String className,
+                       String pkgName) {
+        this.mCategoryResKey = categoryResKey;
+        this.mCategory = categoryResKey.toUpperCase();
         this.mTitle = title;
         this.mClassName = className;
         this.mPkgName = pkgName;
+    }
 
+
+    // --- getter ---
+    public String getCategoryResKey() {
+        return mCategoryResKey;
+    }
+
+    public String getCategory() {
+        return mCategory;
     }
 
     public String getTitle() {
-        return this.mTitle;
+        return mTitle;
     }
 
-    public String getClassName() {
-        return this.mClassName;
+    public String getClsname() {
+        return mClassName;
     }
 
-    public String getPkgName() {
-        return this.mPkgName;
+    public String getPkgname() {
+        return mPkgName;
     }
-
 }

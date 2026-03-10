@@ -17,8 +17,10 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,19 +60,30 @@ public class MainActivity extends AppCompatActivity {
     // view binding
     private ActivityMainBinding mBinding;
 
-    private static Map<String, Integer> buildTitleResMap() {
+    private List<ItemContent> mAllDemoList = new ArrayList<>();
+    private List<ItemContent> mCurrentList = new ArrayList<>();
+    private List<String> mCategoryList = new ArrayList<>();
+
+    private boolean mShowingCategory = true;
+
+    // main adapter
+    private MainListAdapter mAdapter;
+
+
+    private static Map<String, Integer> buildItemResMap(String prefix) {
         Map<String, Integer> map = new HashMap<>();
         try {
             // Use reflection to get all the fields in R.string
             Field[] fields = R.string.class.getFields();
             for (Field field : fields) {
                 String name = field.getName();
-                if (name.startsWith("title_demo_")) {
+                if (name.startsWith(prefix)) {
                     int resId = field.getInt(null); // use null in static field
                     map.put(name, resId);
                 }
             }
         } catch (IllegalAccessException e) {
+            Utils.info(MainActivity.class, "buildItemResMap error");
             e.printStackTrace();
         }
         return map;
@@ -87,25 +101,140 @@ public class MainActivity extends AppCompatActivity {
         View emptyView = mBinding.empty;
         listView.setEmptyView(emptyView);
 
+        mAllDemoList = parseItemData();
 
-        List<ItemContent> items = parseItemData(); // Extract parsing logic to a separate method
-        if (items != null) {
-            MainListAdapter adapter = new MainListAdapter(this, items); // Create adapter instance
-            listView.setAdapter(adapter);
-
-            listView.setOnItemClickListener((parent, view, position, id) -> {
-                ItemContent data = (ItemContent) parent.getItemAtPosition(position);
-                Utils.info(this, "the item: " + data.getTitle());
-
-                // Go to the specified demo item
-                Intent intent = new Intent(); // Rename 'it' to 'intent' for clarity
-                intent.setClassName(data.getPkgName(), data.getClassName());
-                startActivity(intent);
-            });
+        if (mAllDemoList != null) {
+            buildCategoryList();
+            showCategoryList();
+            listView.setOnItemClickListener(this::onItemClick);
         }
+
+        setupBackHandler();
 
         requestNotificationPermission();
     }
+
+    /**
+     * This method is used to set on click event for the list view.
+     *
+     *
+     * @param parent AdapterView
+     * @param view View
+     * @param position int
+     * @param id long
+     */
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ItemContent item = (ItemContent) parent.getItemAtPosition(position);
+        // show category
+        if (mShowingCategory) {
+            Utils.info(this, "enter category: " + item.getCategory());
+            showDemoList(item.getCategory());
+            return;
+        }
+
+        Utils.info(this, "open demo: " + item.getTitle());
+        openDemo(item);
+
+    }
+
+    /**
+     * build category list
+     *
+     */
+    private void buildCategoryList() {
+      mCategoryList.clear();
+
+      for (ItemContent item : mAllDemoList) {
+          if (!mCategoryList.contains(item.getCategory())) {
+              mCategoryList.add(item.getCategory());
+          }
+      }
+    }
+
+    /**
+     * showCategoryList
+     */
+    private void showCategoryList() {
+        mShowingCategory = true;
+        mCurrentList.clear();
+
+        for (String cat: mCategoryList) {
+            mCurrentList.add(new ItemContent(cat, cat.toUpperCase(), "", ""));
+        }
+
+        // adapter
+        mAdapter = new MainListAdapter(this, mCurrentList);
+        mBinding.listView.setAdapter(mAdapter);
+
+    }
+
+
+    /**
+     * showDemoList
+     *
+     * @param category String
+     */
+    private void showDemoList(String category) {
+        mShowingCategory = false;
+
+        mCurrentList.clear();
+
+        for (ItemContent item : mAllDemoList) {
+            if (item.getCategory().equals(category)) {
+                mCurrentList.add(item);
+            }
+        }
+
+        // adapter
+        mAdapter = new MainListAdapter(this, mCurrentList);
+        mBinding.listView.setAdapter(mAdapter);
+
+    }
+
+
+    /**
+     * openDemo
+     *
+     * @param item ItemContent
+     */
+    private void openDemo(ItemContent item) {
+        try {
+
+            Intent intent = new Intent();
+
+            intent.setClassName(item.getPkgname(), item.getClsname());
+
+            startActivity(intent);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            Utils.showToast(this, "Demo launch failed");
+
+        }
+    }
+
+    /**
+     * setupBackHandler
+     */
+    private void setupBackHandler() {
+        getOnBackPressedDispatcher().addCallback(this,
+                new OnBackPressedCallback(true) {
+                    @Override
+                    public void handleOnBackPressed() {
+                        if (mShowingCategory) {
+                            Utils.info(MainActivity.this, "exit app");
+                            setEnabled(false);
+                            getOnBackPressedDispatcher().onBackPressed();
+                            return;
+                        }
+                        Utils.info(MainActivity.this, "back to category");
+                        showCategoryList();
+                    }
+                });
+    }
+
 
     /**
      * This method requests notification permission for the app.
@@ -173,23 +302,25 @@ public class MainActivity extends AppCompatActivity {
             Element root = document.getDocumentElement();
             NodeList nodes = root.getElementsByTagName("data");
 
-            Resources res = getResources();
-            //String packageName = getPackageName();
 
-            Map<String, Integer> titleResMap = buildTitleResMap();
+            Map<String, Integer> categoryResMap = buildItemResMap("category_");
+            Map<String, Integer> titleResMap = buildItemResMap("title_demo_");
             return IntStream.range(0, nodes.getLength())
                     .mapToObj(nodes::item)
                     .filter(node -> node.getNodeType() == Node.ELEMENT_NODE)
                     .map(node -> (Element) node)
                     .map(itemData -> {
-                        String titleResKey = itemData.getAttribute("titleRes");
-                        int titleResId = titleResMap.getOrDefault(titleResKey, 0); //res.getIdentifier(titleResKey, "string", packageName);
-                        String localizedTitle = titleResId != 0 ? res.getString(titleResId) : titleResKey;
+                        String category = getString(itemData, "category_", "category");
+                        String localizedTitle = getString(itemData, "title_demo_", "titleRes");
                         return new ItemContent(
+                                category,
                                 localizedTitle,
                                 itemData.getAttribute("clsname"),
-                                itemData.getAttribute("pkgname"));
+                                itemData.getAttribute("pkgname")
+                        );
+
                     })
+
                     .collect(Collectors.toList());
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
@@ -197,6 +328,19 @@ public class MainActivity extends AppCompatActivity {
             return null; // Indicate parsing failure
         }
     }
+
+
+    private String getString(Element itemData, String prefix, String attribute) {
+
+        Resources res = getResources();
+
+        Map<String, Integer> resMap = buildItemResMap(prefix);
+        String attri = itemData.getAttribute(attribute);
+        int resId = resMap.getOrDefault(attri, 0);
+        return resId != 0 ? res.getString(resId) : attri;
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

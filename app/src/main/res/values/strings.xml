@@ -1,4 +1,11 @@
 <resources>
+    <!--Category string-->
+    <string name="category_ui">UI</string>
+    <string name="category_system">System</string>
+    <string name="category_hardware">Hardware</string>
+    <string name="category_network">Network</string>
+    <string name="category_storage">Storage</string>
+    <string name="category_ipc">IPC</string>
     <!-- title string-->
     <!-- string for Demo shutdown (commented out) -->
     <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->

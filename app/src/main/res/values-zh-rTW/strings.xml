@@ -1,8 +1,14 @@
 <resources>
+    <!--Category string-->
+    <string name="category_ui">介面</string>
+    <string name="category_system">系統</string>
+    <string name="category_hardware">硬體</string>
+    <string name="category_network">網路</string>
+    <string name="category_storage">儲存</string>
+    <string name="category_ipc">程序通訊</string>
     <!-- title string -->
     <!-- string for Demo shutdown (註解掉) -->
     <!-- <string name="title_demo_Shutdown">關機範例</string> -->
-
     <string name="title_demo_file_expore">檔案瀏覽範例</string>
     <string name="title_demo_service">服務範例</string>
     <string name="title_demo_animation">動畫範例</string>
