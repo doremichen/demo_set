@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2026 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the dialog of note
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/10/31
+ */
 package com.adam.app.demoset.database.dialog;
 
 import android.app.AlertDialog;
@@ -19,8 +28,8 @@ public abstract class NoteDialog {
     protected static final String RBUTTON_CREATE_NOTE = "Save";
     protected static final String RBUTTON_UPDATE_NOTE = "Update";
     private final AlertDialog.Builder mAlertBuilder;
-    private OnDlgCallBack mCallback;
     private final LayoutInflater mInflater;
+    private OnDlgCallBack mCallback;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -96,6 +105,7 @@ public abstract class NoteDialog {
 
     public interface OnDlgCallBack {
         void onShowMessage(String msg);
+
         void updateList(String content);
     }
 }

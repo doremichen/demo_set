@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This is touch listener of recycler view
+ * </p>
+ *
+ * @author: AdamChen
+ * @version 1.0 - 2018/11/12
+ */
 package com.adam.app.demoset.database.common;
 
 import android.view.MotionEvent;
@@ -16,9 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 public class MyTouchItemListener implements OnItemTouchListener {
 
-    private onItemClickListener mClickListener;
-
     private final ScheduledExecutorService mService;
+    private onItemClickListener mClickListener;
     private ScheduledFuture<?> mFuture;
 
 

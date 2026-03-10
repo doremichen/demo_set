@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the view model of note
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/11/12
+ */
 package com.adam.app.demoset.database.room;
 
 import android.app.Application;
@@ -14,9 +23,8 @@ import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
 
-    LiveData<List<Note>> mAllNotes;
-
     private final NoteRepository mRepository;
+    LiveData<List<Note>> mAllNotes;
 
 
     /**

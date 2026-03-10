@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the dao of note
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/11/12
+ */
 package com.adam.app.demoset.database.room.room;
 
 import androidx.lifecycle.LiveData;

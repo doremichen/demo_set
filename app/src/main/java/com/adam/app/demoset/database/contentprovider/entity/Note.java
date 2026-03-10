@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2026 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the entity of note
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/10/31
+ */
 package com.adam.app.demoset.database.contentprovider.entity;
 
 import android.database.Cursor;

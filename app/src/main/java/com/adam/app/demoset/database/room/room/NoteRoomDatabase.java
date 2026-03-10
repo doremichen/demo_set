@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the database of note
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/11/12
+ */
 package com.adam.app.demoset.database.room.room;
 
 import android.content.Context;
@@ -14,7 +23,6 @@ import com.adam.app.demoset.database.room.entity.Note;
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
-    private static volatile NoteRoomDatabase sInatance;
     private static final RoomDatabase.Callback sCallback = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -22,6 +30,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
             Utils.info(this, "Note room database is opened");
         }
     };
+    private static volatile NoteRoomDatabase sInatance;
 
     public static NoteRoomDatabase getDatabase(final Context ctx) {
         if (sInatance == null) {

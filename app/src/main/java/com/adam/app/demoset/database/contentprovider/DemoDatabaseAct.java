@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2026 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This class is the activity of database
+ * </p>
+ *
+ * @author Adam Chen
+ * @version 1.0 - 2018/10/31
+ */
 package com.adam.app.demoset.database.contentprovider;
 
 import android.content.Context;
@@ -27,10 +36,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.database.common.MyTouchItemListener;
+import com.adam.app.demoset.database.contentprovider.entity.Note;
 import com.adam.app.demoset.database.dialog.CreateNoteDialog;
 import com.adam.app.demoset.database.dialog.NoteDialog;
 import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
-import com.adam.app.demoset.database.contentprovider.entity.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
