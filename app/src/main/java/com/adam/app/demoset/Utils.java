@@ -248,11 +248,6 @@ public abstract class Utils {
     public static void showSnackBar(Context context, String message) {
         // log
         Utils.info(Utils.class, "showSnackBar enter");
-        // check if context is activity
-        if (!(context instanceof Activity)) {
-            error(Utils.class, "context is not activity for showAlertDialog");
-            return;
-        }
 
         Intent intent = new Intent(ACTION_SHOW_SNACKBAR);
         if (!TextUtils.isEmpty(message)) {

@@ -184,7 +184,7 @@
     <!-- UI -->
     <data category="category_ui"
         titleRes="title_demo_binding"
-        clsname="com.adam.app.demoset.data_binding.DemoBindingAct"
+        clsname="com.adam.app.demoset.databinding.DemoBindingAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- System -->

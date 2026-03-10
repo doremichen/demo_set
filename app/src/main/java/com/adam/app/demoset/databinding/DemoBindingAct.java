@@ -4,7 +4,7 @@
  * Author: Adam Chen
  * Date: 2025/06/27
  */
-package com.adam.app.demoset.data_binding;
+package com.adam.app.demoset.databinding;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.databinding.ActivityDemoBindingBinding;
 
 public class DemoBindingAct extends AppCompatActivity {
 

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -161,7 +162,12 @@ public class DemoServiceAct extends AppCompatActivity {
         // log
         log("setSnackMessage enter");
         // show snackbar
-        Snackbar.make(mBinding.getRoot(), msg, Snackbar.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(mBinding.getRoot(), msg, Snackbar.LENGTH_SHORT);
+        View view = snackbar.getView();
+        view.setBackgroundColor(getColor(R.color.snackbar_bg));
+        TextView tv = view.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTextColor(getColor(R.color.snackbar_text));
+        snackbar.show();
     }
 
     /**

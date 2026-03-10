@@ -119,11 +119,11 @@
             android:label="@string/title_demo_simple_coroutine"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".data_binding.WelcomeBindingAct"
+            android:name=".databinding.WelcomeBindingAct"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".data_binding.DemoBindingAct"
+            android:name=".databinding.DemoBindingAct"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity

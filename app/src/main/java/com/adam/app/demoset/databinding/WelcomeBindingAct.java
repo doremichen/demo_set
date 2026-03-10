@@ -4,14 +4,13 @@
  * Author: Adam Chen
  * Date: 2025/06/27
  */
-package com.adam.app.demoset.data_binding;
+package com.adam.app.demoset.databinding;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.databinding.ActivityWelcomeBindingBinding;
 
 public class WelcomeBindingAct extends AppCompatActivity {
 
