@@ -343,6 +343,8 @@
     <string name="demo_handler_thread_work_task_is_active_msg">工作任務處於活動狀態</string>
     <string name="demo_handler_thread_work_task_is_idle_msg">工作任務處於空閒狀態</string>
     <string name="demo_schedule_service_time_is_arrived_msg">時間已到達</string>
+    <string name="demo_database_item_data_example">2024 OCT 24</string>
+    <string name="demo_database_item_content_example">這是筆記本內容範例</string>
 
 
 </resources>

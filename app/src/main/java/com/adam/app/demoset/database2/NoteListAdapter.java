@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ *
+ * Description: This is the adapter of ui list
+ *
+ * @author: AdamChen
+ * @version 1.0 - 2018/11/12
+ *
+ */
 package com.adam.app.demoset.database2;
 
 import android.content.Context;
@@ -20,11 +29,9 @@ import java.util.List;
 public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyViewHolder> {
 
     private List<Note> mNotes;
-    private Context mCtx;
 
     public NoteListAdapter(Context context) {
         Utils.info(this, "Constructor");
-        mCtx = context;
     }
 
     public void setNotes(@NonNull List<Note> notes) {
@@ -36,7 +43,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Utils.info(this, "onCreateViewHolder enter");
-        View view = LayoutInflater.from(mCtx).inflate(R.layout.item_note_layout,
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_note_layout,
                 viewGroup, false);
         return new MyViewHolder(view);
     }

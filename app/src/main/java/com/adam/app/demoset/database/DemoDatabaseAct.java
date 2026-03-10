@@ -3,6 +3,7 @@ package com.adam.app.demoset.database;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +11,8 @@ import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -26,7 +29,6 @@ import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.database.dialog.CreateNoteDialog;
 import com.adam.app.demoset.database.dialog.NoteDialog;
 import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
-import com.adam.app.demoset.database.provider.MyDBProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
 
     private ArrayList<Note> mNotes;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +84,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         mNotes = new ArrayList<Note>();
 
         // Create list adapter
-        mAdapter = new UIListAdapter(this, mNotes);
+        mAdapter = new UIListAdapter(mNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -157,6 +160,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void triggerVibrator() {
         Utils.info(this, "triggerVibrator enter");
         Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);

@@ -343,5 +343,7 @@
     <string name="demo_handler_thread_work_task_is_active_msg">Work task is Active</string>
     <string name="demo_handler_thread_work_task_is_idle_msg">Work task is Idle</string>
     <string name="demo_schedule_service_time_is_arrived_msg">Time is arrived</string>
+    <string name="demo_database_item_data_example">2024 OCT 24</string>
+    <string name="demo_database_item_content_example">This is note content example</string>
 
 </resources>

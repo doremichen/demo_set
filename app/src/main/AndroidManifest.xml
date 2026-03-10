@@ -255,7 +255,7 @@
             android:exported="true"
             android:label="@string/title_activity_demo_database"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.DemoSet.NoActionBar"/>
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:exported="true"
@@ -271,7 +271,7 @@
             android:exported="true"
             android:label="@string/title_activity_demo_room"
             android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/Theme.DemoSet.NoActionBar"/>
         <activity
             android:name=".quicksetting.DemoQuickSetting"
             android:exported="true"
