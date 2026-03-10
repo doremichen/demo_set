@@ -239,10 +239,12 @@ public class DemoDatabaseAct extends AppCompatActivity {
 
     private void showOptionDlg(final int position) {
         Utils.info(this, "showOptionDlg enter position = " + position);
-        CharSequence[] items = new CharSequence[]{"Update", "Delete"};
+        CharSequence[] items = new CharSequence[]{
+                getString(R.string.demo_database_dlg_update),
+                getString(R.string.demo_database_dlg_delete)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Option:");
+        builder.setTitle(R.string.demo_database_dlg_option);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

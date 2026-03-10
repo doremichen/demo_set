@@ -345,5 +345,12 @@
     <string name="demo_schedule_service_time_is_arrived_msg">Time is arrived</string>
     <string name="demo_database_item_data_example">2024 OCT 24</string>
     <string name="demo_database_item_content_example">This is note content example</string>
+    <string name="demo_database_dlg_create_note">Create note</string>
+    <string name="demo_database_dlg_save">Save</string>
+    <string name="demo_database_dlg_update_note">Update Note</string>
+    <string name="demo_database_dlg_update">Update</string>
+    <string name="demo_database_dlg_cancel">Cancel\n</string>
+    <string name="demo_database_dlg_option">Option: </string>
+    <string name="demo_database_dlg_delete">Delete</string>
 
 </resources>

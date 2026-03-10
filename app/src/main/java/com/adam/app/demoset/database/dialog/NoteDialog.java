@@ -23,18 +23,22 @@ import com.adam.app.demoset.Utils;
 
 public abstract class NoteDialog {
 
-    protected static final String TITLE_CREATE_NOTE = "Create note";
-    protected static final String TITLE_UPDATE_NOTE = "Update note";
-    protected static final String RBUTTON_CREATE_NOTE = "Save";
-    protected static final String RBUTTON_UPDATE_NOTE = "Update";
+//    protected static final String TITLE_CREATE_NOTE = "Create note";
+//    protected static final String TITLE_UPDATE_NOTE = "Update note";
+//    protected static final String RBUTTON_CREATE_NOTE = "Save";
+//    protected static final String RBUTTON_UPDATE_NOTE = "Update";
     private final AlertDialog.Builder mAlertBuilder;
     private final LayoutInflater mInflater;
     private OnDlgCallBack mCallback;
+
+    private Context mContext;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
         mAlertBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
         mAlertBuilder.setCancelable(false);
+
+        mContext = context.getApplicationContext();
     }
 
     public void registerListener(OnDlgCallBack listener) {
@@ -71,13 +75,16 @@ public abstract class NoteDialog {
                     return;
                 }
 
-                if (RBUTTON_CREATE_NOTE.equals(dlgRbutton)) {
+                String saveNote = mContext.getString(R.string.demo_database_dlg_save);
+                String updateNote = mContext.getString(R.string.demo_database_dlg_update);
+
+                if (saveNote.equals(dlgRbutton)) {
                     // Info UI to insert data
                     if (mCallback != null) {
                         mCallback.updateList(strInput);
                     }
 
-                } else if (RBUTTON_UPDATE_NOTE.equals(dlgRbutton)) {
+                } else if (updateNote.equals(dlgRbutton)) {
                     // Info UI to update databse
                     if (mCallback != null) {
                         mCallback.updateList(strInput);
@@ -85,7 +92,8 @@ public abstract class NoteDialog {
                 }
             }
         });
-        mAlertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        String cancel = mContext.getString(R.string.demo_database_dlg_cancel);
+        mAlertBuilder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Utils.info(this, "Negative click");

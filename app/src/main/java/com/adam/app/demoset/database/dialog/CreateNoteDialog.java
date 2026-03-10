@@ -11,23 +11,27 @@ package com.adam.app.demoset.database.dialog;
 
 import android.content.Context;
 
+import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 public class CreateNoteDialog extends NoteDialog {
 
+    private Context mContext;
+
     public CreateNoteDialog(Context context) {
         super(context);
+        mContext = context.getApplicationContext();
     }
 
     @Override
     public String onDlgTitle() {
         Utils.info(this, "onDlgTitle enter");
-        return TITLE_CREATE_NOTE;
+        return mContext.getString(R.string.demo_database_dlg_create_note);
     }
 
     @Override
     public String onDlgRightButton() {
         Utils.info(this, "onDlgRightButton enter");
-        return RBUTTON_CREATE_NOTE;
+        return mContext.getString(R.string.demo_database_dlg_save);
     }
 }

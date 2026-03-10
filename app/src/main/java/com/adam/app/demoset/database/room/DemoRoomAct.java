@@ -9,6 +9,7 @@
 package com.adam.app.demoset.database.room;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -235,21 +236,28 @@ public class DemoRoomAct extends AppCompatActivity {
 
     private void showOptionDlg(final int position) {
         Utils.info(this, "showOptionDlg enter position = " + position);
-        CharSequence[] items = {"Update", "Delete"};
+        CharSequence[] items = new CharSequence[]{
+                getString(R.string.demo_database_dlg_update),
+                getString(R.string.demo_database_dlg_delete)};
 
-        new AlertDialog.Builder(this)
-                .setTitle("Option:")
-                .setItems(items, (dialog, which) -> {
-                    Utils.info(this, "onClick enter which = " + which);
-                    if (which == 0) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.demo_database_dlg_option);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Utils.info(this, "onClick enter which = " + which);
+                switch (which) {
+                    case 0:     // Update
                         showUpdateDlg(position);
-                    } else if (which == 1) {
+                        break;
+                    case 1:     // Delete
                         deleteNote(position);
-                    }
-                })
-                .show();
-
+                        break;
+                }
+            }
+        });
         Utils.info(this, "showOptionDlg show");
+        builder.create().show();
     }
 
     private void showUpdateDlg(final int position) {

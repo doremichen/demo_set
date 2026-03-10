@@ -345,6 +345,13 @@
     <string name="demo_schedule_service_time_is_arrived_msg">時間已到達</string>
     <string name="demo_database_item_data_example">2024 OCT 24</string>
     <string name="demo_database_item_content_example">這是筆記本內容範例</string>
+    <string name="demo_database_dlg_create_note">創建筆記</string>
+    <string name="demo_database_dlg_save">儲存</string>
+    <string name="demo_database_dlg_update_note">更新筆記</string>
+    <string name="demo_database_dlg_update">更新</string>
+    <string name="demo_database_dlg_cancel">取消</string>
+    <string name="demo_database_dlg_option">選擇: </string>
+    <string name="demo_database_dlg_delete">刪除</string>
 
 
 </resources>
