@@ -1,13 +1,13 @@
-package com.adam.app.demoset.database;
+package com.adam.app.demoset.database.contentprovider.entity;
 
 import android.database.Cursor;
 
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database.provider.MyDBProvider;
+import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
 
 public class Note {
 
-    private String mId;
+    private final String mId;
     private String mTimeStamp;
     private String mNote;
 

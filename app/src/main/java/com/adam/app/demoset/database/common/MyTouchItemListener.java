@@ -1,10 +1,11 @@
-package com.adam.app.demoset.database2;
+package com.adam.app.demoset.database.common;
+
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.adam.app.demoset.Utils;
 
@@ -17,7 +18,7 @@ public class MyTouchItemListener implements OnItemTouchListener {
 
     private onItemClickListener mClickListener;
 
-    private ScheduledExecutorService mService;
+    private final ScheduledExecutorService mService;
     private ScheduledFuture<?> mFuture;
 
 
@@ -48,21 +49,26 @@ public class MyTouchItemListener implements OnItemTouchListener {
         Utils.info(this, "onInterceptTouchEvent enter");
         View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
         Utils.info(this, "child = " + child);
-        if (child != null) {
-            int position = recyclerView.getChildAdapterPosition(child);
+        if (!Utils.areAllNotNull(child)) {
+            return false;
+        }
 
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                Utils.info(this, "Start long click timer");
+        int position = recyclerView.getChildAdapterPosition(child);
+
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Utils.info(this, "Start long click timer: position " + position);
                 // Start long click timer
                 mFuture = mService.schedule(new LongClickTask(position), 2L, TimeUnit.SECONDS);
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                break;
+            case MotionEvent.ACTION_UP:
                 // Cancel long click timer
                 Utils.info(this, "cancel long click timer");
                 mFuture.cancel(true);
-            }
+                break;
         }
 
-        return false;
+        return true;
     }
 
     @Override
@@ -87,7 +93,7 @@ public class MyTouchItemListener implements OnItemTouchListener {
      */
     private class LongClickTask implements Runnable {
 
-        private int mPos;
+        private final int mPos;
 
         public LongClickTask(int position) {
             mPos = position;

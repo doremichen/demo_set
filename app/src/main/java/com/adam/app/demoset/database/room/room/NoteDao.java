@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database2.room;
+package com.adam.app.demoset.database.room.room;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,6 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.adam.app.demoset.database.room.entity.Note;
 
 import java.util.List;
 

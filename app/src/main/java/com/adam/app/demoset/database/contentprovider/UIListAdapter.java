@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2026 Adam Chen. All rights reserved.
- *
+ * <p>
  * Description: This class is the adapter of ui list
  *
  * @author Adam Chen
  * @version 1.0 - 2018/10/31
  */
-package com.adam.app.demoset.database;
+package com.adam.app.demoset.database.contentprovider;
 
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.database.contentprovider.entity.Note;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

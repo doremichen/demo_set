@@ -1,6 +1,15 @@
-package com.adam.app.demoset.database2;
+/**
+ * Copyright (C) 2018 Adam Chen. All rights reserved.
+ * <p>
+ * Description: This is the Demo room database activity
+ *
+ * @author: AdamChen
+ * @version 1.0 - 2018/11/12
+ */
+package com.adam.app.demoset.database.room;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,21 +23,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database2.dialog.CreateNoteDialog;
-import com.adam.app.demoset.database2.dialog.NoteDialog;
-import com.adam.app.demoset.database2.dialog.UpdateNoteDialog;
-import com.adam.app.demoset.database2.room.Note;
+import com.adam.app.demoset.database.common.MyTouchItemListener;
+import com.adam.app.demoset.database.room.dialog.CreateNoteDialog;
+import com.adam.app.demoset.database.room.dialog.NoteDialog;
+import com.adam.app.demoset.database.room.dialog.UpdateNoteDialog;
+import com.adam.app.demoset.database.room.entity.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -77,7 +88,7 @@ public class DemoRoomAct extends AppCompatActivity {
         mEmptyNoteView = this.findViewById(R.id.empty_notes_view);
 
         // Get view Model
-        mViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         mViewModel.mAllNotes.observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
@@ -94,7 +105,7 @@ public class DemoRoomAct extends AppCompatActivity {
         });
 
         // Create list adapter
-        mAdapter = new NoteListAdapter(this);
+        mAdapter = new NoteListAdapter();
 
         // Build list
         RecyclerView.LayoutManager mGridManager = new GridLayoutManager(this, 3);
@@ -105,6 +116,7 @@ public class DemoRoomAct extends AppCompatActivity {
         // Click listener
         mTouchListener = new MyTouchItemListener();
         mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onLongClick(int position) {
                 Utils.info(this, "onLongClick");
@@ -168,6 +180,7 @@ public class DemoRoomAct extends AppCompatActivity {
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void triggerVibrator() {
         Utils.info(this, "triggerVibrator enter");
         Vibrator vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);

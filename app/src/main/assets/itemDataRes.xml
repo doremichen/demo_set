@@ -118,13 +118,13 @@
     <!-- Storage -->
     <data category="category_storage"
         titleRes="title_demo_database"
-        clsname="com.adam.app.demoset.database.DemoDatabaseAct"
+        clsname="com.adam.app.demoset.database.contentprovider.DemoDatabaseAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- Storage -->
     <data category="category_storage"
         titleRes="title_demo_room_database"
-        clsname="com.adam.app.demoset.database2.DemoRoomAct"
+        clsname="com.adam.app.demoset.database.room.DemoRoomAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- System -->

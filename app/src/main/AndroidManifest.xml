@@ -251,7 +251,7 @@
             android:label="@string/title_activity_demo_table_layout"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".database.DemoDatabaseAct"
+            android:name=".database.contentprovider.DemoDatabaseAct"
             android:exported="true"
             android:label="@string/title_activity_demo_database"
             android:screenOrientation="nosensor"
@@ -267,7 +267,7 @@
             android:label="@string/title_activity_demo_work_manager"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".database2.DemoRoomAct"
+            android:name=".database.room.DemoRoomAct"
             android:exported="true"
             android:label="@string/title_activity_demo_room"
             android:screenOrientation="nosensor"
@@ -333,7 +333,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
         <provider
-            android:name=".database.provider.MyDBProvider"
+            android:name=".database.contentprovider.provider.MyDBProvider"
             android:authorities="com.adam.app.demoset.provider.MyNote"
             android:enabled="true"
             android:exported="true"

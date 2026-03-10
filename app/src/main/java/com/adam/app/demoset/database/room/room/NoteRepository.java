@@ -1,21 +1,20 @@
-package com.adam.app.demoset.database2;
+package com.adam.app.demoset.database.room.room;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
 import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database2.room.Note;
-import com.adam.app.demoset.database2.room.NoteDao;
-import com.adam.app.demoset.database2.room.NoteRoomDatabase;
+import com.adam.app.demoset.database.room.entity.Note;
 
 import java.util.List;
 
 public class NoteRepository {
 
-    private LiveData<List<Note>> mAllNotes;
-    private NoteDao mNoteDao;
+    private final LiveData<List<Note>> mAllNotes;
+    private final NoteDao mNoteDao;
 
     /**
      * Initial note dao
@@ -61,7 +60,7 @@ public class NoteRepository {
      */
     private static class InsertTask extends AsyncTask<Note, Void, Void> {
 
-        private NoteDao mDao;
+        private final NoteDao mDao;
 
         InsertTask(NoteDao dao) {
             this.mDao = dao;
@@ -78,7 +77,7 @@ public class NoteRepository {
 
     private static class UpdateTask extends AsyncTask<Note, Void, Void> {
 
-        private NoteDao mDao;
+        private final NoteDao mDao;
 
         UpdateTask(NoteDao dao) {
             this.mDao = dao;
@@ -95,7 +94,7 @@ public class NoteRepository {
 
     private static class DeleteTask extends AsyncTask<Note, Void, Void> {
 
-        private NoteDao mDao;
+        private final NoteDao mDao;
 
         DeleteTask(NoteDao dao) {
             this.mDao = dao;

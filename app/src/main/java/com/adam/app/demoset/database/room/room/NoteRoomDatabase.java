@@ -1,22 +1,21 @@
-package com.adam.app.demoset.database2.room;
+package com.adam.app.demoset.database.room.room;
 
-import androidx.sqlite.db.SupportSQLiteDatabase;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import android.content.Context;
-import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.database.room.entity.Note;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
-    public abstract NoteDao getNoteDao();
-
     private static volatile NoteRoomDatabase sInatance;
-
-    private static RoomDatabase.Callback sCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback sCallback = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
@@ -35,4 +34,6 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         }
         return sInatance;
     }
+
+    public abstract NoteDao getNoteDao();
 }

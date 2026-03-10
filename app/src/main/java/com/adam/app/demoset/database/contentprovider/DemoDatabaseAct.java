@@ -1,8 +1,9 @@
-package com.adam.app.demoset.database;
+package com.adam.app.demoset.database.contentprovider;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,40 +11,41 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database.dialog.CreateNoteDialog;
-import com.adam.app.demoset.database.dialog.NoteDialog;
-import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
+import com.adam.app.demoset.database.common.MyTouchItemListener;
+import com.adam.app.demoset.database.contentprovider.dialog.CreateNoteDialog;
+import com.adam.app.demoset.database.contentprovider.dialog.NoteDialog;
+import com.adam.app.demoset.database.contentprovider.dialog.UpdateNoteDialog;
+import com.adam.app.demoset.database.contentprovider.entity.Note;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DemoDatabaseAct extends AppCompatActivity {
 
-    private static final int ACTION_SHOW_OPTION = 0X2456;
     public static final int REQUEST_VIBRATOR_PERMISSION_CODE = 0X1357;
-
+    private static final int ACTION_SHOW_OPTION = 0X2456;
     private RecyclerView mRecyclerView;
     private TextView mEmptyNoteView;
 
     private UIListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
-
+    private ArrayList<Note> mNotes;
     private final Handler mUIHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -55,7 +57,6 @@ public class DemoDatabaseAct extends AppCompatActivity {
             }
         }
     };
-
     private final View.OnClickListener mFabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -63,8 +64,6 @@ public class DemoDatabaseAct extends AppCompatActivity {
             showAddNoteDlg();
         }
     };
-
-    private ArrayList<Note> mNotes;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -90,7 +89,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 
-                // Click listener
+        // Click listener
         mTouchListener = new MyTouchItemListener();
         mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
             @Override
@@ -198,7 +197,7 @@ public class DemoDatabaseAct extends AppCompatActivity {
         NoteDialog dlg = new CreateNoteDialog(DemoDatabaseAct.this);
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
-            public void info(String msg) {
+            public void onShowMessage(String msg) {
                 Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
@@ -206,6 +205,10 @@ public class DemoDatabaseAct extends AppCompatActivity {
             @Override
             public void updateList(String content) {
                 Utils.info(this, "updateList enter");
+
+                // Insert data to database
+                Uri uri = DBController.INSTANCE.addNote(content);
+                Utils.info(this, "newUri: " + uri.getLastPathSegment());
 
                 // Query data form database
                 Cursor c = DBController.INSTANCE.queryNote(content);
@@ -254,10 +257,10 @@ public class DemoDatabaseAct extends AppCompatActivity {
 
         final Note note = mNotes.get(position);
 
-        NoteDialog dlg = new UpdateNoteDialog(DemoDatabaseAct.this, note.getId());
+        NoteDialog dlg = new UpdateNoteDialog(DemoDatabaseAct.this);
         dlg.registerListener(new NoteDialog.OnControllerCallBack() {
             @Override
-            public void info(String msg) {
+            public void onShowMessage(String msg) {
                 Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
@@ -265,6 +268,10 @@ public class DemoDatabaseAct extends AppCompatActivity {
             @Override
             public void updateList(String content) {
                 Utils.info(this, "updateList enter");
+
+                // Update data
+                int updateId = DBController.INSTANCE.updateNote(note.getId(), content);
+                Utils.info(this, "updateId: " + updateId);
 
                 // Query data form database
                 Cursor c = DBController.INSTANCE.queryNote(content);

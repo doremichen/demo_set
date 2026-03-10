@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database.provider;
+package com.adam.app.demoset.database.contentprovider.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -9,43 +9,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.adam.app.demoset.Utils;
 
 public class MyDBProvider extends ContentProvider {
 
-    // Database information
-    private static final String DATABASE_NAME = "Adam";
-    private static final String TABLE_NAME = "NoteTable";
-    private static final int DATABSE_VERSION = 1;
-
-    // Build the uri
-    private static final String AUTHORITY = "com.adam.app.demoset.provider.MyNote";
-    private static final String URL = "content://" + AUTHORITY + "/"
-            + TABLE_NAME;
-    public static final Uri MYTABLE_URI = Uri.parse(URL);
-
     // Index for Uri matcher
     public static final int MYTABLE = 1;
     public static final int MYTABLE_ID = 2;
-
-    // Construct Uri matcher
-    private static final UriMatcher URI_MATCHER = new UriMatcher(
-            UriMatcher.NO_MATCH);
-
-    static {
-        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME, MYTABLE);
-        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME + "/#", MYTABLE_ID);
-    }
-
     // The column name of database
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NOTE = "note";
     public static final String COLUMN_TIMESTAMP = "timestamp";
-
+    // Database information
+    private static final String DATABASE_NAME = "Adam";
+    private static final String TABLE_NAME = "NoteTable";
     // Create table sqlite
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + "("
@@ -53,29 +35,19 @@ public class MyDBProvider extends ContentProvider {
                     + COLUMN_TIMESTAMP + " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP, "
                     + COLUMN_NOTE + " TEXT"
                     + ")";
+    private static final int DATABSE_VERSION = 1;
+    // Build the uri
+    private static final String AUTHORITY = "com.adam.app.demoset.provider.MyNote";
+    private static final String URL = "content://" + AUTHORITY + "/"
+            + TABLE_NAME;
+    public static final Uri MYTABLE_URI = Uri.parse(URL);
+    // Construct Uri matcher
+    private static final UriMatcher URI_MATCHER = new UriMatcher(
+            UriMatcher.NO_MATCH);
 
-    // My database helper
-    private static class MyDBHelper extends SQLiteOpenHelper {
-
-        public MyDBHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABSE_VERSION);
-            Utils.info(this, "MyDbHelper constructor...");
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            Utils.info(this, "onCreate enter");
-            // Create db
-            db.execSQL(CREATE_TABLE);
-
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Utils.info(this, "onUpgrade enter");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-            onCreate(db);
-        }
+    static {
+        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME, MYTABLE);
+        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME + "/#", MYTABLE_ID);
     }
 
     private SQLiteDatabase mWriteDatabase;
@@ -249,5 +221,29 @@ public class MyDBProvider extends ContentProvider {
         this.getContext().getContentResolver().notifyChange(uri, null);
 
         return rowUpdate;
+    }
+
+    // My database helper
+    private static class MyDBHelper extends SQLiteOpenHelper {
+
+        public MyDBHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABSE_VERSION);
+            Utils.info(this, "MyDbHelper constructor...");
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            Utils.info(this, "onCreate enter");
+            // Create db
+            db.execSQL(CREATE_TABLE);
+
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Utils.info(this, "onUpgrade enter");
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
+        }
     }
 }

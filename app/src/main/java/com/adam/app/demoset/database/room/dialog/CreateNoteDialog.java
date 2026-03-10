@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database2.dialog;
+package com.adam.app.demoset.database.room.dialog;
 
 import android.content.Context;
 

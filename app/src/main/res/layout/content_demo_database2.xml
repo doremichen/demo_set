@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".database2.DemoRoomAct"
+    tools:context=".database.room.DemoRoomAct"
     tools:showIn="@layout/activity_demo_database2">
 
     <androidx.recyclerview.widget.RecyclerView

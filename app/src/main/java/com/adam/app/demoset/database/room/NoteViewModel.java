@@ -1,12 +1,14 @@
-package com.adam.app.demoset.database2;
+package com.adam.app.demoset.database.room;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database2.room.Note;
+import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.database.room.room.NoteRepository;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     LiveData<List<Note>> mAllNotes;
 
-    private NoteRepository mRepository;
+    private final NoteRepository mRepository;
 
 
     /**

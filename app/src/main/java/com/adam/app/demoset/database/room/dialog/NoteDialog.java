@@ -1,9 +1,8 @@
-package com.adam.app.demoset.database.dialog;
+package com.adam.app.demoset.database.room.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database.DBController;
 
 public abstract class NoteDialog {
 
@@ -20,11 +18,9 @@ public abstract class NoteDialog {
     protected static final String TITLE_UPDATE_NOTE = "Update note";
     protected static final String RBUTTON_CREATE_NOTE = "Save";
     protected static final String RBUTTON_UPDATE_NOTE = "Update";
-
-    private OnControllerCallBack mListener;
-
-    private LayoutInflater mInflater;
     private final AlertDialog.Builder mAlertBuilder;
+    private OnControllerCallBack mListener;
+    private final LayoutInflater mInflater;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -61,29 +57,19 @@ public abstract class NoteDialog {
                 if (TextUtils.isEmpty(strInput)) {
                     // Info UI
                     if (mListener != null) {
-                        mListener.info("Please input the valid and nonempty message.");
+                        mListener.onShowMessage("Please input the valid and nonempty message.");
                     }
                     return;
                 }
 
                 if (RBUTTON_CREATE_NOTE.equals(dlgRbutton)) {
-
-                    // Insert data to database
-                    Uri uri = DBController.INSTANCE.addNote(strInput);
-                    Utils.info(this, "newUri: " + uri.getLastPathSegment());
-
-                    // Info UI
+                    // Info UI to insert data
                     if (mListener != null) {
                         mListener.updateList(strInput);
                     }
 
                 } else if (RBUTTON_UPDATE_NOTE.equals(dlgRbutton)) {
-
-                    // Update data
-                    int updateId = DBController.INSTANCE.updateNote(updateId(), strInput);
-                    Utils.info(this, "updateId: " + updateId);
-
-                    // Info UI
+                    // Info UI to update databse
                     if (mListener != null) {
                         mListener.updateList(strInput);
                     }
@@ -107,12 +93,9 @@ public abstract class NoteDialog {
 
     protected abstract String onDlgRightButton();
 
-    protected String updateId() {
-        return "";
-    }
 
     public interface OnControllerCallBack {
-        void info(String msg);
+        void onShowMessage(String msg);
 
         void updateList(String content);
     }

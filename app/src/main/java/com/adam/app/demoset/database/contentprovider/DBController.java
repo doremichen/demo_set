@@ -1,14 +1,15 @@
-package com.adam.app.demoset.database;
+package com.adam.app.demoset.database.contentprovider;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database.provider.MyDBProvider;
+import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

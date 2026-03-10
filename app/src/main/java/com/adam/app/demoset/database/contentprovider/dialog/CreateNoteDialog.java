@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database.dialog;
+package com.adam.app.demoset.database.contentprovider.dialog;
 
 import android.content.Context;
 

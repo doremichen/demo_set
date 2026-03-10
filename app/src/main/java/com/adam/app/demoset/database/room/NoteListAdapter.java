@@ -1,25 +1,25 @@
 /**
  * Copyright (C) 2018 Adam Chen. All rights reserved.
- *
+ * <p>
  * Description: This is the adapter of ui list
  *
  * @author: AdamChen
  * @version 1.0 - 2018/11/12
  *
  */
-package com.adam.app.demoset.database2;
+package com.adam.app.demoset.database.room;
 
-import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.database2.room.Note;
+import com.adam.app.demoset.database.room.entity.Note;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,7 +30,7 @@ public class NoteListAdapter extends RecyclerView.Adapter<NoteListAdapter.MyView
 
     private List<Note> mNotes;
 
-    public NoteListAdapter(Context context) {
+    public NoteListAdapter() {
         Utils.info(this, "Constructor");
     }
 

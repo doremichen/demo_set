@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database2.dialog;
+package com.adam.app.demoset.database.contentprovider.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,11 +18,9 @@ public abstract class NoteDialog {
     protected static final String TITLE_UPDATE_NOTE = "Update note";
     protected static final String RBUTTON_CREATE_NOTE = "Save";
     protected static final String RBUTTON_UPDATE_NOTE = "Update";
-
-    private OnControllerCallBack mListener;
-
-    private LayoutInflater mInflater;
     private final AlertDialog.Builder mAlertBuilder;
+    private OnControllerCallBack mListener;
+    private final LayoutInflater mInflater;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);

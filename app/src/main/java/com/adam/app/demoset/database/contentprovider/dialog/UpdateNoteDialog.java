@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database.dialog;
+package com.adam.app.demoset.database.contentprovider.dialog;
 
 import android.content.Context;
 
@@ -6,16 +6,9 @@ import com.adam.app.demoset.Utils;
 
 public class UpdateNoteDialog extends NoteDialog {
 
-    private String mUpdateId;
 
-    public UpdateNoteDialog(Context context, String id) {
+    public UpdateNoteDialog(Context context) {
         super(context);
-        mUpdateId = id;
-    }
-
-    @Override
-    protected String updateId() {
-        return mUpdateId == null ? "" : mUpdateId;
     }
 
     @Override
