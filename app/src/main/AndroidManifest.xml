@@ -97,7 +97,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.DynamicColors.Light">
+        android:theme="@style/Theme.DemoSet">
         <activity
             android:name=".demoService.DemoServiceAct"
             android:exported="false"
