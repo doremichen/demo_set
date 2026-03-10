@@ -1,4 +1,4 @@
-package com.adam.app.demoset.database.contentprovider.dialog;
+package com.adam.app.demoset.database.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,7 +19,7 @@ public abstract class NoteDialog {
     protected static final String RBUTTON_CREATE_NOTE = "Save";
     protected static final String RBUTTON_UPDATE_NOTE = "Update";
     private final AlertDialog.Builder mAlertBuilder;
-    private OnControllerCallBack mListener;
+    private OnDlgCallBack mCallback;
     private final LayoutInflater mInflater;
 
     protected NoteDialog(Context context) {
@@ -28,9 +28,9 @@ public abstract class NoteDialog {
         mAlertBuilder.setCancelable(false);
     }
 
-    public void registerListener(OnControllerCallBack listener) {
+    public void registerListener(OnDlgCallBack listener) {
         Utils.info(this, "registerCallBack enter");
-        mListener = listener;
+        mCallback = listener;
     }
 
     public AlertDialog create() {
@@ -56,22 +56,22 @@ public abstract class NoteDialog {
                 String strInput = input.getText().toString();
                 if (TextUtils.isEmpty(strInput)) {
                     // Info UI
-                    if (mListener != null) {
-                        mListener.onShowMessage("Please input the valid and nonempty message.");
+                    if (mCallback != null) {
+                        mCallback.onShowMessage("Please input the valid and nonempty message.");
                     }
                     return;
                 }
 
                 if (RBUTTON_CREATE_NOTE.equals(dlgRbutton)) {
                     // Info UI to insert data
-                    if (mListener != null) {
-                        mListener.updateList(strInput);
+                    if (mCallback != null) {
+                        mCallback.updateList(strInput);
                     }
 
                 } else if (RBUTTON_UPDATE_NOTE.equals(dlgRbutton)) {
                     // Info UI to update databse
-                    if (mListener != null) {
-                        mListener.updateList(strInput);
+                    if (mCallback != null) {
+                        mCallback.updateList(strInput);
                     }
                 }
             }
@@ -94,9 +94,8 @@ public abstract class NoteDialog {
     protected abstract String onDlgRightButton();
 
 
-    public interface OnControllerCallBack {
+    public interface OnDlgCallBack {
         void onShowMessage(String msg);
-
         void updateList(String content);
     }
 }

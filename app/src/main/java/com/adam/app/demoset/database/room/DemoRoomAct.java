@@ -36,9 +36,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.database.common.MyTouchItemListener;
-import com.adam.app.demoset.database.room.dialog.CreateNoteDialog;
-import com.adam.app.demoset.database.room.dialog.NoteDialog;
-import com.adam.app.demoset.database.room.dialog.UpdateNoteDialog;
+import com.adam.app.demoset.database.dialog.CreateNoteDialog;
+import com.adam.app.demoset.database.dialog.NoteDialog;
+import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
 import com.adam.app.demoset.database.room.entity.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -210,7 +210,7 @@ public class DemoRoomAct extends AppCompatActivity {
     private void showAddNoteDlg() {
         // Show create note dialog
         NoteDialog dlg = new CreateNoteDialog(DemoRoomAct.this);
-        dlg.registerListener(new NoteDialog.OnControllerCallBack() {
+        dlg.registerListener(new NoteDialog.OnDlgCallBack() {
 
             @Override
             public void onShowMessage(String msg) {
@@ -262,7 +262,7 @@ public class DemoRoomAct extends AppCompatActivity {
         final Note note = mAllNotes.get(position);
 
         NoteDialog dlg = new UpdateNoteDialog(DemoRoomAct.this);
-        dlg.registerListener(new NoteDialog.OnControllerCallBack() {
+        dlg.registerListener(new NoteDialog.OnDlgCallBack() {
             @Override
             public void onShowMessage(String msg) {
                 Utils.info(this, "info enter");
