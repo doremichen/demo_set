@@ -332,7 +332,8 @@
     <string name="demo_alram_set_time_LT_15">請輸入大於15分的數值!!!</string>
     <string name="demo_file_explore_no_file">沒有檔案!!!</string>
     <string name="demo_service_service_is_bound">服務已綁定.</string>
-    <string name="demo_service_service_is_unbound">服務已解除綁定.</string>
+    <string name="demo_service_service_is_unbound">服務解除綁定.</string>
+    <string name="demo_service_service_has_been_unbound">服務並未綁定.</string>
     <string name="demo_tablelayout_game_start_msg">遊戲開始!!!</string>
     <string name="demo_tablelayout_player_win_msg">你贏了!</string>
     <string name="demo_tablelayout_tie_msg">平手!</string>
@@ -352,6 +353,8 @@
     <string name="demo_database_dlg_cancel">取消</string>
     <string name="demo_database_dlg_option">選擇: </string>
     <string name="demo_database_dlg_delete">刪除</string>
-
+    <string name="demo_service_service_monitor_title">服務監控</string>
+    <string name="demo_service_service_mode_remote">遠端服務模式</string>
+    <string name="demo_service_service_mode_local">本地服務模式</string>
 
 </resources>

@@ -333,6 +333,7 @@
     <string name="demo_file_explore_no_file">No file!!!</string>
     <string name="demo_service_service_is_bound">Service is bound.</string>
     <string name="demo_service_service_is_unbound">Service is unBind.</string>
+    <string name="demo_service_service_has_been_unbound">Service is not Bind yet.</string>
     <string name="demo_tablelayout_game_start_msg">Game Start!!!</string>
     <string name="demo_tablelayout_player_win_msg">You win!</string>
     <string name="demo_tablelayout_tie_msg">Game ended in a tie!</string>
@@ -352,5 +353,8 @@
     <string name="demo_database_dlg_cancel">Cancel\n</string>
     <string name="demo_database_dlg_option">Option: </string>
     <string name="demo_database_dlg_delete">Delete</string>
+    <string name="demo_service_service_monitor_title">Service Monitor</string>
+    <string name="demo_service_service_mode_remote">Remote service mode</string>
+    <string name="demo_service_service_mode_local">local service mode</string>
 
 </resources>

@@ -6,7 +6,7 @@
  * Author: Adam Chen
  * Date: 2025/09/17
  */
-package com.adam.app.demoset.demoService;
+package com.adam.app.demoset.demoService.legacy;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +24,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.databinding.ActivityDemoServiceBinding;
-import com.adam.app.demoset.demoService.adapter.StringListAdapter;
+//import com.adam.app.demoset.databinding.ActivityDemoServiceBinding;
+import com.adam.app.demoset.databinding.ActivityDemoServiceLegacyBinding;
+import com.adam.app.demoset.demoService.service.ServiceHelper;
+import com.adam.app.demoset.demoService.legacy.adapter.StringListAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
@@ -37,10 +38,6 @@ import java.util.Map;
 public class DemoServiceAct extends AppCompatActivity {
 
     private static final String TAG = DemoServiceAct.class.getSimpleName();
-
-    // view binding
-    private ActivityDemoServiceBinding mBinding;
-
     private final Map<Integer, Runnable> menuActions = new HashMap<Integer, Runnable>() {{
         put(R.id.local_svr, () -> {
             Utils.showToast(DemoServiceAct.this, "Local service is configured.");
@@ -54,8 +51,8 @@ public class DemoServiceAct extends AppCompatActivity {
             DemoServiceAct.this.finish();
         });
     }};
-
-
+    // view binding
+    private ActivityDemoServiceLegacyBinding mBinding;
     // receive snackbar message from service according to Utils.ACTION_SHOW_SNACKBAR
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
@@ -84,7 +81,7 @@ public class DemoServiceAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // view binding
-        mBinding = ActivityDemoServiceBinding.inflate(getLayoutInflater());
+        mBinding = ActivityDemoServiceLegacyBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
         // set context to ServiceActItems
@@ -163,16 +160,17 @@ public class DemoServiceAct extends AppCompatActivity {
         log("setSnackMessage enter");
         // show snackbar
         Snackbar snackbar = Snackbar.make(mBinding.getRoot(), msg, Snackbar.LENGTH_SHORT);
-        View view = snackbar.getView();
-        view.setBackgroundColor(getColor(R.color.snackbar_bg));
-        TextView tv = view.findViewById(com.google.android.material.R.id.snackbar_text);
-        tv.setTextColor(getColor(R.color.snackbar_text));
+//        View view = snackbar.getView();
+//        view.setBackgroundColor(getColor(R.color.snackbar_bg));
+//        TextView tv = view.findViewById(com.google.android.material.R.id.snackbar_text);
+//        tv.setTextColor(getColor(R.color.snackbar_text));
         snackbar.show();
     }
 
     /**
      * log
      * log message for debug
+     *
      * @param msg
      */
     private void log(String msg) {

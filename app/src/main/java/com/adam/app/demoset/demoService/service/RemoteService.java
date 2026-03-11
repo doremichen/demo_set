@@ -6,7 +6,7 @@
  * Author: Adam Chen
  * Date: 2025/09/17
  */
-package com.adam.app.demoset.demoService;
+package com.adam.app.demoset.demoService.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -17,51 +17,56 @@ import android.os.Messenger;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.demoService.util.ServiceLogBus;
 
 public class RemoteService extends Service {
 
     public static final int ACTION_ONE = 1;
-
-    private class ServiceHandler extends Handler {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == ACTION_ONE) {
-                Utils.showToast(RemoteService.this, "action one from remote service!!!");
-            }
-        }
-    }
-
     private final Messenger mMessaenger = new Messenger(new ServiceHandler());
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Utils.showSnackBar(this, "onCreate");
+        // log
+        ServiceLogBus.send(this, "onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Utils.showSnackBar(this, "onStartCommand");
+        // log
+        ServiceLogBus.send(this, "onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Utils.showSnackBar(this, "onDestroy");
+        // log
+        ServiceLogBus.send(this, "onDestroy");
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        Utils.showSnackBar(this, "onUnbind");
+        // log
+        ServiceLogBus.send(this, "onUnbind");
         return super.onUnbind(intent);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Utils.showSnackBar(this, "onBind");
+        // log
+        ServiceLogBus.send(this, "onBind");
         return mMessaenger.getBinder();
+    }
+
+    private class ServiceHandler extends Handler {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == ACTION_ONE) {
+                // log
+                ServiceLogBus.send(RemoteService.this, "ACTION_ONE @ Remote Service");
+            }
+        }
     }
 }

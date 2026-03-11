@@ -99,7 +99,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DemoSet">
         <activity
-            android:name=".demoService.DemoServiceAct"
+            android:name=".demoService.DemoServiceActivity"
             android:exported="false"
             android:label="@string/title_activity_demo_service"
             android:screenOrientation="nosensor" />
@@ -255,7 +255,7 @@
             android:exported="true"
             android:label="@string/title_activity_demo_database"
             android:screenOrientation="nosensor"
-            android:theme="@style/Theme.DemoSet.NoActionBar"/>
+            android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
             android:name=".systemUI.DemoSysUIAct"
             android:exported="true"
@@ -271,7 +271,7 @@
             android:exported="true"
             android:label="@string/title_activity_demo_room"
             android:screenOrientation="nosensor"
-            android:theme="@style/Theme.DemoSet.NoActionBar"/>
+            android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
             android:name=".quicksetting.DemoQuickSetting"
             android:exported="true"
@@ -362,11 +362,11 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".demoService.LocalService"
+            android:name=".demoService.service.LocalService"
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".demoService.RemoteService"
+            android:name=".demoService.service.RemoteService"
             android:enabled="true"
             android:exported="true"
             android:process=":remote" />

@@ -10,7 +10,7 @@
     <!-- System -->
     <data category="category_system"
         titleRes="title_demo_service"
-        clsname="com.adam.app.demoset.demoService.DemoServiceAct"
+        clsname="com.adam.app.demoset.demoService.DemoServiceActivity"
         pkgname="com.adam.app.demoset"/>
 
     <!-- UI -->
