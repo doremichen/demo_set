@@ -3,6 +3,7 @@ package com.adam.app.demoset.jobService;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.adam.app.demoset.Utils;
@@ -18,7 +19,7 @@ import com.adam.app.demoset.Utils;
 public class SecurJobService extends JobService {
 
 
-    private Handler mJobH = new Handler(getMainLooper()) {
+    private Handler mJobH = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

@@ -1,5 +1,10 @@
 /**
- * Demo job service activity
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo job service activity.
+ * </p>
+ * Author: Adam Chen
+ * Date: 2026/03/11
  */
 package com.adam.app.demoset.jobService;
 
@@ -8,7 +13,6 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +22,8 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -51,13 +57,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
     private RadioGroup mNetworkRequireOption;
 
     private boolean mCanSetTrigger;
-
-    private static abstract class ConstraintSet {
-        public static int sTriggerfunc = SPINNER_SET_PERIODIC;
-        public static int sTriggervalue = 0;
-        public static int sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
-    }
-
     /**
      * List item
      */
@@ -66,7 +65,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
             Utils.ITEM_STOP_SERVICE,
             Utils.ITEM_EXIT
     };
-
     /**
      * Spinner item
      */
@@ -75,12 +73,16 @@ public class DemoJobSvrAct extends AppCompatActivity {
             SpinnerItem.getName(SPINNER_SET_OVERRIDE_DEADLINE),
             SpinnerItem.getName(SPINNER_SET_MINIMUMLATENCY)
     };
-
     private HashMap<String, ItemType> mMap = new HashMap<String, ItemType>();
-
-
     // for job service id
     private int mJobId;
+    private Map<Integer, NetworkStrategy> mNetworkStretagyMap = new HashMap<>() {
+        {
+            put(R.id.no_network_opt, new NoNetworkStrategy());
+            put(R.id.any_network_opt, new AnyNetworkStrategy());
+            put(R.id.wifi_network_opt, new WifiNetworkStrategy());
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,44 +201,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
         });
     }
 
-
-
-
-    // Strategy Interface
-    interface NetworkStrategy {
-        int getNetworkType();
-    }
-
-    // Concrete Strategies
-    class NoNetworkStrategy implements NetworkStrategy {
-        @Override
-        public int getNetworkType() {
-            return JobInfo.NETWORK_TYPE_NONE;
-        }
-    }
-
-    class AnyNetworkStrategy implements NetworkStrategy {
-        @Override
-        public int getNetworkType() {
-            return JobInfo.NETWORK_TYPE_ANY;
-        }
-    }
-
-    class WifiNetworkStrategy implements NetworkStrategy {
-        @Override
-        public int getNetworkType() {
-            return JobInfo.NETWORK_TYPE_UNMETERED;
-        }
-    }
-
-    private Map<Integer, NetworkStrategy> mNetworkStretagyMap = new HashMap<>() {
-        {
-            put(R.id.no_network_opt, new NoNetworkStrategy());
-            put(R.id.any_network_opt, new AnyNetworkStrategy());
-            put(R.id.wifi_network_opt, new WifiNetworkStrategy());
-        }
-    };
-
     /**
      * Network require option
      */
@@ -252,7 +216,6 @@ public class DemoJobSvrAct extends AppCompatActivity {
         builder.setRequiredNetworkType(strategy.getNetworkType());
 
     }
-
 
     private void setTriggerInterval(JobInfo.Builder builder) {
         Utils.info(this, "setTriggerInterval enter mCanSetTrigger = " + mCanSetTrigger);
@@ -279,13 +242,15 @@ public class DemoJobSvrAct extends AppCompatActivity {
         }
     }
 
-    /**
-     * As following items are the Spinner items
-     */
-    private abstract class SpinnerItemName {
-        public static final String Periodic = "setPeriodic";
-        public static final String OverrideDeadline = "setOverrideDeadline";
-        public static final String MinimumLatency = "setMinimumLatency";
+    private boolean shouldSetJobRequirements() {
+        List<BooleanSupplier> conditions = Arrays.asList(
+                () -> ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE,
+                () -> mSwitchIdle.isChecked(),
+                () -> mSwitchCharging.isChecked(),
+                () -> mCanSetTrigger
+        );
+
+        return conditions.stream().anyMatch(BooleanSupplier::getAsBoolean);
     }
 
     private enum SpinnerItem {
@@ -315,6 +280,10 @@ public class DemoJobSvrAct extends AppCompatActivity {
         }
     }
 
+    // Strategy Interface
+    interface NetworkStrategy {
+        int getNetworkType();
+    }
 
     /**
      * As following items are the list items
@@ -323,15 +292,41 @@ public class DemoJobSvrAct extends AppCompatActivity {
         void execute();
     }
 
-    private boolean shouldSetJobRequirements() {
-        List<BooleanSupplier> conditions = Arrays.asList(
-                () -> ConstraintSet.sNetWorkType != JobInfo.NETWORK_TYPE_NONE,
-                () -> mSwitchIdle.isChecked(),
-                () -> mSwitchCharging.isChecked(),
-                () -> mCanSetTrigger
-        );
+    private static abstract class ConstraintSet {
+        public static int sTriggerfunc = SPINNER_SET_PERIODIC;
+        public static int sTriggervalue = 0;
+        public static int sNetWorkType = JobInfo.NETWORK_TYPE_NONE;
+    }
 
-        return conditions.stream().anyMatch(BooleanSupplier::getAsBoolean);
+    // Concrete Strategies
+    class NoNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_NONE;
+        }
+    }
+
+    class AnyNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_ANY;
+        }
+    }
+
+    class WifiNetworkStrategy implements NetworkStrategy {
+        @Override
+        public int getNetworkType() {
+            return JobInfo.NETWORK_TYPE_UNMETERED;
+        }
+    }
+
+    /**
+     * As following items are the Spinner items
+     */
+    private abstract class SpinnerItemName {
+        public static final String Periodic = "setPeriodic";
+        public static final String OverrideDeadline = "setOverrideDeadline";
+        public static final String MinimumLatency = "setMinimumLatency";
     }
 
     private class StartSvrItem implements ItemType {

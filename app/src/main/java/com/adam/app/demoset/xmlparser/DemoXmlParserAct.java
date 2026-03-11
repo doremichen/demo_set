@@ -1,7 +1,7 @@
 /**
  * Demo xml pull parser activity
  */
-package com.adam.app.demoset.xml_parser;
+package com.adam.app.demoset.xmlparser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.xml_parser.model.ItemData;
+import com.adam.app.demoset.xmlparser.model.ItemData;
 
 import java.util.List;
 

@@ -1,9 +1,10 @@
 /**
- * This class is used to demo schedule service
- *
- * @author Adam Chen
- * @version 1.0
- * @since 2018-10-25
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo schedule service activity.
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/10/25
  */
 package com.adam.app.demoset.scheduler;
 

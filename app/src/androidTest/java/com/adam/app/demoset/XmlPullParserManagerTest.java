@@ -18,8 +18,8 @@ import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.adam.app.demoset.xml_parser.XmlPullParserManager;
-import com.adam.app.demoset.xml_parser.model.ItemData;
+import com.adam.app.demoset.xmlparser.XmlPullParserManager;
+import com.adam.app.demoset.xmlparser.model.ItemData;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,7 +1,7 @@
 /**
  * Store data form xml_demo.xml file
  */
-package com.adam.app.demoset.xml_parser.model;
+package com.adam.app.demoset.xmlparser.model;
 
 import androidx.annotation.NonNull;
 

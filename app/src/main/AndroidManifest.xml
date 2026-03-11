@@ -150,7 +150,7 @@
             android:label="@string/title_activity_demo_file_explore"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".xml_parser.DemoXmlParserAct"
+            android:name=".xmlparser.DemoXmlParserAct"
             android:exported="true"
             android:hardwareAccelerated="false"
             android:label="@string/title_activity_demo_xml_parser"

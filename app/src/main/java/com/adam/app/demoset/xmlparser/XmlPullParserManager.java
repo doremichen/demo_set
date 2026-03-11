@@ -1,16 +1,16 @@
 /**
  * Provider the xml file parser service
  */
-package com.adam.app.demoset.xml_parser;
+package com.adam.app.demoset.xmlparser;
 
 import android.content.Context;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.xml_parser.model.ItemData;
-import com.adam.app.demoset.xml_parser.pattern.XmlEventIterator;
-import com.adam.app.demoset.xml_parser.pattern.XmlParsingState;
-import com.adam.app.demoset.xml_parser.util.XmlParsingException;
+import com.adam.app.demoset.xmlparser.model.ItemData;
+import com.adam.app.demoset.xmlparser.pattern.XmlEventIterator;
+import com.adam.app.demoset.xmlparser.pattern.XmlParsingState;
+import com.adam.app.demoset.xmlparser.util.XmlParsingException;
 
 import org.xmlpull.v1.XmlPullParser;
 

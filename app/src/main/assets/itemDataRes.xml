@@ -172,7 +172,7 @@
     <!-- System -->
     <data category="category_system"
         titleRes="title_demo_xml_parser"
-        clsname="com.adam.app.demoset.xml_parser.DemoXmlParserAct"
+        clsname="com.adam.app.demoset.xmlparser.DemoXmlParserAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- Network -->
