@@ -1,5 +1,11 @@
 /**
- * Reference: https://codelabs.developers.google.com/codelabs/android-workmanager/#0
+ * Copyright (C) 2018 Adam Demo app project. All rights reserved.
+ * <p>
+ * Description:This is a worker
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/24
  */
 package com.adam.app.demoset.workmanager;
 

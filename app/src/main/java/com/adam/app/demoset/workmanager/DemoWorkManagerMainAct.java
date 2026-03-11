@@ -1,24 +1,33 @@
+/**
+ * Copyright (C) 2018 Adam Demo app project. All rights reserved.
+ * <p>
+ * Description:This is a demo of WorkManager
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/10/24
+ */
 package com.adam.app.demoset.workmanager;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 
 public class DemoWorkManagerMainAct extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
     public static final int REQUEST_WRITE_EXTERNAL_CODE = 0X1357;
+    private static final int PICK_IMAGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2018 Adam Demo app project. All rights reserved.
+ * <p>
+ * Description:This is a view model of demo WorkManager
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/24
+ */
 package com.adam.app.demoset.workmanager;
 
 import android.app.Application;
@@ -10,7 +19,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
@@ -54,12 +62,22 @@ public class MyViewModel extends AndroidViewModel {
 
     /**
      * Return work info of Save process
+     *
      * @return
      */
     LiveData<List<WorkInfo>> getMyWorkInfo() {
         return this.mSaveWorkInfo;
     }
 
+    /**
+     * Get output uri
+     *
+     * @return
+     */
+    Uri getOutputUri() {
+        Utils.info(this, "getOutputUri");
+        return this.mOutputUri;
+    }
 
     /**
      * Set ouput uri
@@ -67,15 +85,6 @@ public class MyViewModel extends AndroidViewModel {
     void setOutputUri(String outputUri) {
         Utils.info(this, "setImageUri enter uri = " + outputUri);
         this.mOutputUri = uriOrNull(outputUri);
-    }
-
-    /**
-     * Get output uri
-     * @return
-     */
-    Uri getOutputUri() {
-        Utils.info(this, "getOutputUri");
-        return this.mOutputUri;
     }
 
     /**
@@ -89,29 +98,30 @@ public class MyViewModel extends AndroidViewModel {
 
     /**
      *
-     *      chain of work example
-     *         // clean up
-     *         OneTimeWorkRequest cleanupRequest = OneTimeWorkRequest.from(CleanupWorker.class);
+     * chain of work example
+     * // clean up
+     * OneTimeWorkRequest cleanupRequest = OneTimeWorkRequest.from(CleanupWorker.class);
+     * <p>
+     * // blurred image
+     * OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class)
+     * .setInputData(createInputDataForUri())
+     * .build();
+     * <p>
+     * // save to file
+     * OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).build();
+     * <p>
+     * // chain of work task
+     * WorkContinuation continuation = this.mManager.beginWith(cleanupRequest);
+     * continuation = continuation.then(blurRequest);
+     * continuation = continuation.then(saveRequest);
+     * <p>
+     * // start to work
+     * continuation.enqueue();
+     * <p>
+     * single work example
+     * // enqueue single task
+     * this.mManager.enqueue(blurRequest);
      *
-     *         // blurred image
-     *         OneTimeWorkRequest blurRequest = new OneTimeWorkRequest.Builder(MyWork.class)
-     *                 .setInputData(createInputDataForUri())
-     *                 .build();
-     *
-     *         // save to file
-     *         OneTimeWorkRequest saveRequest = new OneTimeWorkRequest.Builder(SaveToFileWorker.class).build();
-     *
-     *         // chain of work task
-     *         WorkContinuation continuation = this.mManager.beginWith(cleanupRequest);
-     *         continuation = continuation.then(blurRequest);
-     *         continuation = continuation.then(saveRequest);
-     *
-     *         // start to work
-     *         continuation.enqueue();
-     *
-     *         single work example
-     *         // enqueue single task
-     *         this.mManager.enqueue(blurRequest);
      * @param level
      */
     void applyBlur(int level) {
@@ -127,20 +137,20 @@ public class MyViewModel extends AndroidViewModel {
 
         // Chain blur work requests based on the level
         /**
-            int i = 0;
-            while (i < level) {
-                // my work request builder
-                OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
-                // Input Uri for the first blur image request
-                if (i == 0) {
-                    myWorkBuilder.setInputData(createInputDataForUri());
-                }
+         int i = 0;
+         while (i < level) {
+         // my work request builder
+         OneTimeWorkRequest.Builder myWorkBuilder = new OneTimeWorkRequest.Builder(MyWork.class);
+         // Input Uri for the first blur image request
+         if (i == 0) {
+         myWorkBuilder.setInputData(createInputDataForUri());
+         }
 
-                   // Add my work request to work manager
-                continuation = continuation.then(myWorkBuilder.build());
-                i++;
-            }
-        */
+         // Add my work request to work manager
+         continuation = continuation.then(myWorkBuilder.build());
+         i++;
+         }
+         */
         continuation = IntStream.range(0, level)
                 .mapToObj(i -> new OneTimeWorkRequest.Builder(MyWork.class)
                         .setInputData(i == 0 ? createInputDataForUri() : Data.EMPTY)
@@ -199,6 +209,7 @@ public class MyViewModel extends AndroidViewModel {
 
     /**
      * Check Uri validity
+     *
      * @param uriString
      * @return
      */
@@ -211,6 +222,7 @@ public class MyViewModel extends AndroidViewModel {
 
     /**
      * Create the input data according the image resource uri
+     *
      * @return
      */
     private Data createInputDataForUri() {

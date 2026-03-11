@@ -1,5 +1,11 @@
 /**
- * Demo work manager UI
+ * Copyright (C) 2018 Adam Demo app project. All rights reserved.
+ *<p>
+ * Description:This is a demo of WorkManager
+ *</p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/24
  */
 package com.adam.app.demoset.workmanager;
 
