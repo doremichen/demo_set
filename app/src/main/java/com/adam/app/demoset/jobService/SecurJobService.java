@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo job service.
+ * </p>
+ * Author: Adam Chen
+ * Date: 2018/09/06
+ */
 package com.adam.app.demoset.jobService;
 
 import android.app.job.JobParameters;
@@ -8,14 +16,6 @@ import android.os.Message;
 
 import com.adam.app.demoset.Utils;
 
-/**
- * This is service that would enter to scheduler
- * <p>
- * info:
- *
- * @author: AdamChen
- * @date: 2018/9/26
- */
 public class SecurJobService extends JobService {
 
 

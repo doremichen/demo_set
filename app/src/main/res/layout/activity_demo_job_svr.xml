@@ -1,140 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".jobService.DemoJobSvrAct">
-
+    <!-- Title -->
     <TextView
         android:id="@+id/welcome_demo_job_svr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:fontFamily="@font/cabin_bold"
         android:text="@string/label_hello_job_service_demo"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:textSize="26sp"
+        android:paddingVertical="12dp" />
+
+    <!-- Requirement label -->
     <TextView
         android:id="@+id/tv_require"
-        android:layout_below="@+id/welcome_demo_job_svr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/label_require_jobsvr"
-        android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <!-- Switches -->
     <LinearLayout
         android:id="@+id/switch_require"
-        android:layout_below="@+id/tv_require"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+
         <Switch
             android:id="@+id/switch_idle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/label_switch_idle" />
+
         <Switch
             android:id="@+id/switch_charging"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/label_switch_charging" />
+
     </LinearLayout>
+
+    <!-- Network type -->
     <TextView
         android:id="@+id/tv_network_type_require"
-        android:layout_below="@+id/switch_require"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/label_network_type_require"
-        android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
     <RadioGroup
         android:id="@+id/network_option"
-        android:layout_below="@+id/tv_network_type_require"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="6dp">
+
         <RadioButton
             android:id="@+id/no_network_opt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/label_option_none_network"
-            />
+            android:text="@string/label_option_none_network" />
+
         <RadioButton
             android:id="@+id/any_network_opt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/lable_option_any_network"
-            />
+            android:layout_marginStart="8dp"
+            android:text="@string/lable_option_any_network" />
+
         <RadioButton
             android:id="@+id/wifi_network_opt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_option_wifi_network"
-            />
+            android:layout_marginStart="8dp"
+            android:text="@string/label_option_wifi_network" />
+
     </RadioGroup>
+
+    <!-- Interval setting -->
     <LinearLayout
         android:id="@+id/set_time_type"
-        android:layout_below="@+id/network_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_set_trigger_interval_type"
-            android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp">
+
             <Spinner
                 android:id="@+id/spinner_set_interval"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" />
 
-            </Spinner>
             <TextView
                 android:id="@+id/interval_unit"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:text="@string/label_interval_no_set"
-                android:textAppearance = "@style/TextAppearance.AppCompat.Subhead"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
         </LinearLayout>
-
     </LinearLayout>
+
+    <!-- Seekbar -->
     <SeekBar
         android:id="@+id/seekbar_time_interval"
-        android:layout_below="@+id/set_time_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
-    <LinearLayout
-        android:layout_below="@+id/seekbar_time_interval"
+        android:layout_marginTop="12dp" />
+
+    <!-- Permission list -->
+    <ListView
+        android:id="@+id/list_demo_permission"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/list_demo_permission"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/black"
-            android:dividerHeight="2dp" />
-    </LinearLayout>
-</RelativeLayout>
+        android:layout_marginTop="20dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="2dp" />
+</LinearLayout>

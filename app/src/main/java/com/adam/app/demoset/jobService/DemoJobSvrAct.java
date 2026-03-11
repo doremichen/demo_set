@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.Arrays;
 import java.util.HashMap;
