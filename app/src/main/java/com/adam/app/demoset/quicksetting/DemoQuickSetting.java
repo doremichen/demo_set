@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2020 Adam demo set project. All rights reserved.
+ * <p>
+ * Description: This is the quick setting demo.
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/11/21
+ */
 package com.adam.app.demoset.quicksetting;
 
 import android.os.Bundle;
