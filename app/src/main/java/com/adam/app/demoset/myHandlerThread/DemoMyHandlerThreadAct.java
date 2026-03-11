@@ -1,11 +1,11 @@
 /**
- * Copyright (C) 2021 Adam Chen
+ * Copyright (C) 2021 Adam Chen Demo set project. All rights reserved.
  * <p>
- * This class is the demo of handler thread
+ * Description: This is a demo of handler thread
+ * </p>
  *
  * @author Adam Chen
- * @version 1.0
- * @since 2021-11-11
+ * @version 1.0 - 2019/03/17
  */
 package com.adam.app.demoset.myHandlerThread;
 
@@ -125,7 +125,7 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
 
     @Override
     public void updateTaskStatus(boolean isActive) {
-        String msg = (isActive)? getString(R.string.demo_handler_thread_work_task_is_active_msg)
+        String msg = (isActive) ? getString(R.string.demo_handler_thread_work_task_is_active_msg)
                 : getString(R.string.demo_handler_thread_work_task_is_idle_msg);
         Utils.showToast(this, msg);
     }
