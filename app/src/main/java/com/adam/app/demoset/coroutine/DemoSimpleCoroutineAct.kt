@@ -1,12 +1,11 @@
 /**
- * Copyright (C) 2022 Adam. All rights reserved.
+ * Copyright (c) 2022 Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This is a simple coroutine demo.
+ * </p>
+ *
  * @author Adam Chen
- *
- * @description
- *        This is a demo simple coroutine app.
- *
- * @version 1.0
- * @since 2025/07/22
+ * @version 1.0 - 2025/07/23
  */
 package com.adam.app.demoset.coroutine
 
