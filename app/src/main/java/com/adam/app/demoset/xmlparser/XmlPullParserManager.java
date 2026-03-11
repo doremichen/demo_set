@@ -1,5 +1,12 @@
 /**
- * Provider the xml file parser service
+ * Copyright (C) 2020 Adam Chen Demp set project. All rights reserved.
+ * <p>
+ * Description:
+ * Provider the xml file parser service.
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2020/11/11
  */
 package com.adam.app.demoset.xmlparser;
 

@@ -1,5 +1,9 @@
 /**
+ * Copyright (C) 2020 Adam Chen Demp set project. All rights reserved.
+ *<p>
+ * Description:
  * This class is used to xml parse state
+ * </p>
  *
  * @author Adam Chen
  * @version 1.0

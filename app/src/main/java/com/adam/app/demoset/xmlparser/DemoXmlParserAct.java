@@ -1,5 +1,11 @@
 /**
- * Demo xml pull parser activity
+ * Copyright (C) 2020 Adam Chen Demp set project. All rights reserved.
+ *<p>
+ * Description: This is a demo of xml parser.
+ *</p>
+ *
+ * Author: Adam Chen
+ * Date: 2020/11/11
  */
 package com.adam.app.demoset.xmlparser;
 
