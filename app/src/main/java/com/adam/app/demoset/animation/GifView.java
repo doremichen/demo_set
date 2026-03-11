@@ -1,3 +1,13 @@
+/**
+ * Copyright (C) 2017 Adam Chen Demo set project. All rights reserved.
+ *
+ * <p>
+ * Description: This is the custom view of gif image.
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2017/05/20
+ */
 package com.adam.app.demoset.animation;
 
 import android.content.Context;
