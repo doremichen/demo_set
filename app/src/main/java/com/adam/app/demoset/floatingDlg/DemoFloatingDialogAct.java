@@ -1,5 +1,8 @@
 /**
+ * Copyright (c) Adam Chen Demo set project. All rights reserved.
+ * <p>
  * Description: This class is used to show the demo floating dialog.
+ * </p>
  * <p>
  * Author: Adam Chen
  * Date: 2018/09/18
