@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo device admin activity.
+ * </p>
+ * Author: Adam Chen
+ * Date: 2018/10/11
+ */
 package com.adam.app.demoset.lockscreen;
 
 import android.app.Activity;
@@ -7,12 +15,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -33,81 +42,6 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
     private ComponentName mCompName;
 
     private KeyguardManager mKeyguardManager;
-
-    // item strategy
-    private abstract class ItemStrategy {
-        private String mItem;
-        ItemStrategy(String item) {
-            this.mItem = item;
-        }
-
-        String Name() {
-            return this.mItem;
-        }
-
-        abstract void process();
-    }
-
-    private class ExitStrategy extends ItemStrategy {
-
-        ExitStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            DemoDeviceAdminAct.this.finish();
-        }
-    }
-
-    private class EnableAdaminStrategy extends ItemStrategy {
-
-        EnableAdaminStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            enableDeviceAdmin();
-        }
-    }
-
-    private class DisableAdminStrategy extends ItemStrategy {
-
-        DisableAdminStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            disableAdmin();
-        }
-    }
-
-    private class LockScreenStrategy extends ItemStrategy {
-
-        LockScreenStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            lockScreen();
-        }
-    }
-
-    private class SecurityLockStrategy extends ItemStrategy {
-
-        SecurityLockStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            showAuthentication();
-        }
-    }
-
     // Strategy list
     private List<ItemStrategy> mItemStrategyList = new ArrayList<>();
 
@@ -117,7 +51,6 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
                 .map(ItemStrategy::Name)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +161,81 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
 
         this.startActivityForResult(intent, REQUEST_SECURE_LOCK_CODE);
 
+    }
+
+    // item strategy
+    private abstract class ItemStrategy {
+        private String mItem;
+
+        ItemStrategy(String item) {
+            this.mItem = item;
+        }
+
+        String Name() {
+            return this.mItem;
+        }
+
+        abstract void process();
+    }
+
+    private class ExitStrategy extends ItemStrategy {
+
+        ExitStrategy(String item) {
+            super(item);
+        }
+
+        @Override
+        void process() {
+            DemoDeviceAdminAct.this.finish();
+        }
+    }
+
+    private class EnableAdaminStrategy extends ItemStrategy {
+
+        EnableAdaminStrategy(String item) {
+            super(item);
+        }
+
+        @Override
+        void process() {
+            enableDeviceAdmin();
+        }
+    }
+
+    private class DisableAdminStrategy extends ItemStrategy {
+
+        DisableAdminStrategy(String item) {
+            super(item);
+        }
+
+        @Override
+        void process() {
+            disableAdmin();
+        }
+    }
+
+    private class LockScreenStrategy extends ItemStrategy {
+
+        LockScreenStrategy(String item) {
+            super(item);
+        }
+
+        @Override
+        void process() {
+            lockScreen();
+        }
+    }
+
+    private class SecurityLockStrategy extends ItemStrategy {
+
+        SecurityLockStrategy(String item) {
+            super(item);
+        }
+
+        @Override
+        void process() {
+            showAuthentication();
+        }
     }
 
 }

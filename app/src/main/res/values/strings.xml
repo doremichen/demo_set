@@ -356,5 +356,6 @@
     <string name="demo_service_service_monitor_title">Service Monitor</string>
     <string name="demo_service_service_mode_remote">Remote service mode</string>
     <string name="demo_service_service_mode_local">local service mode</string>
+    <string name="demo_device_admin_instruction">Please ensure that administrator privileges have been granted in the system settings.</string>
 
 </resources>

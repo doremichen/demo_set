@@ -356,5 +356,6 @@
     <string name="demo_service_service_monitor_title">服務監控</string>
     <string name="demo_service_service_mode_remote">遠端服務模式</string>
     <string name="demo_service_service_mode_local">本地服務模式</string>
+    <string name="demo_device_admin_instruction">請確保已在系統設定中授權管理員權限</string>
 
 </resources>
