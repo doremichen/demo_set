@@ -363,5 +363,7 @@
     <string name="demo_open_floating_dlg_instruction">This page shows how to launch the "system-level" floating dialog box. After launching, the app will automatically close after 3 seconds, while the dialog box will remain on top of the screen until you tap "OK".</string>
     <string name="demo_floating_window_function_label">Interaction Demo</string>
     <string name="demo_floating_window_function_instruction">This is an advanced floating window demo. Once launched, a circular view appears in the center of the screen. You can change its position by "long-pressing and moving". This demonstrates the combined application of WindowManager and a custom Touch Strategy.</string>
+    <string name="demo_flash_light_function_label">Function instruction: </string>
+    <string name="demo_flash_light_instruction">This demo implements two background camera control modes: 1. JobIntentService: for immediate hardware operations. 2. WorkManager (Jetpack): for ensuring reliable task execution and observing state changes (observer pattern).</string>
 
 </resources>

@@ -363,5 +363,7 @@
     <string name="demo_open_floating_dlg_instruction">本頁面展示如何啟動「系統層級」的懸浮對話框。啟動後，App 會在 3 秒後自動關閉，而對話框將持續顯示在螢幕最上層，直到您點擊確定。</string>
     <string name="demo_floating_window_function_label">互動開發演示</string>
     <string name="demo_floating_window_function_instruction">這是一個進階的懸浮視窗 Demo。開啟後，螢幕中央會出現一個圓形視圖。你可以透過「長按並移動」來改變它的位置。這展示了 WindowManager 與自定義 Touch Strategy 的結合應用。</string>
+    <string name="demo_flash_light_function_label">功能開發技術展示</string>
+    <string name="demo_flash_light_instruction">本 Demo 實作了兩種背景相機控制模式：\n1. JobIntentService：用於立即性的硬體操作。\n2. WorkManager (Jetpack)：用於確保任務可靠執行並觀察狀態變化 (觀察者模式)。</string>
 
 </resources>

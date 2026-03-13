@@ -1,5 +1,11 @@
 /**
- * Flash light work
+ * Copyright (c) 2018 Adam Demo set project. All rights reserved.
+ * <p>
+ * Description: This is work that turn on/off flash light
+ * </p>
+ *
+ * Author: Adam chen
+ * Date: 2018/10/11
  */
 package com.adam.app.demoset.flashlight;
 
