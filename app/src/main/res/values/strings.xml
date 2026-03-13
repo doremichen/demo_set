@@ -365,5 +365,8 @@
     <string name="demo_floating_window_function_instruction">This is an advanced floating window demo. Once launched, a circular view appears in the center of the screen. You can change its position by "long-pressing and moving". This demonstrates the combined application of WindowManager and a custom Touch Strategy.</string>
     <string name="demo_flash_light_function_label">Function instruction: </string>
     <string name="demo_flash_light_instruction">This demo implements two background camera control modes: 1. JobIntentService: for immediate hardware operations. 2. WorkManager (Jetpack): for ensuring reliable task execution and observing state changes (observer pattern).</string>
+    <string name="demo_camera_front_lens">Front lens</string>
+    <string name="demo_camera_rear_lens">Rear lens</string>
+    <string name="demo_camera_title">Camera2 API Video Streaming and Shooting Demonstration</string>
 
 </resources>

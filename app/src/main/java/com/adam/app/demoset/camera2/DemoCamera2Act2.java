@@ -1,5 +1,11 @@
 /**
- * Camera demo
+ * Copyright (C) 2019 Adam Demo set project. All rights reserved.
+ * <p>
+ * Description: This is demo camera activity
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/16
  */
 package com.adam.app.demoset.camera2;
 
@@ -18,6 +24,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.core.view.WindowCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -27,60 +34,14 @@ import java.io.File;
 public class DemoCamera2Act2 extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 0x1357;
+    //camera  permission
+    private static final String[] CAMERA_PERMISSION = {
+            Manifest.permission.CAMERA,
+            //Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     private int mIndex;
     private boolean mCanOpenCamera;
-
     private MyCameraController mCameraController;
-
-    private TextureView mView;
-
-    private String mFilePath;
-
-    private boolean mCaptureDone;
-
-    /**
-     * Callback from MyCameraController
-     */
-    private final MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
-        @Override
-        public void onCaptureDone() {
-            Utils.showToast(DemoCamera2Act2.this, "Capture Done!!!");
-            mCaptureDone = true;
-        }
-
-        @Override
-        public void info(String str) {
-            Utils.showToast(DemoCamera2Act2.this, str);
-        }
-
-        @Override
-        public void onDeviceStateError(int code) {
-            Utils.showToast(DemoCamera2Act2.this, "Device state error!!!");
-            // Finish UI
-            DemoCamera2Act2.this.finish();
-        }
-
-        @Override
-        public String getPath() {
-            File fileDir = DemoCamera2Act2.this.getFilesDir();
-            String fileName =  System.currentTimeMillis() + ".jpg";
-            File outputDir = new File(fileDir, "images");
-            if (!outputDir.exists()) {
-                outputDir.mkdirs(); // should succeed
-            }
-            File outputFile = new File(outputDir, fileName);
-
-            mFilePath = outputFile.getPath();
-            return mFilePath;
-        }
-
-        @Override
-        public void onSaveImageComplete() {
-            Utils.showToast(DemoCamera2Act2.this, "Save image Done!!!");
-        }
-    };
-
-
     /**
      * Surface view listener
      */
@@ -107,17 +68,57 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
         }
     };
+    private TextureView mView;
+    private String mFilePath;
+    private boolean mCaptureDone;
+    /**
+     * Callback from MyCameraController
+     */
+    private final MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
+        @Override
+        public void onCaptureDone() {
+            Utils.showToast(DemoCamera2Act2.this, "Capture Done!!!");
+            mCaptureDone = true;
+        }
 
+        @Override
+        public void info(String str) {
+            Utils.showToast(DemoCamera2Act2.this, str);
+        }
 
-    //camera  permission
-    private static final String[] CAMERA_PERMISSION = {
-            Manifest.permission.CAMERA,
-            //Manifest.permission.WRITE_EXTERNAL_STORAGE
+        @Override
+        public void onDeviceStateError(int code) {
+            Utils.showToast(DemoCamera2Act2.this, "Device state error!!!");
+            // Finish UI
+            DemoCamera2Act2.this.finish();
+        }
+
+        @Override
+        public String getPath() {
+            File fileDir = DemoCamera2Act2.this.getFilesDir();
+            String fileName = System.currentTimeMillis() + ".jpg";
+            File outputDir = new File(fileDir, "images");
+            if (!outputDir.exists()) {
+                outputDir.mkdirs(); // should succeed
+            }
+            File outputFile = new File(outputDir, fileName);
+
+            mFilePath = outputFile.getPath();
+            return mFilePath;
+        }
+
+        @Override
+        public void onSaveImageComplete() {
+            Utils.showToast(DemoCamera2Act2.this, "Save image Done!!!");
+        }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set decor fit system windows
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+
         setContentView(R.layout.activity_demo_camera2_act2);
 
         this.mView = this.findViewById(R.id.textureView_act2);
@@ -180,6 +181,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * The callback of menu item is pressed.
+     *
      * @param item:
      * @return boolean
      */
@@ -201,6 +203,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Receive the result of permission request.
+     *
      * @param requestCode:
      * @param permissions:
      * @param grantResults:
@@ -234,6 +237,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Take picture button
+     *
      * @param v:
      */
     public void onTakePic(View v) {
@@ -243,6 +247,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     /**
      * Show result button
+     *
      * @param view:
      */
     public void onResult(View view) {
@@ -280,14 +285,16 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     // ----------------------------------------------------
     // private method
+
     /**
      * Switch the front and back camera by flag.
+     *
      * @param isFront true front camera
      *                false back camera
      */
     private void switchToFrontCamera(boolean isFront) {
         Utils.info(this, "switchToFrontCamera: isFront = " + isFront);
-        mIndex = (isFront)? CameraCharacteristics.LENS_FACING_BACK: CameraCharacteristics.LENS_FACING_FRONT;
+        mIndex = (isFront) ? CameraCharacteristics.LENS_FACING_BACK : CameraCharacteristics.LENS_FACING_FRONT;
         // Close camera
         mCameraController.closeCamera();
         // Open camera

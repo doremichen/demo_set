@@ -1,5 +1,11 @@
 /**
- * Camera controller
+ * Copyright (C) 2019 Adam Demo set project. All rights reserved.
+ * <p>
+ * Description: This is my camera controller
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/16
  */
 package com.adam.app.demoset.camera2;
 
@@ -46,7 +52,7 @@ public final class MyCameraController {
     private static final String THREAD_NAME = "MyCamera work thread";
     private TextureView mView;
 
-    // Camera back ground thread
+    // Camera background thread
     private HandlerThread mBgThread;
     private Handler mBgHandler;
 
