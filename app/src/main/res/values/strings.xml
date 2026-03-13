@@ -359,5 +359,7 @@
     <string name="demo_device_admin_instruction">Please ensure that administrator privileges have been granted in the system settings.</string>
     <string name="demo_work_manager_legacy1_instruction">Click the button below to start the image blurring test.</string>
     <string name="demo_animation_instruction">This is a custom GifView component that demonstrates how to play and control GIF animations using the Canvas and Movie categories.</string>
+    <string name="demo_open_floating_dlg_function_label">Function instruction: </string>
+    <string name="demo_open_floating_dlg_instruction">This page shows how to launch the "system-level" floating dialog box. After launching, the app will automatically close after 3 seconds, while the dialog box will remain on top of the screen until you tap "OK".</string>
 
 </resources>
