@@ -361,5 +361,7 @@
     <string name="demo_animation_instruction">這是一個自定義的 GifView 組件，用於展示如何透過 Canvas 與 Movie 類別實現 GIF 動畫播放與控制。</string>
     <string name="demo_open_floating_dlg_function_label">功能說明</string>
     <string name="demo_open_floating_dlg_instruction">本頁面展示如何啟動「系統層級」的懸浮對話框。啟動後，App 會在 3 秒後自動關閉，而對話框將持續顯示在螢幕最上層，直到您點擊確定。</string>
+    <string name="demo_floating_window_function_label">互動開發演示</string>
+    <string name="demo_floating_window_function_instruction">這是一個進階的懸浮視窗 Demo。開啟後，螢幕中央會出現一個圓形視圖。你可以透過「長按並移動」來改變它的位置。這展示了 WindowManager 與自定義 Touch Strategy 的結合應用。</string>
 
 </resources>

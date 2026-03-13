@@ -1,12 +1,20 @@
+/**
+ * Copyright (C) Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This class is used to show the demo floating window.
+ * </P>
+ *
+ * Author: Adam Chen
+ * Date: 2018/09/18
+ */
 package com.adam.app.demoset.floatingwindow;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.provider.Settings;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.OverlayPermissionManager;
 import com.adam.app.demoset.R;

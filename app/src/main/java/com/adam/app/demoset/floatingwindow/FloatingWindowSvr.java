@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This class is service that handle the floating window.
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/09/18
+ */
 package com.adam.app.demoset.floatingwindow;
 
 import android.app.Service;

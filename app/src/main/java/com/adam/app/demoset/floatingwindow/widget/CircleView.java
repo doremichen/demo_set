@@ -1,3 +1,12 @@
+/**
+ * Copyright (c) Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This class is Customized view
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/09/18
+ */
 package com.adam.app.demoset.floatingwindow.widget;
 
 import android.content.Context;
