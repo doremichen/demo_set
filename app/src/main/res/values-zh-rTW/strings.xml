@@ -89,8 +89,8 @@
     <string name="label_alarm_info">鬧鐘計數：0</string>
     <string name="action_start">開始</string>
     <string name="action_stop">停止</string>
-    <string name="action_start_record">開始錄製</string>
-    <string name="action_stop_record">停止錄製</string>
+    <string name="action_start_record">開始</string>
+    <string name="action_stop_record">停止</string>
     <string name="action_play">播放</string>
     <string name="label_input_a">a：</string>
     <string name="label_input_b">b：</string>
@@ -368,5 +368,6 @@
     <string name="demo_camera_front_lens">前鏡頭</string>
     <string name="demo_camera_rear_lens">後鏡頭</string>
     <string name="demo_camera_title">Camera2 API 影像串流與拍攝演示</string>
+    <string name="demo_video_record_invalid_path_toast">請先錄影!!!</string>
 
 </resources>

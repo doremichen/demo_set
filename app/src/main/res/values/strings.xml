@@ -88,8 +88,8 @@
     <string name="label_alarm_info">Alarm count: 0</string>
     <string name="action_start">Start</string>
     <string name="action_stop">Stop</string>
-    <string name="action_start_record">Start record</string>
-    <string name="action_stop_record">Stop record</string>
+    <string name="action_start_record">Start</string>
+    <string name="action_stop_record">Stop</string>
     <string name="action_play">Play</string>
     <string name="label_input_a">a:</string>
     <string name="label_input_b">b:</string>
@@ -368,5 +368,6 @@
     <string name="demo_camera_front_lens">Front lens</string>
     <string name="demo_camera_rear_lens">Rear lens</string>
     <string name="demo_camera_title">Camera2 API Video Streaming and Shooting Demonstration</string>
+    <string name="demo_video_record_invalid_path_toast">Please record first!!!</string>
 
 </resources>

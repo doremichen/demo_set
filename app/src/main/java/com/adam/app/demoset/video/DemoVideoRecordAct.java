@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2019 Adam Demo set project. All rights reserved.
+ * <p>
+ * Description: This is demo video record activity
+ * </p>
+ *
+ * Author: Adam Chen
+ * Date: 2018/10/16
+ */
 package com.adam.app.demoset.video;
 
 import android.Manifest;
@@ -7,19 +16,25 @@ import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.TextureView;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Chronometer;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
 
@@ -27,26 +42,19 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 0x2467;
     private static final String KEY_PERMISSION = "key.permission";
-
-    private Button mBtnRecorder;
-    private Button mBtnPlayVideo;
-
-    private Chronometer mTimer;
-
-    private boolean mIsAllow;
-
-    private MyRecordVideoController mController;
-
-    private TextureView mSurfaceView;
-
-    private String mFilePath;
-
     //record  permission
     private static final String[] RECORD_PERMISSION = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
-
+    private MaterialButton mBtnRecorder;
+    private MaterialButton mBtnPlayVideo;
+    private View mRecDot;
+    private Chronometer mTimer;
+    private boolean mIsAllow;
+    private MyRecordVideoController mController;
+    private TextureView mSurfaceView;
+    private String mFilePath;
     private TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -105,7 +113,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         public String getPath() {
             Utils.info(this, "getPath enter");
             File fileDir = DemoVideoRecordAct.this.getFilesDir();
-            String fileName =  System.currentTimeMillis() + ".mp4";
+            String fileName = System.currentTimeMillis() + ".mp4";
             File outputDir = new File(fileDir, "videos");
             if (!outputDir.exists()) {
                 outputDir.mkdirs(); // should succeed
@@ -121,23 +129,35 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set decor fit system windows
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+
         setContentView(R.layout.activity_demo_video_record);
 
         mSurfaceView = this.findViewById(R.id.surface_record);
         mBtnRecorder = this.findViewById(R.id.btn_start_rec);
         mBtnPlayVideo = this.findViewById(R.id.play_vedio);
+        mRecDot = this.findViewById(R.id.rec_dot);
         mTimer = this.findViewById(R.id.timer);
+
+        // handle window insets
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_layout), (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
         // update timer info
         this.mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                int h   = (int)(time /3600000);
-                int m = (int)(time  - h*3600000)/60000;
-                int s= (int)(time  - h*3600000 - m*60000)/1000 ;
-                String hh = h < 10 ? "0"+h: h+"";
-                String mm = m < 10 ? "0"+m: m+"";
-                String ss = s < 10 ? "0"+s: s+"";
+                int h = (int) (time / 3600000);
+                int m = (int) (time - h * 3600000) / 60000;
+                int s = (int) (time - h * 3600000 - m * 60000) / 1000;
+                String hh = h < 10 ? "0" + h : h + "";
+                String mm = m < 10 ? "0" + m : m + "";
+                String ss = s < 10 ? "0" + s : s + "";
                 // update info
                 mTimer.setText(TextUtils.concat(hh, ":", mm, ":", ss));
 
@@ -227,7 +247,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         Utils.info(this, "onRecord: " + String.valueOf(mController.isRecording()));
         setEnabledRecording(!mController.isRecording());
         // change play button function
-        int visibility = (!mController.isRecording())? View.VISIBLE: View.INVISIBLE;
+        int visibility = (!mController.isRecording()) ? View.VISIBLE : View.INVISIBLE;
         mBtnPlayVideo.setVisibility(visibility);
 
     }
@@ -239,13 +259,36 @@ public class DemoVideoRecordAct extends AppCompatActivity {
             this.mTimer.setBase(SystemClock.elapsedRealtime());
             this.mTimer.start();
             mController.startRecord(this);
-            mBtnRecorder.setText(this.getResources().getString(R.string.action_stop_record));
-        } else {
+            // change stop icon
+            mBtnRecorder.setIconResource(android.R.drawable.ic_media_pause);
+
+            // start record animation
+            startRecordingAnimation();
+
+         } else {
             // stop timer
             this.mTimer.stop();
             mController.stopRecord();
-            mBtnRecorder.setText(this.getResources().getString(R.string.action_start_record));
+            // change start icon
+            mBtnRecorder.setIconResource(android.R.drawable.ic_menu_camera);
+
+            // stop record animation
+            stopRecordingAnimation();
         }
+    }
+
+    private void startRecordingAnimation() {
+        mRecDot.setVisibility(View.VISIBLE);
+        AlphaAnimation blink = new AlphaAnimation(1.0f, 0.0f);
+        blink.setDuration(500);
+        blink.setRepeatMode(Animation.REVERSE);
+        blink.setRepeatCount(Animation.INFINITE);
+        mRecDot.startAnimation(blink);
+    }
+
+    private void stopRecordingAnimation() {
+        mRecDot.clearAnimation();
+        mRecDot.setVisibility(View.INVISIBLE);
     }
 
     public void onPlayVideo(View v) {
@@ -267,7 +310,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         Utils.info(this, "mFilePath = " + mFilePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (this.mFilePath == null) {
-            Utils.showToast(this, "Please record first!!!");
+            Utils.showToast(this, getString(R.string.demo_video_record_invalid_path_toast));
             return null;
         }
         // Check file exists
