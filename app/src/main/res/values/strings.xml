@@ -358,5 +358,6 @@
     <string name="demo_service_service_mode_local">local service mode</string>
     <string name="demo_device_admin_instruction">Please ensure that administrator privileges have been granted in the system settings.</string>
     <string name="demo_work_manager_legacy1_instruction">Click the button below to start the image blurring test.</string>
+    <string name="demo_animation_instruction">This is a custom GifView component that demonstrates how to play and control GIF animations using the Canvas and Movie categories.</string>
 
 </resources>
