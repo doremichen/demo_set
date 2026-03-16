@@ -110,6 +110,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".jnidemo.DemoJniAct"
+            android:label="@string/title_activity_demo_hello_jni"
+            android:screenOrientation="nosensor"
+            android:exported="false" />
+        <activity
             android:name=".demoService.DemoServiceActivity"
             android:exported="false"
             android:label="@string/title_activity_demo_service"

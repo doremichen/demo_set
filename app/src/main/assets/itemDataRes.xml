@@ -61,6 +61,14 @@
         clsname="com.adam.app.demoset.DemoShareProvidAct"
         pkgname="com.adam.app.demoset"/>
 
+
+    <!-- IPC -->
+    <data category="category_ipc"
+        titleRes="title_demo_hello_jni"
+        clsname="com.adam.app.demoset.jnidemo.DemoJniAct"
+        pkgname="com.adam.app.demoset"/>
+
+
     <!-- IPC -->
     <data category="category_ipc"
         titleRes="title_demo_hello_jni_legacy"

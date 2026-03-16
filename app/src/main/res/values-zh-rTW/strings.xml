@@ -18,6 +18,7 @@
     <string name="title_demo_bluetooth">藍牙範例</string>
     <string name="title_demo_notification">通知範例</string>
     <string name="title_demo_share_provide_action">分享供應範例</string>
+    <string name="title_demo_hello_jni">JNI 範例</string>
     <string name="title_demo_hello_jni_legacy">JNI 範例 (遺留)</string>
     <string name="title_demo_flash_light">手電筒範例</string>
     <string name="title_demo_device_admin">設備管理員範例</string>
@@ -382,5 +383,9 @@
     <string name="demo_jni_static_callback_native_class_btn"><![CDATA[靜態JNI回調 (Native -> Class)]]></string>
     <string name="label_object_call_back">實例JNI回調</string>
     <string name="label_clazz_call_back">靜態JNI回調</string>
+    <string name="title_activity_demo_jni">JNI 展示監控\n</string>
+    <string name="demo_jni_callback_log_label">回調日誌</string>
+    <string name="demo_jni_clear_object_btn">清除物件資料</string>
+    <string name="demo_jni_clear_class_btn">清除類別資料</string>
 
 </resources>

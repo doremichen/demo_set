@@ -64,7 +64,7 @@ void _objectCallBack(JNIEnv* env, jobject thiz)
     env->SetObjectField(thiz, javadata.fid_Objdata, strInfo_data);
     env->DeleteLocalRef(strInfo_data);
 
-    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
+    jstring strInfo_method = env->NewStringUTF("Changed instance data by native layer");
     env->CallVoidMethod(thiz, javadata.mid_Objmethod, strInfo_method);
     env->DeleteLocalRef(strInfo_method);
 }
@@ -75,7 +75,7 @@ void _classCallBack(JNIEnv* env, jobject thiz)
     LOGI("[%s] enter\n", __FUNCTION__);
     LOGI("CallBack to java layer");
     env->SetStaticBooleanField(javadata.class_demo, javadata.fid_Clazzdata, true);
-    jstring strInfo_method = env->NewStringUTF("Changed by native layer");
+    jstring strInfo_method = env->NewStringUTF("Changed class data by native layer");
     env->CallStaticVoidMethod(javadata.class_demo, javadata.mid_Clazzmethod, strInfo_method);
     env->DeleteLocalRef(strInfo_method);
 }
@@ -87,6 +87,9 @@ void _clearObjData(JNIEnv* env, jobject thiz)
     jstring strInfo_data = env->NewStringUTF("unChange");
     env->SetObjectField(thiz, javadata.fid_Objdata, strInfo_data);
     env->DeleteLocalRef(strInfo_data);
+    // callback
+    jstring strInfo_method = env->NewStringUTF("Changed instance data by native layer");
+    env->CallVoidMethod(thiz, javadata.mid_Objmethod, strInfo_method);
 }
 
 static
@@ -94,6 +97,10 @@ void _clearClazzData(JNIEnv* env, jobject thiz)
 {
     LOGI("[%s] enter\n", __FUNCTION__);
     env->SetStaticBooleanField(javadata.class_demo, javadata.fid_Clazzdata, false);
+    // callback
+    jstring strInfo_method = env->NewStringUTF("Changed class data by native layer");
+    env->CallStaticVoidMethod(javadata.class_demo, javadata.mid_Clazzmethod, strInfo_method);
+
 }
 /**
  * Jni native method

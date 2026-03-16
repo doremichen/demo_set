@@ -10,11 +10,16 @@
 package com.adam.app.demoset.jnidemo;
 
 import com.adam.app.demoset.Utils;
-import com.adam.app.demoset.jnidemo.legacy.DemoJNIAct;
+
+import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;
 
 public class NativeUtils {
 
-    public static boolean sDataFromNative = false;
+
+
+    // jni view model
+    private static JNIViewModel mViewModel;
+
 
     // Load the jni shared lib
     static {
@@ -25,6 +30,7 @@ public class NativeUtils {
      * As following information are triggered by native layer
      */
     private String mDataFromNative = "unChange";
+    public static boolean sDataFromNative = false;
 
     private NativeUtils() {
     }
@@ -33,27 +39,43 @@ public class NativeUtils {
         return Helper.INSTANCE;
     }
 
-    private static void notifyClazz(String message) {
-        Utils.info(NativeUtils.class, "notify is called and message: " + message);
-        DemoJNIAct.notifyUI(sDataFromNative, message);
-
+    /**
+     * set view model
+     */
+    public static void setViewModel(JNIViewModel viewModel) {
+        mViewModel = viewModel;
     }
 
-    public static native void clearClazzData();
+    private static void notifyClazz(String message) {
+        Utils.info(NativeUtils.class, "notify is called and message: " + message);
+        if (mViewModel == null) {
+            throw new NullPointerException("mViewModel is null");
+        }
+        mViewModel.updateClazzData(sDataFromNative, message);
 
-    public static native void classCallBack();
+// legacy        DemoJNIAct.notifyUI(sDataFromNative, message);
+
+    }
 
     private void notifyObj(String message) {
         Utils.info(this, "notify is called and message: " + message);
-        DemoJNIAct.notifyUI(mDataFromNative, message);
-
+ // legacy       DemoJNIAct.notifyUI(mDataFromNative, message);
+        if (mViewModel == null) {
+            throw new NullPointerException("mViewModel is null");
+        }
+        mViewModel.updateObjData(mDataFromNative, message);
     }
 
+    // --- native function ---
     public native String sayHello();
 
     public native void objectCallBack();
 
     public native void clearObjData();
+
+    public static native void clearClazzData();
+
+    public static native void classCallBack();
 
     /**
      * Singleton Bill Pugh

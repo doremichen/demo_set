@@ -18,6 +18,7 @@
     <string name="title_demo_bluetooth">Demo Bluetooth</string>
     <string name="title_demo_notification">Demo Notification</string>
     <string name="title_demo_share_provide_action">Demo Share Provide Action</string>
+    <string name="title_demo_hello_jni">Demo Hello JNI</string>
     <string name="title_demo_hello_jni_legacy">Demo Hello JNI (Legacy)</string>
     <string name="title_demo_flash_light">Demo Flash Light</string>
     <string name="title_demo_device_admin">Demo Device Admin</string>
@@ -382,5 +383,9 @@
     <string name="demo_jni_static_callback_native_class_btn"><![CDATA[Static CallBack (Native -> Class)]]></string>
     <string name="label_object_call_back">Object Callnack</string>
     <string name="label_clazz_call_back">Static Callback</string>
+    <string name="title_activity_demo_jni">JNI Demo Monitor\n</string>
+    <string name="demo_jni_callback_log_label">Callback Log</string>
+    <string name="demo_jni_clear_object_btn">Clear Object</string>
+    <string name="demo_jni_clear_class_btn">Clear Class</string>
 
 </resources>
