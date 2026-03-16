@@ -18,7 +18,7 @@
     <string name="title_demo_bluetooth">Demo Bluetooth</string>
     <string name="title_demo_notification">Demo Notification</string>
     <string name="title_demo_share_provide_action">Demo Share Provide Action</string>
-    <string name="title_demo_hello_jni">Demo Hello JNI</string>
+    <string name="title_demo_hello_jni_legacy">Demo Hello JNI (Legacy)</string>
     <string name="title_demo_flash_light">Demo Flash Light</string>
     <string name="title_demo_device_admin">Demo Device Admin</string>
     <string name="title_demo_camera">Demo Camera</string>
@@ -369,5 +369,18 @@
     <string name="demo_camera_rear_lens">Rear lens</string>
     <string name="demo_camera_title">Camera2 API Video Streaming and Shooting Demonstration</string>
     <string name="demo_video_record_invalid_path_toast">Please record first!!!</string>
+    <string name="demo_share_provide_action_title">Share Action</string>
+    <string name="demo_share_provide_demo_title">Demo System share mechanism</string>
+    <string name="demo_share_demo_instruction_1">This page demonstrates the implementation of ShareActionProvider. It encapsulates plain text content using Intent.ACTION_SEND and automatically retrieves a list of applications within the system that can receive this data format.</string>
+    <string name="demo_share_demo_instruction_2">Please click the share icon on the ActionBar to test.</string>
+    <string name="demo_jni_info">"JNI info: %1$s"</string>
+    <string name="demo_jni_demo_title">JNI Core Mechanism Demo</string>
+    <string name="demo_jin_instruction">This page demonstrates how Android calls low-level C++ libraries via the NDK. It includes: \n1. Java calling Native methods; \n2. Native posting data back to the Instance via reflection; \n3. Native updating Static (Class) variables.</string>
+    <string name="demo_jni_native_response_info">Waiting for native instructions...</string>
+    <string name="demo_jni_say_hello_java_native_btn"><![CDATA[JNI function Call (Java -> Native)]]></string>
+    <string name="demo_jni_instance_callback_native_obj_btn"><![CDATA[Instance CallBack (Native -> Obj)]]></string>
+    <string name="demo_jni_static_callback_native_class_btn"><![CDATA[Static CallBack (Native -> Class)]]></string>
+    <string name="label_object_call_back">Object Callnack</string>
+    <string name="label_clazz_call_back">Static Callback</string>
 
 </resources>

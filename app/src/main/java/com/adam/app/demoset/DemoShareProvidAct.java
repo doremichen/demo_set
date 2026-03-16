@@ -1,8 +1,11 @@
 /**
- * Description: This class is activity of demo share action provider.
+ * Copyright (c) Adam Demo set project. All rights are reserved
+ * <p>
+ * Description: This is the shared provide activity
+ * </p>
  *
  * Author: Adam Chen
- * Date: 2018/10/08
+ * Date: 2018/10/18
  */
 package com.adam.app.demoset;
 

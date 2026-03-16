@@ -1,49 +1,51 @@
 /**
- * Native utils
+ * Copyright (C) 2019 Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This is the native utils class
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/10/08
  */
 package com.adam.app.demoset.jnidemo;
 
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.jnidemo.legacy.DemoJNIAct;
 
 public class NativeUtils {
+
+    public static boolean sDataFromNative = false;
 
     // Load the jni shared lib
     static {
         System.loadLibrary("demo-jni");
     }
 
+    /**
+     * As following information are triggered by native layer
+     */
+    private String mDataFromNative = "unChange";
 
     private NativeUtils() {
-    }
-
-    /**
-     * Singleton Bill Pugh
-     */
-    private static class Helper {
-
-        public static final NativeUtils INSTANCE = new NativeUtils();
     }
 
     public static NativeUtils newInstance() {
         return Helper.INSTANCE;
     }
 
+    private static void notifyClazz(String message) {
+        Utils.info(NativeUtils.class, "notify is called and message: " + message);
+        DemoJNIAct.notifyUI(sDataFromNative, message);
 
-    /**
-     * As following information are triggered by native layer
-     */
-    private String mDataFromNative = "unChange";
-    public static boolean sDataFromNative = false;
+    }
+
+    public static native void clearClazzData();
+
+    public static native void classCallBack();
 
     private void notifyObj(String message) {
         Utils.info(this, "notify is called and message: " + message);
         DemoJNIAct.notifyUI(mDataFromNative, message);
-
-    }
-
-    private static void notifyClazz(String message) {
-        Utils.info(NativeUtils.class, "notify is called and message: " + message);
-        DemoJNIAct.notifyUI(sDataFromNative, message);
 
     }
 
@@ -53,7 +55,11 @@ public class NativeUtils {
 
     public native void clearObjData();
 
-    public static native void clearClazzData();
+    /**
+     * Singleton Bill Pugh
+     */
+    private static class Helper {
 
-    public static native void classCallBack();
+        public static final NativeUtils INSTANCE = new NativeUtils();
+    }
 }

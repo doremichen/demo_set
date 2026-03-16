@@ -18,7 +18,7 @@
     <string name="title_demo_bluetooth">藍牙範例</string>
     <string name="title_demo_notification">通知範例</string>
     <string name="title_demo_share_provide_action">分享供應範例</string>
-    <string name="title_demo_hello_jni">JNI 範例</string>
+    <string name="title_demo_hello_jni_legacy">JNI 範例 (遺留)</string>
     <string name="title_demo_flash_light">手電筒範例</string>
     <string name="title_demo_device_admin">設備管理員範例</string>
     <string name="title_demo_camera">相機範例</string>
@@ -369,5 +369,18 @@
     <string name="demo_camera_rear_lens">後鏡頭</string>
     <string name="demo_camera_title">Camera2 API 影像串流與拍攝演示</string>
     <string name="demo_video_record_invalid_path_toast">請先錄影!!!</string>
+    <string name="demo_share_provide_action_title">分享功能展示</string>
+    <string name="demo_share_provide_demo_title">系統分享機制演示</string>
+    <string name="demo_share_demo_instruction_1">本頁面展示 ShareActionProvider 實作。\n透過 Intent.ACTION_SEND 封裝純文字內容，並自動檢索系統內可接收該資料格式的應用程式清單。</string>
+    <string name="demo_share_demo_instruction_2">請點擊 ActionBar 上的分享圖示進行測試</string>
+    <string name="demo_jni_info">"JNI 資訊: %1$s"</string>
+    <string name="demo_jni_demo_title">JNI 核心機制演示</string>
+    <string name="demo_jin_instruction">此頁面展示 Android 如何透過 NDK 調用 C++ 底層函式庫。包含：\n1. Java 調用 Native 方法\n2. Native 透過反射回傳資料至 Instance\n3. Native 更新 Static (Class) 變數</string>
+    <string name="demo_jni_native_response_info">等待 Native 指令…</string>
+    <string name="demo_jni_say_hello_java_native_btn"><![CDATA[JNI 函數呼叫 (Java -> Native)]]></string>
+    <string name="demo_jni_instance_callback_native_obj_btn"><![CDATA[實例JNI回調 (Native -> Obj)]]></string>
+    <string name="demo_jni_static_callback_native_class_btn"><![CDATA[靜態JNI回調 (Native -> Class)]]></string>
+    <string name="label_object_call_back">實例JNI回調</string>
+    <string name="label_clazz_call_back">靜態JNI回調</string>
 
 </resources>

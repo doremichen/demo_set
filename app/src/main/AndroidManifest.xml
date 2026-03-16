@@ -202,7 +202,7 @@
             android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".jnidemo.DemoJNIAct"
+            android:name=".jnidemo.legacy.DemoJNIAct"
             android:exported="true"
             android:label="@string/title_activity_demo_hello_jni"
             android:screenOrientation="nosensor" />
