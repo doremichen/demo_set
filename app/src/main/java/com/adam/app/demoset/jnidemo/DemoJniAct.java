@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.adam.app.demoset.LogAdapter;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoJniBinding;
 import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;

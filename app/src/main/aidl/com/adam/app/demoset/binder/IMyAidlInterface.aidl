@@ -2,7 +2,7 @@
 package com.adam.app.demoset.binder;
 
 import com.adam.app.demoset.binder.IMyAidlCBInterface;
-import com.adam.app.demoset.binder.MyBinderData;
+import com.adam.app.demoset.binder.service.MyBinderData;
 
 interface IMyAidlInterface {
       // register call back interface

@@ -6,7 +6,7 @@
  * Author: Adam Chen
  * Date: 2019/12/17
  */
-package com.adam.app.demoset.binder;
+package com.adam.app.demoset.binder.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.os.RemoteException;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.binder.IMyAidlCBInterface;
+import com.adam.app.demoset.binder.IMyAidlInterface;
 
 import java.lang.ref.WeakReference;
 

@@ -387,5 +387,12 @@
     <string name="demo_jni_callback_log_label">回調日誌</string>
     <string name="demo_jni_clear_object_btn">清除物件資料</string>
     <string name="demo_jni_clear_class_btn">清除類別資料</string>
+    <string name="demo_binder_ipc_title">Binder IPC 交互演示</string>
+    <string name="demo_binder_aidl_method_btn">AIDL 模式</string>
+    <string name="demo_binder_messenger_handler_btn">Messenger 模式</string>
+    <string name="demo_binder_input_a_edt">輸入 A</string>
+    <string name="demo_binder_input_b_edt">輸入 B</string>
+    <string name="demo_binder_ipc_log">運作流程日誌 (IPC Log):</string>
+    <string name="demo_binder_send_request_btn">發送 Binder Request</string>
 
 </resources>

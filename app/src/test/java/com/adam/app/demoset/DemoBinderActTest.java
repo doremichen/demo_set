@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.adam.app.demoset.binder.DemoBinderAct;
+import com.adam.app.demoset.binder.legacy.DemoBinderAct;
 import com.adam.app.demoset.binder.IMyAidlInterface;
 
 import org.junit.Before;

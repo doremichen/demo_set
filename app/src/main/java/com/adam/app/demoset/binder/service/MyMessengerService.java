@@ -6,7 +6,7 @@
  * Author: Adam Chen
  * Date: 2019/12/17
  */
-package com.adam.app.demoset.binder;
+package com.adam.app.demoset.binder.service;
 
 import android.app.Service;
 import android.content.Intent;

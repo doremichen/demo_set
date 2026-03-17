@@ -6,7 +6,7 @@
  * Author: Adam Chen
  * Date: 2019/12/17
  */
-package com.adam.app.demoset.binder;
+package com.adam.app.demoset.binder.service;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,12 +19,12 @@ public class MyBinderData implements Parcelable {
      * Get message
      * @param
      */
-    String getMessage() {
+    public String getMessage() {
         return this.mMsg;
     }
 
 
-    MyBinderData(String msg) {
+    public MyBinderData(String msg) {
         this.mMsg = msg;
     }
 

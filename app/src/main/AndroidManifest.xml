@@ -106,14 +106,20 @@
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".jnidemo.DemoJniAct"
-            android:label="@string/title_activity_demo_hello_jni"
+            android:name=".binder.DemoBinderAct"
+            android:label="@string/title_activity_demo_binder_call"
             android:screenOrientation="nosensor"
             android:exported="false" />
+        <activity
+            android:name=".jnidemo.DemoJniAct"
+            android:exported="false"
+            android:label="@string/title_activity_demo_hello_jni"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".demoService.DemoServiceActivity"
             android:exported="false"
@@ -242,7 +248,7 @@
             android:label="@string/title_activity_demo_record_video"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".binder.DemoBinderAct"
+            android:name=".binder.legacy.DemoBinderAct"
             android:exported="true"
             android:label="@string/title_activity_demo_binder_call"
             android:screenOrientation="nosensor" />
@@ -399,12 +405,12 @@
             android:name=".flashlight.FlashLightService"
             android:permission="android.permission.BIND_JOB_SERVICE" /> <!-- TileService for "Launch an activity from a tile" section -->
         <service
-            android:name=".binder.MyAidlService"
+            android:name=".binder.service.MyAidlService"
             android:enabled="true"
             android:exported="true"
             android:process=":Remote_aidl" />
         <service
-            android:name=".binder.MyMessengerService"
+            android:name=".binder.service.MyMessengerService"
             android:enabled="true"
             android:exported="true"
             android:process=":Remote_messenger" />
