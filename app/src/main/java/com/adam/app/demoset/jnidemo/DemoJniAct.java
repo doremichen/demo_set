@@ -67,14 +67,21 @@ public class DemoJniAct extends AppCompatActivity {
     }
 
     private void observerLog() {
-        mViewModel.getLogs().observe(this, logs -> mLogAdapter.submitList(new ArrayList<>(logs)));
+        mViewModel.getLogs().observe(this, logs -> {
+            mLogAdapter.submitList(new ArrayList<>(logs), () -> {
+                mBinding.recyclerLog.scrollToPosition(mLogAdapter.getItemCount() - 1);
+            });
+        });
     }
 
     private void initRecycler() {
         mLogAdapter = new LogAdapter();
 
         // set layout manager
-        mBinding.recyclerLog.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(true);
+        mBinding.recyclerLog.setLayoutManager(linearLayoutManager);
         mBinding.recyclerLog.setAdapter(mLogAdapter);
     }
 }
