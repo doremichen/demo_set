@@ -43,6 +43,7 @@
     <string name="title_demo_simple_coroutine">Demo Simple Corouting\nKoltlin</string>
     <string name="title_demo_retrofit_coroutine">Demo Retrofit Corouting\nKoltlin</string>
     <string name="title_demo_ble">"Demo BLE "</string>
+    <string name="title_demo_compose_ui">Demo Compose UI</string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
@@ -394,5 +395,32 @@
     <string name="demo_binder_input_b_edt">input B</string>
     <string name="demo_binder_ipc_log">(IPC Log):</string>
     <string name="demo_binder_send_request_btn">Send Binder Request</string>
+    <!-- compose ui -->
+    <!-- Title -->
+    <string name="demo_compose_title">Compose Service Monitor</string>
+
+    <!-- State -->
+    <string name="demo_compose_service_running">Service Running: </string>
+    <string name="demo_compose_service_bound">Bound: </string>
+
+    <!-- Boolean -->
+    <string name="demo_compose_status_true">TRUE</string>
+    <string name="demo_compose_status_false">FALSE</string>
+
+    <!-- Buttons -->
+    <string name="demo_compose_btn_start">Start</string>
+    <string name="demo_compose_btn_stop">Stop</string>
+    <string name="demo_compose_btn_bind">Bind</string>
+    <string name="demo_compose_btn_unbind">Unbind</string>
+    <string name="demo_compose_btn_send">Send</string>
+
+    <!-- Logs -->
+    <string name="demo_compose_log_start">Service Started</string>
+    <string name="demo_compose_log_stop">Service Stopped</string>
+    <string name="demo_compose_log_bind">Service Bound</string>
+    <string name="demo_compose_log_unbind">Service Unbound</string>
+    <string name="demo_compose_log_send">Command Sent</string>
+    <string name="demo_compose_service_status_label">Service Status</string>
+    <string name="demo_compose_controls_title">Controls</string>
 
 </resources>

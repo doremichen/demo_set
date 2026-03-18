@@ -200,4 +200,10 @@
         clsname="com.adam.app.demoset.coroutine.DemoRetrofitCoroutineAct"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- UI -->
+    <data category="category_ui"
+        titleRes="title_demo_compose_ui"
+        clsname="com.adam.app.demoset.composeui.DemoComposeAct"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

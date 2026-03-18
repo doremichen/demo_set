@@ -111,10 +111,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".composeui.DemoComposeAct"
+            android:exported="false"
+            android:label="@string/title_demo_compose_ui"
+            android:screenOrientation="nosensor"/>
+        <activity
             android:name=".binder.DemoBinderAct"
+            android:exported="false"
             android:label="@string/title_activity_demo_binder_call"
-            android:screenOrientation="nosensor"
-            android:exported="false" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".jnidemo.DemoJniAct"
             android:exported="false"

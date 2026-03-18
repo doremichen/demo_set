@@ -43,6 +43,7 @@
     <string name="title_demo_simple_coroutine">簡單的協程範例\nKoltlin</string>
     <string name="title_demo_retrofit_coroutine">Retrofit 協程範例\nKoltlin</string>
     <string name="title_demo_ble">"BLE 範例 "</string>
+    <string name="title_demo_compose_ui">Compose UI 範例</string>
 
 
     <!-- string for Demo USB device (註解掉) -->
@@ -394,5 +395,33 @@
     <string name="demo_binder_input_b_edt">輸入 B</string>
     <string name="demo_binder_ipc_log">運作流程日誌 (IPC Log):</string>
     <string name="demo_binder_send_request_btn">發送 Binder Request</string>
+
+    <!-- compose ui -->
+    <!-- 標題 -->
+    <string name="demo_compose_title">Compose 服務監控</string>
+
+    <!-- 狀態 -->
+    <string name="demo_compose_service_running">服務執行中：</string>
+    <string name="demo_compose_service_bound">已綁定：</string>
+
+    <!-- 布林值 -->
+    <string name="demo_compose_status_true">是</string>
+    <string name="demo_compose_status_false">否</string>
+
+    <!-- 按鈕 -->
+    <string name="demo_compose_btn_start">啟動</string>
+    <string name="demo_compose_btn_stop">停止</string>
+    <string name="demo_compose_btn_bind">綁定</string>
+    <string name="demo_compose_btn_unbind">解除綁定</string>
+    <string name="demo_compose_btn_send">傳送</string>
+
+    <!-- 日誌 -->
+    <string name="demo_compose_log_start">服務已啟動</string>
+    <string name="demo_compose_log_stop">服務已停止</string>
+    <string name="demo_compose_log_bind">服務已綁定</string>
+    <string name="demo_compose_log_unbind">服務已解除綁定</string>
+    <string name="demo_compose_log_send">指令已送出</string>
+    <string name="demo_compose_service_status_label">服務狀態</string>
+    <string name="demo_compose_controls_title">控制</string>
 
 </resources>
