@@ -148,8 +148,6 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-
-* Jetpack Compose UI
 * StateFlow / SharedFlow
 * Paging 3
 * DataStore
