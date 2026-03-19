@@ -423,5 +423,10 @@
     <string name="demo_compose_log_send">指令已送出</string>
     <string name="demo_compose_service_status_label">服務狀態</string>
     <string name="demo_compose_controls_title">控制</string>
+    <string name="demo_handlerthread_demo_title">HandlerThread 技術演示</string>
+    <string name="demo_handlerthread_demo_instruction">本單元展示 Android HandlerThread 的核心應用。透過在背景執行緒建立 Looper，實現非同步任務處理並安全地回傳數據至 UI 執行緒。</string>
+    <string name="demo_handlerthread_task_procedure_times">背景任務進度計數</string>
+    <string name="demo_handlerthread_count_prefix">第</string>
+    <string name="demo_handlerthread_count_post">次</string>
 
 </resources>

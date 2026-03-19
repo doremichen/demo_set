@@ -422,5 +422,10 @@
     <string name="demo_compose_log_send">Command Sent</string>
     <string name="demo_compose_service_status_label">Service Status</string>
     <string name="demo_compose_controls_title">Controls</string>
+    <string name="demo_handlerthread_demo_title">HandlerThread Tech Demo</string>
+    <string name="demo_handlerthread_demo_instruction">This section demonstrates the core application of Android HandlerThread. By establishing a Looper in the background thread, asynchronous task processing is achieved and data is safely sent back to the UI thread.</string>
+    <string name="demo_handlerthread_task_procedure_times">Background task progress count</string>
+    <string name="demo_handlerthread_count_prefix">""</string>
+    <string name="demo_handlerthread_count_post">Times</string>
 
 </resources>

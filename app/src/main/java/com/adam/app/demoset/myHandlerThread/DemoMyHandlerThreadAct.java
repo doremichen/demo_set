@@ -15,6 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -35,8 +39,17 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // set fit system windows
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+
         mBinding = ActivityDemoMyHandlerThreadBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
 
         // start my handler thread
