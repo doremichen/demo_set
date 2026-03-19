@@ -12,6 +12,7 @@ package com.adam.app.demoset.floatingDlg;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -68,7 +69,7 @@ public class DemoFloatingDialogAct extends AppCompatActivity {
 
         //Delay 3 second and Close the current UI automatically
         // finish this activity
-        new Handler().postDelayed(this::finish, 3000L);
+        new Handler(Looper.getMainLooper()).postDelayed(this::finish, 3000L);
 
     }
 

@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
@@ -97,7 +98,7 @@ public class DemoMaterialLogInAct extends AppCompatActivity {
         // start progressbar indicator
         updateLogInStatus(false);
         // Simulate login process
-        Handler handler = new Handler();
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {

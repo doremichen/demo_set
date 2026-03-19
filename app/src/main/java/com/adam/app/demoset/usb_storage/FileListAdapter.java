@@ -43,7 +43,7 @@ public class FileListAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public T getItem(int i) {
         return this.mList.get(i);
     }
 
@@ -54,7 +54,6 @@ public class FileListAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        Utils.info(this, "getView +++");
         // view
         ViewHolder holder = null;
         if (convertView == null) {
@@ -94,7 +93,6 @@ public class FileListAdapter<T> extends BaseAdapter {
         holder.mIcon.setImageResource(ResId);
         holder.mFileName.setText(fileName);
         holder.mFileSize.setText(fileSizeInfo);
-        Utils.info(this, "getView xxx");
         return convertView;
     }
 
@@ -116,6 +114,13 @@ public class FileListAdapter<T> extends BaseAdapter {
         private final String mImgType;
         private final int mResId;
 
+        private static final Map<String, Integer> EXTENSION_MAP = new HashMap<>();
+        static {
+            for (RESICONITEMS item : values()) {
+                EXTENSION_MAP.put(item.mImgType, item.mResId);
+            }
+        }
+
         private RESICONITEMS(String imgType, int resId) {
             this.mImgType = imgType;
             this.mResId = resId;
@@ -129,19 +134,27 @@ public class FileListAdapter<T> extends BaseAdapter {
          */
         public static int getResourceIdBy(boolean isFolder, @NonNull String fileName) {
             Utils.info(RESICONITEMS.class, "getResourceIdBy +++");
-            fileName = fileName.toLowerCase();
+            if (isFolder) return R.drawable.folder;
 
-            if (isFolder) {
-                Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: folder");
-                return R.drawable.folder;
+            String name = fileName.toLowerCase();
+            // 直接從 Map 找，比 Stream 快得多
+            for (Map.Entry<String, Integer> entry : EXTENSION_MAP.entrySet()) {
+                if (name.endsWith(entry.getKey())) return entry.getValue();
             }
-
-            String finalFileName = fileName;
-            return Arrays.stream(RESICONITEMS.values())
-                    .filter(item -> finalFileName.endsWith(item.mImgType))
-                    .mapToInt(item -> item.mResId)
-                    .findFirst()
-                    .orElse(R.drawable.unkown_file);
+            return R.drawable.unkown_file;
+//            fileName = fileName.toLowerCase();
+//
+//            if (isFolder) {
+//                Utils.info(RESICONITEMS.class, "getResourceIdBy xxx: folder");
+//                return R.drawable.folder;
+//            }
+//
+//            String finalFileName = fileName;
+//            return Arrays.stream(RESICONITEMS.values())
+//                    .filter(item -> finalFileName.endsWith(item.mImgType))
+//                    .mapToInt(item -> item.mResId)
+//                    .findFirst()
+//                    .orElse(R.drawable.unkown_file);
         }
 
     }
@@ -160,12 +173,17 @@ public class FileListAdapter<T> extends BaseAdapter {
      * @return file size string
      */
     private String toFileSizeInfo(long size) {
-        return FORMATTERS.entrySet().stream()
-                .filter(entry -> size >= entry.getKey())
-                .max(Map.Entry.comparingByKey())
-                .map(Map.Entry::getValue)
-                .map(formatter -> formatter.apply(size))
-                .orElse(size + " B");
+        if (size <= 0) return "0 B";
+        final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return String.format("%.2f %s", size / Math.pow(1024, digitGroups), units[digitGroups]);
+
+//        return FORMATTERS.entrySet().stream()
+//                .filter(entry -> size >= entry.getKey())
+//                .max(Map.Entry.comparingByKey())
+//                .map(Map.Entry::getValue)
+//                .map(formatter -> formatter.apply(size))
+//                .orElse(size + " B");
     }
 
 
