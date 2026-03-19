@@ -39,6 +39,12 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
     // live data: service mode
     private final MutableLiveData<Boolean> mRemoteMode = new MutableLiveData<>(false);
 
+    // live data: bind request
+    private final MutableLiveData<Boolean> mBindRequest = new MutableLiveData<>(false);
+    // live data: start service
+    private final MutableLiveData<Boolean> mStartService = new MutableLiveData<>(false);
+
+
     public ServiceMonitorViewModel(@NonNull Application application) {
         super(application);
     }
@@ -55,6 +61,15 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
         return mLogs;
     }
 
+    public LiveData<Boolean> getBindRequest() {
+        return mBindRequest;
+    }
+
+    public LiveData<Boolean> getStartService() {
+        return mStartService;
+    }
+
+
     /**
      * addLog
      *
@@ -69,15 +84,11 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
 
     /**
      * startService
-     *
-     * @param view View
      */
-    public void startService(View view) {
-        Context context = view.getContext();
-        Intent intent = ServiceHelper.getInstance().buildServiceIntent(context);
-        context.startService(intent);
-        // log
-        addLog("start service");
+    public void startService() {
+        // update start service request
+        mStartService.setValue(true);
+        
         // update ui status
         mDemoUISate.setValue(DemoUISate.START_SERVICE);
     }
@@ -85,14 +96,11 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
     /**
      * stopService
      *
-     * @param view View
      */
-    public void stopService(View view) {
-        Context context = view.getContext();
-        Intent intent = ServiceHelper.getInstance().buildServiceIntent(context);
-        context.stopService(intent);
-        // log
-        addLog("stop service");
+    public void stopService() {
+        // update stop service request
+        mStartService.setValue(false);
+
         // update ui status
         mDemoUISate.setValue(DemoUISate.INIT);
     }
@@ -100,13 +108,11 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
     /**
      * bindService
      *
-     * @param view View
      */
-    public void bindService(View view) {
-        Activity act = (Activity) view.getContext();
-        ServiceHelper.getInstance().bindService(act);
-        // log
-        addLog("bind service");
+    public void bindService() {
+        // update bind service request
+        mBindRequest.setValue(true);
+
         // update ui status
         mDemoUISate.setValue(DemoUISate.BIND_SERVICE);
     }
@@ -114,13 +120,11 @@ public class ServiceMonitorViewModel extends AndroidViewModel {
     /**
      * unbindService
      *
-     * @param view View
      */
-    public void unbindService(View view) {
-        Activity act = (Activity) view.getContext();
-        ServiceHelper.getInstance().unbindService(act);
-        // log
-        addLog("unbind service");
+    public void unbindService() {
+        // update bind service request
+        mBindRequest.setValue(false);
+
         // update ui status
         mDemoUISate.setValue(DemoUISate.INIT);
     }

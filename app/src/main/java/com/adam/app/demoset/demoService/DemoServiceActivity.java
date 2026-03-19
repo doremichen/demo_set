@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.adam.app.demoset.databinding.ActivityDemoServiceBinding;
 import com.adam.app.demoset.demoService.adapter.LogAdapter;
 import com.adam.app.demoset.demoService.model.ServiceEvent;
+import com.adam.app.demoset.demoService.service.ServiceHelper;
 import com.adam.app.demoset.demoService.util.ServiceLogBus;
 import com.adam.app.demoset.demoService.viewmodel.ServiceMonitorViewModel;
 
@@ -73,9 +74,43 @@ public class DemoServiceActivity extends AppCompatActivity {
 
         // observer log
         mViewModel.getLogs().observe(this, this::updateLog);
+        // observer start service request
+        mViewModel.getStartService().observe(this, this::updateStartService);
+        // observer bind service request
+        mViewModel.getBindRequest().observe(this, this::updateBindService);
+
 
         // register log receiver
         registerReceiver(mLogReceiver, new IntentFilter(ServiceLogBus.ACTION_LOG), RECEIVER_EXPORTED);
+
+    }
+
+    private void updateBindService(Boolean wouldBind) {
+        if (wouldBind) {
+            // bind service
+            ServiceHelper.getInstance().bindService(this);
+            // add log
+            mViewModel.addLog("bind service");
+        } else {
+            // unbind service
+            ServiceHelper.getInstance().unbindService(this);
+            // add log
+            mViewModel.addLog("unbind service");
+        }
+    }
+
+    private void updateStartService(Boolean wouldStart) {
+        if (wouldStart) {
+            // start service
+            ServiceHelper.getInstance().startService(this);
+            // add log
+            mViewModel.addLog("start service");
+        } else {
+            // stop service
+            ServiceHelper.getInstance().stopService(this);
+            // add log
+            mViewModel.addLog("stop service");
+        }
 
     }
 

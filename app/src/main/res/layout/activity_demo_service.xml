@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/start_service"
                 android:enabled="@{vm.startEnabled}"
-                android:onClick="@{(v)->vm.startService(v)}"/>
+                android:onClick="@{()->vm.startService()}"/>
 
             <Button
                 android:id="@+id/btnStop"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/stop_service"
                 android:enabled="@{vm.stopEnabled}"
-                android:onClick="@{(v)->vm.stopService(v)}"/>
+                android:onClick="@{()->vm.stopService()}"/>
 
             <Button
                 android:id="@+id/btnBind"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/bind_service"
                 android:enabled="@{vm.bindEnabled}"
-                android:onClick="@{(v)->vm.bindService(v)}"/>
+                android:onClick="@{()->vm.bindService()}"/>
 
             <Button
                 android:id="@+id/btnUnbind"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/unbind_service"
                 android:enabled="@{vm.unbindEnabled}"
-                android:onClick="@{(v)->vm.unbindService(v)}"/>
+                android:onClick="@{()->vm.unbindService()}"/>
 
             <Button
                 android:id="@+id/btnRequest"

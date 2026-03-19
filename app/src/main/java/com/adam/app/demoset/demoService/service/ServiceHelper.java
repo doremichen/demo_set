@@ -109,6 +109,28 @@ public class ServiceHelper {
     }
 
     /**
+     * startService
+     * start service
+     *
+     * @param activity Activity
+     */
+    public void startService(Activity activity) {
+        Intent serviceIntent = buildServiceIntent(activity);
+        activity.startService(serviceIntent);
+    }
+
+    /**
+     * stopService
+     * stop service
+     *
+     * @param activity Activity
+     */
+    public void stopService(Activity activity) {
+        Intent serviceIntent = buildServiceIntent(activity);
+        activity.stopService(serviceIntent);
+    }
+
+    /**
      * bindService
      * bind service according to active service connection type
      *
