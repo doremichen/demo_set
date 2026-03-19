@@ -427,5 +427,7 @@
     <string name="demo_handlerthread_task_procedure_times">Background task progress count</string>
     <string name="demo_handlerthread_count_prefix">""</string>
     <string name="demo_handlerthread_count_post">Times</string>
+    <string name="demo_system_ui_hide_low_light_btn">low light mode</string>
+    <string name="demo_system_ui_hide_invisible">Hide interface</string>
 
 </resources>

@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +46,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.adam.app.demoset.demoService.service.LocalService;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -489,6 +493,31 @@ public abstract class Utils {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
+    public static void hideSystemUI(Window window) {
+        if (window == null) {
+            info(Utils.class, "window is null");
+            return;
+        }
+
+        // set fit system windows as false
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+
+        // get inset window controller
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller == null) {
+            info(Utils.class, "controller is null");
+            return;
+        }
+        // hide system bars and navigation bars
+        controller.hide(WindowInsetsCompat.Type.systemBars() |
+                WindowInsetsCompat.Type.navigationBars());
+        // set immersive mode
+        controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+
+    }
+
+
+    @Deprecated
     public static void hideSystemUI(View v) {
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
                 // Set the content to appear under the system bars so that the

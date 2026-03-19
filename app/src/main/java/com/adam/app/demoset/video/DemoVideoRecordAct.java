@@ -206,8 +206,9 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         super.onStart();
 
         // Hide systemUI
-        View decoreView = this.getWindow().getDecorView();
-        Utils.hideSystemUI(decoreView);
+        Utils.hideSystemUI(getWindow());
+//        View decoreView = this.getWindow().getDecorView();
+//        Utils.hideSystemUI(decoreView);
     }
 
     @Override
