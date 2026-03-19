@@ -32,7 +32,7 @@ public class DemoSysUIAct extends AppCompatActivity {
     private Button mBtnHide;
     private TextView mTextInfo;
     private boolean mIsLowProfileMode;
-    private boolean mCanHide = true;
+    private boolean mIsProfileHide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +96,7 @@ public class DemoSysUIAct extends AppCompatActivity {
 
     public void onHideSysUI(View v) {
         Utils.info(this, "onHideSysUI enter");
-        mCanHide = !mCanHide;
+
         // get inset controller
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(getWindow(), v);
 
@@ -105,7 +105,7 @@ public class DemoSysUIAct extends AppCompatActivity {
             return;
         }
 
-        if (mCanHide) {
+        if (mIsProfileHide) {
             // show
             controller.show(WindowInsetsCompat.Type.systemBars());  // system bar
             controller.show(WindowInsetsCompat.Type.navigationBars()); // navigation bar
@@ -140,14 +140,16 @@ public class DemoSysUIAct extends AppCompatActivity {
 //            this.getSupportActionBar().show();
 //        }
 
-        String msg = (mCanHide) ? "標準模式" : "目前狀態：沉浸模式 (全螢幕)" ;
-        int color = (mCanHide) ? androidx.appcompat.R.attr.colorPrimary :
+        String msg = (mIsProfileHide) ? "標準模式" : "目前狀態：沉浸模式 (全螢幕)" ;
+        int color = (mIsProfileHide) ? androidx.appcompat.R.attr.colorPrimary :
                 com.google.android.material.R.attr.colorError;
 
         updateStatusInfo(msg, color);
 
-        mBtnHide.setText(mCanHide ? R.string.demo_system_ui_hide_invisible : R.string.action_show_system_ui);
+        mBtnHide.setText(mIsProfileHide ? R.string.demo_system_ui_hide_invisible : R.string.action_show_system_ui);
 
+        // update
+        mIsProfileHide = !mIsProfileHide;
 //        decorView.setSystemUiVisibility(uiOptions);
 
     }
