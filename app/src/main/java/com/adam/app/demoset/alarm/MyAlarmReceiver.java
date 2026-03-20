@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2022 Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This is the demo alarm receiver.
+ * <p>
+ * @author Adam Chen
+ * @version 1.0.0 - 20218/11/2
+ */
 package com.adam.app.demoset.alarm;
 
 import android.content.BroadcastReceiver;

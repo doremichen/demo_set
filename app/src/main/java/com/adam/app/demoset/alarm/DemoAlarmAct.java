@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) 2022 Adam Chen Demo set project. All rights reserved.
+ * <p>
+ * Description: This is the demo alarm activity.
+ *
+ * @author Adam Chen
+ * @version 1.0.0 - 20218/11/20
+ */
 package com.adam.app.demoset.alarm;
 
 import android.app.AlarmManager;
@@ -6,6 +14,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -78,6 +89,9 @@ public class DemoAlarmAct extends AppCompatActivity {
         mAlarmInfo = findViewById(R.id.tv_alarm_info);
         mRadioGroup = findViewById(R.id.radioGroup);
 
+        // init count number
+        mAlarmInfo.setText(getString(R.string.alarm_count, mCount));
+
 
         // Alarm action
         this.mAlarmAction = new AlarmAction();
@@ -99,7 +113,6 @@ public class DemoAlarmAct extends AppCompatActivity {
             }
         });
     }
-
 
 
     @Override
@@ -268,6 +281,7 @@ public class DemoAlarmAct extends AppCompatActivity {
 
                     // update ui component
                     DemoAlarmAct.this.mAlarmButton.setText(DemoAlarmAct.this.getResources().getString(R.string.action_stop));
+                    DemoAlarmAct.this.mAlarmButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
                     DemoAlarmAct.this.mInputDelayNumber.setEnabled(false);
 
                     AlarmAction.this.setState(new AlarmOffState());
@@ -289,6 +303,9 @@ public class DemoAlarmAct extends AppCompatActivity {
 
                 // update ui component
                 DemoAlarmAct.this.mAlarmButton.setText(DemoAlarmAct.this.getResources().getString(R.string.action_start));
+                // reset the original color
+                int originalColor = ContextCompat.getColor(DemoAlarmAct.this, R.color.teal_700);
+                DemoAlarmAct.this.mAlarmButton.setBackgroundTintList(ColorStateList.valueOf(originalColor));
                 DemoAlarmAct.this.mInputDelayNumber.setEnabled(true);
                 DemoAlarmAct.this.mInputDelayNumber.getText().clear();
 
