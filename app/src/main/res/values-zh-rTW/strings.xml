@@ -430,5 +430,8 @@
     <string name="demo_handlerthread_count_post">次</string>
     <string name="demo_system_ui_hide_low_light_btn">低亮模式</string>
     <string name="demo_system_ui_hide_invisible">隱藏介面</string>
+    <string name="demo_system_ui_noraml_state">目前狀態：標準模式</string>
+    <string name="demo_system_ui_immerse_mode">目前狀態：沉浸模式 (全螢幕)</string>
+    <string name="demo_system_ui_low_light_mode">目前狀態：低亮模式</string>
 
 </resources>

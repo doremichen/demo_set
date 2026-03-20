@@ -14,33 +14,78 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoSysUiBinding;
+
+import org.jspecify.annotations.NonNull;
 
 public class DemoSysUIAct extends AppCompatActivity {
 
-    private Button mBtnDim;
-    private Button mBtnHide;
-    private TextView mTextInfo;
+    // view binding
+    private ActivityDemoSysUiBinding mBbinding;
+
+
     private boolean mIsLowProfileMode;
     private boolean mIsProfileHide;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_sys_ui);
+
+        // view binding
+        mBbinding = ActivityDemoSysUiBinding.inflate(getLayoutInflater());
+        setContentView(mBbinding.getRoot());
+
 
         // set fit system window as false
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        // monitor window inset
+        ViewCompat.setOnApplyWindowInsetsListener(mBbinding.mainLayout, new OnApplyWindowInsetsListener() {
+
+            @Override
+            public @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat insets) {
+                Insets systemBar = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                // Make the top CardView avoid the Status Bar + action Bar.
+                int actionBarHeight = 0;
+                if (getSupportActionBar() != null && getSupportActionBar().isShowing()) {
+                    // can not used here because view is not ready at this moment
+                    // actionBarHeight = getSupportActionBar().getHeight();
+                    actionBarHeight = Utils.getActionBarHeight(DemoSysUIAct.this.getApplicationContext());
+                    Utils.info(DemoSysUIAct.this, "actionBarHeight: " + actionBarHeight);
+                }
+
+                // change card view margin
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mBbinding.cardDescription.getLayoutParams();
+                params.topMargin = systemBar.top + actionBarHeight + 16;
+                mBbinding.cardDescription.setLayoutParams(params);
+
+                // Keep the bottom button bar away from the navigation bar
+                // This way, even if the navigation bar is displayed, the buttons won't be obscured.
+                mBbinding.layoutBtn.setPadding(
+                        mBbinding.layoutBtn.getPaddingLeft(),
+                        mBbinding.layoutBtn.getPaddingTop(),
+                        mBbinding.layoutBtn.getPaddingRight(),
+                        systemBar.bottom + 24
+                );
+                return insets;
+            }
+        });
+
+
 
 //  deprecate       // Show status bar and navigation
 //        View decoreView = this.getWindow().getDecorView();
@@ -48,11 +93,8 @@ public class DemoSysUIAct extends AppCompatActivity {
 //                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 //                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-        mBtnDim = this.findViewById(R.id.ActDimSysUI);
-        mBtnHide = this.findViewById(R.id.ActHideSysUI);
-        mTextInfo = this.findViewById(R.id.info);
 
-        updateStatusInfo("目前狀態：標準模式", androidx.appcompat.R.attr.colorPrimary);
+        updateStatusInfo(getString(R.string.demo_system_ui_noraml_state), androidx.appcompat.R.attr.colorPrimary);
 
     }
 
@@ -79,13 +121,13 @@ public class DemoSysUIAct extends AppCompatActivity {
 //            uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
 //        }
 //
-        String msg = (mIsLowProfileMode) ? "標準模式" : "低亮模式" ;
+        String msg = (mIsLowProfileMode) ? getString(R.string.demo_system_ui_noraml_state) : getString(R.string.demo_system_ui_low_light_mode);
         int color = (mIsLowProfileMode) ? androidx.appcompat.R.attr.colorPrimary :
                 com.google.android.material.R.attr.colorTertiary;
 
         updateStatusInfo(msg, color);
 
-        mBtnDim.setText(mIsLowProfileMode ? R.string.demo_system_ui_hide_low_light_btn : R.string.action_show_system_ui);
+        mBbinding.ActDimSysUI.setText(mIsLowProfileMode ? R.string.demo_system_ui_hide_low_light_btn : R.string.action_show_system_ui);
 
 //        decorView.setSystemUiVisibility(uiOptions);
         // update
@@ -111,7 +153,7 @@ public class DemoSysUIAct extends AppCompatActivity {
             controller.show(WindowInsetsCompat.Type.navigationBars()); // navigation bar
             controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
-            if (getSupportActionBar()!= null) {
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
             }
 
@@ -120,11 +162,14 @@ public class DemoSysUIAct extends AppCompatActivity {
             controller.hide(WindowInsetsCompat.Type.systemBars());
             controller.hide(WindowInsetsCompat.Type.navigationBars());
 
-            if (getSupportActionBar()!= null) {
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
 
         }
+
+        // request apply insets
+        ViewCompat.requestApplyInsets(getWindow().getDecorView());
 
 //  deprecate      View decorView = v.getRootView();
 //        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -140,13 +185,13 @@ public class DemoSysUIAct extends AppCompatActivity {
 //            this.getSupportActionBar().show();
 //        }
 
-        String msg = (mIsProfileHide) ? "標準模式" : "目前狀態：沉浸模式 (全螢幕)" ;
+        String msg = (mIsProfileHide) ? getString(R.string.demo_system_ui_noraml_state) : getString(R.string.demo_system_ui_immerse_mode);
         int color = (mIsProfileHide) ? androidx.appcompat.R.attr.colorPrimary :
                 com.google.android.material.R.attr.colorError;
 
         updateStatusInfo(msg, color);
 
-        mBtnHide.setText(mIsProfileHide ? R.string.demo_system_ui_hide_invisible : R.string.action_show_system_ui);
+        mBbinding.ActHideSysUI.setText(mIsProfileHide ? R.string.demo_system_ui_hide_invisible : R.string.action_show_system_ui);
 
         // update
         mIsProfileHide = !mIsProfileHide;
@@ -170,13 +215,13 @@ public class DemoSysUIAct extends AppCompatActivity {
     /**
      * Update status info
      *
-     * @param message    message
-     * @param colorAttr  color attribute
+     * @param message   message
+     * @param colorAttr color attribute
      */
     private void updateStatusInfo(String message, int colorAttr) {
-        if (mTextInfo != null) {
-            mTextInfo.setText(message);
-            mTextInfo.setTextColor(getThemeColor(colorAttr));
+        if (mBbinding.info != null) {
+            mBbinding.info.setText(message);
+            mBbinding.info.setTextColor(getThemeColor(colorAttr));
         }
     }
 }

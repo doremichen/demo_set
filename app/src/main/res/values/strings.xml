@@ -429,5 +429,8 @@
     <string name="demo_handlerthread_count_post">Times</string>
     <string name="demo_system_ui_hide_low_light_btn">low light mode</string>
     <string name="demo_system_ui_hide_invisible">Hide interface</string>
+    <string name="demo_system_ui_noraml_state">Current status: Standard mode</string>
+    <string name="demo_system_ui_immerse_mode">Current status: Immersive mode (full screen)</string>
+    <string name="demo_system_ui_low_light_mode">Current status: Low brightness mode"</string>
 
 </resources>

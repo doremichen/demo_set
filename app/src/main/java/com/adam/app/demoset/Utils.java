@@ -31,6 +31,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,16 +92,12 @@ public abstract class Utils {
     public static final String FALSE = "False";
     public static final String NOTIFY_CHANNEL_ID = "0x1357";
 
-    public static boolean sIsRemoteService = false;
-    public static boolean sIsBound = false;
 
     public static final String OUTPUT_PATH = "blur_filter_outputs";
     public static final String  TAG_IMG_OUTPUT = "OUTPUT";
     // The name of the image manipulation work
     public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
-
-    public static LocalService sLocalSvr;
-    public static Messenger sMessenger;   // for remote service
+    // for remote service
 
     public static ServiceConnection sConnection;
 
@@ -841,6 +838,20 @@ public abstract class Utils {
 
         return stringMap;
     }
+
+    /**
+     * Get action bar height
+     * @param context context
+     * @return height value
+     */
+    public static int getActionBarHeight(Context context) {
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+        }
+        return 0;
+    }
+
 
     /**
      * Dump arrayList info
