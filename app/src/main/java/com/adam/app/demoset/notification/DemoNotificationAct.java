@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2019 Adam Demo set project. All rights reserved.
+ * <p>
+ * Description: This is demo notification activity
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/10/16
+ */
 package com.adam.app.demoset.notification;
 
 import android.app.NotificationChannel;
@@ -148,7 +157,11 @@ public class DemoNotificationAct extends AppCompatActivity {
 
         Bitmap notifyImg = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         NotificationCompat.Builder builder = notificationBuilder();
-        builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(notifyImg).setBigContentTitle("Notify update"));
+        // set big picture type
+        builder.setStyle(new NotificationCompat.BigPictureStyle()
+                .bigPicture(notifyImg)
+                .setBigContentTitle(getString(R.string.demo_notification_update_instruction_title))
+                .setSummaryText(getString(R.string.demo_notification_update_instruction)));
 
         // Update
         mManager.notify(NOTIFICATION_ID, builder.build());

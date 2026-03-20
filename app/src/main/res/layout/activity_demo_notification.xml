@@ -1,80 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     tools:context=".notification.DemoNotificationAct">
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_info"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_start_notification"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="250dp"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_welcome_to_demo_notification"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_margin="20dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btn_start_notification"
-        android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/demo_notification_instruction_title"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/demo_notification_instruction"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_update_notification"
-        android:layout_marginTop="@dimen/padd_top_dim"
-        android:layout_marginBottom="@dimen/padd_bottom_dim"
-        android:layout_marginStart="@dimen/padd_start_dim"
-        android:layout_marginEnd="@dimen/padd_end_dim"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="onNotification"
-        android:text="@string/label_btn_notification"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-    <Button
-        android:id="@+id/btn_update_notification"
-        android:layout_above="@+id/btn_cancel_notification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padd_top_dim"
-        android:layout_marginBottom="@dimen/padd_bottom_dim"
-        android:layout_marginStart="@dimen/padd_start_dim"
-        android:layout_marginEnd="@dimen/padd_end_dim"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="updateNotify"
-        android:text="@string/label_btn_update_notification"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-    <Button
-        android:id="@+id/btn_cancel_notification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padd_top_dim"
-        android:layout_marginBottom="@dimen/padd_bottom_dim"
-        android:layout_marginStart="@dimen/padd_start_dim"
-        android:layout_marginEnd="@dimen/padd_end_dim"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/item_selector"
-        android:fontFamily="@font/cabin_bold"
-        android:onClick="cancelNotify"
-        android:text="@string/label_btn_cancel_notification"
-        android:textAllCaps="false"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-</RelativeLayout>
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_info">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_start_notification"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:onClick="onNotification"
+            android:text="@string/label_btn_notification"
+            android:textSize="18sp"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_notification_test" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_update_notification"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:onClick="updateNotify"
+            android:text="@string/label_btn_update_notification"
+            android:textSize="18sp"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel_notification"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:onClick="cancelNotify"
+            android:text="@string/label_btn_cancel_notification"
+            android:textColor="?attr/colorError"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

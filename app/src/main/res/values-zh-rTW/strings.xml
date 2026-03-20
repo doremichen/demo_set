@@ -433,5 +433,10 @@
     <string name="demo_system_ui_noraml_state">目前狀態：標準模式</string>
     <string name="demo_system_ui_immerse_mode">目前狀態：沉浸模式 (全螢幕)</string>
     <string name="demo_system_ui_low_light_mode">目前狀態：低亮模式</string>
+    <string name="demo_notification_instruction_title">通知功能演示</string>
+    <string name="demo_notification_instruction">本單元展示 Android 通知系統的核心機制，包含 Channel 建立、大圖樣式更新以及 PendingIntent 跳轉邏輯。這在醫療警報或系統狀態通知中非常關鍵。</string>
+    <string name="demo_notification_result_instruction">您已成功透過點擊通知進入此頁面。這證明了 PendingIntent 與 TaskStackBuilder 的導航邏輯運作正常。</string>
+    <string name="demo_notification_update_instruction_title">通知已更新</string>
+    <string name="demo_notification_update_instruction">這展示了如何動態修改已發出的通知內容。</string>
 
 </resources>

@@ -432,5 +432,10 @@
     <string name="demo_system_ui_noraml_state">Current status: Standard mode</string>
     <string name="demo_system_ui_immerse_mode">Current status: Immersive mode (full screen)</string>
     <string name="demo_system_ui_low_light_mode">Current status: Low brightness mode"</string>
+    <string name="demo_notification_instruction_title">Notification function demonstration</string>
+    <string name="demo_notification_instruction">This section demonstrates the core mechanisms of the Android notification system, including Channel creation, large image style updates, and PendingIntent navigation logic. This is crucial for medical alerts or system status notifications.</string>
+    <string name="demo_notification_result_instruction">You have successfully accessed this page by clicking the notification. This proves that the navigation logic of PendingIntent and TaskStackBuilder is working correctly.</string>
+    <string name="demo_notification_update_instruction_title">Notification updated</string>
+    <string name="demo_notification_update_instruction">This demonstrates how to dynamically modify the content of a sent notification.</string>
 
 </resources>
