@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            android:text="本 Demo 展示 AlarmManager 的多種觸發機制：\n• Repeat: 嚴格週期性鬧鐘 (需 > 60s)\n• Inexact: 系統優化省電模式 (需 > 15min)\n• AllowWhileIdle: 即使在 Doze 模式也能觸發" />
+            android:text="@string/demo_alarm_instruction" />
 
     </com.google.android.material.card.MaterialCardView>
 

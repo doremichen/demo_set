@@ -8,6 +8,8 @@
  */
 package com.adam.app.demoset.scheduler;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.Optional;
 
@@ -163,9 +166,15 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
                 mController.startScheduledTask(mPeriodicTime);
                 mMeter.setBase(SystemClock.elapsedRealtime());
                 mMeter.start();
+
+                mCounterAction.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBABA")));
+                mCounterAction.setTextColor(Color.RED);
             } else {
                 mController.stopScheduledTask();
                 mMeter.stop();
+
+                mCounterAction.setBackgroundTintList(null);
+                mCounterAction.setTextColor(MaterialColors.getColor(v, com.google.android.material.R.attr.colorPrimary));
             }
         }
 

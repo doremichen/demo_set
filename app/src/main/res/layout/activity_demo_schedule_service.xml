@@ -4,102 +4,163 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
+    android:padding="16dp"
     tools:context=".scheduler.DemoScheduleServiceAct">
 
     <LinearLayout
-        android:id="@+id/time_info"
-        android:layout_width="wrap_content"
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/title_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_meter"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="24sp" />
+            android:fontFamily="@font/cabin_bold"
+            android:text="排程任務演示"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-        <Chronometer
-            android:id="@+id/chronometer"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:format="00:00:00"
-            android:singleLine="true"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="24sp" />
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+            app:cardCornerRadius="24dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🕒 "
+                    android:textSize="20sp" />
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:format="00:00:00"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_show_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_welcome_info"
-        android:textAlignment="center"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <TextView
-        android:id="@+id/label_periodic_config"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/label_period_title"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/seekBar_periodic"
-        app:layout_constraintEnd_toStartOf="@+id/label_periodic_unit"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/label_periodic_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:text="@string/label_time_unit"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/label_periodic_config"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/label_periodic_config" />
-
-    <SeekBar
-        android:id="@+id/seekBar_periodic"
-        style="@style/Widget.AppCompat.SeekBar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        android:max="100"
+        android:layout_height="0dp"
+        android:layout_marginVertical="16dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/btn_action_counter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_layout">
 
-    <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:strokeWidth="1dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="本模組演示後台排程服務：\n• 週期性觸發：透過 SeekBar 設定執行間隔 (s)。\n• 狀態監控：即時顯示任務計時與執行次數。\n• 系統整合：任務到達時發送 Status Notification。\n• 自動化終止：支持手動停止或隨 Activity 銷毀。"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:lineSpacingExtra="4dp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tv_show_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="24dp"
+                android:fontFamily="@font/cabin_bold"
+                android:text="等待啟動..."
+                android:textAlignment="center"
+                android:textColor="?attr/colorTertiary"
+                android:textSize="32sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/label_periodic_config"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_period_title"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/label_periodic_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="0 s"
+                            android:textColor="?attr/colorSecondary"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <SeekBar
+                        android:id="@+id/seekBar_periodic"
+                        style="@style/Widget.AppCompat.SeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:max="100" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_action_counter"
         style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="0dp"
         android:layout_height="64dp"
-        android:layout_margin="16dp"
         android:fontFamily="@font/cabin_bold"
         android:onClick="onCounterAction"
         android:text="@string/action_start_counter"
-        android:textAllCaps="false"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo schedule service controller.
+ * <p>
+ * Author: Adam Chen
+ * Date: 2018/10/25
+ */
 package com.adam.app.demoset.scheduler;
 
 import com.adam.app.demoset.Utils;
@@ -98,6 +106,15 @@ public class SchedulerController {
     }
 
     /**
+     * For UI callback
+     */
+    interface onControllerListener {
+        void TimeArrive(long millisecond);
+
+        void finishUI();
+    }
+
+    /**
      * Counter task
      */
     private class MyScheduleTask implements Runnable {
@@ -110,15 +127,6 @@ public class SchedulerController {
             }
 
         }
-    }
-
-    /**
-     * For UI callback
-     */
-    interface onControllerListener {
-        void TimeArrive(long millisecond);
-
-        void finishUI();
     }
 
 }
