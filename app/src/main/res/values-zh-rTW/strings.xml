@@ -438,5 +438,7 @@
     <string name="demo_notification_result_instruction">您已成功透過點擊通知進入此頁面。這證明了 PendingIntent 與 TaskStackBuilder 的導航邏輯運作正常。</string>
     <string name="demo_notification_update_instruction_title">通知已更新</string>
     <string name="demo_notification_update_instruction">這展示了如何動態修改已發出的通知內容。</string>
+    <string name="demo_notification_info_title">資訊: 測試</string>
+    <string name="demo_notification_info_content">這是展示通知</string>
 
 </resources>

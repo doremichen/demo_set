@@ -437,5 +437,7 @@
     <string name="demo_notification_result_instruction">You have successfully accessed this page by clicking the notification. This proves that the navigation logic of PendingIntent and TaskStackBuilder is working correctly.</string>
     <string name="demo_notification_update_instruction_title">Notification updated</string>
     <string name="demo_notification_update_instruction">This demonstrates how to dynamically modify the content of a sent notification.</string>
+    <string name="demo_notification_info_title">Info: test</string>
+    <string name="demo_notification_info_content">This is Demo text</string>
 
 </resources>

@@ -87,9 +87,9 @@ public class DemoNotificationAct extends AppCompatActivity {
 
         // Config notification
         builder.setSmallIcon(R.drawable.ic_notification_test);
-        builder.setContentTitle("Demo Notification");
-        builder.setContentInfo("Info: 1");
-        builder.setContentText("This is Demo text");
+        builder.setContentTitle(getString(R.string.title_activity_demo_notification));
+        builder.setContentInfo(getString(R.string.demo_notification_info_title));
+        builder.setContentText(getString(R.string.demo_notification_info_content));
         builder.setLargeIcon(largeIcon);
         builder.setWhen(System.currentTimeMillis());
         builder.setAutoCancel(true);
