@@ -439,5 +439,7 @@
     <string name="demo_notification_update_instruction">This demonstrates how to dynamically modify the content of a sent notification.</string>
     <string name="demo_notification_info_title">Info: test</string>
     <string name="demo_notification_info_content">This is Demo text</string>
+    <string name="demo_lock_screen_instruction_title">Equipment Safety Management Demonstration</string>
+    <string name="demo_lock_screen_instruction">This unit demonstrates advanced permission control for Android Device Admin. Through the implementation of the Strategy Pattern, you can test the startup streams for remote screen locking, security authentication, and administrative permissions. This is crucial for the security maintenance of enterprise-level medical devices.</string>
 
 </resources>

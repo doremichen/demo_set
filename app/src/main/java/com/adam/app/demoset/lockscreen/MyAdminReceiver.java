@@ -1,3 +1,11 @@
+/**
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This is the demo device admin receiver.
+ * </p>
+ * Author: Adam Chen
+ * Date: 2018/10/11
+ */
 package com.adam.app.demoset.lockscreen;
 
 import android.app.admin.DeviceAdminReceiver;

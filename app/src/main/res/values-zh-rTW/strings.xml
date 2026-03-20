@@ -440,5 +440,7 @@
     <string name="demo_notification_update_instruction">這展示了如何動態修改已發出的通知內容。</string>
     <string name="demo_notification_info_title">資訊: 測試</string>
     <string name="demo_notification_info_content">這是展示通知</string>
+    <string name="demo_lock_screen_instruction_title">設備安全管理演示</string>
+    <string name="demo_lock_screen_instruction">本單元演示 Android 設備管理員 (Device Admin) 的高級權限控制。透過策略模式 (Strategy Pattern) 實作，您可以測試遠端鎖屏、安全驗證以及管理權限的啟動流。這對於企業級醫療設備的安全性維護至關重要。</string>
 
 </resources>

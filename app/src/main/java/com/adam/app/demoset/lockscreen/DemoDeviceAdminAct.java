@@ -18,117 +18,214 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoDeviceAdminBinding;
+import com.adam.app.demoset.LogAdapter;
+import com.adam.app.demoset.lockscreen.viewmodel.DeviceAdminViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class DemoDeviceAdminAct extends AppCompatActivity {
 
-    public static final int REQUEST_ENABLE_ADMIN_CODE = 0x0224;
-    public static final int REQUEST_SECURE_LOCK_CODE = 0x0112;
+    // TAG
+    private static final String TAG = "DemoDeviceAdminAct";
 
-    private ListView mList;
+
+    // define admin result launcher
+    private final ActivityResultLauncher<Intent> mEnableAdminLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+
+                int resultCode = result.getResultCode();
+
+                Utils.showToast(this, (resultCode == Activity.RESULT_OK) ? "成功啟動設備管理員"
+                        : "使用者拒絕啟動");
+
+            }
+    );
+    // define secure lock result launcher
+    private final ActivityResultLauncher<Intent> mSecureLockLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+
+                int resultCode = result.getResultCode();
+
+                Utils.showToast(this, (resultCode == Activity.RESULT_OK) ? "安全驗證成功"
+                        : "安全驗證失敗");
+
+            }
+    );
+
+    // view binding
+    private ActivityDemoDeviceAdminBinding mBinding;
+    // view model
+    private DeviceAdminViewModel mViewModel;
+    // log adapter
+    private LogAdapter mLogAdapter;
+
 
     private DevicePolicyManager mDevPolicyManager;
-    private ComponentName mCompName;
 
+    private ComponentName mCompName;
     private KeyguardManager mKeyguardManager;
     // Strategy list
-    private List<ItemStrategy> mItemStrategyList = new ArrayList<>();
+    private List<DeviceAdminViewModel.Strategy> mItemStrategyList = new ArrayList<>();
 
     // Item list
     private List<String> getList() {
-        return this.mItemStrategyList.stream()
-                .map(ItemStrategy::Name)
-                .collect(Collectors.toList());
+        List<String> list = new ArrayList<>();
+        for (DeviceAdminViewModel.Strategy s : mItemStrategyList) {
+            list.add(getResources().getString(s.getResIdName()));
+        }
+        return list;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_device_admin);
+        // view binding
+        mBinding = ActivityDemoDeviceAdminBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        // build mItemStrategyList
-        buildItemStratagyList();
+        // init view model
+        mViewModel = new ViewModelProvider(this).get(DeviceAdminViewModel.class);
 
         mDevPolicyManager = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
         mCompName = new ComponentName(this, MyAdminReceiver.class);
-
         mKeyguardManager = (KeyguardManager) this.getSystemService(Context.KEYGUARD_SERVICE);
+        
+        mViewModel.addLog("System Console Ready...");
 
-        mList = this.findViewById(R.id.list_demo_admin);
+        setupLogView();
+        observerViewModel();
+    }
+
+    private void setupLogView() {
+        mLogAdapter = new LogAdapter();
+        // setup linear layout
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        mBinding.rvLogConsole.setLayoutManager(layoutManager);
+        // set adapter
+        mBinding.rvLogConsole.setAdapter(mLogAdapter);
+    }
+
+    private void observerViewModel() {
+        // observer strategy list
+        mViewModel.getStrategy().observe(this, this::setupListItem);
+        // observer logs
+        mViewModel.getLogs().observe(this, this::setupLogConsole);
+        // observer navigation
+        mViewModel.getNavigation().observe(this, this::navigate);
+
+    }
+
+    private void setupLogConsole(List<String> strings) {
+        // submit list
+        mLogAdapter.submitList(strings, () -> {
+            // scroll to bottom
+            mBinding.rvLogConsole.scrollToPosition(strings.size() - 1);
+        });
+    }
+
+    private void navigate(String s) {
+        // UNKNOW
+        if (s.equals(DeviceAdminViewModel.UNKNOWN)) {
+            return;
+        }
+
+        switch (s) {
+            case "ENABLE_ADAMIN":
+                enableDeviceAdmin();
+                break;
+            case "DISABLE_ADMIN":
+                disableAdmin();
+                break;
+            case "LOCK_SCREEN":
+                lockScreen();
+                break;
+            case "SECURITY_LOCK":
+                showAuthentication();
+                break;
+            case "EXIT":
+                DemoDeviceAdminAct.this.finish();
+                break;
+            default:
+                break;
+        }
+
+        // done navigation
+        mViewModel.doneNavigation();
+    }
+
+
+    private void setupListItem(List<DeviceAdminViewModel.Strategy> list) {
+
+        mItemStrategyList = list;
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, getList());
 
-        mList.setAdapter(adapter);
+        mBinding.listDemoAdmin.setAdapter(adapter);
 
 
-        mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mBinding.listDemoAdmin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) parent.getItemAtPosition(position);
                 Utils.showToast(DemoDeviceAdminAct.this, "item: " + item);
+                Utils.info(DemoDeviceAdminAct.this, "mItemStrategyList@onItemClick: " + mItemStrategyList);
 
-                DemoDeviceAdminAct.this.mItemStrategyList.stream()
-                        .filter(strategy -> strategy.Name().equals(item))
-                        .findFirst()
-                        .ifPresent(ItemStrategy::process);
+                for (DeviceAdminViewModel.Strategy s : mItemStrategyList) {
+                    String sName = getResources().getString(s.getResIdName());
+                    if (sName.equals(item)) {
+                        // add log
+                        mViewModel.addLog(sName);
+                        s.process(mViewModel);
+                        break;
+                    }
+                }
 
             }
         });
-
     }
 
-    /**
-     * Build item strategy list
-     */
-    private void buildItemStratagyList() {
-        mItemStrategyList.add(new ExitStrategy(getResources().getString(R.string.label_exit)));
-        mItemStrategyList.add(new EnableAdaminStrategy(getResources().getString(R.string.item_enable_admin)));
-        mItemStrategyList.add(new DisableAdminStrategy(getResources().getString(R.string.item_disable_admin)));
-        mItemStrategyList.add(new LockScreenStrategy(getResources().getString(R.string.item_lock_screen)));
-        mItemStrategyList.add(new SecurityLockStrategy(getResources().getString(R.string.item_security_lock)));
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_ENABLE_ADMIN_CODE) {
-            Utils.showToast(this, resultCode == Activity.RESULT_OK ? "enable admin" : "can not enable admin");
-        } else if (requestCode == REQUEST_SECURE_LOCK_CODE) {
-            Utils.showToast(this, resultCode == Activity.RESULT_OK ? "secure lock is success" : "secure lock is fail");
-        }
-    }
 
     private void enableDeviceAdmin() {
         boolean isAdmin = mDevPolicyManager.isAdminActive(this.mCompName);
         if (isAdmin) {
-            Utils.showToast(this, "Admin is enabled");
+            //Utils.showToast(this, "Admin is enabled");
+            // add log
+            mViewModel.addLog("Admin is enabled");
             return;
         }
 
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, this.mCompName);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Why need this permission");
-        startActivityForResult(intent, REQUEST_ENABLE_ADMIN_CODE);
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "需要此權限以展示鎖屏功能");
+
+        // launch
+        mEnableAdminLauncher.launch(intent);
+
+//        deprecate startActivityForResult(intent, REQUEST_ENABLE_ADMIN_CODE);
 
     }
 
     private void disableAdmin() {
         boolean isAdmin = mDevPolicyManager.isAdminActive(this.mCompName);
         if (!isAdmin) {
-            Utils.showToast(this, "No admin enable");
+            //Utils.showToast(this, "No admin enable");
+            // add log
+            mViewModel.addLog("No admin enable");
             return;
         }
 
@@ -138,7 +235,9 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
     private void lockScreen() {
         boolean isAdmin = mDevPolicyManager.isAdminActive(this.mCompName);
         if (!isAdmin) {
-            Utils.showToast(this, "No admin enable");
+            //Utils.showToast(this, "No admin enable");
+            // add log
+            mViewModel.addLog("No admin enable");
             return;
         }
 
@@ -148,94 +247,24 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
     private void showAuthentication() {
         // check if secure lock exists?
         if (!mKeyguardManager.isKeyguardSecure()) {
-            Utils.showToast(this, "No secure lock");
+            //Utils.showToast(this, "No secure lock");
+            // add log
+            mViewModel.addLog("No secure lock");
             return;
         }
 
-        Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent("cust secure lock",
-                "This is demo");
+        Intent intent = mKeyguardManager.createConfirmDeviceCredentialIntent("安全驗證",
+                "請驗證身分以繼續");
         if (!Utils.areAllNotNull(intent)) {
-            Utils.showToast(this, "No secure lock");
+            //Utils.showToast(this, "No secure lock");
+            // add log
+            mViewModel.addLog("No secure lock");
             return;
         }
 
-        this.startActivityForResult(intent, REQUEST_SECURE_LOCK_CODE);
+        // launch
+        mSecureLockLauncher.launch(intent);
 
-    }
-
-    // item strategy
-    private abstract class ItemStrategy {
-        private String mItem;
-
-        ItemStrategy(String item) {
-            this.mItem = item;
-        }
-
-        String Name() {
-            return this.mItem;
-        }
-
-        abstract void process();
-    }
-
-    private class ExitStrategy extends ItemStrategy {
-
-        ExitStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            DemoDeviceAdminAct.this.finish();
-        }
-    }
-
-    private class EnableAdaminStrategy extends ItemStrategy {
-
-        EnableAdaminStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            enableDeviceAdmin();
-        }
-    }
-
-    private class DisableAdminStrategy extends ItemStrategy {
-
-        DisableAdminStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            disableAdmin();
-        }
-    }
-
-    private class LockScreenStrategy extends ItemStrategy {
-
-        LockScreenStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            lockScreen();
-        }
-    }
-
-    private class SecurityLockStrategy extends ItemStrategy {
-
-        SecurityLockStrategy(String item) {
-            super(item);
-        }
-
-        @Override
-        void process() {
-            showAuthentication();
-        }
     }
 
 }
