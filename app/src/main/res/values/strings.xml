@@ -444,5 +444,8 @@
     <string name="demo_alarm_instruction"><![CDATA[This demo demonstrates several triggering mechanisms of AlarmManager: • Repeat: Strictly periodic alarm (requires > 60s) • Inexact: System-optimized power-saving mode (requires > 15min) • AllowWhileIdle: Can be triggered even in Doze mode]]></string>
     <string name="demo_xml_instruction_title">XML Pull Parser Demo</string>
     <string name="demo_xml_instruction">Parse XML resources using State Patterns and dynamically generate data lists.</string>
+    <string name="demo_tablelayout_instruction_title">MVVM + Chain of Responsibility</string>
+    <string name="demo_tablelayout_instruction">This demo demonstrates AI chess-playing logic implemented using the Chain of Responsibility pattern, and achieves automated UI refresh and winning path highlighting through Data Binding and ViewModel.</string>
+    <string name="demo_tablelayout_status_message">The game begins!</string>
 
 </resources>

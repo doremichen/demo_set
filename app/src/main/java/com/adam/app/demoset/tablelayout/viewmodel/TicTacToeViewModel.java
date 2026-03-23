@@ -46,7 +46,9 @@ public class TicTacToeViewModel extends AndroidViewModel {
         super(application);
         mContext = application.getApplicationContext();
         mModel = new TicTacToeModel();
-
+        // initial status message
+        String msg = mContext.getString(R.string.demo_tablelayout_status_message);
+        mMessageLiveData.setValue(msg);
     }
 
     public LiveData<char[]> getBoardLiveData() {

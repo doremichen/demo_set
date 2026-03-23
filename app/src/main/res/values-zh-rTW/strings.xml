@@ -445,5 +445,8 @@
     <string name="demo_alarm_instruction"><![CDATA[本 Demo 展示 AlarmManager 的多種觸發機制：\n• Repeat: 嚴格週期性鬧鐘 (需 > 60s)\n• Inexact: 系統優化省電模式 (需 > 15min)\n• AllowWhileIdle: 即使在 Doze 模式也能觸發]]></string>
     <string name="demo_xml_instruction_title">XML Pull Parser 演示</string>
     <string name="demo_xml_instruction">透過 State Pattern 解析 XML 資源並動態生成資料清單。</string>
+    <string name="demo_tablelayout_instruction_title">MVVM + Chain of Responsibility</string>
+    <string name="demo_tablelayout_instruction">本 Demo 展示了使用責任鏈模式實作的 AI 下棋邏輯，並透過 Data Binding 與 ViewModel 達成自動化 UI 刷新與獲勝路徑高亮。</string>
+    <string name="demo_tablelayout_status_message">遊戲開始！</string>
 
 </resources>
