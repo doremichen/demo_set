@@ -443,5 +443,7 @@
     <string name="demo_lock_screen_instruction_title">設備安全管理演示</string>
     <string name="demo_lock_screen_instruction">本單元演示 Android 設備管理員 (Device Admin) 的高級權限控制。透過策略模式 (Strategy Pattern) 實作，您可以測試遠端鎖屏、安全驗證以及管理權限的啟動流。這對於企業級醫療設備的安全性維護至關重要。</string>
     <string name="demo_alarm_instruction"><![CDATA[本 Demo 展示 AlarmManager 的多種觸發機制：\n• Repeat: 嚴格週期性鬧鐘 (需 > 60s)\n• Inexact: 系統優化省電模式 (需 > 15min)\n• AllowWhileIdle: 即使在 Doze 模式也能觸發]]></string>
+    <string name="demo_xml_instruction_title">XML Pull Parser 演示</string>
+    <string name="demo_xml_instruction">透過 State Pattern 解析 XML 資源並動態生成資料清單。</string>
 
 </resources>

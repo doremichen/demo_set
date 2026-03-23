@@ -442,5 +442,7 @@
     <string name="demo_lock_screen_instruction_title">Equipment Safety Management Demonstration</string>
     <string name="demo_lock_screen_instruction">This unit demonstrates advanced permission control for Android Device Admin. Through the implementation of the Strategy Pattern, you can test the startup streams for remote screen locking, security authentication, and administrative permissions. This is crucial for the security maintenance of enterprise-level medical devices.</string>
     <string name="demo_alarm_instruction"><![CDATA[This demo demonstrates several triggering mechanisms of AlarmManager: • Repeat: Strictly periodic alarm (requires > 60s) • Inexact: System-optimized power-saving mode (requires > 15min) • AllowWhileIdle: Can be triggered even in Doze mode]]></string>
+    <string name="demo_xml_instruction_title">XML Pull Parser Demo</string>
+    <string name="demo_xml_instruction">Parse XML resources using State Patterns and dynamically generate data lists.</string>
 
 </resources>

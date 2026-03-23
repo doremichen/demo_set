@@ -29,6 +29,7 @@ public class XmlPullParserManager {
     private static final String TAG = XmlPullParserManager.class.getSimpleName();
     private Context mContext;
     private List<ItemData> mList = new ArrayList<>();
+    private XmlPullParserListener mListener;
 
     private XmlPullParserManager() {
     }
@@ -49,6 +50,21 @@ public class XmlPullParserManager {
     }
 
     /**
+     * set xml parser listener
+     *
+     * @param listener
+     */
+    public void setListener(XmlPullParserListener listener) {
+        mListener = listener;
+    }
+
+    private void addLog(String msg) {
+        if (mListener != null) {
+            mListener.onMessage(msg);
+        }
+    }
+
+    /**
      * The context must be the activity or service
      * Otherwise the xml file parser will occur exception.
      *
@@ -56,6 +72,7 @@ public class XmlPullParserManager {
      */
     public void init(Context context) {
         info("[init]");
+        addLog("[init]");
         this.mContext = context;
     }
 
@@ -66,8 +83,10 @@ public class XmlPullParserManager {
      */
     public List<ItemData> parse() {
         info("[parse]");
+        addLog("[parse]");
         if (this.mContext == null) {
             info("No context!!!Please init first!!!");
+            addLog("No context!!!Please init first!!!");
             return this.mList;
         }
 
@@ -85,10 +104,12 @@ public class XmlPullParserManager {
             XmlEventIterator eventIterator = new XmlEventIterator(xmlParser);
             // foreach
             eventIterator.forEachRemaining(eventType -> {
+                addLog("event type: " + eventType);
                 XmlParsingState currState = XmlParsingState.from(eventType);
                 if (currState == null) {
                     currState = XmlParsingState.IGNORE;
                 }
+                addLog("state: " + currState);
                 currState.handle(stateContext, xmlParser);
             });
 
@@ -104,9 +125,13 @@ public class XmlPullParserManager {
     }
 
     public void clearList() {
+        addLog("[clearList]");
         this.mList.clear();
     }
 
+    public interface XmlPullParserListener {
+        void onMessage(String msg);
+    }
 
     private static class Singleton {
         private static final XmlPullParserManager INSTANCE = new XmlPullParserManager();
