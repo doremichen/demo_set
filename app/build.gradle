@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "com.adam.app.demoset"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -94,7 +94,12 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("com.google.android.material:material:1.12.0")
+
     implementation("androidx.core:core:1.15.0")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.activity:activity:1.10.0") // 從 1.13.0 降級
+    implementation("androidx.activity:activity-compose:1.10.0") // 從 1.10.1 降級
+
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.cardview:cardview:1.0.0")
@@ -106,7 +111,9 @@ dependencies {
     androidTestImplementation("androidx.room:room-testing:2.6.1")
 
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.8.7")
 
     // WorkManager
@@ -120,31 +127,26 @@ dependencies {
     implementation("com.github.mjdev:libaums:0.7.4")
 
     // Coroutine + Retrofit
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
 
     // compose
-    implementation platform('androidx.compose:compose-bom:2026.03.00')
+    implementation platform('androidx.compose:compose-bom:2024.12.01')
     implementation "androidx.compose.ui:ui"
     implementation "androidx.compose.material3:material3"
     implementation "androidx.compose.ui:ui-tooling-preview"
-    implementation "androidx.compose.runtime:runtime"
-
-    implementation "androidx.activity:activity-compose:1.10.1"
-
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
+
+    // others
+    implementation("org.jspecify:jspecify:1.0.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.16.0")
-    testImplementation("org.robolectric:robolectric:4.14")
-    testImplementation("org.robolectric:shadows-multidex:4.14.1")
-    testImplementation("androidx.test:core:1.6.1")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }

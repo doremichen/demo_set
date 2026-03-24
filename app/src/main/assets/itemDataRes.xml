@@ -161,7 +161,7 @@
     <!-- UI -->
     <data category="category_ui"
         titleRes="title_demo_material_widget"
-        clsname="com.adam.app.demoset.material.DemoMaterialLogInAct"
+        clsname="com.adam.app.demoset.material.MaterialDemoAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
