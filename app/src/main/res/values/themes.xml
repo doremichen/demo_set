@@ -25,4 +25,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryContainer</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
+
+    <style name="AppTheme.PopupOverlay" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:itemBackground">?attr/colorSurface</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+    </style>
 </resources>

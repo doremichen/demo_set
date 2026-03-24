@@ -26,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoDataBindingExBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,22 +49,25 @@ public class FileExploreAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         info("onCreate");
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         this.mBinding = ActivityDemoDataBindingExBinding.inflate(getLayoutInflater());
         this.mBinding.toolbar.inflateMenu(R.menu.action_menu_file_manager);
         setContentView(this.mBinding.getRoot());
 
-        // set inset listener
-        ViewCompat.setOnApplyWindowInsetsListener(this.mBinding.getRoot(), (v, insets) -> {
-            // get system bar
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(bars.left, 0, bars.right, bars.bottom);
+        UIUtils.applySystemBarInsets(this.mBinding.getRoot(), this.mBinding.toolbar);
 
-            // toolbar
-            mBinding.toolbar.setPadding(0, bars.top, 0, 0);
-            return WindowInsetsCompat.CONSUMED;
-         });
+
+        // set inset listener
+//        ViewCompat.setOnApplyWindowInsetsListener(this.mBinding.getRoot(), (v, insets) -> {
+//            // get system bar
+//            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(bars.left, 0, bars.right, bars.bottom);
+//
+//            // toolbar
+//            mBinding.toolbar.setPadding(0, bars.top, 0, 0);
+//            return WindowInsetsCompat.CONSUMED;
+//         });
 
 
         setupUi();

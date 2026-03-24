@@ -28,6 +28,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -41,6 +45,7 @@ import com.adam.app.demoset.database.dialog.CreateNoteDialog;
 import com.adam.app.demoset.database.dialog.NoteDialog;
 import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
 import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -82,7 +87,13 @@ public class DemoRoomAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate enter");
+
+
+
         setContentView(R.layout.activity_demo_database2);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.toolbar_layout));
+
 
 
         mRecyclerView = this.findViewById(R.id.recycler_view);

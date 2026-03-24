@@ -24,4 +24,13 @@
     <style name="Theme.DemoSet.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/purple_200</item>
     </style>
+
+    <style name="AppTheme.PopupOverlay" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:itemBackground">?attr/colorSurface</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+    </style>
 </resources>
