@@ -24,10 +24,14 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoCamera2Act2Binding;
 
 import java.io.File;
 
@@ -113,15 +117,30 @@ public class DemoCamera2Act2 extends AppCompatActivity {
         }
     };
 
+    // view binding
+    private ActivityDemoCamera2Act2Binding mBinding;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // set decor fit system windows
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        setContentView(R.layout.activity_demo_camera2_act2);
+        // view binding
+        mBinding = ActivityDemoCamera2Act2Binding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        this.mView = this.findViewById(R.id.textureView_act2);
+
+        // set inset listener
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+        this.mView = mBinding.textureViewAct2;
+
 
         // MyCamera controller
         mCameraController = MyCameraController.newInstance();

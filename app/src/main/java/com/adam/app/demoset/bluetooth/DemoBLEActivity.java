@@ -28,6 +28,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -169,9 +173,22 @@ public class DemoBLEActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Utils.info(this, "onCreate enter");
         super.onCreate(savedInstanceState);
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         // view binding
         mBinding = ActivityDemoBluetoothBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        // set inset listener
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (view, insets) -> {
+            // get system bar
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            mBinding.getRoot().setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
         // build bound state map
         buildBoundStateMap();
 

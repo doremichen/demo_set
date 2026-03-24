@@ -17,6 +17,10 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -35,9 +39,22 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         // view binding
         mBinding = ActivityDemoFlashLightBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+
+        // set inset listener
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (view, insets) -> {
+            // get system bar
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            mBinding.getRoot().setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         // check flash light
         boolean isFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);

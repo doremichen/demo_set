@@ -18,6 +18,10 @@ import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -44,9 +48,23 @@ public class FileExploreAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         info("onCreate");
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         this.mBinding = ActivityDemoDataBindingExBinding.inflate(getLayoutInflater());
         this.mBinding.toolbar.inflateMenu(R.menu.action_menu_file_manager);
         setContentView(this.mBinding.getRoot());
+
+        // set inset listener
+        ViewCompat.setOnApplyWindowInsetsListener(this.mBinding.getRoot(), (v, insets) -> {
+            // get system bar
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+            // toolbar
+            mBinding.toolbar.setPadding(0, bars.top, 0, 0);
+            return WindowInsetsCompat.CONSUMED;
+         });
+
 
         setupUi();
     }

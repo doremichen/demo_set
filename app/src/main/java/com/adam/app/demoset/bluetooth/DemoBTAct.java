@@ -29,6 +29,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
@@ -165,9 +169,22 @@ public class DemoBTAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "[onCreate]");
+
+        // enable immerse mode
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         // view binding
         mBinding = ActivityDemoBluetoothBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        // set inset listener
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (view, insets) -> {
+            // get system bar
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            mBinding.getRoot().setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
 
 
         // Use this check to determine whether Bluetooth classic is supported on the device.
