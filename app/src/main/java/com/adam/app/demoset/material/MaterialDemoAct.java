@@ -14,6 +14,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -31,6 +32,9 @@ public class MaterialDemoAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        // set fit system window as false
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // view binding
         mBbinding = ActivityMaterialDemoBinding.inflate(getLayoutInflater());

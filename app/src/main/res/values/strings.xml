@@ -447,5 +447,18 @@
     <string name="demo_tablelayout_instruction_title">MVVM + Chain of Responsibility</string>
     <string name="demo_tablelayout_instruction">This demo demonstrates AI chess-playing logic implemented using the Chain of Responsibility pattern, and achieves automated UI refresh and winning path highlighting through Data Binding and ViewModel.</string>
     <string name="demo_tablelayout_status_message">The game begins!</string>
+    <string name="demo_material_toolbar_title">M3 Components Demo</string>
+    <string name="demo_material_slider">SYSTEM PARAMETER CONTROL</string>
+    <string name="demo_material_instruction_title">Interactive Components</string>
+    <string name="demo_material_instruction">The following components demonstrate how to drive the ViewModel and record system behavior through Data Binding.</string>
+    <string name="demo_material_toggle">Toggle System State</string>
+    <string name="demo_material_single_choice">Single Selection Mode</string>
+    <string name="demo_material_debug_mode">Debug Mode</string>
+    <string name="demo_material_release_mode">Release Mode</string>
+    <string name="demo_material_filter_chips">Multi-select filters (Filter Chips)</string>
+    <string name="demo_material_sensor_data">Sensor Data</string>
+    <string name="demo_material_ble_status">BLE Status</string>
+    <string name="demo_material_network">Network</string>
+    <string name="demo_material_clear_log">CLEAR LOG</string>
 
 </resources>

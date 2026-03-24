@@ -14,15 +14,12 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class ComponentViewModel extends ViewModel {
 
-    // tag categories
-    public final List<String> mCategories = Arrays.asList("Android", "Embedded", "Medical", "UI/UX");
     // live data: logs
     private MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
 

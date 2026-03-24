@@ -448,5 +448,18 @@
     <string name="demo_tablelayout_instruction_title">MVVM + Chain of Responsibility</string>
     <string name="demo_tablelayout_instruction">本 Demo 展示了使用責任鏈模式實作的 AI 下棋邏輯，並透過 Data Binding 與 ViewModel 達成自動化 UI 刷新與獲勝路徑高亮。</string>
     <string name="demo_tablelayout_status_message">遊戲開始！</string>
+    <string name="demo_material_toolbar_title">M3 組件展示</string>
+    <string name="demo_material_slider">系統參數控制</string>
+    <string name="demo_material_instruction_title">互動元件</string>
+    <string name="demo_material_instruction">以下組件展示了如何透過 Data Binding 驅動 ViewModel 並記錄系統行為。</string>
+    <string name="demo_material_toggle">切換系統狀態</string>
+    <string name="demo_material_single_choice">單選模式 (Single Selection)</string>
+    <string name="demo_material_debug_mode">偵錯模式</string>
+    <string name="demo_material_release_mode">發布模式</string>
+    <string name="demo_material_filter_chips">多選過濾器 (Filter Chips)</string>
+    <string name="demo_material_sensor_data">感測器數據</string>
+    <string name="demo_material_ble_status">藍牙低功耗狀態</string>
+    <string name="demo_material_network">網路</string>
+    <string name="demo_material_clear_log">清除日誌</string>
 
 </resources>
