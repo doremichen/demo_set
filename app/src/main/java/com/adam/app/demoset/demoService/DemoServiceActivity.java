@@ -26,6 +26,7 @@ import com.adam.app.demoset.demoService.model.ServiceEvent;
 import com.adam.app.demoset.demoService.service.ServiceHelper;
 import com.adam.app.demoset.demoService.util.ServiceLogBus;
 import com.adam.app.demoset.demoService.viewmodel.ServiceMonitorViewModel;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,9 @@ public class DemoServiceActivity extends AppCompatActivity {
         // view binding
         mBinding = ActivityDemoServiceBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.tvTitle);
+
         // view model
         mViewModel = new ViewModelProvider(this).get(ServiceMonitorViewModel.class);
         // data binding

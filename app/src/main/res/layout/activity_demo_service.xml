@@ -1,88 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <variable
             name="vm"
-            type="com.adam.app.demoset.demoService.viewmodel.ServiceMonitorViewModel"/>
+            type="com.adam.app.demoset.demoService.viewmodel.ServiceMonitorViewModel" />
     </data>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".demoService.DemoServiceActivity">
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="?attr/colorPrimary"
+            android:textColor="?attr/colorOnPrimary"
+            android:paddingHorizontal="12dp"
             android:text="@string/demo_service_service_monitor_title"
             android:textSize="22sp"
-            android:padding="12dp"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ToggleButton
             android:id="@+id/btnServiceMode"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textOn="@string/demo_service_service_mode_remote"
-            android:textOff="@string/demo_service_service_mode_local"
-            android:enabled="@{vm.switchEnabled}"
             android:checked="@{vm.remoteMode}"
-            android:onCheckedChanged="@{(btn, checked)->vm.switchServiceMode(checked)}"/>
+            android:enabled="@{vm.switchEnabled}"
+            android:onCheckedChanged="@{(btn, checked)->vm.switchServiceMode(checked)}"
+            android:textOff="@string/demo_service_service_mode_local"
+            android:textOn="@string/demo_service_service_mode_remote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerLog"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnServiceMode" />
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:onClick="@{()->vm.startService()}"
+            android:enabled="@{vm.startEnabled}"
+            android:text="@string/start_service"
+            app:layout_constraintBottom_toTopOf="@+id/btnStop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnStart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/start_service"
-                android:enabled="@{vm.startEnabled}"
-                android:onClick="@{()->vm.startService()}"/>
+        <Button
+            android:id="@+id/btnStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:onClick="@{()->vm.stopService()}"
+            android:enabled="@{vm.stopEnabled}"
+            android:text="@string/stop_service"
+            app:layout_constraintBottom_toTopOf="@+id/btnBind"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnStop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stop_service"
-                android:enabled="@{vm.stopEnabled}"
-                android:onClick="@{()->vm.stopService()}"/>
+        <Button
+            android:id="@+id/btnBind"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:onClick="@{()->vm.bindService()}"
+            android:enabled="@{vm.bindEnabled}"
+            android:text="@string/bind_service"
+            app:layout_constraintBottom_toTopOf="@+id/btnUnbind"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnBind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/bind_service"
-                android:enabled="@{vm.bindEnabled}"
-                android:onClick="@{()->vm.bindService()}"/>
+        <Button
+            android:id="@+id/btnUnbind"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:onClick="@{()->vm.unbindService()}"
+            android:enabled="@{vm.unbindEnabled}"
+            android:text="@string/unbind_service"
+            app:layout_constraintBottom_toTopOf="@+id/btnRequest"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnUnbind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/unbind_service"
-                android:enabled="@{vm.unbindEnabled}"
-                android:onClick="@{()->vm.unbindService()}"/>
+        <Button
+            android:id="@+id/btnRequest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="@{()->vm.sendRequest()}"
+            android:enabled="@{vm.sendEnabled}"
+            android:text="@string/service_request"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/btnRequest"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/service_request"
-                android:enabled="@{vm.sendEnabled}"
-                android:onClick="@{()->vm.sendRequest()}"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
