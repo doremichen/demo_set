@@ -14,22 +14,50 @@ import androidx.lifecycle.ViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class ComponentViewModel extends ViewModel {
 
+    // tag categories
+    public final List<String> mCategories = Arrays.asList("Android", "Embedded", "Medical", "UI/UX");
     // live data: logs
     private MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
+
     // data binding
     public LiveData<List<String>> getLogs() {
         return mLogs;
     }
 
+    /**
+     * onCategorySelected
+     *
+     * @param category  category name
+     * @param isChecked checked
+     */
+    public void onCategorySelected(String category, boolean isChecked) {
+        if (isChecked) {
+            addLog("Mode switched to: " + category);
+        }
+    }
+
+    /**
+     * onFilterChanged
+     *
+     * @param filter    filter name
+     * @param isChecked checked
+     */
+    public void onFilterChanged(String filter, boolean isChecked) {
+        String status = isChecked ? "Applied" : "Removed";
+        addLog("Filter [" + filter + "] " + status);
+    }
+
 
     /**
      * addLog
+     *
      * @param msg: log message
      */
     public void addLog(String msg) {
@@ -38,8 +66,9 @@ public class ComponentViewModel extends ViewModel {
             currentLogs = new ArrayList<>();
         }
         // format current time
+        String id = currentLogs.size() + ": ";
         String timeStamp = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(new Date());
-        String formattedMsg = "[" + timeStamp + "] " + msg;
+        String formattedMsg = id + "[" + timeStamp + "] " + msg;
 
         // add first
         currentLogs.add(0, formattedMsg);

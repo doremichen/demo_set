@@ -61,6 +61,22 @@
                 android:orientation="vertical"
                 android:padding="24dp"
                 android:paddingBottom="300dp">
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SYSTEM PARAMETER CONTROL" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/main_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:valueFrom="0.0"
+                    android:valueTo="100.0"
+                    app:onSliderChanged='@{(v) -> vm.addLog("Slider parameter set to: " + v)}' />
+
                 <TextView
                     style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="wrap_content"
@@ -100,6 +116,95 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.LabelLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="單選模式 (Single Selection)"
+                            android:layout_marginBottom="8dp"/>
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:singleSelection="true"
+                            app:selectionRequired="true">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.Material3.Chip.Input"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Debug Mode"
+                                android:onCheckedChanged="@{(v, isChecked) -> vm.onCategorySelected(&quot;Debug&quot;, isChecked)}"/>
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.Material3.Chip.Input"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Release Mode"
+                                android:onCheckedChanged="@{(v, isChecked) -> vm.onCategorySelected(&quot;Release&quot;, isChecked)}"/>
+                        </com.google.android.material.chip.ChipGroup>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.LabelLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="多選過濾器 (Filter Chips)"
+                            android:layout_marginBottom="8dp"/>
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingHorizontal="8dp"
+                            app:chipSpacingVertical="4dp">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sensor Data"
+                                android:onCheckedChanged="@{(v, isChecked) -> vm.onFilterChanged(&quot;Sensor&quot;, isChecked)}"/>
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BLE Status"
+                                android:onCheckedChanged="@{(v, isChecked) -> vm.onFilterChanged(&quot;BLE&quot;, isChecked)}"/>
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.Material3.Chip.Filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Network"
+                                android:onCheckedChanged="@{(v, isChecked) -> vm.onFilterChanged(&quot;Network&quot;, isChecked)}"/>
+                        </com.google.android.material.chip.ChipGroup>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
@@ -117,21 +222,6 @@
                 android:background="?attr/colorSurfaceContainerHigh"
                 android:orientation="vertical"
                 android:padding="20dp">
-
-                <TextView
-                    style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SYSTEM PARAMETER CONTROL" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/main_slider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:valueFrom="0.0"
-                    android:valueTo="100.0"
-                    app:onSliderChanged='@{(v) -> vm.addLog("Slider parameter set to: " + v)}' />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_logs"

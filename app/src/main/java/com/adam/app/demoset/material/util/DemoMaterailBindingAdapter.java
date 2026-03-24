@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adam.app.demoset.LogAdapter;
 import com.google.android.material.slider.Slider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DemoMaterailBindingAdapter {
@@ -39,7 +40,7 @@ public class DemoMaterailBindingAdapter {
         }
 
         // submit
-        adapter.submitList(logEntries, new CompleteCallback(recyclerView, adapter));
+        adapter.submitList(new ArrayList<>(logEntries), new CompleteCallback(recyclerView, adapter));
 
     }
 
