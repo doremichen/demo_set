@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoGifAct extends AppCompatActivity implements GifView.GifStateListener {
 
@@ -35,6 +36,8 @@ public class DemoGifAct extends AppCompatActivity implements GifView.GifStateLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_gif);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.app_bar_wrapper));
 
         this.mGifView = (GifView) this.findViewById(R.id.gif_view);
         // set resource

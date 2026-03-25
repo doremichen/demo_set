@@ -462,5 +462,6 @@
     <string name="demo_material_clear_log">CLEAR LOG</string>
     <string name="demo_system_ui_instuction_title">System UI control panel</string>
     <string name="demo_system_ui_instruction">This demo demonstrates how to use the WindowInsetsController API to control the display, hiding, and immersive behavior of the status bar and navigation bar. This is crucial for medical image viewing or full-screen game interfaces. The demo showcases WindowInsetsController controls. Content is adapted to the safe area to avoid being obscured by the system navigation bar.</string>
+    <string name="demo_animation_instruction_title">Animation display mode</string>
 
 </resources>

@@ -463,5 +463,6 @@
     <string name="demo_material_clear_log">清除日誌</string>
     <string name="demo_system_ui_instuction_title">System UI 控制面板</string>
     <string name="demo_system_ui_instruction">本 Demo 演示如何使用 WindowInsetsController API 控制狀態列與導覽列的顯示、隱藏與沉浸式行為。這對於醫療影像檢視或全螢幕遊戲介面至關重要。演示 WindowInsetsController 控制。內容已適配安全區域 (Safe Area)，避免被系統導覽列遮擋。</string>
+    <string name="demo_animation_instruction_title">動畫展示模式</string>
 
 </resources>
