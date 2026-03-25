@@ -36,6 +36,7 @@ import androidx.core.content.ContextCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +84,7 @@ public class DemoAlarmAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_alarm);
 
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.title_alarm));
 
         this.mInputDelayNumber = findViewById(R.id.input_delay_number);
         mAlarmButton = findViewById(R.id.btn_alarm);
