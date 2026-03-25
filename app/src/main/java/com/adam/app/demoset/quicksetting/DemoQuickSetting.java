@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoQuickSetting extends AppCompatActivity {
 
@@ -22,6 +23,8 @@ public class DemoQuickSetting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_quick_setting);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.welcome_info));
 
         Utils.showAlertDialog(this,  getResources().getString(R.string.welcome_to_demo_quick_setting), null);
     }
