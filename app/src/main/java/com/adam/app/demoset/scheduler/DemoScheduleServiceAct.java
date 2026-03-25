@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.Optional;
@@ -50,6 +51,8 @@ public class DemoScheduleServiceAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate enter");
         setContentView(R.layout.activity_demo_schedule_service);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.header_layout));
 
         mCounterAction = findViewById(R.id.btn_action_counter);
         mMeter = findViewById(R.id.chronometer);
