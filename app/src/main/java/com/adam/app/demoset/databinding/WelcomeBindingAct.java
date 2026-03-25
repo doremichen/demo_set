@@ -9,8 +9,10 @@ package com.adam.app.demoset.databinding;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class WelcomeBindingAct extends AppCompatActivity {
 
@@ -27,8 +29,10 @@ public class WelcomeBindingAct extends AppCompatActivity {
         mBinding = ActivityWelcomeBindingBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
+
         // set view model
-        mViewModel = new WelcomeViewModel();
+        mViewModel = new ViewModelProvider(this).get(WelcomeViewModel.class);
         mBinding.setViewModel(mViewModel);
 
         // set lifecycle owner

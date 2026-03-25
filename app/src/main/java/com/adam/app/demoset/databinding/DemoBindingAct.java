@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoBindingAct extends AppCompatActivity {
 
@@ -26,6 +27,8 @@ public class DemoBindingAct extends AppCompatActivity {
         // view binding
         mBinding = ActivityDemoBindingBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
         // button click
         mBinding.btnNext.setOnClickListener(v -> {
