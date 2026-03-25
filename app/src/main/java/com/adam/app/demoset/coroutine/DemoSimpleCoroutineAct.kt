@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.adam.app.demoset.coroutine.view_model.MainViewModel
 import com.adam.app.demoset.coroutine.view_model.MainViewModelFactory
 import com.adam.app.demoset.databinding.ActivityDemoSimpleCoroutingBinding
+import com.adam.app.demoset.utils.UIUtils
 
 class DemoSimpleCoroutineAct : AppCompatActivity() {
 
@@ -26,6 +27,8 @@ class DemoSimpleCoroutineAct : AppCompatActivity() {
         // view binding
         mBinding = ActivityDemoSimpleCoroutingBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
+
+        UIUtils.applySystemBarInsets(mBinding.root, mBinding.txtIntro)
 
         // view model initialization by factory
         val viewModel = ViewModelProvider(
