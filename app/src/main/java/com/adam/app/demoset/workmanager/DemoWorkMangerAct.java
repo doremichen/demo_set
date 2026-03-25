@@ -32,6 +32,7 @@ import androidx.work.WorkManager;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.io.File;
 import java.util.List;
@@ -48,6 +49,10 @@ public class DemoWorkMangerAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_work_manger);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.tv_title));
+
+
         mBtnTest = this.findViewById(R.id.btn_test_wm);
 
         this.mImgUri = buildImageUri(this);
