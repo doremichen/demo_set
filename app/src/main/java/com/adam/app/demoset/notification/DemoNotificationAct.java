@@ -29,6 +29,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.Arrays;
 
@@ -46,6 +47,9 @@ public class DemoNotificationAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate");
         setContentView(R.layout.activity_demo_notification);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.app_bar_wrapper));
+
         mManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = notificationBuilder();
 
