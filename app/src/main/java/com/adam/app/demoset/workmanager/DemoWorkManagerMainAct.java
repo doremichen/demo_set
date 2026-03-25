@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoWorkManagerMainAct extends AppCompatActivity {
 
@@ -33,6 +34,8 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_work_manager_main);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.tvTitle));
 
 //        // Write external permission request
 //        Utils.askPermission(this,
