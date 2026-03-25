@@ -2,34 +2,39 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/btdemo_layout"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="?android:attr/colorBackground"
     tools:context=".bluetooth.DemoBTAct">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_card"
+    <FrameLayout
+        android:id="@+id/app_bar_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="?attr/colorPrimaryContainer"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/tv_bt_status"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/header_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="@string/label_hello_bt"
-            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-            android:textColor="?attr/colorOnPrimaryContainer"
-            android:textStyle="bold" />
-    </com.google.android.material.card.MaterialCardView>
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorPrimaryContainer">
+
+            <TextView
+                android:id="@+id/tv_bt_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/label_hello_bt"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="?attr/colorOnPrimaryContainer"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_bt"
@@ -41,7 +46,7 @@
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_card" />
+        app:layout_constraintTop_toBottomOf="@id/app_bar_wrapper" />
 
     <TextView
         android:id="@+id/label_scan_list"
