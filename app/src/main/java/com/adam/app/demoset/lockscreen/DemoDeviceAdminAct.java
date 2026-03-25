@@ -29,6 +29,7 @@ import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoDeviceAdminBinding;
 import com.adam.app.demoset.LogAdapter;
 import com.adam.app.demoset.lockscreen.viewmodel.DeviceAdminViewModel;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +97,8 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
         mBinding = ActivityDemoDeviceAdminBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.tvHeader);
+
         // init view model
         mViewModel = new ViewModelProvider(this).get(DeviceAdminViewModel.class);
 
@@ -114,6 +117,8 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
         // setup linear layout
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        // set layout manager
         mBinding.rvLogConsole.setLayoutManager(layoutManager);
         // set adapter
         mBinding.rvLogConsole.setAdapter(mLogAdapter);
@@ -133,7 +138,7 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
         // submit list
         mLogAdapter.submitList(strings, () -> {
             // scroll to bottom
-            mBinding.rvLogConsole.scrollToPosition(strings.size() - 1);
+            mBinding.rvLogConsole.scrollToPosition(mLogAdapter.getItemCount() - 1);
         });
     }
 
@@ -182,8 +187,9 @@ public class DemoDeviceAdminAct extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) parent.getItemAtPosition(position);
-                Utils.showToast(DemoDeviceAdminAct.this, "item: " + item);
-                Utils.info(DemoDeviceAdminAct.this, "mItemStrategyList@onItemClick: " + mItemStrategyList);
+                //Utils.showToast(DemoDeviceAdminAct.this, "item: " + item);
+                //Utils.info(DemoDeviceAdminAct.this, "mItemStrategyList@onItemClick: " + mItemStrategyList);
+                mViewModel.addLog("mItemStrategyList@onItemClick: " + item);
 
                 for (DeviceAdminViewModel.Strategy s : mItemStrategyList) {
                     String sName = getResources().getString(s.getResIdName());
