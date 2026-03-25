@@ -18,6 +18,7 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoTableBinding;
 import com.adam.app.demoset.tablelayout.viewmodel.TicTacToeViewModel;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoTableAct extends AppCompatActivity {
 
@@ -34,6 +35,8 @@ public class DemoTableAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // data binding
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_table);
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.scrollView);
 
         // init view model
         mViewModel = new ViewModelProvider(this).get(TicTacToeViewModel.class);
