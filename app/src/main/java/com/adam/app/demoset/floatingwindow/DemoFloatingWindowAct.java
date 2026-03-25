@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.adam.app.demoset.OverlayPermissionManager;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 /**
  * UI interface of the demo floating
@@ -32,6 +33,9 @@ public class DemoFloatingWindowAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_floating_window);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.tv_header));
+
 
         // initial Overlay manager
         mOverlayPermissionManager = new OverlayPermissionManager(this, REQUEST_ALTER_WINDOW);
