@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.adam.app.demoset.LogAdapter;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoXmlParserBinding;
+import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.xmlparser.model.ItemData;
 import com.adam.app.demoset.xmlparser.viewmodel.XmlParserViewModel;
 
@@ -44,6 +45,8 @@ public class DemoXmlParserAct extends AppCompatActivity {
         // view binding
         mBinding = ActivityDemoXmlParserBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
         // init view model
         XmlParserViewModel viewModel = new ViewModelProvider(this).get(XmlParserViewModel.class);
