@@ -24,9 +24,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.view.WindowCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.Arrays;
@@ -52,8 +55,8 @@ public class DemoJobSvrAct extends AppCompatActivity {
     private SeekBar mSeekBar;
     private TextView mIntervalVal;
 
-    private Switch mSwitchIdle;
-    private Switch mSwitchCharging;
+    private SwitchCompat mSwitchIdle;
+    private SwitchCompat mSwitchCharging;
 
     private RadioGroup mNetworkRequireOption;
 
@@ -88,7 +91,11 @@ public class DemoJobSvrAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_demo_job_svr);
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.welcome_demo_job_svr));
+
 
         mList = this.findViewById(R.id.list_demo_permission);
         mShow = this.findViewById(R.id.welcome_demo_job_svr);
