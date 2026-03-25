@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoMyHandlerThreadBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 /**
  * This is a demo of handler thread
@@ -39,17 +40,10 @@ public class DemoMyHandlerThreadAct extends AppCompatActivity implements Handler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // set fit system windows
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
-
         mBinding = ActivityDemoMyHandlerThreadBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.tvTitle);
 
 
         // start my handler thread
