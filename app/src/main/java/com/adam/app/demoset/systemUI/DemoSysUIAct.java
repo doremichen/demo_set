@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoSysUiBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 import org.jspecify.annotations.NonNull;
 
@@ -48,42 +49,45 @@ public class DemoSysUIAct extends AppCompatActivity {
         mBbinding = ActivityDemoSysUiBinding.inflate(getLayoutInflater());
         setContentView(mBbinding.getRoot());
 
+        UIUtils.applySystemBarInsets(mBbinding.getRoot(), mBbinding.appBarWrapper);
 
-        // set fit system window as false
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        // monitor window inset
-        ViewCompat.setOnApplyWindowInsetsListener(mBbinding.mainLayout, new OnApplyWindowInsetsListener() {
-
-            @Override
-            public @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat insets) {
-                Insets systemBar = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-                // Make the top CardView avoid the Status Bar + action Bar.
-                int actionBarHeight = 0;
-                if (getSupportActionBar() != null && getSupportActionBar().isShowing()) {
-                    // can not used here because view is not ready at this moment
-                    // actionBarHeight = getSupportActionBar().getHeight();
-                    actionBarHeight = Utils.getActionBarHeight(DemoSysUIAct.this.getApplicationContext());
-                    Utils.info(DemoSysUIAct.this, "actionBarHeight: " + actionBarHeight);
-                }
-
-                // change card view margin
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mBbinding.cardDescription.getLayoutParams();
-                params.topMargin = systemBar.top + actionBarHeight + 16;
-                mBbinding.cardDescription.setLayoutParams(params);
-
-                // Keep the bottom button bar away from the navigation bar
-                // This way, even if the navigation bar is displayed, the buttons won't be obscured.
-                mBbinding.layoutBtn.setPadding(
-                        mBbinding.layoutBtn.getPaddingLeft(),
-                        mBbinding.layoutBtn.getPaddingTop(),
-                        mBbinding.layoutBtn.getPaddingRight(),
-                        systemBar.bottom + 24
-                );
-                return insets;
-            }
-        });
+// Backup
+//        // set fit system window as false
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//
+//        // monitor window inset
+//        ViewCompat.setOnApplyWindowInsetsListener(mBbinding.mainLayout, new OnApplyWindowInsetsListener() {
+//
+//            @Override
+//            public @NonNull WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat insets) {
+//                Insets systemBar = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//
+//                // Make the top CardView avoid the Status Bar + action Bar.
+//                int actionBarHeight = 0;
+//                if (getSupportActionBar() != null && getSupportActionBar().isShowing()) {
+//                    // can not used here because view is not ready at this moment
+//                    // actionBarHeight = getSupportActionBar().getHeight();
+//                    actionBarHeight = Utils.getActionBarHeight(DemoSysUIAct.this.getApplicationContext());
+//                    Utils.info(DemoSysUIAct.this, "actionBarHeight: " + actionBarHeight);
+//                }
+//
+//                // change card view margin
+//                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mBbinding.cardDescription.getLayoutParams();
+//                params.topMargin = systemBar.top + actionBarHeight + 16;
+//                mBbinding.cardDescription.setLayoutParams(params);
+//
+//                // Keep the bottom button bar away from the navigation bar
+//                // This way, even if the navigation bar is displayed, the buttons won't be obscured.
+//                mBbinding.layoutBtn.setPadding(
+//                        mBbinding.layoutBtn.getPaddingLeft(),
+//                        mBbinding.layoutBtn.getPaddingTop(),
+//                        mBbinding.layoutBtn.getPaddingRight(),
+//                        systemBar.bottom + 24
+//                );
+//                return insets;
+//            }
+//        });
 
 
 
