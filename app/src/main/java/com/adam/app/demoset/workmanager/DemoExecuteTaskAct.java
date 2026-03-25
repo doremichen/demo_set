@@ -24,6 +24,7 @@ import androidx.work.WorkInfo;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoExecuteTaskBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,8 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.mBinding = ActivityDemoExecuteTaskBinding.inflate(getLayoutInflater());
         setContentView(this.mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appHeader);
 
         // create view model
         this.mViewModel = new ViewModelProvider(this).get(MyViewModel.class);
