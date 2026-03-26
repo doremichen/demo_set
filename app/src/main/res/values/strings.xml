@@ -389,8 +389,8 @@
     <string name="demo_jni_clear_object_btn">Clear Object</string>
     <string name="demo_jni_clear_class_btn">Clear Class</string>
     <string name="demo_binder_ipc_title">Binder IPC Demo</string>
-    <string name="demo_binder_aidl_method_btn">AIDL (Method)</string>
-    <string name="demo_binder_messenger_handler_btn">Messenger (Handler)</string>
+    <string name="demo_binder_aidl_method_btn"><![CDATA[AIDL (Direct)]]></string>
+    <string name="demo_binder_messenger_handler_btn"><![CDATA[Messenger (Queue)]]></string>
     <string name="demo_binder_input_a_edt">Input A</string>
     <string name="demo_binder_input_b_edt">input B</string>
     <string name="demo_binder_ipc_log">(IPC Log):</string>
@@ -469,5 +469,7 @@
     <string name="demo_shared_provider_shared_btn">Share content instantly</string>
     <string name="demo_jni_static_class_data">Static (Class)</string>
     <string name="demo_jni_instance_object_data">Instance (Object)</string>
+    <string name="demo_binder_input_value_a">Value A</string>
+    <string name="demo_binder_input_value_b">Value B</string>
 
 </resources>

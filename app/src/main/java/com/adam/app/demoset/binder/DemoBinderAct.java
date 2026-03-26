@@ -29,6 +29,7 @@ import com.adam.app.demoset.binder.service.MyAidlService;
 import com.adam.app.demoset.binder.service.MyMessengerService;
 import com.adam.app.demoset.binder.viewmodel.BinderViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoBinderBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,8 @@ public class DemoBinderAct extends AppCompatActivity {
         // view binding
         mBinding = ActivityDemoBinderBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
         ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
