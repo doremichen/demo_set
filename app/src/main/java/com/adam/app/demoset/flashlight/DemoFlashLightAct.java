@@ -3,7 +3,7 @@
  * <p>
  * Description: This is activity that turn on/off flash light
  * </p>
- *
+ * <p>
  * Author: Adam chen
  * Date: 2018/10/11
  */
@@ -17,14 +17,11 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoFlashLightBinding;
+import com.adam.app.demoset.utils.UIUtils;
 
 public class DemoFlashLightAct extends AppCompatActivity implements FlashLightViewModel.ViewModelCallBack {
 
@@ -40,21 +37,13 @@ public class DemoFlashLightAct extends AppCompatActivity implements FlashLightVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // view binding
         mBinding = ActivityDemoFlashLightBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
-        // set inset listener
-        ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (view, insets) -> {
-            // get system bar
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            mBinding.getRoot().setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-
-            return WindowInsetsCompat.CONSUMED;
-        });
 
         // check flash light
         boolean isFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
