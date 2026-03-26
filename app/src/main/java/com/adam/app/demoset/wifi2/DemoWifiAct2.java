@@ -1,10 +1,15 @@
 /**
- * UI
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This class is the Wifi activity.
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/10/07
  */
 package com.adam.app.demoset.wifi2;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,33 +37,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class DemoWifiAct2 extends AppCompatActivity implements WifiController.WifiScanListener {
 
     public static final int REQUEST_WIFI_PERMISSION_CODE = 0x1357;
-    private WifiBroadcastReceiver mWifiReceiv = new WifiBroadcastReceiver();
-    private WifiController mWifiCtl;
-    private ApListAdapter mAdapter;
-
     private static final String[] WIFI_PERMISSION = {
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
-
+    private static final int SCAN_WIFI = 1;
+    private final WifiBroadcastReceiver mWifiReceiv = new WifiBroadcastReceiver();
+    private WifiController mWifiCtl;
+    private ApListAdapter mAdapter;
     private boolean mPermissionGranted;
-
     private HandlerThread mScanHandlerThread;
-
     // scan wifi handler
     private Handler mHandler;
-
-    private static final int SCAN_WIFI = 1;
-
-
-    private WifiConnectDialog.DialogListener mListner = new WifiConnectDialog.DialogListener() {
+    private final WifiConnectDialog.DialogListener mListener = new WifiConnectDialog.DialogListener() {
         @Override
         public void onResult(WifiConnectData data) {
 
@@ -84,11 +79,8 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate");
         setContentView(R.layout.activity_demo_wifi_act2);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.app_bar_wrapper));
 
         if (Utils.askPermission(this, WIFI_PERMISSION, REQUEST_WIFI_PERMISSION_CODE)) {
             Utils.info(this, "permission granted!!!");
@@ -97,7 +89,6 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
             initScanWifiTask();
 
         }
-
 
 
         //initial list view
@@ -110,7 +101,7 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
             public void onLongClick(ScanResult result) {
                 Utils.showToast(DemoWifiAct2.this, "result: " + result.toString());
                 // start edit dialog to get address
-                WifiConnectDialog dialog = new WifiConnectDialog(DemoWifiAct2.this, result, DemoWifiAct2.this.mListner);
+                WifiConnectDialog dialog = new WifiConnectDialog(DemoWifiAct2.this, result, DemoWifiAct2.this.mListener);
                 dialog.create().show();
             }
         });
@@ -146,7 +137,6 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
             this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter, RECEIVER_EXPORTED);
         }
     }
-
 
 
     @Override
@@ -214,8 +204,26 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
         });
     }
 
+    /**
+     * Initial wifi module
+     */
+    private void initScanWifiTask() {
+        this.mWifiCtl = new WifiController(this);
 
-
+        this.mScanHandlerThread = new HandlerThread("scan_wifi_thread");
+        // start
+        this.mScanHandlerThread.start();
+        this.mHandler = new Handler(this.mScanHandlerThread.getLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Utils.info(this, "start to scan@handleMessage");
+                // start scan wifi
+                assert DemoWifiAct2.this.mWifiCtl != null;
+                DemoWifiAct2.this.mWifiCtl.wifiScan(DemoWifiAct2.this);
+            }
+        };
+    }
 
     /**
      * Receive wifi/network state
@@ -254,27 +262,6 @@ public class DemoWifiAct2 extends AppCompatActivity implements WifiController.Wi
                 }
             }
         }
-    }
-
-    /**
-     * Initial wifi module
-     */
-    private void initScanWifiTask() {
-        this.mWifiCtl = new WifiController(this);
-
-        this.mScanHandlerThread = new HandlerThread("scan_wifi_thread");
-        // start
-        this.mScanHandlerThread.start();
-        this.mHandler = new Handler(this.mScanHandlerThread.getLooper()) {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                Utils.info(this, "start to scan@handleMessage");
-                // start scan wifi
-                assert DemoWifiAct2.this.mWifiCtl != null;
-                DemoWifiAct2.this.mWifiCtl.wifiScan(DemoWifiAct2.this);
-            }
-        };
     }
 
 }

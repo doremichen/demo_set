@@ -1,5 +1,11 @@
 /**
- * Handle wifi procedure
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This class is the Wifi controller.
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/10/07
  */
 package com.adam.app.demoset.wifi2;
 
@@ -27,8 +33,8 @@ import java.util.List;
 
 class WifiController {
 
-    private ConnectivityManager mConnectMgr;
-    private WifiManager mWifiManager;
+    private final ConnectivityManager mConnectMgr;
+    private final WifiManager mWifiManager;
     private ConnectivityManager.NetworkCallback mNetWorkCallnack;
     private WIFISTATE mState = WIFISTATE.DISCONNECTED;
 
@@ -179,7 +185,7 @@ class WifiController {
 
     private enum WIFISTATE {
         CONNECTED,
-        DISCONNECTED;
+        DISCONNECTED
     }
 
     interface WifiScanListener {

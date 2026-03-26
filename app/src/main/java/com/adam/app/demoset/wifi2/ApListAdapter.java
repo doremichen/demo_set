@@ -1,5 +1,11 @@
 /**
- * Ap list adapter
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This class is the Wifi adapter.
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/10/07
  */
 package com.adam.app.demoset.wifi2;
 
@@ -18,10 +24,10 @@ import com.adam.app.demoset.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder>{
+public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder> {
 
-    private List<ScanResult> mList = new ArrayList<>();;
-    private OnItemLongClickListener mListener;
+    private List<ScanResult> mList = new ArrayList<>();
+    private final OnItemLongClickListener mListener;
 
     ApListAdapter(OnItemLongClickListener listener) {
         this.mListener = listener;
@@ -36,16 +42,10 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    interface OnItemLongClickListener {
-        void onLongClick(ScanResult result);
-
-    }
-
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wifi_result, parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_wifi_result, parent, false);
         return new ViewHolder(view);
     }
 
@@ -72,13 +72,19 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder
         return this.mList.size();
     }
 
+    interface OnItemLongClickListener {
+        void onLongClick(ScanResult result);
+
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mSSID;
-        private TextView mBSSID;
-        private TextView mCap;
-        private TextView mFren;
-        private TextView mLevel;
+        private final TextView mSSID;
+        private final TextView mBSSID;
+        private final TextView mCap;
+        private final TextView mFren;
+        private final TextView mLevel;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

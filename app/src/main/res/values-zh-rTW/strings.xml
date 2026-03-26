@@ -197,7 +197,7 @@
     <string name="permission_granted_info">已授予權限：%1$s</string>
     <string name="open_settings_button_label">開啟設定</string>
     <string name="request_permission_button_label">要求權限</string>
-    <string name="action_scan_wifi">掃描 WiFi</string>
+    <string name="action_scan_wifi">掃描</string>
     <string name="action_exit_wifi">退出</string>
     <string name="label_wifi_result_item_ssid">SSID</string>
     <string name="label_wifi_result_item_bssid">BSSID</string>

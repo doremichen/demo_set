@@ -1,9 +1,13 @@
 /**
- * Wifi input data
+ * Copyright (C) Adam demo app Project. All rights reserved.
+ * <p>
+ * Description: This class is the Wifi connect data
+ * </p>
+ * <p>
+ * Author: Adam Chen
+ * Date: 2025/10/07
  */
 package com.adam.app.demoset.wifi2;
-
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -33,11 +37,10 @@ class WifiConnectData {
     @NonNull
     @Override
     public String toString() {
-        StringBuilder stb = new StringBuilder();
-        stb.append("\n===================================\n");
-        stb.append("ssid: ").append(this.mSsid).append("\n");
-        stb.append("password: ").append(this.mPassword).append("\n");
-        stb.append("===================================\n");
-        return stb.toString();
+        String stb = "\n===================================\n" +
+                "ssid: " + this.mSsid + "\n" +
+                "password: " + this.mPassword + "\n" +
+                "===================================\n";
+        return stb;
     }
 }
