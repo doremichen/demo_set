@@ -466,5 +466,6 @@
     <string name="demo_data_binding_result_hint">Confirmed username</string>
     <string name="demo_binding_input_hint">Please enter your name here to experience synchronization.</string>
     <string name="demo_binding_input_helper">The text below will update in real time as you type.</string>
+    <string name="demo_shared_provider_shared_btn">Share content instantly</string>
 
 </resources>

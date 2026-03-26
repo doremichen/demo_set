@@ -467,5 +467,6 @@
     <string name="demo_data_binding_result_hint">確認的使用者名稱</string>
     <string name="demo_binding_input_hint">請在此輸入姓名體驗同步</string>
     <string name="demo_binding_input_helper">下方文字將隨輸入即時更新</string>
+    <string name="demo_shared_provider_shared_btn">即刻分享內容</string>
 
 </resources>
