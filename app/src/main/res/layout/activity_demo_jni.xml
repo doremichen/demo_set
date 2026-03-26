@@ -9,188 +9,207 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient"
         tools:context=".jnidemo.DemoJniAct">
 
-        <!-- Title -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvTitle"
-            android:text="@string/demo_jni_demo_title"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_width="0dp"
+        <FrameLayout
+            android:id="@+id/app_bar_wrapper"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Object State Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardObject"
-            android:layout_width="0dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="16dp"
+                android:background="@drawable/bg_title_border"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="12dp"
+                android:text="@string/demo_jni_demo_title"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_states"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginHorizontal="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/app_bar_wrapper">
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#20FFFFFF"
+                app:strokeColor="#40FFFFFF"
+                app:strokeWidth="1dp">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Object State"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                <LinearLayout
+                    android:padding="12dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/demo_jni_instance_object_data"
+                        android:textColor="#81C784"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvObjData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{vm.objData}'
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        tools:text="Native Data..."/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvObjData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{"mDataFromNative : " + vm.objData}'
-                    android:layout_marginTop="4dp"/>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#20FFFFFF"
+                app:strokeColor="#40FFFFFF"
+                app:strokeWidth="1dp">
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:padding="12dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/demo_jni_static_class_data"
+                        android:textColor="#FFD54F"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvClazzData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{vm.clazzData}'
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:layout_marginTop="4dp"
+                        tools:text="Static Data..."/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-        <!-- Class State Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardClass"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/cardObject"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:padding="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Class State"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvClazzData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text='@{"sDataFromNative : " + vm.clazzData}'
-                    android:layout_marginTop="4dp"/>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Log Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardLog"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintTop_toBottomOf="@id/cardClass"
-            app:layout_constraintBottom_toTopOf="@id/buttonRow1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_margin="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardBackgroundColor="#CC000000"
+            app:layout_constraintTop_toBottomOf="@id/layout_states"
+            app:layout_constraintBottom_toTopOf="@id/layout_actions">
 
             <LinearLayout
                 android:orientation="vertical"
-                android:padding="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="12dp"
                     android:text="@string/demo_jni_callback_log_label"
-                    android:textStyle="bold"
-                    android:textSize="16sp"/>
+                    android:background="#33FFFFFF"
+                    android:textColor="#E0E0E0"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerLog"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"/>
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:clipToPadding="false"
+                    tools:listitem="@android:layout/simple_list_item_1"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Button Row 1 -->
         <LinearLayout
-            android:id="@+id/buttonRow1"
-            android:layout_width="0dp"
+            android:id="@+id/layout_actions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/cardLog"
-            app:layout_constraintBottom_toTopOf="@id/buttonRow2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnObjectCallback"
-                android:text="@string/demo_jni_instance_callback_native_obj_btn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:onClick="@{() -> vm.objectCallback()}"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClassCallback"
-                android:text="@string/demo_jni_static_callback_native_class_btn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:onClick="@{() -> vm.classCallback()}"
-                android:layout_height="wrap_content"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnObjectCallback"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/demo_jni_instance_callback_native_obj_btn"
+                    android:onClick="@{() -> vm.objectCallback()}"
+                    app:cornerRadius="12dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClassCallback"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1"
+                    android:text="@string/demo_jni_static_callback_native_class_btn"
+                    android:onClick="@{() -> vm.classCallback()}"
+                    app:cornerRadius="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearObject"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/demo_jni_clear_object_btn"
+                    android:textColor="#FF8A80"
+                    app:strokeColor="#FF8A80"
+                    android:onClick="@{() -> vm.clearObject()}" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearClass"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:text="@string/demo_jni_clear_class_btn"
+                    android:textColor="#FF8A80"
+                    app:strokeColor="#FF8A80"
+                    android:onClick="@{() -> vm.clearClass()}" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Button Row 2 -->
-        <LinearLayout
-            android:id="@+id/buttonRow2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClearObject"
-                android:text="@string/demo_jni_clear_object_btn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> vm.clearObject()}"
-                android:layout_marginEnd="8dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClearClass"
-                android:text="@string/demo_jni_clear_class_btn"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:onClick="@{() -> vm.clearClass()}"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
-
-

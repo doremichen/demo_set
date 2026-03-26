@@ -380,8 +380,8 @@
     <string name="demo_jin_instruction">This page demonstrates how Android calls low-level C++ libraries via the NDK. It includes: \n1. Java calling Native methods; \n2. Native posting data back to the Instance via reflection; \n3. Native updating Static (Class) variables.</string>
     <string name="demo_jni_native_response_info">Waiting for native instructions...</string>
     <string name="demo_jni_say_hello_java_native_btn"><![CDATA[JNI function Call (Java -> Native)]]></string>
-    <string name="demo_jni_instance_callback_native_obj_btn"><![CDATA[Instance CallBack (Native -> Obj)]]></string>
-    <string name="demo_jni_static_callback_native_class_btn"><![CDATA[Static CallBack (Native -> Class)]]></string>
+    <string name="demo_jni_instance_callback_native_obj_btn">Obj Callback</string>
+    <string name="demo_jni_static_callback_native_class_btn">Static Callback</string>
     <string name="label_object_call_back">Object Callnack</string>
     <string name="label_clazz_call_back">Static Callback</string>
     <string name="title_activity_demo_jni">JNI Demo Monitor\n</string>
@@ -467,5 +467,7 @@
     <string name="demo_binding_input_hint">Please enter your name here to experience synchronization.</string>
     <string name="demo_binding_input_helper">The text below will update in real time as you type.</string>
     <string name="demo_shared_provider_shared_btn">Share content instantly</string>
+    <string name="demo_jni_static_class_data">Static (Class)</string>
+    <string name="demo_jni_instance_object_data">Instance (Object)</string>
 
 </resources>

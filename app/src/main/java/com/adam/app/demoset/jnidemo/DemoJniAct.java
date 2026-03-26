@@ -23,6 +23,7 @@ import com.adam.app.demoset.LogAdapter;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoJniBinding;
 import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.ArrayList;
 
@@ -40,17 +41,11 @@ public class DemoJniAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WindowCompat.setDecorFitsSystemWindows(this.getWindow(), true);
-
         // view binding
         mBinding = ActivityDemoJniBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
         // init view model
         mViewModel = new ViewModelProvider(this).get(JNIViewModel.class);

@@ -380,8 +380,8 @@
     <string name="demo_jin_instruction">此頁面展示 Android 如何透過 NDK 調用 C++ 底層函式庫。包含：\n1. Java 調用 Native 方法\n2. Native 透過反射回傳資料至 Instance\n3. Native 更新 Static (Class) 變數</string>
     <string name="demo_jni_native_response_info">等待 Native 指令…</string>
     <string name="demo_jni_say_hello_java_native_btn"><![CDATA[JNI 函數呼叫 (Java -> Native)]]></string>
-    <string name="demo_jni_instance_callback_native_obj_btn"><![CDATA[實例JNI回調 (Native -> Obj)]]></string>
-    <string name="demo_jni_static_callback_native_class_btn"><![CDATA[靜態JNI回調 (Native -> Class)]]></string>
+    <string name="demo_jni_instance_callback_native_obj_btn">Obj 回調</string>
+    <string name="demo_jni_static_callback_native_class_btn">Static 回調</string>
     <string name="label_object_call_back">實例JNI回調</string>
     <string name="label_clazz_call_back">靜態JNI回調</string>
     <string name="title_activity_demo_jni">JNI 展示監控\n</string>
@@ -468,5 +468,7 @@
     <string name="demo_binding_input_hint">請在此輸入姓名體驗同步</string>
     <string name="demo_binding_input_helper">下方文字將隨輸入即時更新</string>
     <string name="demo_shared_provider_shared_btn">即刻分享內容</string>
+    <string name="demo_jni_static_class_data">Static (Class)</string>
+    <string name="demo_jni_instance_object_data">Instance (Object)</string>
 
 </resources>
