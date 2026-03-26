@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 public final class UIUtils {
 
@@ -58,6 +59,30 @@ public final class UIUtils {
 
             return WindowInsetsCompat.CONSUMED;
         });
+    }
+
+    /**
+     * Hide system bar
+     * @param window window
+     */
+    public static void hideSystemBar(Window window) {
+        if (window == null) {
+            return;
+        }
+
+        // assure fit system windows as false
+        WindowCompat.setDecorFitsSystemWindows(window, false);
+
+        // get inset window controller
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller == null) {
+            return;
+        }
+
+        // hide system bar
+        controller.hide(WindowInsetsCompat.Type.systemBars());
+        // set immerse behavior when swipe
+        controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
     }
 
 }

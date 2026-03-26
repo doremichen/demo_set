@@ -34,6 +34,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
@@ -146,6 +147,9 @@ public class DemoVideoRecordAct extends AppCompatActivity {
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
+
+        // hide system bar
+        UIUtils.hideSystemBar(getWindow());
 
         // update timer info
         this.mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {

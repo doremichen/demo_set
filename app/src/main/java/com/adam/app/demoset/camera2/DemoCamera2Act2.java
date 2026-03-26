@@ -32,6 +32,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoCamera2Act2Binding;
+import com.adam.app.demoset.utils.UIUtils;
 
 import java.io.File;
 
@@ -138,6 +139,10 @@ public class DemoCamera2Act2 extends AppCompatActivity {
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
+
+        // hide system bar
+        UIUtils.hideSystemBar(getWindow());
+
 
         this.mView = mBinding.textureViewAct2;
 
