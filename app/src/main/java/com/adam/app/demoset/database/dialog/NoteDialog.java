@@ -12,6 +12,7 @@ package com.adam.app.demoset.database.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,22 +21,20 @@ import android.widget.TextView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.databinding.DialogEditNoteBinding;
+import com.adam.app.demoset.databinding.DialogEditWifiBinding;
 
 public abstract class NoteDialog {
 
-//    protected static final String TITLE_CREATE_NOTE = "Create note";
-//    protected static final String TITLE_UPDATE_NOTE = "Update note";
-//    protected static final String RBUTTON_CREATE_NOTE = "Save";
-//    protected static final String RBUTTON_UPDATE_NOTE = "Update";
     private final AlertDialog.Builder mAlertBuilder;
     private final LayoutInflater mInflater;
     private OnDlgCallBack mCallback;
 
-    private Context mContext;
+    private final Context mContext;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
-        mAlertBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+        mAlertBuilder = new AlertDialog.Builder(context, androidx.appcompat.R.style.Theme_AppCompat_Light_Dialog);
         mAlertBuilder.setCancelable(false);
 
         mContext = context.getApplicationContext();
@@ -48,62 +47,53 @@ public abstract class NoteDialog {
 
     public AlertDialog create() {
         Utils.info(this, "create enter");
+        // View binding
+        DialogEditNoteBinding binding = DialogEditNoteBinding.inflate(mInflater);
+        // set title
+        binding.setTitle(onDlgTitle());
+        // set initial note
+        binding.setInitialNote("");
+        // update ui
+        binding.executePendingBindings();
 
-        View view = mInflater.inflate(R.layout.dialog_edit_note, null);
+        mAlertBuilder.setView(binding.getRoot());
+        final AlertDialog dialog = mAlertBuilder.create();
 
-        mAlertBuilder.setView(view);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
 
-        TextView title = view.findViewById(R.id.dialog_note_title);
-        final EditText input = view.findViewById(R.id.edit_note);
-
-        // Set Dialog title
-        title.setText(onDlgTitle());
-
-        // Register positive/negative button
+        // set positive button
         final String dlgRbutton = onDlgRightButton();
-        mAlertBuilder.setPositiveButton(dlgRbutton, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.info(this, "Positive click");
-                // Check whether the edit string is empty or not
-                String strInput = input.getText().toString();
-                if (TextUtils.isEmpty(strInput)) {
-                    // Info UI
-                    if (mCallback != null) {
-                        mCallback.onShowMessage("Please input the valid and nonempty message.");
-                    }
-                    return;
+
+        binding.btnNoteSave.setText(dlgRbutton);
+        binding.btnNoteSave.setOnClickListener(v -> {
+            Utils.info(this, "Positive click");
+            String strInput = binding.editNote.getText().toString().trim();
+
+            // check input
+            if (TextUtils.isEmpty(strInput)) {
+                if (mCallback != null) {
+                    mCallback.onShowMessage("Please input a valid and non-empty message.");
                 }
-
-                String saveNote = mContext.getString(R.string.demo_database_dlg_save);
-                String updateNote = mContext.getString(R.string.demo_database_dlg_update);
-
-                if (saveNote.equals(dlgRbutton)) {
-                    // Info UI to insert data
-                    if (mCallback != null) {
-                        mCallback.updateList(strInput);
-                    }
-
-                } else if (updateNote.equals(dlgRbutton)) {
-                    // Info UI to update databse
-                    if (mCallback != null) {
-                        mCallback.updateList(strInput);
-                    }
-                }
+                return;
             }
-        });
-        String cancel = mContext.getString(R.string.demo_database_dlg_cancel);
-        mAlertBuilder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.info(this, "Negative click");
-                dialog.dismiss();
+
+            // update list
+            if (mCallback != null) {
+                mCallback.updateList(strInput);
             }
+
+            dialog.dismiss();
         });
 
+        // set negative button
+        binding.btnNoteCancel.setOnClickListener(v -> {
+            Utils.info(this, "Negative click");
+            dialog.dismiss();
+        });
 
-        return mAlertBuilder.create();
-
+        return dialog;
     }
 
     protected abstract String onDlgTitle();
