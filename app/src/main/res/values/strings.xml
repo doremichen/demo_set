@@ -471,5 +471,6 @@
     <string name="demo_jni_instance_object_data">Instance (Object)</string>
     <string name="demo_binder_input_value_a">Value A</string>
     <string name="demo_binder_input_value_b">Value B</string>
+    <string name="demo_retrofit_coroutine_instruction_title">Retrofit + Coroutine</string>
 
 </resources>

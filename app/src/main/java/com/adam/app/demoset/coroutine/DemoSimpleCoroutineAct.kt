@@ -12,8 +12,8 @@ package com.adam.app.demoset.coroutine
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.adam.app.demoset.coroutine.view_model.MainViewModel
-import com.adam.app.demoset.coroutine.view_model.MainViewModelFactory
+import com.adam.app.demoset.coroutine.viewmodel.MainViewModel
+import com.adam.app.demoset.coroutine.viewmodel.MainViewModelFactory
 import com.adam.app.demoset.databinding.ActivityDemoSimpleCoroutingBinding
 import com.adam.app.demoset.utils.UIUtils
 
