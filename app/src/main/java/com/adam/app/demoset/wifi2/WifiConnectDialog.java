@@ -46,7 +46,7 @@ class WifiConnectDialog {
         mBinding.executePendingBindings();
 
         // create alert dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.mInflater.getContext(), R.style.AppCompatAlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.mInflater.getContext(), androidx.appcompat.R.style.Base_Theme_AppCompat_Dialog_Alert);
         builder.setView(this.mBinding.getRoot());
         builder.setCancelable(false);
 
@@ -70,7 +70,7 @@ class WifiConnectDialog {
 
         // set cancel button
         mBinding.btnCancel.setOnClickListener(v -> {
-            dialog.dismiss();
+            dialog.cancel();
         });
         return dialog;
     }

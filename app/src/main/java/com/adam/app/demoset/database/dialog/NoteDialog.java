@@ -34,7 +34,7 @@ public abstract class NoteDialog {
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
-        mAlertBuilder = new AlertDialog.Builder(context, androidx.appcompat.R.style.Theme_AppCompat_Light_Dialog);
+        mAlertBuilder = new AlertDialog.Builder(context, androidx.appcompat.R.style.Base_Theme_AppCompat_Dialog_Alert);
         mAlertBuilder.setCancelable(false);
 
         mContext = context.getApplicationContext();
@@ -90,7 +90,7 @@ public abstract class NoteDialog {
         // set negative button
         binding.btnNoteCancel.setOnClickListener(v -> {
             Utils.info(this, "Negative click");
-            dialog.dismiss();
+            dialog.cancel();
         });
 
         return dialog;
