@@ -111,10 +111,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".page3.PagingLabActivity"
+            android:label="@string/title_demo_page_3"
+            android:screenOrientation="nosensor"
+            android:exported="false" />
+        <activity
             android:name=".flowlab.FlowLabActivity"
             android:exported="false"
             android:label="@string/title_demo_flow"
-            android:screenOrientation="nosensor"/>
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".material.MaterialDemoAct"
             android:exported="false"

@@ -45,6 +45,7 @@
     <string name="title_demo_ble">"BLE 範例 "</string>
     <string name="title_demo_compose_ui">Compose UI 範例</string>
     <string name="title_demo_flow"><![CDATA[狀態/共享流程 範例]]></string>
+    <string name="title_demo_page_3">示範頁 3</string>
 
 
     <!-- string for Demo USB device (註解掉) -->
@@ -477,5 +478,7 @@
     <string name="demo_flow_instruction">說明：\n- StateFlow（狀態）：值變更時更新 UI。 \n- SharedFlow（事件）：一次操作（Toast/Snack）。 \n- RecyclerView 日誌：高效能事件追蹤。</string>
     <string name="demo_flow_increment_btn">增量</string>
     <string name="demo_flow_trigger_event_btn">觸發事件</string>
+    <string name="demo_page3_instruction">Paging 3 Demo:\n1. 模擬 2000ms 網路延遲\n2. 自動分頁加載 (Page Size: 20)\n3. 螢幕旋轉後狀態自動保留 (cachedIn)</string>
+    <string name="demo_page_refresh_list_btn">重新整理清單</string>
 
 </resources>

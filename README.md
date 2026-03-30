@@ -47,6 +47,7 @@ Native Layer
 * Table Layout rendering
 * Compose UI
 * StateFlow / SharedFlow
+* Paging 3
 
 ---
 
@@ -150,7 +151,6 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* Paging 3
 * DataStore
 * Modern permission model
 * AIDL-based IPC

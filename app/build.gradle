@@ -107,6 +107,8 @@ dependencies {
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation 'androidx.paging:paging-common:3.4.2'
+    implementation 'androidx.paging:paging-runtime-ktx:3.4.2'
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
 
