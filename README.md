@@ -45,6 +45,8 @@ Native Layer
 * Animation & GIF rendering
 * Floating Dialog / Floating Window
 * Table Layout rendering
+* Compose UI
+* StateFlow / SharedFlow
 
 ---
 
@@ -148,7 +150,6 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* StateFlow / SharedFlow
 * Paging 3
 * DataStore
 * Modern permission model
