@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.adam.app.demoset.LogAdapter;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.binder.service.BinderType;
 import com.adam.app.demoset.binder.service.MyAidlService;
 import com.adam.app.demoset.binder.service.MyMessengerService;

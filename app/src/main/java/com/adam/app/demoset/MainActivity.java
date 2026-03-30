@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.databinding.ActivityMainBinding;
+import com.adam.app.demoset.utils.Utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

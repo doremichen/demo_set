@@ -27,7 +27,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
 

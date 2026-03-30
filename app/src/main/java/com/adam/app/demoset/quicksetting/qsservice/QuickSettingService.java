@@ -9,7 +9,7 @@ import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;

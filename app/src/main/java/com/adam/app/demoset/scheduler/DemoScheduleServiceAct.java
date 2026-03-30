@@ -25,7 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.color.MaterialColors;
 

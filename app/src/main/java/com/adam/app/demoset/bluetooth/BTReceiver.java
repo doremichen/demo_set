@@ -15,7 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;

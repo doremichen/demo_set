@@ -11,18 +11,12 @@ package com.adam.app.demoset.database.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.DialogEditNoteBinding;
-import com.adam.app.demoset.databinding.DialogEditWifiBinding;
 
 public abstract class NoteDialog {
 

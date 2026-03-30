@@ -12,7 +12,7 @@ package com.adam.app.demoset.myHandlerThread;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

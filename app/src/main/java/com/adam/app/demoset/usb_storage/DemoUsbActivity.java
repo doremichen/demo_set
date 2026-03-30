@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.UsbFile;
 

@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class SecurJobService extends JobService {
 

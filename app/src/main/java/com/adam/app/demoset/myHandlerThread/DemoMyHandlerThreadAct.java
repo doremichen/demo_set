@@ -15,13 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoMyHandlerThreadBinding;
 import com.adam.app.demoset.utils.UIUtils;
 

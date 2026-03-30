@@ -22,7 +22,7 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoExecuteTaskBinding;
 import com.adam.app.demoset.utils.UIUtils;
 

@@ -26,7 +26,7 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;

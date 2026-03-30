@@ -25,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoDeviceAdminBinding;
 import com.adam.app.demoset.LogAdapter;
 import com.adam.app.demoset.lockscreen.viewmodel.DeviceAdminViewModel;

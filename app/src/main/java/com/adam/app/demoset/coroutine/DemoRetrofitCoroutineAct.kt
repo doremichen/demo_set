@@ -12,7 +12,6 @@ package com.adam.app.demoset.coroutine
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.adam.app.demoset.Utils
 import com.adam.app.demoset.coroutine.viewmodel.RetrofitViewModel
 import com.adam.app.demoset.databinding.ActivityDemoRetrofitCoroutineBinding
 import com.adam.app.demoset.utils.UIUtils

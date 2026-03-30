@@ -9,7 +9,7 @@
  */
 package com.adam.app.demoset.jnidemo;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;
 

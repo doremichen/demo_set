@@ -29,7 +29,7 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

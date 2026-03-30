@@ -22,7 +22,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.floatingwindow.widget.CircleView;
 
 /**

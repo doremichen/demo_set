@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class GifView extends androidx.appcompat.widget.AppCompatImageView {
 

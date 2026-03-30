@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.adam.app.demoset.LogAdapter;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoXmlParserBinding;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.xmlparser.model.ItemData;

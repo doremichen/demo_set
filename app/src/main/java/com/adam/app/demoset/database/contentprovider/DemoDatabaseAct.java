@@ -34,7 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.common.MyTouchItemListener;
 import com.adam.app.demoset.database.contentprovider.entity.Note;
 import com.adam.app.demoset.database.dialog.CreateNoteDialog;

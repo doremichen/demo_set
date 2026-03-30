@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 //import com.adam.app.demoset.databinding.ActivityDemoServiceBinding;
 import com.adam.app.demoset.databinding.ActivityDemoServiceLegacyBinding;
 import com.adam.app.demoset.demoService.service.ServiceHelper;

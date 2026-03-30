@@ -18,14 +18,13 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
 import com.adam.app.demoset.tablelayout.pattern.builder.MoveChainBuilder;
 import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.MoveHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TicTacToeViewModel extends AndroidViewModel {
 

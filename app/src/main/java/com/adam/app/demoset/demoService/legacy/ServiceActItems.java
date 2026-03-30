@@ -13,7 +13,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.demoService.service.LocalService;
 import com.adam.app.demoset.demoService.service.RemoteService;
 import com.adam.app.demoset.demoService.service.ServiceHelper;

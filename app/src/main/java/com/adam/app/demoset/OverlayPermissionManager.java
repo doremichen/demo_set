@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 
+import com.adam.app.demoset.utils.Utils;
+
 public class OverlayPermissionManager {
     // Activity
     private Activity mActivity;

@@ -12,7 +12,7 @@ import android.view.TextureView;
 import android.view.View;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class DemoCamera2Act extends AppCompatActivity {
 

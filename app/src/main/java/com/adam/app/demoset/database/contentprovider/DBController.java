@@ -17,7 +17,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
 
 import java.text.SimpleDateFormat;

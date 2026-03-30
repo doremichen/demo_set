@@ -12,7 +12,7 @@ package com.adam.app.demoset.database.dialog;
 import android.content.Context;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class UpdateNoteDialog extends NoteDialog {
 

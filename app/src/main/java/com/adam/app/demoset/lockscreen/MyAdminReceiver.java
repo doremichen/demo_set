@@ -12,7 +12,7 @@ import android.app.admin.DeviceAdminReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class MyAdminReceiver extends DeviceAdminReceiver {
     @Override

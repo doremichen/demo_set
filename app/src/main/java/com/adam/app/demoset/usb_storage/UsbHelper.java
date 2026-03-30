@@ -12,7 +12,7 @@ import android.hardware.usb.UsbManager;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.github.mjdev.libaums.UsbMassStorageDevice;
 import com.github.mjdev.libaums.fs.FileSystem;
 import com.github.mjdev.libaums.fs.UsbFile;

@@ -11,7 +11,7 @@ package com.adam.app.demoset.database.contentprovider.entity;
 
 import android.database.Cursor;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
 
 public class Note {

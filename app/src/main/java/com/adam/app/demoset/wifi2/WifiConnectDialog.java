@@ -17,8 +17,7 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.DialogEditWifiBinding;
 
 class WifiConnectDialog {

@@ -6,8 +6,9 @@
  * @author: AdamChen
  * @date: 2018/9/19
  */
-package com.adam.app.demoset;
+package com.adam.app.demoset.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -24,7 +25,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Messenger;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.annotation.WorkerThread;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -51,7 +52,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-import com.adam.app.demoset.demoService.service.LocalService;
+import com.adam.app.demoset.R;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -98,8 +99,6 @@ public abstract class Utils {
     // The name of the image manipulation work
     public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
     // for remote service
-
-    public static ServiceConnection sConnection;
 
     public static volatile String sImagePath;
 
@@ -490,42 +489,18 @@ public abstract class Utils {
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    public static void hideSystemUI(Window window) {
-        if (window == null) {
-            info(Utils.class, "window is null");
-            return;
-        }
-
-        // set fit system windows as false
-        WindowCompat.setDecorFitsSystemWindows(window, false);
-
-        // get inset window controller
-        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
-        if (controller == null) {
-            info(Utils.class, "controller is null");
-            return;
-        }
-        // hide system bars and navigation bars
-        controller.hide(WindowInsetsCompat.Type.systemBars() |
-                WindowInsetsCompat.Type.navigationBars());
-        // set immersive mode
-        controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-
-    }
-
-
-    @Deprecated
-    public static void hideSystemUI(View v) {
-        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                // Hide the nav bar and status bar
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN);
-    }
+//    @Deprecated
+//    public static void hideSystemUI(View v) {
+//        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+//                // Set the content to appear under the system bars so that the
+//                // content doesn't resize when the system bars hide and show.
+//                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                // Hide the nav bar and status bar
+//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+//    }
 
     public static void enableLog(String enable, String path) {
         Utils.info(Utils.class, "enableLog enter");
@@ -698,6 +673,7 @@ public abstract class Utils {
      * @param context Context needed to create Toast
      * @param message Message shown on the notification
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public static void makeStatusNotification(Context context, String message) {
 
         // Make a channel if necessary

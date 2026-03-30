@@ -14,12 +14,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adam.app.demoset.R
-import com.adam.app.demoset.Utils
+import com.adam.app.demoset.utils.Utils
 import com.adam.app.demoset.coroutine.retrofit_api.RetrofitClient
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RetrofitViewModel(application: Application) : AndroidViewModel(application) {

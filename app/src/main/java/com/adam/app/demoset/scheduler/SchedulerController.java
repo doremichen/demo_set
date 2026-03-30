@@ -8,7 +8,7 @@
  */
 package com.adam.app.demoset.scheduler;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

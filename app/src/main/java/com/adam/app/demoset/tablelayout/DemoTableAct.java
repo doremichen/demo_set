@@ -15,7 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoTableBinding;
 import com.adam.app.demoset.tablelayout.viewmodel.TicTacToeViewModel;
 import com.adam.app.demoset.utils.UIUtils;

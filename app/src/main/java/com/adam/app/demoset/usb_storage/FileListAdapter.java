@@ -13,11 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.github.mjdev.libaums.fs.UsbFile;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,6 +2,8 @@ package com.adam.app.demoset;
 
 import android.os.SystemClock;
 
+import com.adam.app.demoset.utils.Utils;
+
 import java.util.ArrayList;
 
 public class MyTimingLog {

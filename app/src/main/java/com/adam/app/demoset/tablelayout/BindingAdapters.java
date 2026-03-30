@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import androidx.databinding.BindingAdapter;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
 

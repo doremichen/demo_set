@@ -11,7 +11,7 @@
  */
 package com.adam.app.demoset.xmlparser.pattern;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.xmlparser.model.ItemData;
 import com.adam.app.demoset.xmlparser.util.XmlItemContent;
 

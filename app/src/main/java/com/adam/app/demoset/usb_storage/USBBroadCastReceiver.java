@@ -11,7 +11,7 @@ import android.hardware.usb.UsbManager;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class USBBroadCastReceiver extends BroadcastReceiver {
 

@@ -33,7 +33,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
 import com.google.android.material.button.MaterialButton;
 
@@ -210,7 +210,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         super.onStart();
 
         // Hide systemUI
-        Utils.hideSystemUI(getWindow());
+        UIUtils.hideSystemBar(getWindow());
 //        View decoreView = this.getWindow().getDecorView();
 //        Utils.hideSystemUI(decoreView);
     }

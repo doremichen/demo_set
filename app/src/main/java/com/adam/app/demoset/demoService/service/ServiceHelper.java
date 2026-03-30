@@ -16,8 +16,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.Messenger;
 
-import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.demoService.util.ServiceLogBus;
 
 public class ServiceHelper {

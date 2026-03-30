@@ -17,7 +17,7 @@ import android.os.IBinder;
 import android.view.WindowManager;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class FloatingDialogSvr extends Service {
 

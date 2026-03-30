@@ -15,7 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.ParcelUuid;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.io.IOException;
 import java.util.UUID;

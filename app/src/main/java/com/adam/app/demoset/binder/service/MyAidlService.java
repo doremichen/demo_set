@@ -16,7 +16,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.binder.IMyAidlCBInterface;
 import com.adam.app.demoset.binder.IMyAidlInterface;
 

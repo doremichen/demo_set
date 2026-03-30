@@ -13,6 +13,8 @@ import android.view.View;
 
 import androidx.databinding.BindingAdapter;
 
+import com.adam.app.demoset.utils.Utils;
+
 public class UIBindingAdapters {
     @BindingAdapter(value = {"android:onClick", "hideKeyboardOnClick"}, requireAll = false)
     public static void setHideKeyboardOnClick(View view, View.OnClickListener listener, boolean hide) {

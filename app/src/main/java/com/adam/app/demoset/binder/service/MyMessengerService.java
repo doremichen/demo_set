@@ -17,7 +17,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 public class MyMessengerService extends Service {
 

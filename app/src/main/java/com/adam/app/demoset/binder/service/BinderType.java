@@ -20,7 +20,7 @@ import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.binder.IMyAidlCBInterface;
 import com.adam.app.demoset.binder.IMyAidlInterface;
 

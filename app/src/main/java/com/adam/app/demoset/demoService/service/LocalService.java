@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
-import com.adam.app.demoset.Utils;
 import com.adam.app.demoset.demoService.util.ServiceLogBus;
 
 public class LocalService extends Service {

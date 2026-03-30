@@ -36,7 +36,7 @@ import android.view.TextureView;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 abstract class FileUtils {
 

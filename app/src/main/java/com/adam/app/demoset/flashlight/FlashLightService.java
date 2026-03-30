@@ -16,7 +16,7 @@ import android.hardware.camera2.CameraManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
-import com.adam.app.demoset.Utils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
