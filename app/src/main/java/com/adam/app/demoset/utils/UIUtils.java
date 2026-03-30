@@ -57,7 +57,7 @@ public final class UIUtils {
                 appBar.setPadding(0, bars.top, 0, 0);
             }
 
-            return WindowInsetsCompat.CONSUMED;
+            return insets; //WindowInsetsCompat.CONSUMED;
         });
     }
 

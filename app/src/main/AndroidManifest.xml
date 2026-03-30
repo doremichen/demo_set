@@ -111,6 +111,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".flowlab.FlowLabActivity"
+            android:exported="false"
+            android:label="@string/title_demo_flow"
+            android:screenOrientation="nosensor"/>
+        <activity
             android:name=".material.MaterialDemoAct"
             android:exported="false"
             android:label="@string/title_demo_material_widget"

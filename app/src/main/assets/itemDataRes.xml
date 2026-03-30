@@ -206,4 +206,10 @@
         clsname="com.adam.app.demoset.composeui.DemoComposeAct"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- UI -->
+    <data category="category_ui"
+        titleRes="title_demo_flow"
+        clsname="com.adam.app.demoset.flowlab.FlowLabActivity"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

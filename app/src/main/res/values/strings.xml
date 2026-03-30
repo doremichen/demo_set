@@ -44,6 +44,7 @@
     <string name="title_demo_retrofit_coroutine">Demo Retrofit Corouting\nKoltlin</string>
     <string name="title_demo_ble">"Demo BLE "</string>
     <string name="title_demo_compose_ui">Demo Compose UI</string>
+    <string name="title_demo_flow"><![CDATA[Demo State/Shared Flow]]></string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
@@ -472,5 +473,8 @@
     <string name="demo_binder_input_value_a">Value A</string>
     <string name="demo_binder_input_value_b">Value B</string>
     <string name="demo_retrofit_coroutine_instruction_title">Retrofit + Coroutine</string>
+    <string name="demo_flow_instruction">Instruction:\n- StateFlow (State): UI updates on value change.\n- SharedFlow (Event): One-time actions (Toast/Snack).\n- RecyclerView Log: High-performance event tracking.</string>
+    <string name="demo_flow_increment_btn">Increment</string>
+    <string name="demo_flow_trigger_event_btn">Trigger Event</string>
 
 </resources>
