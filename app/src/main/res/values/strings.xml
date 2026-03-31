@@ -362,7 +362,7 @@
     <string name="demo_service_service_mode_local">local service mode</string>
     <string name="demo_device_admin_instruction">Please ensure that administrator privileges have been granted in the system settings.</string>
     <string name="demo_work_manager_legacy1_instruction">Click the button below to start the image blurring test.</string>
-    <string name="demo_animation_instruction">This is a custom GifView component that demonstrates how to play and control GIF animations using the Canvas and Movie categories.</string>
+    <string name="demo_animation_instruction">This is a custom GifView component that demonstrates high-performance GIF animation playback and control. It leverages the modern AnimatedImageDrawable and ImageDecoder (API 28+) to provide smoother rendering and better memory management compared to the legacy Canvas/Movie approach.</string>
     <string name="demo_open_floating_dlg_function_label">Function instruction: </string>
     <string name="demo_open_floating_dlg_instruction">This page shows how to launch the "system-level" floating dialog box. After launching, the app will automatically close after 3 seconds, while the dialog box will remain on top of the screen until you tap "OK".</string>
     <string name="demo_floating_window_function_label">Interaction Demo</string>
@@ -479,5 +479,8 @@
     <string name="demo_flow_trigger_event_btn">Trigger Event</string>
     <string name="demo_page3_instruction">Paging 3 Demo: 1. Simulates 2000ms network latency 2. Automatic pagination loading (Page Size: 20) 3. Automatic state retention after screen rotation (cachedIn)</string>
     <string name="demo_page_refresh_list_btn">Refresh List</string>
+    <string name="demo_animation_start_msg">start to play gif!!!</string>
+    <string name="demo_animation_stop_msg">stop to play gif!!!</string>
+    <string name="Demo_animation_error_msg">Error: %1$s</string>
 
 </resources>

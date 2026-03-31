@@ -362,7 +362,7 @@
     <string name="demo_service_service_mode_local">本地服務模式</string>
     <string name="demo_device_admin_instruction">請確保已在系統設定中授權管理員權限</string>
     <string name="demo_work_manager_legacy1_instruction">點擊下方按鈕開始進行圖片模糊化任務測試。</string>
-    <string name="demo_animation_instruction">這是一個自定義的 GifView 組件，用於展示如何透過 Canvas 與 Movie 類別實現 GIF 動畫播放與控制。</string>
+    <string name="demo_animation_instruction">這是一個自定義的 GifView 組件，展示了高效能的 GIF 動畫播放與控制。它採用現代化的 AnimatedImageDrawable 與 ImageDecoder 技術（API 28+），相比傳統的 Canvas/Movie 方案，能提供更流暢的渲染效果與更優異的記憶體管理。</string>
     <string name="demo_open_floating_dlg_function_label">功能說明</string>
     <string name="demo_open_floating_dlg_instruction">本頁面展示如何啟動「系統層級」的懸浮對話框。啟動後，App 會在 3 秒後自動關閉，而對話框將持續顯示在螢幕最上層，直到您點擊確定。</string>
     <string name="demo_floating_window_function_label">互動開發演示</string>
@@ -480,5 +480,8 @@
     <string name="demo_flow_trigger_event_btn">觸發事件</string>
     <string name="demo_page3_instruction">Paging 3 Demo:\n1. 模擬 2000ms 網路延遲\n2. 自動分頁加載 (Page Size: 20)\n3. 螢幕旋轉後狀態自動保留 (cachedIn)</string>
     <string name="demo_page_refresh_list_btn">重新整理清單</string>
+    <string name="demo_animation_start_msg">開始播放gif！</string>
+    <string name="demo_animation_stop_msg">停止播放gif！</string>
+    <string name="Demo_animation_error_msg">錯誤: %1$s</string>
 
 </resources>

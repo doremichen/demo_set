@@ -4,7 +4,7 @@
  * <p>
  * Description: This is the custom view of gif image.
  * </p>
- *
+ * <p>
  * Author: Adam Chen
  * Date: 2017/05/20
  */
@@ -12,36 +12,25 @@ package com.adam.app.demoset.animation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Movie;
-import android.os.SystemClock;
-import androidx.annotation.Nullable;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.AnimatedImageDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.utils.Utils;
 
-public class GifView extends androidx.appcompat.widget.AppCompatImageView {
-
-    /**
-     * Used to call back of gif play
-     */
-    interface GifStateListener{
-        void onPlayGif();
-        void onStopGif();
-        void onError(String msg);
-    }
+public class GifView extends AppCompatImageView {
 
     private GifStateListener mListener;
-    private Movie mMovie;
-    private long mMovieStart;
-    private int mDuration;
-    private boolean mIsStart;
-
-    private static final int DEFAULT_DURATION = 1000;   // set movie time
-
+    private AnimatedImageDrawable mAnimatedDrawable;
+    private boolean mIsPlaying = false;
 
     public GifView(Context context) {
         super(context);
@@ -49,116 +38,111 @@ public class GifView extends androidx.appcompat.widget.AppCompatImageView {
 
     public GifView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GifView);
-        int srcId = a.getResourceId(R.styleable.GifView_gifSrc, -1);
-        // set image
-        setImage(srcId);
-        a.recycle();
+        init(context, attrs);
     }
-
-
 
     public GifView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context, attrs);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Utils.info(this, "[onMeasure] enter");
-        if (this.mMovie != null) {
-            // fill big image file size
-            int movieWidth = this.mMovie.width();
-            int movieHeight = this.mMovie.height();
-            // set dimension
-            setMeasuredDimension(movieWidth, movieHeight);
-
-        } else {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        Utils.info(this, "[onDraw] enter");
-        if (this.mMovie == null) {
-            showErrorInfo("No gif image to draw!!!");
-            super.onDraw(canvas);
+    private void init(Context context, AttributeSet attrs) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            Utils.info(this, "Warning: AnimatedImageDrawable requires API 28+");
             return;
         }
 
-
-        // movie draw
-        drawGif(canvas);
-        // check start flag
-        if (this.mIsStart == true) {
-            invalidate();
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.GifView);
+        int srcId = a.getResourceId(R.styleable.GifView_gifSrc, -1);
+        // set image
+        if (srcId != -1) {
+            setGifResource(srcId, null);
         }
+        // recycle
+        a.recycle();
     }
 
-    public void setGifData(int resId, GifStateListener listener) {
-        Utils.info(this, "[setGifData] enter");
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void setGifResource(int srcId, GifStateListener listener) {
         this.mListener = listener;
-        // init movie
-        this.mMovie = Movie.decodeStream(getResources().openRawResource(resId));
-        // try to show bitmap if no gif image
-        if (this.mMovie == null) {
-            Utils.info(this, "No gif image to show!!!");
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(), resId);
-            if (bmp != null) {
-                // set image
-                setImageBitmap(bmp);
-                return;
-            }
-        }
 
-        this.mDuration = (this.mMovie.duration() == 0)? DEFAULT_DURATION: this.mMovie.duration();
-        // set show screen size
-        requestLayout();
+        try {
+            // get img source
+            ImageDecoder.Source source = ImageDecoder.createSource(getResources(), srcId);
+            // create drawable
+            Drawable drawable = ImageDecoder.decodeDrawable(source);
+
+            setImageDrawable(drawable);
+
+            if (drawable instanceof AnimatedImageDrawable) {
+                mAnimatedDrawable = (AnimatedImageDrawable) drawable;
+                // set repeat
+                mAnimatedDrawable.setRepeatCount(AnimatedImageDrawable.REPEAT_INFINITE);
+                Utils.info(this, "Success: AnimatedImageDrawable initialized.");
+            } else {
+                showErrorInfo("Resource is not an animated image.");
+            }
+        } catch (Exception e) {
+            showErrorInfo("Error loading gif: " + e.getMessage());
+            Utils.info(this, "Error: " + e.getMessage());
+        }
     }
 
     /**
      * Start to play gif image
      */
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public void play() {
         Utils.info(this, "[play] enter");
-        if (this.mIsStart == true) {
+        // precheck
+        if (this.mAnimatedDrawable == null) {
+            showErrorInfo("No gif image to play!!!");
+            return;
+        }
+
+        if (this.mIsPlaying == true) {
             showErrorInfo("The gif is playing!!!");
             return;
         }
 
-        // set flag
-        this.mIsStart = true;
+        // start
+        this.mAnimatedDrawable.start();
+        this.mIsPlaying = true;
 
-        // start to draw
-        invalidate();
-        // call back
+        // callback
         if (this.mListener != null) {
             this.mListener.onPlayGif();
         }
+        Utils.info(this, "play xxx");
     }
 
     /**
      * Stop to play gif image
      */
+    @RequiresApi(api = Build.VERSION_CODES.P)
     public void stop() {
         Utils.info(this, "[stop] enter");
+        // precheck
+        if (this.mAnimatedDrawable == null) {
+            showErrorInfo("No gif image to stop!!!");
+            return;
+        }
 
-        // set flag
-        this.mIsStart = false;
+        if (this.mIsPlaying == false) {
+            showErrorInfo("The gif is not playing!!!");
+            return;
+        }
 
-        // call back
+        // stop
+        this.mAnimatedDrawable.stop();
+        this.mIsPlaying = false;
+
+        // callback
         if (this.mListener != null) {
             this.mListener.onStopGif();
         }
-    }
 
-    private void setImage(int resId) {
-        Utils.info(this, "[setImage] enter");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), resId);
-        if (bmp != null) {
-            // set image
-            setImageBitmap(bmp);
-        }
+        Utils.info(this, "stop xxx");
     }
 
     private void showErrorInfo(String msg) {
@@ -167,42 +151,26 @@ public class GifView extends androidx.appcompat.widget.AppCompatImageView {
         }
     }
 
-
-    /**
-     * Call by onDraw to show gif image
-     * @param canvas
-     */
-    private void drawGif(Canvas canvas) {
-        Utils.info(this, "[drawGif] enter");
-        // set time
-        this.mMovie.setTime(getCurrentFrameTime());
-        // draw
-        this.mMovie.draw(canvas, 0.0f, 0.0f);
-    }
-
-
-    /**
-     * Get current gif frame time
-     * @return
-     */
-    private int getCurrentFrameTime() {
-        Utils.info(this, "[getCurrentFrameTime] enter");
-        long now = SystemClock.uptimeMillis();
-        this.mMovieStart = (this.mMovieStart == 0)? now: this.mMovieStart;
-        int currentTime = (int) ((now - this.mMovieStart) % this.mDuration);
-        return currentTime;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         StringBuilder stb = new StringBuilder();
         stb.append("= GifView Object: ==================").append("\n");
         stb.append("mListener: ").append(mListener).append("\n");
-        stb.append("mMovie: ").append(mMovie).append("\n");
-        stb.append("mMovieStart: ").append(mMovieStart).append("\n");
-        stb.append("mDuration: ").append(mDuration).append("\n");
-        stb.append("mIsStart: ").append(mIsStart).append("\n");
+        stb.append("mAnimatedDrawable: ").append(mAnimatedDrawable).append("\n");
+        stb.append("mIsPlaying: ").append(mIsPlaying).append("\n");
         stb.append("====================================").append("\n");
         return stb.toString();
+    }
+
+    /**
+     * Used to call back of gif play
+     */
+    interface GifStateListener {
+        void onPlayGif();
+
+        void onStopGif();
+
+        void onError(String msg);
     }
 }
