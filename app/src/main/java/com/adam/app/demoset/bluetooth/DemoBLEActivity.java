@@ -9,6 +9,7 @@ package com.adam.app.demoset.bluetooth;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
@@ -18,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -26,6 +28,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -60,9 +63,6 @@ public class DemoBLEActivity extends AppCompatActivity {
 
     // view binding
     private ActivityDemoBluetoothBinding mBinding;
-
-    // Connect task
-    private ConnectTask mConnectTask;
 
 
     // create activity result map: key is request code, value is BiConsumer<Integer, Intent>
@@ -135,6 +135,7 @@ public class DemoBLEActivity extends AppCompatActivity {
 
     // Broadcast receiver to monitor bluetooth state and bond state changes
     private final BroadcastReceiver mBTReceiver = new BroadcastReceiver() {
+        @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -150,7 +151,7 @@ public class DemoBLEActivity extends AppCompatActivity {
 
                 case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
                     // Device bond (pair/unpair) state changed
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice.class);
                     int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
                     int prevBondState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
 
@@ -218,7 +219,8 @@ public class DemoBLEActivity extends AppCompatActivity {
 
 
         // initialize bt adapter
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = manager.getAdapter(); //BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
             Utils.info(this, "Bluetooth not supported");
             Utils.showToast(this, getString(R.string.demo_bt_not_supported));

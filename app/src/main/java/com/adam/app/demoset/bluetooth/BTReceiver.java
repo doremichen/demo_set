@@ -13,7 +13,10 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 
 import com.adam.app.demoset.utils.Utils;
 
@@ -85,10 +88,11 @@ public class BTReceiver extends BroadcastReceiver {
             }
         },
         FOUND(BluetoothDevice.ACTION_FOUND) {
+            @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
             @Override
             public void process(Context context, Intent intent) {
                 Utils.info(this, "process");
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice.class);
                 // Bt device bound state
                 int state = device.getBondState();
                 if (state == BluetoothDevice.BOND_NONE) {
@@ -97,12 +101,13 @@ public class BTReceiver extends BroadcastReceiver {
             }
         },
         BOND_STATE_CHANGED(BluetoothDevice.ACTION_BOND_STATE_CHANGED) {
+            @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
             @Override
             public void process(Context context, Intent intent) {
                 Utils.info(this, "process");
                 final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
                 final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE, BluetoothDevice.class);
                 Utils.info(this, "bound state: " + state);
                 Utils.info(this, "bound prevstate: " + prevState);
                 if (!Utils.areAllNotNull(device)) {

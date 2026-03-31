@@ -11,6 +11,7 @@ package com.adam.app.demoset.bluetooth;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Context;
 
 import com.adam.app.demoset.R;
@@ -34,7 +35,8 @@ public enum BTController {
      * @param ctx
      */
     public void init(Context ctx) {
-        mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager manager = (BluetoothManager) ctx.getSystemService(Context.BLUETOOTH_SERVICE);
+        mBTAdapter = manager.getAdapter(); //BluetoothAdapter.getDefaultAdapter();
         mBTDevices = new ArrayList<>();
         mDialog = buildAlertDialog(ctx);
     }

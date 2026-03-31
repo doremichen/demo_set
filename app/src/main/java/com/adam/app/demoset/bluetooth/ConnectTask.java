@@ -1,8 +1,8 @@
 /**
  * Copyright (C) Adam Demo app Project
- *
+ * <p>
  * Description: This class is for BT Connect Task
- *
+ * <p>
  * Author: Adam Chen
  * Date: 2019/12/17
  */
@@ -10,10 +10,13 @@ package com.adam.app.demoset.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.ParcelUuid;
+
+import androidx.core.content.ContextCompat;
 
 import com.adam.app.demoset.utils.Utils;
 
@@ -26,14 +29,15 @@ public class ConnectTask implements Runnable {
     public static final String KEY_CONNECT_INFO = "key.connect";
 
     private final BluetoothDevice mDevice;
-    private BluetoothSocket mSocket;
     private final BluetoothAdapter mBTAdapter;
     private final Context mContext;
+    private BluetoothSocket mSocket;
 
     public ConnectTask(Context context, BluetoothDevice device) {
         Utils.info(this, "ConnectTask constructed");
         this.mContext = context.getApplicationContext();
-        this.mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager manager = ContextCompat.getSystemService(context, BluetoothManager.class);
+        this.mBTAdapter = manager.getAdapter();
         this.mDevice = device;
     }
 

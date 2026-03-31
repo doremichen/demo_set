@@ -12,6 +12,7 @@ package com.adam.app.demoset.bluetooth;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -201,7 +202,8 @@ public class DemoBTAct extends AppCompatActivity {
 
 
         mBTReceiver = new BTReceiver(this);
-        mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBTAdapter = manager.getAdapter(); //BluetoothAdapter.getDefaultAdapter();
 
         // Register snack listener
         String[] uiActions = {
