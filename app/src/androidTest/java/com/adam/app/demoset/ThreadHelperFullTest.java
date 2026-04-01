@@ -24,6 +24,8 @@ import android.os.Looper;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.adam.app.demoset.utils.ThreadHelper;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

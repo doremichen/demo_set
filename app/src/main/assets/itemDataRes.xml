@@ -58,7 +58,7 @@
     <!-- IPC -->
     <data category="category_ipc"
         titleRes="title_demo_share_provide_action"
-        clsname="com.adam.app.demoset.DemoShareProvidAct"
+        clsname="com.adam.app.demoset.shareprovider.DemoShareProvidAct"
         pkgname="com.adam.app.demoset"/>
 
 

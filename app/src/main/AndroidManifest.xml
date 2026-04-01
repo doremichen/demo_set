@@ -228,7 +228,7 @@
             android:label="@string/title_activity_notify_result_ui"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".DemoShareProvidAct"
+            android:name=".shareprovider.DemoShareProvidAct"
             android:exported="true"
             android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
