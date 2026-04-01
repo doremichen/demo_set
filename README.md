@@ -153,7 +153,6 @@ This project covers real-world scenarios such as:
 Planned upgrades:
 * DataStore
 * Modern permission model
-* AIDL-based IPC
 * AI / ML integration (TensorFlow Lite)
 
 ---
@@ -175,5 +174,4 @@ This project is intended for:
 ---
 
 # 📄 License
-
-MIT License (or your preferred license)
+This project is licensed under the MIT License
