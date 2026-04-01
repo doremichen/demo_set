@@ -22,14 +22,18 @@
 
 package com.adam.app.demoset.bluetooth;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.utils.Utils;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -109,12 +113,29 @@ public enum BTController {
      * @return
      */
     private AlertDialog buildAlertDialog(Context ctx) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setTitle(R.string.label_bt_status);
-        builder.setView(R.layout.dialog_bt_scanning);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ctx);
+
+        // Set custom view
+        View customView = LayoutInflater.from(ctx).inflate(R.layout.dialog_bt_scanning, null);
+        builder.setView(customView);
         builder.setCancelable(false);
 
-        return builder.create();
+        AlertDialog dialog = builder.create();
+
+        // Set background transparent
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        return dialog;
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+//        builder.setTitle(R.string.label_bt_status);
+//        builder.setView(R.layout.dialog_bt_scanning);
+//        builder.setCancelable(false);
+//
+//        return builder.create();
     }
 
 
