@@ -22,7 +22,9 @@
 
 package com.adam.app.demoset.utils;
 
+import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
@@ -38,7 +40,11 @@ public class UIBindingAdapters {
                 listener.onClick(v);
             }
         });
+    }
 
-
+    @BindingAdapter("dynamicTextSize")
+    public static void setDynamicTextSize(TextView view, float scale) {
+        // 根據 DataStore 傳回的 0.8 ~ 1.5 比例調整
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16 * scale);
     }
 }

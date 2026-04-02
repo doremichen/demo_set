@@ -46,6 +46,7 @@
     <string name="title_demo_compose_ui">Demo Compose UI</string>
     <string name="title_demo_flow"><![CDATA[Demo State/Shared Flow]]></string>
     <string name="title_demo_page_3">Demo Page 3</string>
+    <string name="title_demo_datastore">Demo DataStore</string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
@@ -482,5 +483,16 @@
     <string name="demo_animation_start_msg">start to play gif!!!</string>
     <string name="demo_animation_stop_msg">stop to play gif!!!</string>
     <string name="Demo_animation_error_msg">Error: %1$s</string>
+    <string name="demo_datastore_instruction">DataStore Demo: Asynchronous transaction processing with support for MVVM auto-response.</string>
+    <string name="demo_datastore_summary_result">Current storage state summary</string>
+    <string name="demo_datastore_settings_summary">Mode: %1$s | Lang: %2$s | Font: %3$.2f</string>
+    <string name="demo_datastore_mode_dark">Dark</string>
+    <string name="demo_datastore_mode_light">Light</string>
+    <string name="demo_datastore_switch_dark_mode_title">Enable Dark Mode Preview</string>
+    <string name="demo_datastore_font_size_preview">Font Size Preview (Slider): %1$.2f</string>
+    <string name="demo_datastore_lang_setting_title">Interface language control</string>
+    <string name="demo_datastore_set_chinese_lang_btn">Chinese</string>
+    <string name="demo_datastore_set_english_lang_btn">English</string>
+    <string name="demo_datastore_flow_log_info"><![CDATA[Operation logs (real-time flow monitoring):]]></string>
 
 </resources>

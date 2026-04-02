@@ -78,6 +78,7 @@ Native Layer
 * File Explorer (Scoped Storage ready)
 * SQLite (ContentProvider)
 * Room Database
+* DataStore
 
 ---
 
@@ -151,7 +152,6 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* DataStore
 * Modern permission model
 * AI / ML integration (TensorFlow Lite)
 

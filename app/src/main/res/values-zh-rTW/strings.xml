@@ -46,6 +46,7 @@
     <string name="title_demo_compose_ui">Compose UI 範例</string>
     <string name="title_demo_flow"><![CDATA[狀態/共享流程 範例]]></string>
     <string name="title_demo_page_3">示範頁 3</string>
+    <string name="title_demo_datastore">資料存儲 範例</string>
 
 
     <!-- string for Demo USB device (註解掉) -->
@@ -483,5 +484,16 @@
     <string name="demo_animation_start_msg">開始播放gif！</string>
     <string name="demo_animation_stop_msg">停止播放gif！</string>
     <string name="Demo_animation_error_msg">錯誤: %1$s</string>
+    <string name="demo_datastore_instruction">DataStore 演示：異步事務處理，支援 MVVM 自動響應。</string>
+    <string name="demo_datastore_summary_result">當前儲存狀態摘要</string>
+    <string name="demo_datastore_settings_summary">模式: %1$s | 語系: %2$s | 字體: %3$.2f</string>
+    <string name="demo_datastore_mode_dark">深色</string>
+    <string name="demo_datastore_mode_light">淺色</string>
+    <string name="demo_datastore_switch_dark_mode_title">啟用深色模式預覽</string>
+    <string name="demo_datastore_font_size_preview">字體縮放預覽 (Slider): %1$.2f</string>
+    <string name="demo_datastore_lang_setting_title">介面語系控制</string>
+    <string name="demo_datastore_set_chinese_lang_btn">中文</string>
+    <string name="demo_datastore_set_english_lang_btn">英文</string>
+    <string name="demo_datastore_flow_log_info"><![CDATA[操作日誌 (Flow 實時監聽):]]></string>
 
 </resources>

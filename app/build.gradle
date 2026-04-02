@@ -142,6 +142,17 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"
 
+    // datastore
+    // 1. DataStore Core & Preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    // 2. DataStore Java / RxJava3 支援 (Java 專案必備)
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+
+    // 3. RxJava3 (用於橋接 DataStore 的數據流)
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
+    implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+
     // others
     implementation("org.jspecify:jspecify:1.0.0")
 

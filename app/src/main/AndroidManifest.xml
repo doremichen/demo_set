@@ -111,10 +111,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".datastore.java.DataStoreDemoAct"
+            android:exported="false"
+            android:label="@string/title_demo_datastore"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".page3.PagingLabActivity"
+            android:exported="false"
             android:label="@string/title_demo_page_3"
-            android:screenOrientation="nosensor"
-            android:exported="false" />
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".flowlab.FlowLabActivity"
             android:exported="false"
@@ -388,6 +393,14 @@
             android:name=".alarm.MyAlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <service
             android:name=".floatingwindow.FloatingWindowSvr"
