@@ -111,6 +111,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".datastore.koltlin.DataStoreDemoAct"
+            android:exported="false"
+            android:label="@string/demo_datastore_koltlin_title"
+            android:screenOrientation="nosensor"/>
+        <activity
             android:name=".datastore.java.DataStoreDemoAct"
             android:exported="false"
             android:label="@string/title_demo_datastore"
@@ -393,6 +398,7 @@
             android:name=".alarm.MyAlarmReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
@@ -401,7 +407,6 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
-
         <service
             android:name=".floatingwindow.FloatingWindowSvr"
             android:enabled="true"

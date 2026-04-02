@@ -35,7 +35,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDataStoreDemoBinding;
-import com.adam.app.demoset.datastore.java.model.SettingsModel;
+import com.adam.app.demoset.datastore.model.SettingsModel;
 import com.adam.app.demoset.datastore.java.repository.SettingsRepository;
 import com.adam.app.demoset.datastore.java.viewmodel.SettingsViewModel;
 import com.adam.app.demoset.utils.LocaleUtils;
@@ -93,13 +93,13 @@ public class DataStoreDemoAct extends AppCompatActivity {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
                 Utils.info(this, "start tracking");
-                //TODO: start
+
             }
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 Utils.info(this, "stop tracking");
-                //TODO: stop
+
                 // update font size
                 mViewModel.setFontSize(slider.getValue());
             }

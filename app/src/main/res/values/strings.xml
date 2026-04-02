@@ -47,6 +47,7 @@
     <string name="title_demo_flow"><![CDATA[Demo State/Shared Flow]]></string>
     <string name="title_demo_page_3">Demo Page 3</string>
     <string name="title_demo_datastore">Demo DataStore</string>
+    <string name="title_demo_datastore_koltlin"><![CDATA[Demo DataStore Koltlin]]></string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
@@ -494,5 +495,6 @@
     <string name="demo_datastore_set_chinese_lang_btn">Chinese</string>
     <string name="demo_datastore_set_english_lang_btn">English</string>
     <string name="demo_datastore_flow_log_info"><![CDATA[Operation logs (real-time flow monitoring):]]></string>
+    <string name="demo_datastore_koltlin_title"><![CDATA[Demo DataStore (Koltlin)]]></string>
 
 </resources>

@@ -30,7 +30,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.adam.app.demoset.datastore.java.model.SettingsModel;
+import com.adam.app.demoset.datastore.model.SettingsModel;
 import com.adam.app.demoset.datastore.java.repository.SettingsRepository;
 import com.adam.app.demoset.utils.Utils;
 

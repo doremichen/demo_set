@@ -47,6 +47,7 @@
     <string name="title_demo_flow"><![CDATA[狀態/共享流程 範例]]></string>
     <string name="title_demo_page_3">示範頁 3</string>
     <string name="title_demo_datastore">資料存儲 範例</string>
+    <string name="title_demo_datastore_koltlin"><![CDATA[資料存儲 (Kotlin) 範例]]></string>
 
 
     <!-- string for Demo USB device (註解掉) -->
@@ -495,5 +496,6 @@
     <string name="demo_datastore_set_chinese_lang_btn">中文</string>
     <string name="demo_datastore_set_english_lang_btn">英文</string>
     <string name="demo_datastore_flow_log_info"><![CDATA[操作日誌 (Flow 實時監聽):]]></string>
+    <string name="demo_datastore_koltlin_title"><![CDATA[範例資料儲存（Koltlin]]></string>
 
 </resources>

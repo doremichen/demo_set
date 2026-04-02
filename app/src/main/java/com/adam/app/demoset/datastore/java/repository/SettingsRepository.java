@@ -30,7 +30,7 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.datastore.rxjava3.RxDataStore;
 
-import com.adam.app.demoset.datastore.java.model.SettingsModel;
+import com.adam.app.demoset.datastore.model.SettingsModel;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
