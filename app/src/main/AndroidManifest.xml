@@ -111,10 +111,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".navigation.DemoNavigationAct"
+            android:exported="false"
+            android:label="@string/title_demo_navigation"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".datastore.koltlin.DataStoreDemoAct"
             android:exported="false"
-            android:label="@string/demo_datastore_koltlin_title"
-            android:screenOrientation="nosensor"/>
+            android:label="@string/title_demo_datastore_koltlin"
+            android:screenOrientation="nosensor" />
         <activity
             android:name=".datastore.java.DataStoreDemoAct"
             android:exported="false"

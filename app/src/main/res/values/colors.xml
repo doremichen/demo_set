@@ -29,4 +29,9 @@
 
     <color name="snackbar_bg">#FFBB86FC</color>
     <color name="snackbar_text">#880E4F</color>
+
+    <color name="primary_brand">#6200EE</color>
+    <color name="surface_background">#F5F7FA</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="text_primary">#333333</color>
 </resources>

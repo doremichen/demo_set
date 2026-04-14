@@ -496,5 +496,19 @@
     <string name="demo_datastore_set_english_lang_btn">English</string>
     <string name="demo_datastore_flow_log_info"><![CDATA[Operation logs (real-time flow monitoring):]]></string>
     <string name="demo_datastore_koltlin_title"><![CDATA[Demo DataStore (Koltlin)]]></string>
+    <string name="title_demo_navigation">Demo Navigation UI</string>
+    <string name="demo_navigation_home_page">Home Page</string>
+    <string name="demo_navigation_settings_page">Settings</string>
+    <string name="demo_navigation__home_fragment_show_info">This is home fragment</string>
+    <string name="demo_navigation__home_fragment_update_info">Data updated! Time: %1$s</string>
+    <string name="demo_navigation_instruction_title">Demo Navigation Architecture</string>
+    <string name="demo_navigation_instruction">Navigation Core Concepts: • NavHostFragment: The container that holds the page. • NavController: The controller that manages page navigation. • NavGraph: An XML map that defines destinations. • NavigationUI: Automatically connects NavControllers and UI elements. 🏗️ System Architecture Implementation: • MVVM: Separates logic from UI, improving testability. • Data Binding: Direct communication between XML and ViewModel LiveData. • View Binding: Type-safe, replacing the traditional findViewById.</string>
+    <string name="demo_navigation_home_update_data_btn">Refresh data</string>
+    <string name="demo_navigation_home_label">Home</string>
+    <string name="demo_navigation_settings_label">Settings</string>
+    <string name="demo_navigation_settings_instruction_title">Navigation DataStore Demo</string>
+    <string name="demo_navigation_settings_switch_label">Turn on notification permissions</string>
+    <string name="demo_navigation_clear_datastore">Reset DataStore</string>
+    <string name="demo_navigation_settings_back_btn">Return to home page</string>
 
 </resources>

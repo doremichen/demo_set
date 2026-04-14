@@ -48,7 +48,7 @@
     <string name="title_demo_page_3">示範頁 3</string>
     <string name="title_demo_datastore">資料存儲 範例</string>
     <string name="title_demo_datastore_koltlin"><![CDATA[資料存儲 (Kotlin) 範例]]></string>
-
+    <string name="title_demo_navigation">示範導航使用者介面</string>
 
     <!-- string for Demo USB device (註解掉) -->
     <!-- <string name="title_demo_Usb device">USB 裝置範例</string> -->
@@ -497,5 +497,18 @@
     <string name="demo_datastore_set_english_lang_btn">英文</string>
     <string name="demo_datastore_flow_log_info"><![CDATA[操作日誌 (Flow 實時監聽):]]></string>
     <string name="demo_datastore_koltlin_title"><![CDATA[範例資料儲存（Koltlin]]></string>
+    <string name="demo_navigation_home_page">首頁</string>
+    <string name="demo_navigation_settings_page">設定</string>
+    <string name="demo_navigation__home_fragment_show_info">這是首頁</string>
+    <string name="demo_navigation__home_fragment_update_info">數據已更新！時間：%1$s</string>
+    <string name="demo_navigation_instruction_title">示範導航架構</string>
+    <string name="demo_navigation_instruction">Navigation 核心知識點：\n• NavHostFragment: 承載頁面的容器\n• NavController: 管理頁面跳轉的指揮官\n• NavGraph: 定義目的地 (Destinations) 的 XML 地圖\n• NavigationUI: 自動連結 NavController 與 UI 元件\n\n 系統架構實作：\n• MVVM: 邏輯與 UI 分離，提高可測試性\n• Data Binding: XML 與 ViewModel LiveData 直接通訊\n• View Binding: 類型安全，取代傳統 findViewById</string>
+    <string name="demo_navigation_home_update_data_btn">刷新數據</string>
+    <string name="demo_navigation_home_label">首頁</string>
+    <string name="demo_navigation_settings_label">設定</string>
+    <string name="demo_navigation_settings_instruction_title">導航資料儲存演示</string>
+    <string name="demo_navigation_settings_switch_label">開啟通知權限</string>
+    <string name="demo_navigation_clear_datastore">重置 DataStore</string>
+    <string name="demo_navigation_settings_back_btn">返回首頁</string>
 
 </resources>

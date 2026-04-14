@@ -36,13 +36,13 @@ android {
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.release
-            minifyEnabled  = false
+            minifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 
         getByName("debug") {
             signingConfig = signingConfigs.debug
-            minifyEnabled  = false
+            minifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 
@@ -103,7 +103,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation ("org.jetbrains:annotations:24.0.1")
+    implementation("org.jetbrains:annotations:24.0.1")
 
     // Room
     implementation("androidx.room:room-runtime:2.6.1")
@@ -152,6 +152,17 @@ dependencies {
     // 3. RxJava3 (用於橋接 DataStore 的數據流)
     implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+
+    // LiveData 與 ReactiveStreams 的轉換工具
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.10.0"
+
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.9.7"
+    implementation "androidx.navigation:navigation-ui-ktx:2.9.7"
+    implementation "androidx.navigation:navigation-fragment: 2.7.5"
+    implementation "androidx.navigation:navigation-ui: 2.7.5"
+
 
     // others
     implementation("org.jspecify:jspecify:1.0.0")

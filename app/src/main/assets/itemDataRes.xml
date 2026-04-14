@@ -230,4 +230,10 @@
         clsname="com.adam.app.demoset.datastore.koltlin.DataStoreDemoAct"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- UI -->
+    <data category="category_ui"
+        titleRes="title_demo_navigation"
+        clsname="com.adam.app.demoset.navigation.DemoNavigationAct"
+        pkgname="com.adam.app.demoset"/>
+
 </List>
