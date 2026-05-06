@@ -22,13 +22,17 @@
 
 package com.adam.app.demoset.utils;
 
+import android.content.res.ColorStateList;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.google.android.material.button.MaterialButton;
+
 public class UIBindingAdapters {
+
     @BindingAdapter(value = {"android:onClick", "hideKeyboardOnClick"}, requireAll = false)
     public static void setHideKeyboardOnClick(View view, View.OnClickListener listener, boolean hide) {
         view.setOnClickListener(v -> {
@@ -44,7 +48,14 @@ public class UIBindingAdapters {
 
     @BindingAdapter("dynamicTextSize")
     public static void setDynamicTextSize(TextView view, float scale) {
-        // 根據 DataStore 傳回的 0.8 ~ 1.5 比例調整
         view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16 * scale);
+    }
+
+    /**
+     * Specific BindingAdapter for MaterialButton background tint to solve DataBinding setter issue.
+     */
+    @BindingAdapter("backgroundTint")
+    public static void setMaterialButtonBackgroundTint(MaterialButton button, int color) {
+        button.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 }

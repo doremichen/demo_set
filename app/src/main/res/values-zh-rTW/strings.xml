@@ -510,5 +510,8 @@
     <string name="demo_navigation_settings_switch_label">開啟通知權限</string>
     <string name="demo_navigation_clear_datastore">重置 DataStore</string>
     <string name="demo_navigation_settings_back_btn">返回首頁</string>
+    <string name="demo_alarm_offset_must_be_greater_than_0_toast">偏移量必須大於0</string>
+    <string name="demo_alarm_invalid_input_number_toast">輸入的號碼無效</string>
+    <string name="demo_alarm_unknown_strategy_selected_toast">選擇未知策略</string>
 
 </resources>

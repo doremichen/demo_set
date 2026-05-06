@@ -1,123 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/title_alarm"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/label_set_trigger_alrm_type"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <import type="com.adam.app.demoset.R" />
+        <variable
+            name="vm"
+            type="com.adam.app.demoset.alarm.viewmodel.AlarmViewModel" />
+    </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/colorBackground"
+        android:padding="16dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        app:layout_constraintBottom_toTopOf="@id/scroll_view_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_alarm"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-        app:cardCornerRadius="12dp">
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/title_alarm"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:text="@string/demo_alarm_instruction" />
+            android:fontFamily="@font/cabin_bold"
+            android:text="@string/label_set_trigger_alrm_type"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.card.MaterialCardView>
 
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll_view_content"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/tv_alarm_info"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_description">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_description"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginVertical="8dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintBottom_toTopOf="@id/scroll_view_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_alarm">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/radio_card"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                app:cardCornerRadius="16dp"
-                app:strokeWidth="1dp">
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
-                    <RadioButton android:id="@+id/Repeat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/radio_setrepeating" android:checked="true" />
-                    <RadioButton android:id="@+id/inexactRepeat" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/radio_setinexactrepeating" />
-                    <RadioButton android:id="@+id/allWhileIdle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/radio_setandallowwhileidle" />
-                    <RadioButton android:id="@+id/exectAllowWhileIde" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/radio_setexactandallowwhileidle" />
-                </RadioGroup>
-            </com.google.android.material.card.MaterialCardView>
+                android:padding="12dp"
+                android:text="@string/demo_alarm_instruction" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/tv_alarm_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_description">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:hint="@string/label_offset_time"
-                app:suffixText="@string/label_time_unit">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_delay_number"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/radio_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="5" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginVertical="8dp"
+                    app:cardCornerRadius="16dp"
+                    app:strokeWidth="1dp">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:checkedButton="@={vm.selectedStrategyId}">
 
-    <TextView
-        android:id="@+id/tv_alarm_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:fontFamily="@font/cabin_bold"
-        android:text="@string/alarm_count"
-        android:textColor="?attr/colorTertiary"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@id/btn_alarm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                        <RadioButton
+                            android:id="@+id/Repeat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/radio_setrepeating" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_alarm"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
-        android:text="@string/action_start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                        <RadioButton
+                            android:id="@+id/inexactRepeat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/radio_setinexactrepeating" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                        <RadioButton
+                            android:id="@+id/allWhileIdle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/radio_setandallowwhileidle" />
+
+                        <RadioButton
+                            android:id="@+id/exectAllowWhileIde"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/radio_setexactandallowwhileidle" />
+                    </RadioGroup>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/label_offset_time"
+                    app:suffixText="@string/label_time_unit">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_delay_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{!vm.running}"
+                        android:inputType="number"
+                        android:text="@={vm.inputDelay}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tv_alarm_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/cabin_bold"
+            android:text='@{@string/alarm_count(vm.alarmCount)}'
+            android:textColor="?attr/colorTertiary"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_alarm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Alarm Count: 0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_alarm"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:onClick="@{() -> vm.toggleAlarmState()}"
+            android:text='@{vm.running ? @string/action_stop : @string/action_start}'
+            app:backgroundTint="@{vm.running ? 0xFFFF0000 : 0xFF00796B}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:backgroundTint="#00796B"
+            tools:text="START" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

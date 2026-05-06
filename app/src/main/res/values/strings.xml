@@ -510,5 +510,8 @@
     <string name="demo_navigation_settings_switch_label">Turn on notification permissions</string>
     <string name="demo_navigation_clear_datastore">Reset DataStore</string>
     <string name="demo_navigation_settings_back_btn">Return to home page</string>
+    <string name="demo_alarm_offset_must_be_greater_than_0_toast">Offset must be greater than 0</string>
+    <string name="demo_alarm_invalid_input_number_toast">Invalid input number</string>
+    <string name="demo_alarm_unknown_strategy_selected_toast">Unknown strategy selected</string>
 
 </resources>
