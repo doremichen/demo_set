@@ -22,92 +22,44 @@
 
 package com.adam.app.demoset.animation;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.animation.view.GifView;
+import com.adam.app.demoset.animation.viewmodel.GifViewModel;
+import com.adam.app.demoset.databinding.ActivityDemoGifBinding;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 
+/**
+ * Activity for GIF Animation demo using MVVM and DataBinding.
+ */
 public class DemoGifAct extends AppCompatActivity implements GifView.GifStateListener {
 
-    private GifView mGifView;
-
+    private GifViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_gif);
+        
+        ActivityDemoGifBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_demo_gif);
+        mViewModel = new ViewModelProvider(this).get(GifViewModel.class);
+        
+        binding.setVm(mViewModel);
+        binding.setLifecycleOwner(this);
 
-        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.app_bar_wrapper));
+        UIUtils.applySystemBarInsets(binding.getRoot(), binding.appBarWrapper);
 
-        this.mGifView = (GifView) this.findViewById(R.id.gif_view);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (this.mGifView != null) {
-            this.mGifView.stop();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        this.mGifView = null;
-        super.onDestroy();
-    }
-
-    /**
-     * Exit when press exit button
-     *
-     * @param view
-     */
-    public void onExit(View view) {
-        // exit
-        this.finish();
-    }
-
-    /**
-     * Start to play gif image
-     *
-     * @param view
-     */
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public void onStartToPlay(View view) {
-        Utils.info(this, "[onStartToPlay] enter");
-        if (this.mGifView == null) {
-            Utils.showToast(this, "No gif image to play!!!");
-            return;
+        if (binding.gifView != null) {
+            binding.gifView.setGifStateListener(this);
         }
 
-        this.mGifView.play();
+        binding.btnExit.setOnClickListener(v -> finish());
     }
-
-    /**
-     * Stop to play gif image
-     *
-     * @param view
-     */
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    public void onStopToPlay(View view) {
-        Utils.info(this, "[onStopToPlay] enter");
-        if (this.mGifView == null) {
-            Utils.showToast(this, "No gif image to stop!!!");
-            return;
-        }
-
-        this.mGifView.stop();
-    }
-
-    /**
-     * The following methods are from GifView component
-     */
 
     @Override
     public void onPlayGif() {
@@ -122,5 +74,6 @@ public class DemoGifAct extends AppCompatActivity implements GifView.GifStateLis
     @Override
     public void onError(String msg) {
         Utils.showToast(this, getString(R.string.Demo_animation_error_msg, msg));
+        mViewModel.stopPlayback(); // Reset state on error
     }
 }

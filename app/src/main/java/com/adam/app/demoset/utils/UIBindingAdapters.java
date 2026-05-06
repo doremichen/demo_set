@@ -23,12 +23,14 @@
 package com.adam.app.demoset.utils;
 
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.adam.app.demoset.animation.view.GifView;
 import com.google.android.material.button.MaterialButton;
 
 public class UIBindingAdapters {
@@ -57,5 +59,19 @@ public class UIBindingAdapters {
     @BindingAdapter("backgroundTint")
     public static void setMaterialButtonBackgroundTint(MaterialButton button, int color) {
         button.setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * DataBinding Adapter to control playback state.
+     */
+    @BindingAdapter("isPlaying")
+    public static void setIsPlaying(GifView view, boolean isPlaying) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (isPlaying) {
+                view.play();
+            } else {
+                view.stop();
+            }
+        }
     }
 }
