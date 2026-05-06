@@ -29,19 +29,28 @@ import android.os.PowerManager;
 
 import com.adam.app.demoset.utils.Utils;
 
+/**
+ * Receiver that handles alarm triggers.
+ */
 public class MyAlarmReceiver extends BroadcastReceiver {
 
+    private static final long WAKE_LOCK_TIMEOUT = 5000L;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Utils.info(this, "Alarm receiver is triggered...");
-        PowerManager powerManager = context.getApplicationContext().getSystemService(PowerManager.class);
-        assert powerManager != null;
-        PowerManager.WakeLock screenLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "demoset:wakelock");
+        Utils.info(this, "Alarm triggered.");
 
-        screenLock.acquire(5000L);
-        Utils.info(this, "send action o UI!!!");
-        Intent it = new Intent(DemoAlarmAct.ACTION_UPDATE_INFO);
-        context.sendBroadcast(it);
+        // Use a partial wake lock to ensure the CPU stays on while sending the broadcast
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null) {
+            PowerManager.WakeLock wakeLock = powerManager.newWakeLock(
+                    PowerManager.PARTIAL_WAKE_LOCK, "DemoApp:AlarmWakeLock");
+            wakeLock.acquire(WAKE_LOCK_TIMEOUT);
+        }
+
+        // Notify UI
+        Intent updateIntent = new Intent(DemoAlarmAct.ACTION_UPDATE_INFO);
+        updateIntent.setPackage(context.getPackageName());
+        context.sendBroadcast(updateIntent);
     }
 }

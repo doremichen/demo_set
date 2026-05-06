@@ -22,6 +22,7 @@
 
 package com.adam.app.demoset.alarm;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -35,22 +36,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.util.AndroidRuntimeException;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoAlarmBinding;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,308 +69,234 @@ import java.util.Map;
  */
 public class DemoAlarmAct extends AppCompatActivity {
 
-    public static final String ACTION_UPDATE_INFO = "update alarm info";
-    // strategy map
-    Map<Integer, AlarmStrategy> mAlarmStategyMap = new HashMap<>() {
-        {
-            put(R.id.Repeat, new RepeatAlarmStrategy());
-            put(R.id.inexactRepeat, new InexactRepeatAlarmStrategy());
-            put(R.id.allWhileIdle, new AllowWhileIdleAlarmStrategy());
-            put(R.id.exectAllowWhileIde, new ExactAllowWhileIdleAlarmStrategy());
-        }
-    };
-    private Button mAlarmButton;
-    private TextView mAlarmInfo;
+    public static final String ACTION_UPDATE_INFO = "com.adam.app.demoset.alarm.ACTION_UPDATE_INFO";
+
+    private ActivityDemoAlarmBinding mBinding;
     private AlarmManager mAlarmManager;
     private PendingIntent mAlarmIntent;
-    private int mCount;
-    private RadioGroup mRadioGroup;
-    private UIReceiver mUIRecv;
-    private long mOffset;
-    private AlarmAction mAlarmAction;
-    private EditText mInputDelayNumber;
+    private int mCount = 0;
+    private UIReceiver mUIReceiver;
+    private long mOffsetMillis;
+    private AlarmActionContext mActionContext;
+    private final Map<Integer, AlarmStrategy> mStrategyMap = new HashMap<>();
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo_alarm);
+        mBinding = ActivityDemoAlarmBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.title_alarm));
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.titleAlarm);
 
-        this.mInputDelayNumber = findViewById(R.id.input_delay_number);
-        mAlarmButton = findViewById(R.id.btn_alarm);
-        mAlarmInfo = findViewById(R.id.tv_alarm_info);
-        mRadioGroup = findViewById(R.id.radioGroup);
-
-        // init count number
-        mAlarmInfo.setText(getString(R.string.alarm_count, mCount));
-
-
-        // Alarm action
-        this.mAlarmAction = new AlarmAction();
-
-        // Alarm service
-        mAlarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        mAlarmIntent = getPendingIntent();
-
-        mUIRecv = new UIReceiver();
-        IntentFilter filter = new IntentFilter(ACTION_UPDATE_INFO);
-        filter.addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED);
-        this.registerReceiver(mUIRecv, filter, RECEIVER_EXPORTED);
-
-        // set button click listener
-        mAlarmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onAlarm(v);
-            }
-        });
+        initStrategies();
+        setupUI();
+        initAlarmSystem();
     }
 
+    private void initStrategies() {
+        mStrategyMap.put(R.id.Repeat, new RepeatAlarmStrategy());
+        mStrategyMap.put(R.id.inexactRepeat, new InexactRepeatAlarmStrategy());
+        mStrategyMap.put(R.id.allWhileIdle, new AllowWhileIdleAlarmStrategy());
+        mStrategyMap.put(R.id.exectAllowWhileIde, new ExactAllowWhileIdleAlarmStrategy());
+    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void setupUI() {
+        mBinding.tvAlarmInfo.setText(getString(R.string.alarm_count, mCount));
+        mBinding.btnAlarm.setOnClickListener(v -> onAlarmToggle());
+        mActionContext = new AlarmActionContext();
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
+    private void initAlarmSystem() {
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mAlarmIntent = createPendingIntent();
+
+        mUIReceiver = new UIReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_UPDATE_INFO);
+        filter.addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED);
+        registerReceiver(mUIReceiver, filter, RECEIVER_EXPORTED);
+    }
+
+    private PendingIntent createPendingIntent() {
+        Intent intent = new Intent(this, MyAlarmReceiver.class);
+        return PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    private void onAlarmToggle() {
+        try {
+            String input = mBinding.inputDelayNumber.getText().toString();
+            mOffsetMillis = Long.parseLong(input) * 1000L;
+            if (mOffsetMillis <= 0) {
+                Utils.showToast(this, getString(R.string.demo_alarm_input_offset_zero));
+                return;
+            }
+            mActionContext.toggle();
+        } catch (NumberFormatException e) {
+            Utils.showToast(this, getString(R.string.demo_alarm_input_offset_invalid));
+        }
+    }
+
+    private void startAlarmTask() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!mAlarmManager.canScheduleExactAlarms()) {
+                Utils.info(this, "Requesting SCHEDULE_EXACT_ALARM permission.");
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                intent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(intent);
+                return;
+            }
+        }
+
+        int checkedId = mBinding.radioGroup.getCheckedRadioButtonId();
+        AlarmStrategy strategy = mStrategyMap.get(checkedId);
+        if (strategy != null) {
+            long triggerTime = SystemClock.elapsedRealtime() + mOffsetMillis;
+            strategy.setAlarm(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime);
+            Utils.info(this, "Alarm scheduled with strategy: " + strategy.getClass().getSimpleName());
+        } else {
+            Utils.showToast(this, getString(R.string.demo_alarm_no_action));
+        }
+    }
+
+    private void stopAlarmTask() {
+        if (mAlarmManager != null && mAlarmIntent != null) {
+            Utils.info(this, "Stopping alarm.");
+            mAlarmManager.cancel(mAlarmIntent);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        this.unregisterReceiver(mUIRecv);
-
-        stopAlarm();
+        if (mUIReceiver != null) {
+            unregisterReceiver(mUIReceiver);
+        }
+        stopAlarmTask();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_exit, menu);
-
+        getMenuInflater().inflate(R.menu.action_exit, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.demo_exit:
-                this.finish();
-                return true;
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.demo_exit) {
+            finish();
+            return true;
         }
-
-        return false;
-    }
-
-    private void onAlarm(View v) {
-        Utils.info(this, "onAlarm enter");
-        try {
-            this.mOffset = Long.parseLong(this.mInputDelayNumber.getText().toString()) * 1000L;
-            Utils.info(this, "mOffset: " + String.valueOf(mOffset));
-            if (mOffset == 0L) {
-                Utils.showToast(this, getString(R.string.demo_alarm_input_offset_zero));
-                return;
-            }
-            this.mAlarmAction.toggle();
-        } catch (NumberFormatException e) {
-            Utils.showToast(this, getString(R.string.demo_alarm_input_offset_invalid));
-        }
-
-    }
-
-    private void startAlarm() {
-        Utils.info(this, "startAlarm enter");
-
-        if (mOffset == 0L) {
-            Utils.showToast(this, getString(R.string.demo_alarm_input_offset_zero));
-            throw new ArithmeticException("the input value is invalid!!!");
-        }
-
-        // alarm permission check
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!this.mAlarmManager.canScheduleExactAlarms()) {
-                Utils.info(this, "start request scheduled exact alarm!!!");
-                Intent request = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                request.setData(Uri.fromParts("package", getOpPackageName(), null));
-                startActivity(request);
-            } else {
-                Utils.info(this, "can scheduled exact alarms!!!");
-            }
-        }
-
-        int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
-        long triggerTime = SystemClock.elapsedRealtime() + mOffset;
-        Utils.info(this, "interval: " + this.mOffset);
-        int id = mRadioGroup.getCheckedRadioButtonId();
-        AlarmStrategy strategy = this.mAlarmStategyMap.get(id);
-        if (strategy == null) {
-            Utils.showToast(this, getString(R.string.demo_alarm_no_action));
-            throw new AndroidRuntimeException("No this alarm function!!!");
-        }
-        strategy.setAlarm(type, triggerTime);
-    }
-
-    private PendingIntent getPendingIntent() {
-        Intent intent = new Intent(this, MyAlarmReceiver.class);
-        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    private void stopAlarm() {
-        Utils.info(this, "stopAlarm enter");
-        // Cancel alarm
-        this.mAlarmManager.cancel(mAlarmIntent);
-
+        return super.onOptionsItemSelected(item);
     }
 
     /**
-     * Alarm strategy pattern
+     * Receiver for UI updates and permission status changes.
+     */
+    private class UIReceiver extends BroadcastReceiver {
+        @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (ACTION_UPDATE_INFO.equals(action)) {
+                mCount++;
+                mBinding.tvAlarmInfo.setText(getString(R.string.alarm_count, mCount));
+                
+                // For non-repeating strategies, we might need to manually reschedule if that's the desired behavior.
+                // In this demo, we reschedule to show continuous triggering.
+                startAlarmTask();
+                
+                Utils.makeStatusNotification(getApplicationContext(), "Alarm Count: " + mCount);
+            } else if (AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED.equals(action)) {
+                Utils.info(DemoAlarmAct.this, "Exact alarm permission state changed.");
+            }
+        }
+    }
+
+    /**
+     * Context for the Alarm Action State Pattern (Switching between Start/Stop UI states).
+     */
+    private class AlarmActionContext {
+        private AlarmState currentState = new AlarmOffState();
+
+        void toggle() {
+            currentState.handle();
+        }
+
+        void setState(AlarmState state) {
+            this.currentState = state;
+        }
+
+        interface AlarmState {
+            void handle();
+        }
+
+        class AlarmOffState implements AlarmState {
+            @Override
+            public void handle() {
+                startAlarmTask();
+                mBinding.btnAlarm.setText(R.string.action_stop);
+                mBinding.btnAlarm.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                mBinding.inputDelayNumber.setEnabled(false);
+                setState(new AlarmOnState());
+            }
+        }
+
+        class AlarmOnState implements AlarmState {
+            @Override
+            public void handle() {
+                stopAlarmTask();
+                mBinding.btnAlarm.setText(R.string.action_start);
+                int primaryColor = ContextCompat.getColor(DemoAlarmAct.this, R.color.teal_700);
+                mBinding.btnAlarm.setBackgroundTintList(ColorStateList.valueOf(primaryColor));
+                mBinding.inputDelayNumber.setEnabled(true);
+                setState(new AlarmOffState());
+            }
+        }
+    }
+
+    /**
+     * Strategy interface for different AlarmManager scheduling methods.
      */
     interface AlarmStrategy {
         void setAlarm(int type, long triggerTime);
     }
 
-    private class UIReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Utils.info(this, "UI onReceive");
-            String action = intent.getAction();
-            if (AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED.equals(action)) {
-                Utils.info(this, "Got permission to use alarm!!!");
-            } else if (ACTION_UPDATE_INFO.equals(action)) {
-                mCount++;
-                // Update alarm info
-                runOnUiThread(() -> mAlarmInfo.setText(getString(R.string.alarm_count, mCount)));
-
-                int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
-                long triggerTime = SystemClock.elapsedRealtime() + mOffset;
-
-                int id = mRadioGroup.getCheckedRadioButtonId();
-                AlarmStrategy strategy = mAlarmStategyMap.get(id);
-                if (strategy == null) {
-                    Utils.info(this, "NO this alarm strategy!!!");
-                    return;
-                }
-                strategy.setAlarm(type, triggerTime);
-
-                Utils.makeStatusNotification(getApplicationContext(), "Alarm count: " + mCount);
-
-            }
-        }
-    }
-
-    /**
-     * Alarm action state pattern
-     */
-    class AlarmAction {
-
-        private AlarmState mCurrentState;
-
-        public AlarmAction() {
-            this.mCurrentState = new AlarmOnState();
-        }
-
-        void toggle() {
-            this.mCurrentState.toggle();
-        }
-
-        void setState(AlarmState state) {
-            this.mCurrentState = state;
-        }
-
-        abstract class AlarmState {
-
-            // implement by subclass
-            abstract void toggle();
-        }
-
-        // On
-        class AlarmOnState extends AlarmState {
-
-            @Override
-            void toggle() {
-                Utils.info(this, "toggle@AlarmOnState");
-                try {
-                    // start alarm
-                    DemoAlarmAct.this.startAlarm();
-
-                    // update ui component
-                    DemoAlarmAct.this.mAlarmButton.setText(DemoAlarmAct.this.getResources().getString(R.string.action_stop));
-                    DemoAlarmAct.this.mAlarmButton.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                    DemoAlarmAct.this.mInputDelayNumber.setEnabled(false);
-
-                    AlarmAction.this.setState(new AlarmOffState());
-                } catch (ArithmeticException | AndroidRuntimeException e) {
-                    Utils.info(this, e.getMessage());
-                }
-
-            }
-        }
-
-        // Off
-        class AlarmOffState extends AlarmState {
-
-            @Override
-            void toggle() {
-                Utils.info(this, "toggle@AlarmOffState");
-                // stop alarm
-                DemoAlarmAct.this.stopAlarm();
-
-                // update ui component
-                DemoAlarmAct.this.mAlarmButton.setText(DemoAlarmAct.this.getResources().getString(R.string.action_start));
-                // reset the original color
-                int originalColor = ContextCompat.getColor(DemoAlarmAct.this, R.color.teal_700);
-                DemoAlarmAct.this.mAlarmButton.setBackgroundTintList(ColorStateList.valueOf(originalColor));
-                DemoAlarmAct.this.mInputDelayNumber.setEnabled(true);
-                DemoAlarmAct.this.mInputDelayNumber.getText().clear();
-
-
-                AlarmAction.this.setState(new AlarmOnState());
-            }
-        }
-
-    }
-
     class RepeatAlarmStrategy implements AlarmStrategy {
         @Override
         public void setAlarm(int type, long triggerTime) {
-            Utils.info(this, "setAlarm@RepeatAlarmStrategy");
-            if (mOffset < 60000) {
+            if (mOffsetMillis < 60000) {
                 Utils.showCustomizedToast(DemoAlarmAct.this, getString(R.string.demo_alarm_set_time_LT_60));
-                throw new ArithmeticException("the input value is invalid!!!");
+                return;
             }
-            mAlarmManager.setRepeating(type, triggerTime, mOffset, mAlarmIntent);
+            mAlarmManager.setRepeating(type, triggerTime, mOffsetMillis, mAlarmIntent);
         }
     }
 
     class InexactRepeatAlarmStrategy implements AlarmStrategy {
-
         @Override
         public void setAlarm(int type, long triggerTime) {
-            Utils.info(this, "setAlarm@InexactRepeatAlarmStrategy");
-            if (mOffset < AlarmManager.INTERVAL_FIFTEEN_MINUTES) {
+            if (mOffsetMillis < AlarmManager.INTERVAL_FIFTEEN_MINUTES) {
                 Utils.showCustomizedToast(DemoAlarmAct.this, getString(R.string.demo_alram_set_time_LT_15));
-                throw new ArithmeticException("the input value is invalid!!!");
+                return;
             }
-            mAlarmManager.setInexactRepeating(type, triggerTime, mOffset, mAlarmIntent);
+            mAlarmManager.setInexactRepeating(type, triggerTime, mOffsetMillis, mAlarmIntent);
         }
     }
 
     class AllowWhileIdleAlarmStrategy implements AlarmStrategy {
-
         @Override
         public void setAlarm(int type, long triggerTime) {
-            Utils.info(this, "setAlarm@AllowWhileIdleAlarmStrategy");
             mAlarmManager.setAndAllowWhileIdle(type, triggerTime, mAlarmIntent);
         }
     }
 
     class ExactAllowWhileIdleAlarmStrategy implements AlarmStrategy {
-
         @Override
         public void setAlarm(int type, long triggerTime) {
-            Utils.info(this, "setAlarm@ExactAllowWhileIdleAlarmStrategy");
             mAlarmManager.setExactAndAllowWhileIdle(type, triggerTime, mAlarmIntent);
         }
     }
-
 }
