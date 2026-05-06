@@ -33,109 +33,18 @@ import android.os.RemoteException;
 
 import androidx.annotation.NonNull;
 
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.binder.IMyAidlCBInterface;
 import com.adam.app.demoset.binder.IMyAidlInterface;
+import com.adam.app.demoset.utils.Utils;
 
+/**
+ * Enum defining the types of Binder communication supported.
+ * Encapsulates the connection logic and execution for each type.
+ */
 public enum BinderType {
     AIDL {
-      private IMyAidlInterface mProxy;
-      private IMyAidlCBInterface mAidlCB = new AidlServiceCB();
-      private Callback mCallback;
-
-      @Override
-      public void setCallback(Callback callback) {
-          mCallback = callback;
-      }
-
-      @Override
-      public void execute(int a, int b) {
-          // add log
-          if (mCallback == null) {
-              Utils.info(BinderType.class, "callback is null!!!");
-              return;
-          }
-
-          mCallback.showLog("execute aidl binder call");
-
-          // add
-          try {
-              mProxy.add(a, b);
-              // send request
-              MyBinderData data = new MyBinderData("Binder data");
-              mProxy.sendRequest(data);
-          } catch (RemoteException e) {
-            Utils.info(BinderType.class, "execute aidl error!!!");
-            throw new RuntimeException(e);
-          }
-
-      }
-
-      @Override
-      public ServiceConnection getConnect() {
-          ServiceConnection conn = new ServiceConnection() {
-              @Override
-              public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                     // add log
-                      if (mCallback != null) {
-                          mCallback.showLog("aidl onServiceConnected");
-                      } else {
-                          Utils.info(BinderType.class, "callback is null!!!");
-                      }
-
-                      mProxy = IMyAidlInterface.Stub.asInterface(iBinder);
-                      // register call back
-                      try {
-                          mProxy.registerServiceCB(mAidlCB);
-                      } catch (RemoteException e) {
-                          Utils.info(BinderType.class, "register call back error!!!");
-                          throw new RuntimeException(e);
-                      }
-              }
-
-              @Override
-              public void onServiceDisconnected(ComponentName componentName) {
-                      // add log
-                      if (mCallback != null) {
-                          mCallback.showLog("aidl onServiceDisconnected");
-                      } else {
-                          Utils.info(BinderType.class, "callback is null!!!");
-                      }
-
-                      // unregister call back
-                      try {
-                          mProxy.unregisterServiceCB(mAidlCB);
-                      } catch (RemoteException e) {
-                          throw new RuntimeException(e);
-                      }
-                      mProxy = null;
-              }
-          };
-        return conn;
-      }
-
-        /**
-         * aidl callback interface
-         */
-        private class AidlServiceCB extends IMyAidlCBInterface.Stub {
-            @Override
-            public void result(int c) throws RemoteException {
-                // callback null check
-                if (mCallback == null) {
-                    Utils.info(BinderType.class, "callback is null!!!");
-                    return;
-                }
-
-                mCallback.showLog("aidl callback result");
-
-                mCallback.result(c);
-            }
-        }
-    },
-    MESSENGER {
-
-        private Messenger mProxy;
-        private Messenger mUIMessenger = new Messenger(new CallbackHandler());
+        private IMyAidlInterface mProxy;
+        private final IMyAidlCBInterface mAidlCB = new AidlServiceCB();
         private Callback mCallback;
 
         @Override
@@ -145,92 +54,128 @@ public enum BinderType {
 
         @Override
         public void execute(int a, int b) {
-            // add log
-            if (mCallback == null) {
-                Utils.info(BinderType.class, "callback is null!!!");
+            if (mProxy == null) {
+                logToUi("AIDL Proxy not connected");
                 return;
             }
 
-            mCallback.showLog("execute messenger binder call");
-
-            // add
+            logToUi("Executing AIDL call: add(" + a + ", " + b + ")");
             try {
-                Message msg = Message.obtain();
-                msg.what = MyMessengerService.ACTION_ADD;
-                msg.arg1 = a;
-                msg.arg2 = b;
-                msg.replyTo = mUIMessenger;
-                // send
-                mProxy.send(msg);
+                mProxy.add(a, b);
+                mProxy.sendRequest(new MyBinderData("AIDL Request Data"));
             } catch (RemoteException e) {
-                Utils.info(BinderType.class, "execute messenger error!!!");
-                throw new RuntimeException(e);
+                Utils.error(this, "AIDL execution failed: " + e.getMessage());
             }
         }
 
         @Override
         public ServiceConnection getConnect() {
-          ServiceConnection conn = new ServiceConnection() {
-              @Override
-              public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                  // add log
-                  if (mCallback != null) {
-                      mCallback.showLog("messenger onServiceConnected");
-                  } else {
-                      Utils.info(BinderType.class, "callback is null!!!");
-                  }
-                  mProxy = new Messenger(iBinder);
-              }
+            return new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    logToUi("AIDL Service Connected");
+                    mProxy = IMyAidlInterface.Stub.asInterface(service);
+                    try {
+                        mProxy.registerServiceCB(mAidlCB);
+                    } catch (RemoteException e) {
+                        Utils.error(this, "Failed to register AIDL callback: " + e.getMessage());
+                    }
+                }
 
-              @Override
-              public void onServiceDisconnected(ComponentName componentName) {
-                  if (mCallback != null) {
-                      mCallback.showLog("messenger onServiceDisconnected");
-                  } else {
-                      Utils.info(BinderType.class, "callback is null!!!");
-                  }
-
-                  mProxy = null;
-              }
-          };
-
-          return conn;
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    logToUi("AIDL Service Disconnected");
+                    mProxy = null;
+                }
+            };
         }
 
-        /**
-         * messenger callback interface
-         */
-        private class CallbackHandler extends Handler {
+        private void logToUi(String msg) {
+            if (mCallback != null) {
+                mCallback.showLog(msg);
+            }
+        }
 
+        private class AidlServiceCB extends IMyAidlCBInterface.Stub {
+            @Override
+            public void result(int c) {
+                if (mCallback != null) {
+                    mCallback.result(c);
+                }
+            }
+        }
+    },
+
+    MESSENGER {
+        private Messenger mProxy;
+        private final Messenger mUIMessenger = new Messenger(new CallbackHandler());
+        private Callback mCallback;
+
+        @Override
+        public void setCallback(Callback callback) {
+            mCallback = callback;
+        }
+
+        @Override
+        public void execute(int a, int b) {
+            if (mProxy == null) {
+                logToUi("Messenger Proxy not connected");
+                return;
+            }
+
+            logToUi("Executing Messenger call: add(" + a + ", " + b + ")");
+            try {
+                Message msg = Message.obtain(null, MyMessengerService.ACTION_ADD, a, b);
+                msg.replyTo = mUIMessenger;
+                mProxy.send(msg);
+            } catch (RemoteException e) {
+                Utils.error(this, "Messenger execution failed: " + e.getMessage());
+            }
+        }
+
+        @Override
+        public ServiceConnection getConnect() {
+            return new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    logToUi("Messenger Service Connected");
+                    mProxy = new Messenger(service);
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    logToUi("Messenger Service Disconnected");
+                    mProxy = null;
+                }
+            };
+        }
+
+        private void logToUi(String msg) {
+            if (mCallback != null) {
+                mCallback.showLog(msg);
+            }
+        }
+
+        private class CallbackHandler extends Handler {
             CallbackHandler() {
                 super(Looper.getMainLooper());
             }
 
             @Override
             public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                // add log
-                if (mCallback == null) {
-                    Utils.info(BinderType.class, "callback is null!!!");
-                    return;
-                }
-
-                mCallback.showLog("messenger callback result");
-
-                int flag = msg.what;
-
-                if (flag == MyMessengerService.ACTION_REPLY_RESULT) {
-                    int result = msg.arg1;
-                    mCallback.result(result);
+                if (mCallback != null && msg.what == MyMessengerService.ACTION_REPLY_RESULT) {
+                    mCallback.result(msg.arg1);
                 }
             }
         }
-
     };
 
+    /**
+     * Interface for communicating results back to the caller.
+     */
     public interface Callback {
-        void result(int c);
-        void showLog(String msg);
+        void result(int value);
+        void showLog(String message);
     }
 
     public abstract void setCallback(Callback callback);

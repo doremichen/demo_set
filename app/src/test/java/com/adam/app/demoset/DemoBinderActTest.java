@@ -1,108 +1,72 @@
+/*
+ * Copyright (c) 2026 Adam Chen
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.adam.app.demoset;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import android.os.Build;
-import android.os.Message;
-import android.os.Messenger;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.adam.app.demoset.binder.legacy.DemoBinderAct;
-import com.adam.app.demoset.binder.IMyAidlInterface;
+import com.adam.app.demoset.binder.viewmodel.BinderViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
-import java.lang.reflect.Field;
+import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.P)
 public class DemoBinderActTest {
 
-    private DemoBinderAct activity;
-    private IMyAidlInterface mockAidlInterface;
+    private BinderViewModel mViewModel;
 
     @Before
     public void setup() {
-        try (ActivityController<DemoBinderAct> controller = Robolectric.buildActivity(DemoBinderAct.class)) {
-            controller.setup();
-            activity = controller.get();
-        }
-
-        mockAidlInterface = mock(IMyAidlInterface.class);
+        mViewModel = new BinderViewModel();
     }
 
     @Test
-    public void testOnCreate() {
-        assertNotNull(activity.findViewById(R.id.et_input_a));
-        assertNotNull(activity.findViewById(R.id.et_input_b));
-        assertNotNull(activity.findViewById(R.id.tv_output_c));
+    public void testViewModelInitialization() {
+        assertNotNull(mViewModel.getOperationLogs());
+        assertNotNull(mViewModel.getResultC());
     }
 
     @Test
-    public void testExecuteAidlBinderCall() throws Exception {
-        // Setup
-        EditText etInputA = activity.findViewById(R.id.et_input_a);
-        EditText etInputB = activity.findViewById(R.id.et_input_b);
-        TextView tvOutputC = activity.findViewById(R.id.tv_output_c);
-
-        etInputA.setText("5");
-        etInputB.setText("10");
-
-        Field proxyAidl = DemoBinderAct.class.getDeclaredField("mProxyAidl");
-        proxyAidl.setAccessible(true);
-        proxyAidl.set(activity, mockAidlInterface);
-
-        // Call method
-        activity.onExecuteBinderCall(tvOutputC);
-
-        // Verify
-        verify(mockAidlInterface).add(5, 10);
+    public void testResultUpdate() {
+        mViewModel.result(42);
+        assertEquals("42", mViewModel.getResultC().getValue());
     }
 
     @Test
-    public void testExecuteMessengerBinderCall() throws Exception {
-        // Setup
-        Field isMessenger = DemoBinderAct.class.getDeclaredField("isMessenger");
-        isMessenger.setAccessible(true);
-        isMessenger.set(activity, true);
-        EditText etInputA = activity.findViewById(R.id.et_input_a);
-        EditText etInputB = activity.findViewById(R.id.et_input_b);
-        etInputA.setText("5");
-        etInputB.setText("10");
-
-        Messenger mockMessenger = mock(Messenger.class);
-        Field messenger = DemoBinderAct.class.getDeclaredField("mMessenger");
-        messenger.setAccessible(true);
-        messenger.set(activity, mockMessenger);
-
-        // Call method
-        activity.onExecuteBinderCall(new View(activity));
-
-        // Verify
-        verify(mockMessenger).send(any(Message.class));
-    }
-
-    @Test
-    public void testShowResult() {
-        // Setup
-        TextView tvOutputC = activity.findViewById(R.id.tv_output_c);
-
-        // Call method
-        activity.showResult(15);
-
-        // Verify
-        assertEquals("c: 15", tvOutputC.getText().toString());
+    public void testAddLog() {
+        List<String> logs = mViewModel.getOperationLogs().getValue();
+        assertNotNull(logs);
+        int initialSize = logs.size();
+        mViewModel.showLog("Test Log");
+        assertEquals(initialSize + 1, logs.size());
+        assertEquals("Test Log", logs.get(initialSize));
     }
 }
