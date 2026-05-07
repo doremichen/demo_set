@@ -26,27 +26,21 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.adam.app.demoset.utils.Utils;
+import androidx.annotation.Nullable;
 
+/**
+ * CircleView displays a floating dot with a red inner circle that follows touch input.
+ */
 public class CircleView extends View {
 
-    // prepare circle
-    private static class Circle1 {
-        static float sX = 0.0f;
-        static float sY = 0.0f;
-    }
-    private static class Circle2 {
-        static float sX = 0.0f;
-        static float sY = 0.0f;
-    }
-
-    // circle radius condition value
-    private static final float sRadius = 80.0f;
+    private float mCircle1X, mCircle1Y; // Background circle position
+    private float mCircle2X, mCircle2Y; // Foreground circle position
+    private float mRadius = 60.0f;      // Base radius
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public CircleView(Context context) {
         super(context);
@@ -61,91 +55,53 @@ public class CircleView extends View {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        // Center the background circle
+        mCircle1X = w / 2.0f;
+        mCircle1Y = h / 2.0f;
+        // Initially, the foreground circle is also at the center
+        mCircle2X = mCircle1X;
+        mCircle2Y = mCircle1Y;
+        // Set radius based on view size
+        mRadius = Math.min(w, h) / 2.0f * 0.8f;
     }
 
-    /**
-     * layout of the circle view
-     *
-     * @param left
-     * @param top
-     * @param right
-     * @param bottom
-     */
-    @Override
-    public void layout(int left, int top, int right, int bottom) {
-        super.layout(left, top, right, bottom);
-        // initial circle data
-        Circle1.sX = left/2.0f + sRadius;
-        Circle1.sY = top/2.0f + sRadius;
-        // Assign circle1 position is circle2 position
-        Circle2.sX = Circle1.sX;
-        Circle2.sY = Circle1.sY;
-    }
-
-    /**
-     * Receive the touch event UP/DOWN/MOVE/CANCEL
-     * @param event
-     * @return
-     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Utils.info(this, "onTouchEvent");
-        int action = event.getAction();
-
-        switch (action) {
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                // Assign circle1 position is circle2 position
-                Circle2.sX = Circle1.sX;
-                Circle2.sY = Circle1.sY;
-                break;
-            case MotionEvent.ACTION_MOVE:
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (inRange(Circle2.sX, Circle2.sY, event.getX(), event.getY())) {
-                    if (inRange(Circle1.sX, Circle1.sY, Circle2.sX, Circle2.sY)) {
-                        Circle2.sX = event.getX();
-                        Circle2.sY = event.getY();
-                    } else {
-                        // Assign circle1 position is circle2 position
-                        Circle2.sX = Circle1.sX;
-                        Circle2.sY = Circle1.sY;
-                    }
-                }
+            case MotionEvent.ACTION_MOVE:
+                // Move the red dot to the touch position
+                mCircle2X = event.getX();
+                mCircle2Y = event.getY();
+                invalidate();
                 break;
-
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                // Reset the red dot to the center
+                mCircle2X = mCircle1X;
+                mCircle2Y = mCircle1Y;
+                invalidate();
+                break;
         }
-
-        // refresh ui
-        invalidate();
-
         return true;
     }
-
-    private boolean inRange(float v1, float v2, float v3, float v4) {
-        return lessThanRadius(v1, v3) && lessThanRadius(v2, v4);
-    }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // Draw circle
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        canvas.drawCircle(Circle1.sX, Circle1.sY, sRadius, paint);
-        paint.setColor(Color.RED);
-        canvas.drawCircle(Circle2.sX, Circle2.sY, sRadius-30, paint);
-
+        // Draw the background green circle
+        mPaint.setColor(Color.GREEN);
+        canvas.drawCircle(mCircle1X, mCircle1Y, mRadius, mPaint);
+        
+        // Draw the foreground red circle
+        mPaint.setColor(Color.RED);
+        canvas.drawCircle(mCircle2X, mCircle2Y, mRadius * 0.6f, mPaint);
     }
 
     @Override
     public boolean performClick() {
-        return true;
-    }
-
-    private boolean lessThanRadius(float value1, float value2) {
-        return Math.abs(value1 - value2) < sRadius;
+        return super.performClick();
     }
 }

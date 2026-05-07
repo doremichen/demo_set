@@ -53,21 +53,11 @@ public class FloatingWindowSvr extends Service {
     private FrameLayout mLayout;
 
 
-    private static final long LONG_PRESS_TIME = 500L;
-
     // touch event data
-    private static class Current {
-        static float sX;
-        static float sY;
-        static long time;
-    }
-
-    private static class Previous {
-        static float sX;
-        static float sY;
-        static long time;
-    }
-
+    private float mInitialTouchX;
+    private float mInitialTouchY;
+    private int mInitialWindowX;
+    private int mInitialWindowY;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -83,8 +73,7 @@ public class FloatingWindowSvr extends Service {
     public void onCreate() {
         super.onCreate();
         Utils.info(this, "onCreate");
-        // get window service and layout params
-        this.mLayoutParams = new WindowManager.LayoutParams();
+        // get window service
         this.mWM = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 
         buildFloatingView();
@@ -108,27 +97,23 @@ public class FloatingWindowSvr extends Service {
             return;
         }
 
-        // Use Builder pattern to create WindowManager.LayoutParams
-        this.mLayoutParams = new LayoutParamsBuilder()
-                .setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
-                .setFormat(PixelFormat.RGBA_8888)
-                .setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
-                .setGravity(Gravity.CENTER)
-                .setWidth(WindowManager.LayoutParams.WRAP_CONTENT)
-                .setHeight(WindowManager.LayoutParams.WRAP_CONTENT)
-                .build();
+        // Create WindowManager.LayoutParams
+        this.mLayoutParams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.RGBA_8888
+        );
+        this.mLayoutParams.gravity = Gravity.CENTER;
 
-        // Use Factory pattern to create FrameLayout
-        this.mLayout = LayoutFactory.createFloatingLayout(getApplicationContext());
+        // Inflate the layout
+        this.mLayout = (FrameLayout) LayoutInflater.from(this).inflate(R.layout.float_layout, null);
 
         if (!Utils.areAllNotNull(this.mLayout)) {
             Utils.showToast(this, "null layout!!!!");
             return;
         }
-
-        // Measure the size of the floating view
-        this.mLayout.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         // Add the view to the window manager
         mWM.addView(this.mLayout, this.mLayoutParams);
@@ -136,99 +121,31 @@ public class FloatingWindowSvr extends Service {
         // Get a reference to the circular view
         View circleView = this.mLayout.findViewById(R.id.float_id);
 
-        // Set the touch event listener using Strategy pattern
-        TouchStrategy touchStrategy = new DefaultTouchStrategy();
-        circleView.setOnTouchListener(touchStrategy::onTouch);
+        // Set the touch event listener
+        circleView.setOnTouchListener(this::handleTouch);
     }
 
-    private static class LayoutParamsBuilder {
-        private final WindowManager.LayoutParams mLayoutParams;
-
-        public LayoutParamsBuilder() {
-            mLayoutParams = new WindowManager.LayoutParams();
-        }
-
-        public LayoutParamsBuilder setType(int type) {
-            mLayoutParams.type = type;
-            return this;
-        }
-
-        public LayoutParamsBuilder setFormat(int format) {
-            mLayoutParams.format = format;
-            return this;
-        }
-
-        public LayoutParamsBuilder setFlags(int flags) {
-            mLayoutParams.flags = flags;
-            return this;
-        }
-
-        public LayoutParamsBuilder setGravity(int gravity) {
-            mLayoutParams.gravity = gravity;
-            return this;
-        }
-
-        public LayoutParamsBuilder setWidth(int width) {
-            mLayoutParams.width = width;
-            return this;
-        }
-
-        public LayoutParamsBuilder setHeight(int height) {
-            mLayoutParams.height = height;
-            return this;
-        }
-
-        public WindowManager.LayoutParams build() {
-            return mLayoutParams;
-        }
-    }
-
-    private static class LayoutFactory {
-        public static FrameLayout createFloatingLayout(Context context) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            return (FrameLayout) inflater.inflate(R.layout.float_layout, null);
-        }
-    }
-
-    private interface TouchStrategy {
-        boolean onTouch(View v, MotionEvent event);
-    }
-
-    private class DefaultTouchStrategy implements TouchStrategy {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            Utils.info(this, "onTouch");
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                Utils.info(this, "Down");
-                Previous.sX = Current.sX = event.getRawX();
-                Previous.sY = Current.sY = event.getRawY();
-                Previous.time = event.getDownTime();
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                Utils.info(this, "Long Move");
-                float deltaX = event.getRawX() - Current.sX;
-                float deltaY = event.getRawY() - Current.sY;
-                Current.sX = event.getRawX();
-                Current.sY = event.getRawY();
-                Current.time = event.getEventTime();
-
-                if (isLongPress()) {
-                    FloatingWindowSvr.this.mLayoutParams.x += (int) deltaX;
-                    FloatingWindowSvr.this.mLayoutParams.y += (int) deltaY;
-                    Utils.info(this, "updateViewLayout");
-                    FloatingWindowSvr.this.mWM.updateViewLayout(FloatingWindowSvr.this.mLayout,
-                            FloatingWindowSvr.this.mLayoutParams);
+    private boolean handleTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mInitialTouchX = event.getRawX();
+                mInitialTouchY = event.getRawY();
+                mInitialWindowX = mLayoutParams.x;
+                mInitialWindowY = mLayoutParams.y;
+                return false;
+            case MotionEvent.ACTION_MOVE:
+                float deltaX = event.getRawX() - mInitialTouchX;
+                float deltaY = event.getRawY() - mInitialTouchY;
+                
+                mLayoutParams.x = mInitialWindowX + (int) deltaX;
+                mLayoutParams.y = mInitialWindowY + (int) deltaY;
+                
+                if (Utils.areAllNotNull(mWM, mLayout)) {
+                    mWM.updateViewLayout(mLayout, mLayoutParams);
                 }
-            }
-            return false;
+                return false;
         }
+        return false;
     }
 
-    private boolean isLongPress() {
-        Utils.info(this, "isLongPress");
-        float offset = Math.max(Math.abs(Previous.sX - Current.sX), Math.abs(Previous.sY - Current.sY));
-        long duration = Current.time - Previous.time;
-        Utils.info(this, "offset: " + offset);
-        Utils.info(this, "duration: " + duration);
-        return offset >= 10.0f && duration >= LONG_PRESS_TIME;
-    }
 }
