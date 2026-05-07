@@ -107,6 +107,5 @@ public class DemoXmlParserAct extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        XmlPullParserManager.newInstance().clearList();
     }
 }

@@ -23,7 +23,6 @@
 package com.adam.app.demoset.xmlparser.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -36,23 +35,20 @@ import com.adam.app.demoset.xmlparser.model.ItemData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ViewModel for XML Parsing demo.
+ */
 public class XmlParserViewModel extends AndroidViewModel implements XmlPullParserManager.XmlPullParserListener {
 
-    // live date: logs
-    private MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
-
-    // live data: data set from xml file
-    private MutableLiveData<List<ItemData>> mDataSet = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<ItemData>> mDataSet = new MutableLiveData<>(new ArrayList<>());
 
     public XmlParserViewModel(@NonNull Application application) {
         super(application);
-        Context context = application.getApplicationContext();
-        // init xml parser
-        XmlPullParserManager.newInstance().init(context);
         // set listener
         XmlPullParserManager.newInstance().setListener(this);
         // parse xml file
-        List<ItemData> dataSet = XmlPullParserManager.newInstance().parse();
+        List<ItemData> dataSet = XmlPullParserManager.newInstance().parse(application.getApplicationContext());
         // update data set
         mDataSet.setValue(dataSet);
     }
@@ -65,22 +61,19 @@ public class XmlParserViewModel extends AndroidViewModel implements XmlPullParse
         return mLogs;
     }
 
-    public void addLog(String msg) {
+    private void addLog(String msg) {
         List<String> logs = mLogs.getValue();
-        logs.add(msg);
-        mLogs.setValue(logs);
+        if (logs != null) {
+            logs.add(msg);
+            mLogs.setValue(logs);
+        }
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-
-        // remove listener
+        // remove listener to prevent memory leaks
         XmlPullParserManager.newInstance().setListener(null);
-
-        // clear list
-        XmlPullParserManager.newInstance().clearList();
-
     }
 
     @Override

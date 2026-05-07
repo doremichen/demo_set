@@ -36,11 +36,12 @@ import org.xmlpull.v1.XmlPullParser;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manager for XML Pull Parsing operations.
+ */
 public class XmlPullParserManager {
 
     private static final String TAG = XmlPullParserManager.class.getSimpleName();
-    private Context mContext;
-    private List<ItemData> mList = new ArrayList<>();
     private XmlPullParserListener mListener;
 
     private XmlPullParserManager() {
@@ -57,14 +58,16 @@ public class XmlPullParserManager {
     public static void dumpList(List<ItemData> list) {
         Utils.log(TAG, "Dump list:");
         Utils.log(TAG, "========================================");
-        list.stream().forEach(item -> info(item.toString()));
+        if (list != null) {
+            list.forEach(item -> info(item.toString()));
+        }
         Utils.log(TAG, "========================================");
     }
 
     /**
      * set xml parser listener
      *
-     * @param listener
+     * @param listener listener for parsing events
      */
     public void setListener(XmlPullParserListener listener) {
         mListener = listener;
@@ -77,41 +80,29 @@ public class XmlPullParserManager {
     }
 
     /**
-     * The context must be the activity or service
-     * Otherwise the xml file parser will occur exception.
+     * parse xml file and generate list data.
+     * Note: Context is passed per-call to avoid memory leaks.
      *
-     * @param context
+     * @param context activity or application context
+     * @return list of parsed item data
      */
-    public void init(Context context) {
-        info("[init]");
-        addLog("[init]");
-        this.mContext = context;
-    }
-
-    /**
-     * parse xml file and generate list data
-     *
-     * @return
-     */
-    public List<ItemData> parse() {
+    public List<ItemData> parse(Context context) {
         info("[parse]");
         addLog("[parse]");
-        if (this.mContext == null) {
-            info("No context!!!Please init first!!!");
-            addLog("No context!!!Please init first!!!");
-            return this.mList;
+        List<ItemData> itemList = new ArrayList<>();
+
+        if (context == null) {
+            info("No context!!! Please provide a valid context.");
+            addLog("No context!!! Please provide a valid context.");
+            return itemList;
         }
-
-        // clear list
-        this.mList.clear();
-
 
         try {
             // get xml pull parser from xml file.
-            XmlPullParser xmlParser = this.mContext.getResources().getXml(R.xml.xml_demo);
+            XmlPullParser xmlParser = context.getResources().getXml(R.xml.xml_demo);
 
             // build Xml state context
-            XmlParsingState.StateContext stateContext = new XmlParsingState.StateContext(this.mList);
+            XmlParsingState.StateContext stateContext = new XmlParsingState.StateContext(itemList);
             // initial xml event iterator
             XmlEventIterator eventIterator = new XmlEventIterator(xmlParser);
             // foreach
@@ -128,17 +119,12 @@ public class XmlPullParserManager {
             stateContext.dumpList();
 
         } catch (XmlParsingException e) {
-            Utils.error(this, "Failed to parse XML: " + e.getCause());
+            Utils.error(TAG, "Failed to parse XML: " + e.getMessage());
             e.printStackTrace();
         }
 
-        dumpList(this.mList);
-        return this.mList;
-    }
-
-    public void clearList() {
-        addLog("[clearList]");
-        this.mList.clear();
+        dumpList(itemList);
+        return itemList;
     }
 
     public interface XmlPullParserListener {
