@@ -22,11 +22,14 @@
 
 package com.adam.app.demoset.jobService;
 
+import android.Manifest;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
+import androidx.annotation.RequiresPermission;
 
 import com.adam.app.demoset.utils.Utils;
 
@@ -34,13 +37,14 @@ public class SecurJobService extends JobService {
 
 
     private Handler mJobH = new Handler(Looper.getMainLooper()) {
+        @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Utils.showToast(SecurJobService.this, "Job is running...");
             Utils.info(this, "Job is running...");
             Utils.makeStatusNotification(getApplicationContext(), "JobService is triggerd...");
-            jobFinished((JobParameters) msg.obj, false);
+            //jobFinished((JobParameters) msg.obj, false);
         }
     };
 
