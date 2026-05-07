@@ -97,8 +97,15 @@ public class SchedulerController {
              * Blocks until all tasks have completed execution after a shutdown request,
              * or the timeout occurs, or the current thread is interrupted, whichever happens first.
              */
-            mService.awaitTermination(5L, TimeUnit.SECONDS);
+            if (!mService.awaitTermination(5L, TimeUnit.SECONDS)) {
+                mService.shutdownNow();
+                if (!mService.awaitTermination(5L, TimeUnit.SECONDS)) {
+                    Utils.info(this, "Service did not terminate");
+                }
+            }
         } catch (InterruptedException e) {
+            mService.shutdownNow();
+            Thread.currentThread().interrupt();
             e.printStackTrace();
         }
 
@@ -122,7 +129,7 @@ public class SchedulerController {
     /**
      * For UI callback
      */
-    interface onControllerListener {
+    public interface onControllerListener {
         void TimeArrive(long millisecond);
 
         void finishUI();
