@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.scheduler;
+package com.adam.app.demoset.scheduler.controller;
 
 import com.adam.app.demoset.utils.Utils;
 

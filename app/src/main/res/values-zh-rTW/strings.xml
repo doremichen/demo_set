@@ -514,4 +514,7 @@
     <string name="demo_alarm_invalid_input_number_toast">輸入的號碼無效</string>
     <string name="demo_alarm_unknown_strategy_selected_toast">選擇未知策略</string>
 
+    <string name="label_running">任務執行中...</string>
+    <string name="label_waiting">等待啟動...</string>
+    <string name="demo_schedule_instruction">本模組演示後台排程服務：\n• 週期性觸發：透過 SeekBar 設定執行間隔 (s)。\n• 狀態監控：即時顯示任務計時。\n• 系統整合：任務到達時發送通知。\n• 自動化終止：支持手動停止或隨 Activity 銷毀。</string>
 </resources>

@@ -22,183 +22,156 @@
 
 package com.adam.app.demoset.scheduler;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.SeekBar;
-import android.widget.TextView;
+
+import androidx.annotation.RequiresPermission;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoScheduleServiceBinding;
+import com.adam.app.demoset.scheduler.viewmodel.SchedulerViewModel;
 import com.adam.app.demoset.utils.UIUtils;
-import com.google.android.material.color.MaterialColors;
+import com.adam.app.demoset.utils.Utils;
 
-import java.util.Optional;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * Activity for Demo Schedule Service, demonstrating MVVM, Data Binding, and View Binding.
+ */
 public class DemoScheduleServiceAct extends AppCompatActivity {
 
-    public static final String KEY_TIME = "key.time";
-    private boolean mEnableCounter;
-
-    private Button mCounterAction;
-    private Chronometer mMeter;
-    private SeekBar mSbPeriodic;
-    private TextView mPeriodic;
-
-    private SchedulerController mController;
-
-    // Periodic time
-    long mPeriodicTime;
+    private ActivityDemoScheduleServiceBinding mBinding;
+    private SchedulerViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate enter");
-        setContentView(R.layout.activity_demo_schedule_service);
 
-        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.header_layout));
+        // Initialize Data Binding
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_schedule_service);
+        mViewModel = new ViewModelProvider(this).get(SchedulerViewModel.class);
+        mBinding.setViewModel(mViewModel);
+        mBinding.setLifecycleOwner(this);
 
-        mCounterAction = findViewById(R.id.btn_action_counter);
-        mMeter = findViewById(R.id.chronometer);
+        // Apply system bar insets
+        UIUtils.applySystemBarInsets(mBinding.rootLayout, mBinding.headerLayout);
 
-        mSbPeriodic = findViewById(R.id.seekBar_periodic);
-        mPeriodic = findViewById(R.id.label_periodic_unit);
-
-        mMeter.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                // format hh:mm:ss
-                int h   = (int)(time /3600000);
-                int m = (int)(time  - h*3600000)/60000;
-                int s= (int)(time  - h*3600000 - m*60000)/1000 ;
-                String hh = h < 10 ? "0"+h: h+"";
-                String mm = m < 10 ? "0"+m: m+"";
-                String ss = s < 10 ? "0"+s: s+"";
-                // update info
-                chronometer.setText(TextUtils.concat(hh, ":", mm, ":", ss));
-            }
-        });
-
-        mSbPeriodic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Utils.info(this, "onProgressChanged enter");
-                mPeriodic.setText(progress > 0 ? progress + " s" : getString(R.string.label_time_unit));
-                mPeriodicTime = progress > 0 ? progress : 0L;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        mController = new SchedulerController();
-
-        mController.registerListener(new SchedulerController.onControllerListener() {
-            @Override
-            public void TimeArrive(long millisecond) {
-                Utils.info(this, "TimeArrive enter");
-                Utils.info(this, "counter = " + millisecond);
-                // show notification
-                Utils.makeStatusNotification(DemoScheduleServiceAct.this, getString(R.string.demo_schedule_service_time_is_arrived_msg));
-
-            }
-
-            @Override
-            public void finishUI() {
-                Utils.info(this, "finishUI");
-                finish();
-            }
-        });
-
+        setupChronometer();
+        setupSeekBar();
+        setupObservers();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Utils.info(this, "onDestroy enter");
+    /**
+     * Set up Chronometer tick listener for custom formatting.
+     */
+    private void setupChronometer() {
+        mBinding.chronometer.setOnChronometerTickListener(chronometer -> {
+            long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+
+            long h = TimeUnit.MILLISECONDS.toHours(time);
+            long m = TimeUnit.MILLISECONDS.toMinutes(time) % 60;
+            long s = TimeUnit.MILLISECONDS.toSeconds(time) % 60;
+
+            String formattedTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", h, m, s);
+            chronometer.setText(formattedTime);
+        });
+    }
+
+    /**
+     * Set up SeekBar listener to update ViewModel.
+     */
+    private void setupSeekBar() {
+        mBinding.seekBarPeriodic.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mViewModel.setPeriodicTime(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+    }
+
+    /**
+     * Set up observers for ViewModel LiveData.
+     */
+    @SuppressLint("InlinedApi")
+    private void setupObservers() {
+        mViewModel.getIsRunning().observe(this, this::handleRunningState);
+        mViewModel.getArriveTime().observe(this, this::handleTaskArrive);
+        mViewModel.getToastEvent().observe(this, this::handleToastEvent);
+        mViewModel.getFinishEvent().observe(this, this::handleFinishEvent);
+    }
+
+    private void handleRunningState(Boolean isRunning) {
+        if (Boolean.TRUE.equals(isRunning)) {
+            mBinding.chronometer.setBase(SystemClock.elapsedRealtime());
+            mBinding.chronometer.start();
+        } else {
+            mBinding.chronometer.stop();
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    private void handleTaskArrive(Long millisecond) {
+        Utils.info(this, "Task triggered: " + millisecond + " ms");
+        if (hasNotificationPermission()) {
+            Utils.makeStatusNotification(this, getString(R.string.demo_schedule_service_time_is_arrived_msg));
+        } else {
+            Utils.info(this, "Missing POST_NOTIFICATIONS permission");
+        }
+    }
+
+    private void handleToastEvent(Integer resId) {
+        if (resId != null) {
+            Utils.showToast(this, getString(resId));
+        }
+    }
+
+    private void handleFinishEvent(Boolean finish) {
+        if (Boolean.TRUE.equals(finish)) {
+            finish();
+        }
+    }
+
+    private boolean hasNotificationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return true;
+        }
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_exit, menu);
-
+        getMenuInflater().inflate(R.menu.action_exit, menu);
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.demo_exit) {
-            mController.finishScheduledTask();
+        if (item.getItemId() == R.id.demo_exit) {
+            mViewModel.finishTask();
             return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
-
-    public void onCounterAction(View v) {
-        Utils.info(this, "onCounterAction enter");
-
-        if (mPeriodicTime == 0L) {
-            Utils.showToast(this, getString(R.string.label_show_non_zero_input_info));
-            return;
-        }
-
-        mSbPeriodic.setEnabled(mEnableCounter);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Optional.of(mEnableCounter)
-                    .filter(enable -> !enable)
-                    .ifPresentOrElse(
-                            enable -> {
-                                mController.startScheduledTask(mPeriodicTime);
-                                mMeter.setBase(SystemClock.elapsedRealtime());
-                                mMeter.start();
-                            },
-                            () -> {
-                                mController.stopScheduledTask();
-                                mMeter.stop();
-                            }
-                    );
-        } else {
-            if (!mEnableCounter) {
-                mController.startScheduledTask(mPeriodicTime);
-                mMeter.setBase(SystemClock.elapsedRealtime());
-                mMeter.start();
-
-                mCounterAction.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFBABA")));
-                mCounterAction.setTextColor(Color.RED);
-            } else {
-                mController.stopScheduledTask();
-                mMeter.stop();
-
-                mCounterAction.setBackgroundTintList(null);
-                mCounterAction.setTextColor(MaterialColors.getColor(v, com.google.android.material.R.attr.colorPrimary));
-            }
-        }
-
-
-        // update button info
-        mCounterAction.setText(!mEnableCounter ? R.string.action_stop_counter : R.string.action_start_counter);
-        mEnableCounter = !mEnableCounter;
-    }
-
 }

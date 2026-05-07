@@ -514,4 +514,7 @@
     <string name="demo_alarm_invalid_input_number_toast">Invalid input number</string>
     <string name="demo_alarm_unknown_strategy_selected_toast">Unknown strategy selected</string>
 
+    <string name="label_running">Running...</string>
+    <string name="label_waiting">Waiting for start...</string>
+    <string name="demo_schedule_instruction">This module demonstrates background schedule services:\n• Periodic Trigger: Set interval via SeekBar (s).\n• Status Monitoring: Real-time task timing.\n• System Integration: Send Notification when time arrives.\n• Auto Termination: Manual stop or activity destroy.</string>
 </resources>
