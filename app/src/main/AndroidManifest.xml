@@ -111,6 +111,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".permissions.PermissionDemoActivity"
+            android:exported="false"
+            android:label="@string/title_demo_permission_model"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".navigation.DemoNavigationAct"
             android:exported="false"
             android:label="@string/title_demo_navigation"

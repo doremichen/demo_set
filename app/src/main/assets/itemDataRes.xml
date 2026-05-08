@@ -236,4 +236,10 @@
         clsname="com.adam.app.demoset.navigation.DemoNavigationAct"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- System -->
+    <data category="category_system"
+        titleRes="title_demo_permission_model"
+        clsname="com.adam.app.demoset.permissions.PermissionDemoActivity"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

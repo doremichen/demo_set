@@ -12,6 +12,7 @@
     <string name="title_demo_file_expore">檔案瀏覽範例</string>
     <string name="title_demo_service">服務範例</string>
     <string name="title_demo_animation">動畫範例</string>
+    <string name="title_demo_permission_model">現代權限模型範例</string>
     <string name="title_demo_job_service">工作服務範例</string>
     <string name="title_demo_floating_alert_dialog">浮動對話框範例</string>
     <string name="title_demo_floating_alert_window">浮動視窗範例</string>
@@ -517,4 +518,16 @@
     <string name="label_running">任務執行中...</string>
     <string name="label_waiting">等待啟動...</string>
     <string name="demo_schedule_instruction">本模組演示後台排程服務：\n• 週期性觸發：透過 SeekBar 設定執行間隔 (s)。\n• 狀態監控：即時顯示任務計時。\n• 系統整合：任務到達時發送通知。\n• 自動化終止：支持手動停止或隨 Activity 銷毀。</string>
+
+    <!-- Permission Demo -->
+    <string name="demo_permission_instruction_title">現代權限模型範例</string>
+    <string name="demo_permission_instruction">此範例展示了使用 ActivityResult API 處理執行階段權限的現代方式。包含單一和多個權限請求、處理說明（Rationale），以及引導使用者至設定頁面處理永久拒絕的權限。</string>
+    <string name="btn_request_single_permission">請求相機權限</string>
+    <string name="btn_request_multiple_permissions">請求相機與麥克風</string>
+    <string name="btn_check_permission_status">檢查權限狀態</string>
+    <string name="label_permission_status">權限狀態: %1$s</string>
+    <string name="msg_permission_granted">已授予權限: %1$s</string>
+    <string name="msg_permission_denied">權限被拒絕: %1$s</string>
+    <string name="msg_permission_permanently_denied">權限被永久拒絕。請在設定中開啟。</string>
+    <string name="msg_permission_rationale">此範例需要相機權限才能拍照。</string>
 </resources>

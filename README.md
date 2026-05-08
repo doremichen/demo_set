@@ -58,6 +58,7 @@ Native Layer
 * WorkManager (Modern background tasks)
 * AlarmManager
 * HandlerThread
+* Modern Permission Model (ActivityResult API)
 * System UI control
 * Quick Settings Tile
 * Device Admin
@@ -152,7 +153,6 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* Modern permission model
 * AI / ML integration (TensorFlow Lite)
 
 ---
