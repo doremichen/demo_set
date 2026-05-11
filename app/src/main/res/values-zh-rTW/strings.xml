@@ -541,4 +541,12 @@
     <string name="msg_tflite_not_initialized">TFLite 模型尚未初始化。</string>
     <string name="msg_no_result">未偵測到物件。</string>
     <string name="msg_error_loading_image">載入圖片時發生錯誤。</string>
+
+    <!-- CameraX Demo -->
+    <string name="title_demo_camerax">CameraX 範例 (現代化)</string>
+    <string name="demo_camerax_instruction_title">CameraX 架構展示</string>
+    <string name="demo_camerax_instruction">本範例展示 Jetpack CameraX 的核心能力：\n• 生命週期感知 (Lifecycle Awareness)\n• 預覽與靜態影像擷取\n• 即時影像分析分析 (Image Analysis)\n• 簡化的裝置相容性處理</string>
+    <string name="action_capture">拍照</string>
+    <string name="label_camera_state">相機狀態：%1$s</string>
+    <string name="msg_camerax_permission_required">使用 CameraX 需要相機權限。</string>
 </resources>

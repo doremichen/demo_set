@@ -88,6 +88,12 @@
 
     <!-- Hardware -->
     <data category="category_hardware"
+        titleRes="title_demo_camerax"
+        clsname="com.adam.app.demoset.camera.CameraXActivity"
+        pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data category="category_hardware"
         titleRes="title_demo_video_record"
         clsname="com.adam.app.demoset.video.DemoVideoRecordAct"
         pkgname="com.adam.app.demoset"/>

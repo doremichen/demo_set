@@ -79,6 +79,9 @@ Native Layer
 * TensorFlow Lite (Image Classification)
 * MVVM integration with TFLite Task Library
 
+---
+
+## 📂 Storage
 * File Explorer (Scoped Storage ready)
 * SQLite (ContentProvider)
 * Room Database
@@ -100,6 +103,7 @@ Native Layer
 * Camera2 API
 * Video Recording
 * Flashlight control
+* CameraX API (Modern lifecycle-aware)
 
 ---
 
@@ -156,7 +160,11 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* AI / ML integration (TensorFlow Lite) ✅ Done
+* **On-Device Search & Vision**: Integration with Google ML Kit (Barcode, Face, Text detection).
+* **Biometric Authentication**: Fingerprint & Face Unlock (BiometricPrompt API).
+* **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
+* **Performance & Diagnostics**: Benchmarking, App Startup optimization, and LeakCanary integration.
+* **Advanced Graphics**: Rendering Engine with Vulkan or advanced Canvas 2D effects.
 
 ---
 

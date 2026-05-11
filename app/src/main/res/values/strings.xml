@@ -541,4 +541,12 @@
     <string name="msg_tflite_not_initialized">TFLite model not initialized.</string>
     <string name="msg_no_result">No objects detected.</string>
     <string name="msg_error_loading_image">Error loading image.</string>
+
+    <!-- CameraX Demo -->
+    <string name="title_demo_camerax">Demo CameraX (Modern)</string>
+    <string name="demo_camerax_instruction_title">CameraX Architecture</string>
+    <string name="demo_camerax_instruction">This demo demonstrates Jetpack CameraX. It features: \n• Lifecycle Awareness \n• Preview &amp; Image Capture \n• Real-time Image Analysis \n• Simplified device compatibility.</string>
+    <string name="action_capture">Capture</string>
+    <string name="label_camera_state">Camera State: %1$s</string>
+    <string name="msg_camerax_permission_required">Camera permission is required to use CameraX.</string>
 </resources>
