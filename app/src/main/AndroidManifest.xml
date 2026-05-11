@@ -116,6 +116,11 @@
             android:label="@string/title_demo_permission_model"
             android:screenOrientation="nosensor" />
         <activity
+            android:name=".tflite.TFLiteActivity"
+            android:exported="false"
+            android:label="@string/title_demo_tflite"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".navigation.DemoNavigationAct"
             android:exported="false"
             android:label="@string/title_demo_navigation"

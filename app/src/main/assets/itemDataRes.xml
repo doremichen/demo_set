@@ -242,4 +242,10 @@
         clsname="com.adam.app.demoset.permissions.PermissionDemoActivity"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- AI / ML -->
+    <data category="category_ai"
+        titleRes="title_demo_tflite"
+        clsname="com.adam.app.demoset.tflite.TFLiteActivity"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

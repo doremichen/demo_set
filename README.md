@@ -74,7 +74,10 @@ Native Layer
 
 ---
 
-## 📂 Storage
+## 🤖 AI / Machine Learning
+
+* TensorFlow Lite (Image Classification)
+* MVVM integration with TFLite Task Library
 
 * File Explorer (Scoped Storage ready)
 * SQLite (ContentProvider)
@@ -153,7 +156,7 @@ This project covers real-world scenarios such as:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* AI / ML integration (TensorFlow Lite)
+* AI / ML integration (TensorFlow Lite) ✅ Done
 
 ---
 

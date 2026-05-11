@@ -6,6 +6,7 @@
     <string name="category_network">網路</string>
     <string name="category_storage">儲存</string>
     <string name="category_ipc">程序通訊</string>
+    <string name="category_ai">人工智慧 / 機器學習</string>
     <!-- title string -->
     <!-- string for Demo shutdown (註解掉) -->
     <!-- <string name="title_demo_Shutdown">關機範例</string> -->
@@ -530,4 +531,14 @@
     <string name="msg_permission_denied">權限被拒絕: %1$s</string>
     <string name="msg_permission_permanently_denied">權限被永久拒絕。請在設定中開啟。</string>
     <string name="msg_permission_rationale">此範例需要相機權限才能拍照。</string>
+
+    <!-- TFLite Demo -->
+    <string name="title_demo_tflite">TensorFlow Lite 範例</string>
+    <string name="demo_tflite_instruction_title">AI / 機器學習：影像分類</string>
+    <string name="demo_tflite_instruction">本範例展示 TensorFlow Lite 與 MVVM 的整合。使用 TFLite Task Library 對相簿中的圖片進行分類。結果包含物件類別與信心分數。</string>
+    <string name="action_select_image">選擇圖片</string>
+    <string name="label_classification_result">分類結果：</string>
+    <string name="msg_tflite_not_initialized">TFLite 模型尚未初始化。</string>
+    <string name="msg_no_result">未偵測到物件。</string>
+    <string name="msg_error_loading_image">載入圖片時發生錯誤。</string>
 </resources>

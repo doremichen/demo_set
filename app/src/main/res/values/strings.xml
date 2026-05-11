@@ -6,6 +6,7 @@
     <string name="category_network">Network</string>
     <string name="category_storage">Storage</string>
     <string name="category_ipc">IPC</string>
+    <string name="category_ai">AI / ML</string>
     <!-- title string-->
     <!-- string for Demo shutdown (commented out) -->
     <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->
@@ -530,4 +531,14 @@
     <string name="msg_permission_denied">Permission denied: %1$s</string>
     <string name="msg_permission_permanently_denied">Permission permanently denied. Please enable it in settings.</string>
     <string name="msg_permission_rationale">Camera permission is required to take photos in this demo.</string>
+
+    <!-- TFLite Demo -->
+    <string name="title_demo_tflite">Demo TensorFlow Lite</string>
+    <string name="demo_tflite_instruction_title">AI / ML: Image Classification</string>
+    <string name="demo_tflite_instruction">This demo showcases TensorFlow Lite integration with MVVM. It uses the TFLite Task Library to classify images from the gallery. Results include the object category and confidence score.</string>
+    <string name="action_select_image">Select Image</string>
+    <string name="label_classification_result">Classification Result:</string>
+    <string name="msg_tflite_not_initialized">TFLite model not initialized.</string>
+    <string name="msg_no_result">No objects detected.</string>
+    <string name="msg_error_loading_image">Error loading image.</string>
 </resources>
