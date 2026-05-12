@@ -23,9 +23,11 @@
 package com.adam.app.demoset.camera2;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
-import android.graphics.Rect;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -33,16 +35,15 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
-import android.hardware.camera2.params.MeteringRectangle;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -52,120 +53,126 @@ import androidx.annotation.NonNull;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+/**
+ * Controller for Camera2 operations.
+ * Fixed preview stretching using Center-Crop transformation.
+ */
 public final class MyCameraController {
 
-    private static final String THREAD_NAME = "MyCamera work thread";
-    private TextureView mView;
+    private static final String TAG = "MyCameraController";
+    private static final String THREAD_NAME = "CameraBackground";
+    private static final int MAX_PREVIEW_WIDTH = 1920;
+    private static final int MAX_PREVIEW_HEIGHT = 1080;
 
-    // Camera background thread
-    private HandlerThread mBgThread;
-    private Handler mBgHandler;
+    private WeakReference<TextureView> mTextureViewRef;
 
-    private int mState = STATE.PREVIEW;
+    private HandlerThread mBackgroundThread;
+    private Handler mBackgroundHandler;
 
-    private CameraDevice mDevice;
-    private final CameraDevice.StateCallback mDeviceStateCB = new CameraDevice.StateCallback() {
+    private CameraDevice mCameraDevice;
+    private CameraCaptureSession mCaptureSession;
+    private CaptureRequest.Builder mPreviewRequestBuilder;
+    private CaptureRequest mPreviewRequest;
+    private Size mPreviewSize;
+    private ImageReader mImageReader;
+    private int mSensorOrientation = 0;
+
+    private State mState = State.PREVIEW;
+    private boolean mFlashSupported;
+    private CameraCallback mCallback;
+
+    private enum State {
+        PREVIEW,
+        WAITING_LOCK,
+        WAITING_PRECAPTURE,
+        WAITING_NON_PRECAPTURE,
+        PICTURE_TAKEN
+    }
+
+    private final CameraDevice.StateCallback mDeviceStateCallback = new CameraDevice.StateCallback() {
         @Override
-        public void onOpened(@NonNull CameraDevice camera) {
-            Utils.info(this, "onOpened");
-            mDevice = camera;
-            // Start camera preview
+        public void onOpened(@NonNull CameraDevice cameraDevice) {
+            Utils.info(TAG, "onOpened");
+            mCameraDevice = cameraDevice;
             startPreview();
         }
 
         @Override
-        public void onDisconnected(@NonNull CameraDevice camera) {
-            camera.close();
-            mDevice = null;
+        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            Utils.info(TAG, "onDisconnected");
+            cameraDevice.close();
+            mCameraDevice = null;
         }
 
         @Override
-        public void onError(@NonNull CameraDevice camera, int error) {
-            camera.close();
-            mDevice = null;
-            if (mCallBack != null) {
-                mCallBack.onDeviceStateError(error);
+        public void onError(@NonNull CameraDevice cameraDevice, int error) {
+            Utils.error(TAG, "CameraDevice error: " + error);
+            cameraDevice.close();
+            mCameraDevice = null;
+            if (mCallback != null) {
+                mCallback.onDeviceStateError(error);
             }
         }
     };
-    private MyCameraCallBack mCallBack;
-    private Size mPreviewSize;
-    private ImageReader mReader;
-    private boolean mCanFlash;
-    private CaptureRequest.Builder mPreviewReqBuilder;
-    private CameraCaptureSession mCaptureSession;
 
-    private final CameraCaptureSession.CaptureCallback mCaptureCallBack = new CameraCaptureSession.CaptureCallback() {
-
+    private final CameraCaptureSession.CaptureCallback mCaptureCallback = new CameraCaptureSession.CaptureCallback() {
         private void process(CaptureResult result) {
-            Utils.info(this, "process");
-            Utils.info(this, "mState = " + mState);
             switch (mState) {
-                case STATE.PREVIEW:
-                    // do nothing
+                case PREVIEW:
                     break;
-                case STATE.WAITING_LOCK:
+                case WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    Utils.info(this, "afState = " + afState);
                     if (afState == null) {
-                        // Capture
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
                             CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                        Utils.info(this, "aeState = " + afState);
-                        if (aeState == null ||
-                                aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
-                            mState = STATE.PICTURE_TAKEN;
+                        if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
+                            mState = State.PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
-                            runPreCaptureSequence();
+                            runPrecaptureSequence();
                         }
                     }
                     break;
-                case STATE.WATING_PRECAPTURE: {
-                    // CONTROL_AE_STATE can be null on some devices
+                }
+                case WAITING_PRECAPTURE: {
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null ||
                             aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
                             aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
-                        mState = STATE.WATING_NON_PRECATURE;
+                        mState = State.WAITING_NON_PRECAPTURE;
                     }
+                    break;
                 }
-                break;
-                case STATE.WATING_NON_PRECATURE: {
+                case WAITING_NON_PRECAPTURE: {
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
-                        mState = STATE.PICTURE_TAKEN;
+                        mState = State.PICTURE_TAKEN;
                         captureStillPicture();
                     }
+                    break;
                 }
-                break;
+                default:
+                    break;
             }
         }
 
         @Override
-        public void onCaptureStarted(@NonNull CameraCaptureSession session,
-                                     @NonNull CaptureRequest request,
-                                     long timestamp, long frameNumber) {
-            super.onCaptureStarted(session, request, timestamp, frameNumber);
-            Utils.info(this, "onCaptureStarted enter");
-        }
-
-        @Override
         public void onCaptureProgressed(@NonNull CameraCaptureSession session,
-                                        @NonNull CaptureRequest request,
-                                        @NonNull CaptureResult partialResult) {
-            super.onCaptureProgressed(session, request, partialResult);
-            Utils.info(this, "onCaptureProgressed enter");
+                                       @NonNull CaptureRequest request,
+                                       @NonNull CaptureResult partialResult) {
             process(partialResult);
         }
 
@@ -173,401 +180,361 @@ public final class MyCameraController {
         public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                        @NonNull CaptureRequest request,
                                        @NonNull TotalCaptureResult result) {
-            super.onCaptureCompleted(session, request, result);
-            Utils.info(this, "onCaptureCompleted enter");
             process(result);
         }
-
-        @Override
-        public void onCaptureFailed(@NonNull CameraCaptureSession session,
-                                    @NonNull CaptureRequest request,
-                                    @NonNull CaptureFailure failure) {
-            super.onCaptureFailed(session, request, failure);
-            Utils.info(this, "onCaptureFailed enter");
-        }
-
-        @Override
-        public void onCaptureSequenceCompleted(@NonNull CameraCaptureSession session,
-                                               int sequenceId, long frameNumber) {
-            super.onCaptureSequenceCompleted(session, sequenceId, frameNumber);
-        }
-
-        @Override
-        public void onCaptureSequenceAborted(@NonNull CameraCaptureSession session, int sequenceId) {
-            super.onCaptureSequenceAborted(session, sequenceId);
-        }
-
-        @Override
-        public void onCaptureBufferLost(@NonNull CameraCaptureSession session,
-                                        @NonNull CaptureRequest request,
-                                        @NonNull Surface target, long frameNumber) {
-            super.onCaptureBufferLost(session, request, target, frameNumber);
-        }
     };
-    private CaptureRequest mPreviewReq;
 
-    private static final Byte JPEG_QUALITY = 90;
+    private MyCameraController() {}
 
-    private MyCameraController() {
+    private static class Holder {
+        private static final MyCameraController INSTANCE = new MyCameraController();
     }
 
-    private static class Singleton {
-        public static final MyCameraController INSTANCE = new MyCameraController();
+    public static MyCameraController getInstance() {
+        return Holder.INSTANCE;
     }
 
-    /**
-     * Singleton
-     *
-     * @return MyCameraController
-     */
+    @Deprecated
     public static MyCameraController newInstance() {
-        return Singleton.INSTANCE;
+        return getInstance();
     }
-
 
     public void startCameraThread() {
-        Utils.info(this, "startCameraThread enter");
-        this.mBgThread = new HandlerThread(THREAD_NAME);
-        this.mBgThread.start();
-        this.mBgHandler = new Handler(this.mBgThread.getLooper());
+        mBackgroundThread = new HandlerThread(THREAD_NAME);
+        mBackgroundThread.start();
+        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
     }
 
     public void stopCameraThread() {
-        Utils.info(this, "stopCameraThread enter");
-        this.mBgThread.quitSafely();
-        try {
-            this.mBgThread.join();
-            this.mBgThread = null;
-            this.mBgHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (mBackgroundThread != null) {
+            mBackgroundThread.quitSafely();
+            try {
+                mBackgroundThread.join();
+                mBackgroundThread = null;
+                mBackgroundHandler = null;
+            } catch (InterruptedException e) {
+                Log.e(TAG, "Interrupted while stopping camera thread", e);
+            }
         }
     }
-
 
     @SuppressLint("MissingPermission")
-    public void openCamera(Context context, int id) {
-        Utils.info(this, "openCamera enter");
-        CameraManager cameraService = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-
-
+    public void openCamera(Context context, int lensFacing) {
+        CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         try {
-            String cameraId = cameraService.getCameraIdList()[id];
-
-            // Saved file object
-            final File file = (mCallBack == null) ? null : new File(mCallBack.getPath());
-
-            // Set up camera output
-            CameraCharacteristics CameraChar = cameraService.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap map = CameraChar.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            mPreviewSize = map.getOutputSizes(SurfaceTexture.class)[0];
-            mReader = ImageReader.newInstance(mPreviewSize.getWidth(), mPreviewSize.getHeight(),
-                    ImageFormat.JPEG, 2);
-            mReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
-                @Override
-                public void onImageAvailable(ImageReader reader) {
-                    // Tell UI
-                    if (mCallBack != null) {
-                        mCallBack.info("image is available...");
-                    }
-
-                    Image image = null;
-                    try {
-                        image = reader.acquireLatestImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        buffer.get(bytes);
-                        if (file != null) save(bytes);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (image != null) {
-                            image.close();
-                        }
-                    }
-
-
+            String cameraId = null;
+            CameraCharacteristics characteristics = null;
+            for (String id : manager.getCameraIdList()) {
+                CameraCharacteristics c = manager.getCameraCharacteristics(id);
+                Integer facing = c.get(CameraCharacteristics.LENS_FACING);
+                if (facing != null && facing == lensFacing) {
+                    cameraId = id;
+                    characteristics = c;
+                    break;
                 }
-
-                private void save(byte[] bytes) throws IOException {
-                    Utils.info(this, "save +++");
-                    Utils.info(this, "file: " + file.getPath());
-                    OutputStream output = null;
-                    try {
-                        output = new FileOutputStream(file);
-                        output.write(bytes);
-                    } finally {
-                        if (null != output) {
-                            output.close();
-                        }
-                    }
-                    // Tell UI
-                    if (mCallBack != null) {
-                        mCallBack.onSaveImageComplete();
-                    }
-                    Utils.info(this, "save xxx");
-                }
-            }, mBgHandler);
-
-            // Check auto flash
-            Boolean isFlash = CameraChar.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-            mCanFlash = isFlash != null;
-
-            // Open camera
-            cameraService.openCamera(cameraId, mDeviceStateCB, this.mBgHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Start camera preview
-     */
-    private void startPreview() {
-        Utils.info(this, "startPreview");
-
-        // Create preview session
-        SurfaceTexture texture = mView.getSurfaceTexture();
-        Utils.info(this, "texture = " + texture);
-        Utils.info(this, "mPreviewSize = " + mPreviewSize);
-        texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-
-        // Preview surface
-        Surface surface = new Surface(texture);
-
-        try {
-            // Set up CaptureRequest.Singleton
-            mPreviewReqBuilder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            mPreviewReqBuilder.addTarget(surface);
-
-            // Create capture session to display preview
-            mDevice.createCaptureSession(Arrays.asList(surface, mReader.getSurface()), new CameraCaptureSession.StateCallback() {
-                @Override
-                public void onConfigured(@NonNull CameraCaptureSession session) {
-                    Utils.info(this, "preview config: onConfigured enter");
-                    // When the session is ready, start to displaying the preview
-                    mCaptureSession = session;
-
-                    // Auto focus mode
-                    mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-
-                    // Flash mode
-                    if (mCanFlash) {
-                        mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-                    }
-
-                    try {
-                        // Start to display the preview
-                        mPreviewReq = mPreviewReqBuilder.build();
-                        session.setRepeatingRequest(mPreviewReq, mCaptureCallBack, mBgHandler);
-                    } catch (CameraAccessException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                    Utils.info(this, "preview config: onConfigureFailed enter");
-                }
-            }, null);
-
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-            Utils.info(this, "reason: " + e.getReason());
-        }
-
-    }
-
-
-    /** Zero weight 3A region, to reset regions per API. */
-    private static final MeteringRectangle[] ZERO_WEIGHT_3A_REGION = new MeteringRectangle[]{
-            new MeteringRectangle(0, 0, 0, 0, 0)
-    };
-
-    /**
-     * Calculates sensor crop region for a zoom level (zoom >= 1.0).
-     *
-     * @return Crop region.
-     */
-    private Rect cropRegionForZoom(CameraCharacteristics characteristics, float zoom) {
-        Rect sensor = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE);
-        int xCenter = sensor.width() / 2;
-        int yCenter = sensor.height() / 2;
-        int xDelta = (int) (0.5f * sensor.width() / zoom);
-        int yDelta = (int) (0.5f * sensor.height() / zoom);
-        return new Rect(xCenter - xDelta, yCenter - yDelta, xCenter + xDelta, yCenter + yDelta);
-    }
-    /**
-     * Adds current regions to CaptureRequest and base AF mode +
-     * AF_TRIGGER_IDLE.
-     *
-     * @param builder Build for the CaptureRequest
-     */
-    private void addBaselineCaptureKeysToRequest(CaptureRequest.Builder builder) {
-        builder.set(CaptureRequest.CONTROL_AF_REGIONS, ZERO_WEIGHT_3A_REGION);
-        builder.set(CaptureRequest.CONTROL_AE_REGIONS, ZERO_WEIGHT_3A_REGION);
-        builder.set(CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-        builder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_IDLE);
-        // Enable face detection
-        builder.set(CaptureRequest.STATISTICS_FACE_DETECT_MODE,
-                CaptureRequest.STATISTICS_FACE_DETECT_MODE_FULL);
-        builder.set(CaptureRequest.CONTROL_SCENE_MODE,
-                CaptureRequest.CONTROL_SCENE_MODE_FACE_PRIORITY);
-    }
-    private void captureStillPicture() {
-        Utils.info(this, "captureStillPicture enter");
-        try {
-            // Take a picture request
-            final CaptureRequest.Builder builder = mDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
-            addBaselineCaptureKeysToRequest(builder);
-            builder.set(CaptureRequest.JPEG_QUALITY, JPEG_QUALITY);
-            builder.set(CaptureRequest.JPEG_ORIENTATION, 90);
-            builder.addTarget(mReader.getSurface());
-
-            // set AF mode
-            builder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-
-            // set flash
-            if (mCanFlash) {
-                builder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             }
 
-            // Take capture session call back
-            CameraCaptureSession.CaptureCallback captureCallBack = new CameraCaptureSession.CaptureCallback() {
+            if (cameraId == null && manager.getCameraIdList().length > 0) {
+                cameraId = manager.getCameraIdList()[0];
+                characteristics = manager.getCameraCharacteristics(cameraId);
+            }
+
+            if (cameraId == null || characteristics == null) {
+                Utils.error(TAG, "No camera found");
+                return;
+            }
+
+            mSensorOrientation = characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) != null ?
+                    characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION) : 0;
+
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            if (map == null) return;
+
+            Size largest = Collections.max(
+                    Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+                    new CompareSizesByArea());
+            
+            mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
+                    ImageFormat.JPEG, 2);
+            mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
+
+            TextureView textureView = getTextureView();
+            if (textureView == null) return;
+
+            int viewWidth = textureView.getWidth();
+            int viewHeight = textureView.getHeight();
+            
+            // Determine preview size based on aspect ratio
+            int displayRotation = ((Activity)context).getWindowManager().getDefaultDisplay().getRotation();
+            boolean swappedDimensions = false;
+            switch (displayRotation) {
+                case Surface.ROTATION_0:
+                case Surface.ROTATION_180:
+                    if (mSensorOrientation == 90 || mSensorOrientation == 270) swappedDimensions = true;
+                    break;
+                case Surface.ROTATION_90:
+                case Surface.ROTATION_270:
+                    if (mSensorOrientation == 0 || mSensorOrientation == 180) swappedDimensions = true;
+                    break;
+            }
+
+            int rotatedPreviewWidth = swappedDimensions ? viewHeight : viewWidth;
+            int rotatedPreviewHeight = swappedDimensions ? viewWidth : viewHeight;
+            int maxPreviewWidth = swappedDimensions ? MAX_PREVIEW_HEIGHT : MAX_PREVIEW_WIDTH;
+            int maxPreviewHeight = swappedDimensions ? MAX_PREVIEW_WIDTH : MAX_PREVIEW_HEIGHT;
+
+            mPreviewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class),
+                    rotatedPreviewWidth, rotatedPreviewHeight, maxPreviewWidth,
+                    maxPreviewHeight, largest);
+
+            Boolean available = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
+            mFlashSupported = available != null && available;
+
+            configureTransform(viewWidth, viewHeight, (Activity) context);
+
+            manager.openCamera(cameraId, mDeviceStateCallback, mBackgroundHandler);
+        } catch (CameraAccessException e) {
+            Log.e(TAG, "Cannot access the camera", e);
+        }
+    }
+
+    private TextureView getTextureView() {
+        return mTextureViewRef != null ? mTextureViewRef.get() : null;
+    }
+
+    private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            String path = mCallback != null ? mCallback.getPath() : null;
+            if (path == null) return;
+            
+            try (Image image = reader.acquireLatestImage()) {
+                if (image == null) return;
+                ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                byte[] bytes = new byte[buffer.remaining()];
+                buffer.get(bytes);
+                save(bytes, new File(path));
+            } catch (IOException e) {
+                Log.e(TAG, "Error saving image", e);
+            }
+        }
+
+        private void save(byte[] bytes, File file) throws IOException {
+            try (OutputStream output = new FileOutputStream(file)) {
+                output.write(bytes);
+            }
+            if (mCallback != null) mCallback.onSaveImageComplete();
+        }
+    };
+
+    private void startPreview() {
+        try {
+            TextureView textureView = getTextureView();
+            if (textureView == null) return;
+            SurfaceTexture texture = textureView.getSurfaceTexture();
+            if (texture == null) return;
+            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
+            Surface surface = new Surface(texture);
+
+            mPreviewRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewRequestBuilder.addTarget(surface);
+
+            mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),
+                    new CameraCaptureSession.StateCallback() {
+                        @Override
+                        public void onConfigured(@NonNull CameraCaptureSession session) {
+                            if (null == mCameraDevice) return;
+                            mCaptureSession = session;
+                            try {
+                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
+                                        CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+                                setAutoFlash(mPreviewRequestBuilder);
+                                mPreviewRequest = mPreviewRequestBuilder.build();
+                                mCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback, mBackgroundHandler);
+                            } catch (CameraAccessException e) {
+                                Log.e(TAG, "Error starting preview", e);
+                            }
+                        }
+
+                        @Override
+                        public void onConfigureFailed(@NonNull CameraCaptureSession session) {
+                            if (mCallback != null) mCallback.info("Configuration failed");
+                        }
+                    }, null);
+        } catch (CameraAccessException e) {
+            Log.e(TAG, "Error starting preview", e);
+        }
+    }
+
+    public void configureTransform(int viewWidth, int viewHeight, Activity activity) {
+        TextureView textureView = getTextureView();
+        if (null == textureView || null == mPreviewSize || null == activity) return;
+
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        Matrix matrix = new Matrix();
+        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+        float centerX = viewRect.centerX();
+        float centerY = viewRect.centerY();
+
+        float bufferWidth = mPreviewSize.getWidth();
+        float bufferHeight = mPreviewSize.getHeight();
+
+        boolean swappedDimensions = false;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+            case Surface.ROTATION_180:
+                if (mSensorOrientation == 90 || mSensorOrientation == 270) swappedDimensions = true;
+                break;
+            case Surface.ROTATION_90:
+            case Surface.ROTATION_270:
+                if (mSensorOrientation == 0 || mSensorOrientation == 180) swappedDimensions = true;
+                break;
+        }
+
+        float rotatedBufferWidth = swappedDimensions ? bufferHeight : bufferWidth;
+        float rotatedBufferHeight = swappedDimensions ? bufferWidth : bufferHeight;
+
+        // Correct for stretching by using Center-Crop logic
+        float scaleX = 1.0f;
+        float scaleY = 1.0f;
+        float viewRatio = (float) viewWidth / viewHeight;
+        float bufferRatio = rotatedBufferWidth / rotatedBufferHeight;
+
+        if (viewRatio > bufferRatio) {
+            scaleY = (viewWidth / rotatedBufferWidth) / (viewHeight / rotatedBufferHeight);
+        } else {
+            scaleX = (viewHeight / rotatedBufferHeight) / (viewWidth / rotatedBufferWidth);
+        }
+
+        matrix.postScale(scaleX, scaleY, centerX, centerY);
+
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+        } else if (Surface.ROTATION_180 == rotation) {
+            matrix.postRotate(180, centerX, centerY);
+        }
+        textureView.setTransform(matrix);
+    }
+
+    private void captureStillPicture() {
+        try {
+            if (null == mCameraDevice) return;
+            final CaptureRequest.Builder captureBuilder =
+                    mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            captureBuilder.addTarget(mImageReader.getSurface());
+            captureBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            setAutoFlash(captureBuilder);
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 90);
+
+            CameraCaptureSession.CaptureCallback captureCallback = new CameraCaptureSession.CaptureCallback() {
                 @Override
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
-                    super.onCaptureCompleted(session, request, result);
-                    Utils.info(this, "captureCallBack: onCaptureCompleted");
-                    // Tell UI
-                    if (mCallBack != null) {
-                        mCallBack.onCaptureDone();
-                    }
-                    restartPreview();
+                    if (mCallback != null) mCallback.onCaptureDone();
+                    unlockFocus();
                 }
-
             };
 
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
-            mCaptureSession.capture(builder.build(), captureCallBack, null);
-
+            mCaptureSession.capture(captureBuilder.build(), captureCallback, null);
         } catch (CameraAccessException e) {
-            Utils.info(this, "reason: "+ e.getReason());
-            e.printStackTrace();
+            Log.e(TAG, "Error capturing picture", e);
         }
     }
 
-    private void runPreCaptureSequence() {
-        Utils.info(this, "runPreCaptureSequence");
+    private void unlockFocus() {
         try {
-            // This is how to tell the camera to trigger.
-            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
-                    CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
-            // Tell #mCaptureCallback to wait for the preCapture sequence to be set.
-            mState = STATE.WATING_PRECAPTURE;
-            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack,
-                    mBgHandler);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+            setAutoFlash(mPreviewRequestBuilder);
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
+            mState = State.PREVIEW;
+            mCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error unlocking focus", e);
         }
     }
 
-    private void restartPreview() {
-        Utils.info(this, "restartPreview");
+    private void runPrecaptureSequence() {
         try {
-            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            if (mCanFlash) {
-                mPreviewReqBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
-            }
-            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack, mBgHandler);
-            mState = STATE.PREVIEW;
-            mCaptureSession.setRepeatingRequest(mPreviewReq, mCaptureCallBack, mBgHandler);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER, CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
+            mState = State.WAITING_PRECAPTURE;
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error running precapture sequence", e);
         }
     }
 
-    /**
-     * Close camera by CameraDevice
-     */
+    private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
+        if (mFlashSupported) {
+            requestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+        }
+    }
+
     public void closeCamera() {
-        Utils.info(this, "closeCamera enter");
-        if (mCaptureSession != null) {
-            mCaptureSession.close();
-            mCaptureSession = null;
-        }
-
-        if (this.mDevice != null) {
-            this.mDevice.close();
-            this.mDevice = null;
-        }
-
-        if (mReader != null) {
-            mReader.close();
-            mReader = null;
-        }
+        if (null != mCaptureSession) { mCaptureSession.close(); mCaptureSession = null; }
+        if (null != mCameraDevice) { mCameraDevice.close(); mCameraDevice = null; }
+        if (null != mImageReader) { mImageReader.close(); mImageReader = null; }
     }
 
-
-    /**
-     * Get view from UI
-     *
-     * @param view:
-     */
     public void setPreviewContent(TextureView view) {
-        WeakReference<TextureView> weakRef = new WeakReference<>(view);
-        mView = weakRef.get();
+        mTextureViewRef = new WeakReference<>(view);
     }
 
-    public void registerCallBack(MyCameraCallBack callBack) {
-        mCallBack = callBack;
+    public void registerCallback(CameraCallback callback) {
+        mCallback = callback;
     }
 
-    /**
-     * Take a picture
-     */
-    public void capturePicture() {
-        Utils.info(this, "capturePicture");
+    @Deprecated
+    public void registerCallBack(CameraCallback callback) { registerCallback(callback); }
 
+    public void capturePicture() { lockFocus(); }
+
+    private void lockFocus() {
         try {
-            // This is how to tell the camera to lock focus.
-            mPreviewReqBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
-            // Tell mCaptureCallBack to waiting lock state.
-            mState = STATE.WAITING_LOCK;
-            mCaptureSession.capture(mPreviewReqBuilder.build(), mCaptureCallBack, mBgHandler);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
+            mState = State.WAITING_LOCK;
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error locking focus", e);
         }
     }
 
-    /**
-     * CallBack to UI
-     */
-    public interface MyCameraCallBack {
+    private static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
+                                          int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
+        List<Size> bigEnough = new ArrayList<>();
+        List<Size> notBigEnough = new ArrayList<>();
+        int w = aspectRatio.getWidth();
+        int h = aspectRatio.getHeight();
+        for (Size option : choices) {
+            if (option.getWidth() <= maxWidth && option.getHeight() <= maxHeight &&
+                    option.getHeight() == option.getWidth() * h / w) {
+                if (option.getWidth() >= textureViewWidth && option.getHeight() >= textureViewHeight) {
+                    bigEnough.add(option);
+                } else {
+                    notBigEnough.add(option);
+                }
+            }
+        }
+        if (!bigEnough.isEmpty()) return Collections.min(bigEnough, new CompareSizesByArea());
+        if (!notBigEnough.isEmpty()) return Collections.max(notBigEnough, new CompareSizesByArea());
+        return choices[0];
+    }
+
+    public interface CameraCallback {
         void onCaptureDone();
-
         void info(String str);
-
         void onDeviceStateError(int code);
-
         String getPath();
-
         void onSaveImageComplete();
     }
 
-    /**
-     * Camera state
-     */
-    private interface STATE {
-        int PREVIEW = 0;
-        int WAITING_LOCK = 1;
-        int WATING_PRECAPTURE = 2;
-        int WATING_NON_PRECATURE = 3;
-        int PICTURE_TAKEN = 4;
-    }
+    @Deprecated
+    public interface MyCameraCallBack extends CameraCallback {}
 
+    static class CompareSizesByArea implements Comparator<Size> {
+        @Override
+        public int compare(Size lhs, Size rhs) {
+            return Long.signum((long) lhs.getWidth() * lhs.getHeight() - (long) rhs.getWidth() * rhs.getHeight());
+        }
+    }
 }

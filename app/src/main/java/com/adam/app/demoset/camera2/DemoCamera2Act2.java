@@ -43,56 +43,55 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoCamera2Act2Binding;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
 
+/**
+ * Demo Camera2 Activity.
+ * Cleaned up and added transformation logic to fix preview stretching.
+ */
 public class DemoCamera2Act2 extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 0x1357;
-    //camera  permission
-    private static final String[] CAMERA_PERMISSION = {
-            Manifest.permission.CAMERA,
-            //Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private int mIndex;
+    private static final String[] CAMERA_PERMISSION = {Manifest.permission.CAMERA};
+
+    private int mLensFacing = CameraCharacteristics.LENS_FACING_BACK;
     private boolean mCanOpenCamera;
     private MyCameraController mCameraController;
-    /**
-     * Surface view listener
-     */
+    private String mFilePath;
+    private boolean mCaptureDone;
+
+    private ActivityDemoCamera2Act2Binding mBinding;
+
     private final TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            Utils.info(this, "onSurfaceTextureAvailable enter");
-            mCameraController.openCamera(DemoCamera2Act2.this, mIndex);
-
+        public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
+            Utils.info(this, "onSurfaceTextureAvailable: " + width + "x" + height);
+            if (mCanOpenCamera) {
+                mCameraController.openCamera(DemoCamera2Act2.this, mLensFacing);
+            }
         }
 
         @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surface, int width, int height) {
+            Utils.info(this, "onSurfaceTextureSizeChanged: " + width + "x" + height);
+            mCameraController.configureTransform(width, height, DemoCamera2Act2.this);
         }
 
         @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surface) {
             return true;
         }
 
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
+        public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surface) {
         }
     };
-    private TextureView mView;
-    private String mFilePath;
-    private boolean mCaptureDone;
-    /**
-     * Callback from MyCameraController
-     */
-    private final MyCameraController.MyCameraCallBack mDeviceSateCallBack = new MyCameraController.MyCameraCallBack() {
+
+    private final MyCameraController.CameraCallback mCameraCallback = new MyCameraController.CameraCallback() {
         @Override
         public void onCaptureDone() {
             Utils.showToast(DemoCamera2Act2.this, "Capture Done!!!");
@@ -106,105 +105,75 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
         @Override
         public void onDeviceStateError(int code) {
-            Utils.showToast(DemoCamera2Act2.this, "Device state error!!!");
-            // Finish UI
-            DemoCamera2Act2.this.finish();
+            Utils.showToast(DemoCamera2Act2.this, "Device state error: " + code);
+            finish();
         }
 
         @Override
         public String getPath() {
-            File fileDir = DemoCamera2Act2.this.getFilesDir();
-            String fileName = System.currentTimeMillis() + ".jpg";
-            File outputDir = new File(fileDir, "images");
-            if (!outputDir.exists()) {
-                outputDir.mkdirs(); // should succeed
+            File outputDir = new File(getFilesDir(), "images");
+            if (!outputDir.exists() && !outputDir.mkdirs()) {
+                Utils.error(this, "Failed to create images directory");
             }
-            File outputFile = new File(outputDir, fileName);
-
-            mFilePath = outputFile.getPath();
+            File outputFile = new File(outputDir, System.currentTimeMillis() + ".jpg");
+            mFilePath = outputFile.getAbsolutePath();
             return mFilePath;
         }
 
         @Override
         public void onSaveImageComplete() {
-            Utils.showToast(DemoCamera2Act2.this, "Save image Done!!!");
+            Utils.showToast(DemoCamera2Act2.this, "Image saved successfully!");
         }
     };
-
-    // view binding
-    private ActivityDemoCamera2Act2Binding mBinding;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // set decor fit system windows
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        // view binding
         mBinding = ActivityDemoCamera2Act2Binding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-
-        // set inset listener
         ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
 
-        // hide system bar
         UIUtils.hideSystemBar(getWindow());
 
+        mCameraController = MyCameraController.getInstance();
+        mCameraController.setPreviewContent(mBinding.textureViewAct2);
+        mCameraController.registerCallback(mCameraCallback);
 
-        this.mView = mBinding.textureViewAct2;
-
-
-        // MyCamera controller
-        mCameraController = MyCameraController.newInstance();
-
-        mCameraController.setPreviewContent(mView);
-        mCameraController.registerCallBack(mDeviceSateCallBack);
-
-        // Ask camera permission
         if (Utils.askPermission(this, CAMERA_PERMISSION, REQUEST_CAMERA_PERMISSION_CODE)) {
             mCanOpenCamera = true;
-            //Start camera work thread
             mCameraController.startCameraThread();
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_menu_camera, menu);
-
+        getMenuInflater().inflate(R.menu.action_menu_camera, menu);
         return true;
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.info(this, "onResume enter");
-        // Check permission and cameraDevice
         if (mCanOpenCamera) {
-            if (mView.isAvailable()) {
-                // Open camera
-                mCameraController.openCamera(this, mIndex);
+            if (mBinding.textureViewAct2.isAvailable()) {
+                mCameraController.openCamera(this, mLensFacing);
             } else {
-                this.mView.setSurfaceTextureListener(mTextureViewListener);
+                mBinding.textureViewAct2.setSurfaceTextureListener(mTextureViewListener);
             }
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.info(this, "onPause");
         if (mCanOpenCamera) {
-            // Close camera
             mCameraController.closeCamera();
         }
     }
@@ -212,130 +181,77 @@ public class DemoCamera2Act2 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Stop my camera work thread
         mCameraController.stopCameraThread();
     }
 
-    /**
-     * The callback of menu item is pressed.
-     *
-     * @param item:
-     * @return boolean
-     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.front_lens:
-                switchToFrontCamera(true);
-                return true;
-            case R.id.rear_lens:
-                switchToFrontCamera(false);
-                return true;
-            case R.id.exit_camera:
-                this.finish();
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.front_lens) {
+            switchToFrontCamera(true);
+            return true;
+        } else if (itemId == R.id.rear_lens) {
+            switchToFrontCamera(false);
+            return true;
+        } else if (itemId == R.id.exit_camera) {
+            finish();
+            return true;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Receive the result of permission request.
-     *
-     * @param requestCode:
-     * @param permissions:
-     * @param grantResults:
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Utils.info(this, "onRequestPermissionsResult");
         if (requestCode == REQUEST_CAMERA_PERMISSION_CODE) {
-            if (grantResults.length == CAMERA_PERMISSION.length) {
-                for (int result : grantResults) {
-                    Utils.info(this, "result = " + result);
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        Utils.showToast(this, "Camera permission is not granted");
-                        mCanOpenCamera = false;
-                        this.finish();
-                        break;
-                    } else {
-                        Utils.showToast(this, "Camera permission is granted");
-                        mCanOpenCamera = true;
-                        // Open camera
-                        mCameraController.openCamera(this, mIndex);
-                    }
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mCanOpenCamera = true;
+                mCameraController.startCameraThread();
+                if (mBinding.textureViewAct2.isAvailable()) {
+                    mCameraController.openCamera(this, mLensFacing);
+                } else {
+                    mBinding.textureViewAct2.setSurfaceTextureListener(mTextureViewListener);
                 }
+            } else {
+                Utils.showToast(this, "Camera permission is required");
+                finish();
             }
-
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
     }
 
-    /**
-     * Take picture button
-     *
-     * @param v:
-     */
     public void onTakePic(View v) {
-        Utils.info(this, "onTakePic enter");
         mCameraController.capturePicture();
     }
 
-    /**
-     * Show result button
-     *
-     * @param view:
-     */
     public void onResult(View view) {
-        Utils.info(this, "onResult enter");
-        if (mCaptureDone) {
-            // Start play video app
-            Intent intent = playImageIntent();
-            this.startActivity(intent);
+        if (mCaptureDone && mFilePath != null) {
+            startActivity(playImageIntent());
             mCaptureDone = false;
         } else {
-            Utils.showToast(this, "No result!!!");
+            Utils.showToast(this, "No image captured yet!");
         }
-
     }
 
     private Intent playImageIntent() {
-        Utils.info(this, "playVideoIntent");
-        Utils.showToast(this, "mFilePath = " + mFilePath);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // Check file exists
         File file = new File(mFilePath);
-        if (!file.exists()) {
-            Utils.showToast(this, "No this file");
-        } else {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (file.exists()) {
             Uri contentUri = FileProvider.getUriForFile(this,
                     "com.adam.app.demoset.filemanager.provider", file);
-            Utils.info(this, "<content>" + contentUri);
-            Utils.showToast(this, "<content>" + contentUri);
-
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(contentUri, "image/*");
+        } else {
+            Utils.showToast(this, "File not found");
         }
         return intent;
     }
 
-    // ----------------------------------------------------
-    // private method
-
-    /**
-     * Switch the front and back camera by flag.
-     *
-     * @param isFront true front camera
-     *                false back camera
-     */
     private void switchToFrontCamera(boolean isFront) {
-        Utils.info(this, "switchToFrontCamera: isFront = " + isFront);
-        mIndex = (isFront) ? CameraCharacteristics.LENS_FACING_BACK : CameraCharacteristics.LENS_FACING_FRONT;
-        // Close camera
+        mLensFacing = isFront ? CameraCharacteristics.LENS_FACING_FRONT : CameraCharacteristics.LENS_FACING_BACK;
         mCameraController.closeCamera();
-        // Open camera
-        mCameraController.openCamera(this, mIndex);
+        if (mBinding.textureViewAct2.isAvailable()) {
+            mCameraController.openCamera(this, mLensFacing);
+        }
     }
-
 }
