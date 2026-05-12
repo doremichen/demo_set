@@ -1,89 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-    tools:context=".camera2.DemoCamera2Act2">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextureView
-        android:id="@+id/textureView_act2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.adam.app.demoset.camera2.viewmodel.Camera2ViewModel" />
+    </data>
 
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/bg_gradient_top"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        tools:context=".camera2.DemoCamera2Act2">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:cardBackgroundColor="#80000000"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        <TextureView
+            android:id="@+id/textureView_act2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_gradient_top"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            android:text="@string/demo_camera_title"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-    </com.google.android.material.card.MaterialCardView>
+            android:layout_marginTop="32dp"
+            app:cardBackgroundColor="#80000000"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <View
-        android:id="@+id/view_bottom_shroud"
-        android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:background="@drawable/bg_gradient_bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/demo_camera_title"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:id="@+id/layout_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        <View
+            android:id="@+id/view_bottom_shroud"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/bg_gradient_bottom"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_take_pic_act2"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:onClick="onTakePic"
-            android:text="@string/action_take_picture"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:cornerRadius="16dp"
-            app:icon="@android:drawable/ic_menu_camera" />
+        <LinearLayout
+            android:id="@+id/layout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:onClick="onResult"
-            android:text="@string/label_button_camera_result"
-            android:textSize="18sp"
-            app:cornerRadius="16dp"
-            app:icon="@android:drawable/ic_menu_gallery" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_take_pic_act2"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:onClick="@{() -> viewModel.capturePicture()}"
+                android:text="@string/action_take_picture"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:icon="@android:drawable/ic_menu_camera" />
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:onClick="@{() -> viewModel.performShowResult()}"
+                android:text="@string/label_button_camera_result"
+                android:textSize="18sp"
+                app:cornerRadius="16dp"
+                app:icon="@android:drawable/ic_menu_gallery" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

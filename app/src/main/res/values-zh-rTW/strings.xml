@@ -550,4 +550,8 @@
     <string name="action_view_photo">查看照片</string>
     <string name="label_camera_state">相機狀態：%1$s</string>
     <string name="msg_camerax_permission_required">使用 CameraX 需要相機權限。</string>
+    <string name="demo_camera2_image_saved_exception_info">未找到捕獲的影像檔案。該文件可能已被刪除或未正確保存。</string>
+    <string name="demo_camera2_no_image_captured_yet_toast">尚未拍攝到影像！</string>
+    <string name="demo_camera2_capture_done_toast">拍攝完成！</string>
+    <string name="demo_camera2_save_complete_toast">影像儲存成功！</string>
 </resources>

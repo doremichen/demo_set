@@ -550,4 +550,8 @@
     <string name="action_view_photo">View Image</string>
     <string name="label_camera_state">Camera State: %1$s</string>
     <string name="msg_camerax_permission_required">Camera permission is required to use CameraX.</string>
+    <string name="demo_camera2_image_saved_exception_info">Captured image file not found. It may have been deleted or not saved correctly.</string>
+    <string name="demo_camera2_no_image_captured_yet_toast">No image captured yet!</string>
+    <string name="demo_camera2_capture_done_toast">Capture Done!!!</string>
+    <string name="demo_camera2_save_complete_toast">Image saved successfully!</string>
 </resources>
