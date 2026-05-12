@@ -31,6 +31,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -57,13 +61,23 @@ public class CameraXActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // set decor fit system windows for full screen
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_camerax);
         mViewModel = new ViewModelProvider(this).get(CameraXViewModel.class);
 
         mBinding.setVm(mViewModel);
         mBinding.setLifecycleOwner(this);
 
-        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.tvTitle);
+        // Handle window insets
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.rootLayout, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+        UIUtils.hideSystemBar(getWindow());
 
         if (allPermissionsGranted()) {
             initCamera();
