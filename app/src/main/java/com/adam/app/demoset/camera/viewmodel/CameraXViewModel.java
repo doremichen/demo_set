@@ -23,42 +23,78 @@
 package com.adam.app.demoset.camera.viewmodel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.camera.core.Preview;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.adam.app.demoset.camera.controller.MyCameraController;
+
 /**
  * ViewModel for CameraX Demo.
- * Manages UI state and business logic for camera operations.
+ * Orchestrates Activity commands to MyCameraController.
  */
-public class CameraXViewModel extends AndroidViewModel {
+public class CameraXViewModel extends AndroidViewModel implements MyCameraController.CameraStatusCallback {
 
     private final MutableLiveData<String> mStatusText = new MutableLiveData<>("Initializing...");
-    private final MutableLiveData<Boolean> mCaptureTrigger = new MutableLiveData<>(false);
+    private final MutableLiveData<Uri> mLastPhotoUri = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> mViewPhotoEvent = new MutableLiveData<>(false);
+    private final MyCameraController mController;
 
     public CameraXViewModel(@NonNull Application application) {
         super(application);
+        mController = new MyCameraController(application);
     }
 
     public LiveData<String> getStatusText() {
         return mStatusText;
     }
 
-    public LiveData<Boolean> getCaptureTrigger() {
-        return mCaptureTrigger;
+    public LiveData<Uri> getLastPhotoUri() {
+        return mLastPhotoUri;
     }
 
-    public void setStatus(String status) {
-        mStatusText.postValue(status);
+    public LiveData<Boolean> getViewPhotoEvent() {
+        return mViewPhotoEvent;
     }
 
-    public void takePhoto() {
-        mCaptureTrigger.setValue(true);
+    public void initializeCamera(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider) {
+        mController.startCamera(lifecycleOwner, surfaceProvider, this);
     }
 
-    public void onPhotoTaken() {
-        mCaptureTrigger.setValue(false);
+    public void performCapture() {
+        mController.takePhoto(this);
+    }
+
+    public void triggerViewPhoto() {
+        if (mLastPhotoUri.getValue() != null) {
+            mViewPhotoEvent.setValue(true);
+        }
+    }
+
+    public void onViewPhotoHandled() {
+        mViewPhotoEvent.setValue(false);
+    }
+
+    // --- MyCameraController.CameraStatusCallback Implementation ---
+
+    @Override
+    public void onCameraReady(String message) {
+        mStatusText.postValue("Camera State: " + message);
+    }
+
+    @Override
+    public void onPhotoSaved(Uri uri) {
+        mLastPhotoUri.postValue(uri);
+        mStatusText.postValue("Photo Saved: " + (uri != null ? uri.getLastPathSegment() : "unknown"));
+    }
+
+    @Override
+    public void onError(String error) {
+        mStatusText.postValue("Error: " + error);
     }
 }

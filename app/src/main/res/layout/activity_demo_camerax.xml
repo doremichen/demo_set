@@ -77,7 +77,18 @@
                 android:layout_height="60dp"
                 android:text="@string/action_capture"
                 app:cornerRadius="12dp"
-                android:onClick="@{() -> vm.takePhoto()}" />
+                android:onClick="@{() -> vm.performCapture()}" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewPhoto"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/action_view_photo"
+                android:enabled="@{vm.lastPhotoUri != null}"
+                app:cornerRadius="12dp"
+                android:onClick="@{() -> vm.triggerViewPhoto()}" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

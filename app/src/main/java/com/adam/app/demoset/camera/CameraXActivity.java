@@ -23,20 +23,13 @@
 package com.adam.app.demoset.camera;
 
 import android.Manifest;
-import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.Preview;
-import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,22 +39,13 @@ import com.adam.app.demoset.camera.viewmodel.CameraXViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoCameraxBinding;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
-import com.google.common.util.concurrent.ListenableFuture;
-
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Activity for CameraX Demo.
- * Demonstrates modern camera architecture using Jetpack CameraX.
+ * Orchestrates UI and observes ViewModel events.
  */
 public class CameraXActivity extends AppCompatActivity {
 
-    private static final String TAG = "CameraXActivity";
-    private static final String FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS";
     private static final int REQUEST_CODE_PERMISSIONS = 10;
     private static final String[] REQUIRED_PERMISSIONS = {
             Manifest.permission.CAMERA
@@ -69,8 +53,6 @@ public class CameraXActivity extends AppCompatActivity {
 
     private ActivityDemoCameraxBinding mBinding;
     private CameraXViewModel mViewModel;
-    private ImageCapture mImageCapture;
-    private ExecutorService mCameraExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,93 +63,40 @@ public class CameraXActivity extends AppCompatActivity {
         mBinding.setVm(mViewModel);
         mBinding.setLifecycleOwner(this);
 
-        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.tvTitle);
 
         if (allPermissionsGranted()) {
-            startCamera();
+            initCamera();
         } else {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
 
-        mViewModel.getCaptureTrigger().observe(this, trigger -> {
+        observeViewModel();
+    }
+
+    private void initCamera() {
+        mViewModel.initializeCamera(this, mBinding.viewFinder.getSurfaceProvider());
+    }
+
+    private void observeViewModel() {
+        mViewModel.getViewPhotoEvent().observe(this, trigger -> {
             if (Boolean.TRUE.equals(trigger)) {
-                takePhoto();
-                mViewModel.onPhotoTaken();
+                viewLastPhoto(mViewModel.getLastPhotoUri().getValue());
+                mViewModel.onViewPhotoHandled();
             }
         });
-
-        mCameraExecutor = Executors.newSingleThreadExecutor();
     }
 
-    private void startCamera() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = 
-                ProcessCameraProvider.getInstance(this);
-
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
-                // Preview
-                Preview preview = new Preview.Builder().build();
-                preview.setSurfaceProvider(mBinding.viewFinder.getSurfaceProvider());
-
-                mImageCapture = new ImageCapture.Builder().build();
-
-                // Select back camera as a default
-                CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
-
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll();
-
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, mImageCapture);
-                
-                mViewModel.setStatus(getString(R.string.label_camera_state, "Ready"));
-
-            } catch (ExecutionException | InterruptedException e) {
-                Utils.error(this, "Use case binding failed: " + e.getMessage());
-            }
-        }, ContextCompat.getMainExecutor(this));
-    }
-
-    private void takePhoto() {
-        if (mImageCapture == null) return;
-
-        // Create time stamped name and MediaStore entry.
-        String name = new SimpleDateFormat(FILENAME_FORMAT, Locale.US)
-                .format(System.currentTimeMillis());
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image");
+    private void viewLastPhoto(Uri uri) {
+        if (uri == null) return;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            Utils.showToast(this, "No app found to view image");
         }
-
-        // Create output options object which contains android.content.ContentValues
-        ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions
-                .Builder(getContentResolver(),
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues)
-                .build();
-
-        // Set up image capture listener, which is triggered after photo has been taken
-        mImageCapture.takePicture(
-                outputOptions,
-                ContextCompat.getMainExecutor(this),
-                new ImageCapture.OnImageSavedCallback() {
-                    @Override
-                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults output) {
-                        String msg = "Photo capture succeeded: " + output.getSavedUri();
-                        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
-                        Utils.info(TAG, msg);
-                    }
-
-                    @Override
-                    public void onError(@NonNull ImageCaptureException exc) {
-                        Utils.error(TAG, "Photo capture failed: " + exc.getMessage());
-                    }
-                }
-        );
     }
 
     private boolean allPermissionsGranted() {
@@ -184,17 +113,11 @@ public class CameraXActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                startCamera();
+                initCamera();
             } else {
                 Utils.showToast(this, getString(R.string.msg_camerax_permission_required));
                 finish();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mCameraExecutor.shutdown();
     }
 }

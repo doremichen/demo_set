@@ -547,6 +547,7 @@
     <string name="demo_camerax_instruction_title">CameraX Architecture</string>
     <string name="demo_camerax_instruction">This demo demonstrates Jetpack CameraX. It features: \n• Lifecycle Awareness \n• Preview &amp; Image Capture \n• Real-time Image Analysis \n• Simplified device compatibility.</string>
     <string name="action_capture">Capture</string>
+    <string name="action_view_photo">View Image</string>
     <string name="label_camera_state">Camera State: %1$s</string>
     <string name="msg_camerax_permission_required">Camera permission is required to use CameraX.</string>
 </resources>
