@@ -63,7 +63,10 @@ public class MyCameraController {
         this.mContext = context;
     }
 
-    public void startCamera(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider, CameraStatusCallback callback) {
+    public void startCamera(LifecycleOwner lifecycleOwner, 
+                            Preview.SurfaceProvider surfaceProvider, 
+                            int lensFacing,
+                            CameraStatusCallback callback) {
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(mContext);
 
         cameraProviderFuture.addListener(() -> {
@@ -75,12 +78,14 @@ public class MyCameraController {
 
                 mImageCapture = new ImageCapture.Builder().build();
 
-                CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                CameraSelector cameraSelector = new CameraSelector.Builder()
+                        .requireLensFacing(lensFacing)
+                        .build();
 
                 cameraProvider.unbindAll();
                 cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, mImageCapture);
 
-                callback.onCameraReady("Ready");
+                callback.onCameraReady(lensFacing == CameraSelector.LENS_FACING_BACK ? "Back Camera" : "Front Camera");
 
             } catch (ExecutionException | InterruptedException e) {
                 callback.onError("Binding failed: " + e.getMessage());

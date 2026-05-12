@@ -31,7 +31,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -46,7 +45,7 @@ import com.adam.app.demoset.utils.Utils;
 
 /**
  * Activity for CameraX Demo.
- * Orchestrates UI and observes ViewModel events.
+ * Driven by ViewModel state. Observes state changes to manage hardware bindings.
  */
 public class CameraXActivity extends AppCompatActivity {
 
@@ -61,7 +60,6 @@ public class CameraXActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // set decor fit system windows for full screen
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_camerax);
@@ -70,34 +68,41 @@ public class CameraXActivity extends AppCompatActivity {
         mBinding.setVm(mViewModel);
         mBinding.setLifecycleOwner(this);
 
-        // Handle window insets
         ViewCompat.setOnApplyWindowInsetsListener(mBinding.rootLayout, (v, insets) -> {
-            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            androidx.core.graphics.Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
 
         UIUtils.hideSystemBar(getWindow());
 
-        if (allPermissionsGranted()) {
-            initCamera();
-        } else {
+        // Setup observers first
+        observeViewModel();
+
+        // Check permissions. Binding will be triggered by LiveData observation if granted.
+        if (!allPermissionsGranted()) {
             requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
         }
-
-        observeViewModel();
     }
 
     private void initCamera() {
-        mViewModel.initializeCamera(this, mBinding.viewFinder.getSurfaceProvider());
+        if (allPermissionsGranted()) {
+            mViewModel.initializeCamera(this, mBinding.viewFinder.getSurfaceProvider());
+        }
     }
 
     private void observeViewModel() {
+        // Photo viewing event
         mViewModel.getViewPhotoEvent().observe(this, trigger -> {
             if (Boolean.TRUE.equals(trigger)) {
                 viewLastPhoto(mViewModel.getLastPhotoUri().getValue());
                 mViewModel.onViewPhotoHandled();
             }
+        });
+
+        // State-driven camera binding: Re-bind whenever lens facing changes
+        mViewModel.getLensFacing().observe(this, facing -> {
+            initCamera();
         });
     }
 

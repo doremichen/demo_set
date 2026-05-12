@@ -29,6 +29,8 @@ import static org.mockito.Mockito.mock;
 
 import android.os.Build;
 
+import com.adam.app.demoset.video.controller.VideoRecordManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,65 +40,53 @@ import org.robolectric.annotation.Config;
 import java.lang.reflect.Field;
 
 /**
- * Unit tests for MyRecordVideoController.
+ * Unit tests for VideoRecordManager.
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.P)
-public class MyRecordVideoControllerTest {
+public class VideoRecordManagerTest {
 
-    private MyRecordVideoController controller;
+    private VideoRecordManager manager;
 
     @Before
     public void setUp() throws Exception {
-        controller = MyRecordVideoController.newInstance();
-        // Since it's a singleton, reset internal state via reflection if necessary
+        manager = VideoRecordManager.getInstance();
         resetSingleton();
     }
 
     private void resetSingleton() throws Exception {
-        Field deviceField = MyRecordVideoController.class.getDeclaredField("mDevice");
+        Field deviceField = VideoRecordManager.class.getDeclaredField("mDevice");
         deviceField.setAccessible(true);
-        deviceField.set(controller, null);
+        deviceField.set(manager, null);
 
-        Field recorderField = MyRecordVideoController.class.getDeclaredField("mRecorder");
+        Field recorderField = VideoRecordManager.class.getDeclaredField("mRecorder");
         recorderField.setAccessible(true);
-        recorderField.set(controller, null);
+        recorderField.set(manager, null);
 
-        Field stateField = MyRecordVideoController.class.getDeclaredField("mRecordState");
+        Field stateField = VideoRecordManager.class.getDeclaredField("mRecordState");
         stateField.setAccessible(true);
-        // Access the STOP enum value. Note: RecordState is private in the original file provided in prompt?
-        // Wait, looking at the provided source code, RecordState IS private.
-        // I need to find a way to set it or just trust its default.
-        // In the provided source: private RecordState mRecordState = RecordState.STOP;
     }
 
     @Test
-    public void testNewInstance() {
-        assertNotNull(MyRecordVideoController.newInstance());
-        assertTrue(MyRecordVideoController.newInstance() == MyRecordVideoController.newInstance());
+    public void testGetInstance() {
+        assertNotNull(VideoRecordManager.getInstance());
+        assertTrue(VideoRecordManager.getInstance() == VideoRecordManager.getInstance());
     }
 
     @Test
     public void testThreadManagement() {
-        controller.startCameraThread();
-        // Check if thread is running via reflection or behavior
-        controller.stopCameraThread();
+        manager.startCameraThread();
+        manager.stopCameraThread();
     }
 
     @Test
     public void testIsRecording_Default() {
-        assertFalse(controller.isRecording());
+        assertFalse(manager.isRecording());
     }
 
     @Test
     public void testRegisterListener() {
-        MyRecordVideoController.ControllerListener mockListener = mock(MyRecordVideoController.ControllerListener.class);
-        controller.registerListener(mockListener);
-        // Field is private, can't easily verify without reflection
+        VideoRecordManager.RecordListener mockListener = mock(VideoRecordManager.RecordListener.class);
+        manager.registerListener(mockListener);
     }
-
-    // Note: Testing openCamera and startRecord requires complex mocking of 
-    // CameraManager, CameraDevice, and MediaRecorder which is often beyond 
-    // basic unit testing scope due to the heavy dependency on hardware 
-    // and asynchronous callbacks.
 }

@@ -20,10 +20,9 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.video;
+package com.adam.app.demoset.video.controller;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -50,17 +49,18 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Controller for video recording operations using Camera2 API.
+ * Manager for video recording operations using Camera2 API.
  * Implemented as a Singleton.
  */
-public class MyRecordVideoController {
+public class VideoRecordManager {
 
+    public static final String CAMERA_WORK_THREAD_NAME = "camera work thread";
     private HandlerThread mBgThread;
     private Handler mHandler;
     private Size mPreviewSize;
     private MediaRecorder mRecorder;
     private CameraDevice mDevice;
-    private ControllerListener mListener;
+    private RecordListener mListener;
     private TextureView mTextureView;
     private CaptureRequest.Builder mRequestBuilder;
     private CameraCaptureSession mPreviewSession;
@@ -99,21 +99,21 @@ public class MyRecordVideoController {
         }
     };
 
-    private MyRecordVideoController() {
+    private VideoRecordManager() {
     }
 
     private static class Helper {
-        private static final MyRecordVideoController INSTANCE = new MyRecordVideoController();
+        private static final VideoRecordManager INSTANCE = new VideoRecordManager();
     }
 
-    public static MyRecordVideoController newInstance() {
+    public static VideoRecordManager getInstance() {
         return Helper.INSTANCE;
     }
 
     public void startCameraThread() {
         Utils.info(this, "startCameraThread");
         if (mBgThread == null) {
-            mBgThread = new HandlerThread("camera work thread");
+            mBgThread = new HandlerThread(CAMERA_WORK_THREAD_NAME);
             mBgThread.start();
             mHandler = new Handler(mBgThread.getLooper());
         }
@@ -140,7 +140,7 @@ public class MyRecordVideoController {
         CameraManager cameraService = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
 
         try {
-            String cameraId = cameraService.getCameraIdList()[0]; // Default to first camera (usually back)
+            String cameraId = cameraService.getCameraIdList()[0];
             CameraCharacteristics cameraChar = cameraService.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = cameraChar.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             
@@ -168,13 +168,14 @@ public class MyRecordVideoController {
             mRecorder = null;
         }
         mRecordState = RecordState.STOP;
+        mTextureView = null;
     }
 
     public boolean isRecording() {
         return this.mRecordState == RecordState.START;
     }
 
-    public void startRecord(final Activity activity) {
+    public void startRecord(final Context context) {
         Utils.info(this, "startRecord");
         if (!Utils.areAllNotNull(mDevice, mPreviewSize, mListener) || !mTextureView.isAvailable()) {
             Utils.error(this, "Validation failed for startRecord");
@@ -193,7 +194,7 @@ public class MyRecordVideoController {
             CaptureRequestStrategy strategy = new RecordCaptureRequestStrategy();
             strategy.createCaptureRequest();
 
-            startRecordSession(activity, strategy);
+            startRecordSession(context, strategy);
             this.mRecordState = RecordState.START;
         } catch (CameraAccessException | IOException e) {
             Utils.error(this, "Exception during startRecord: " + e.getMessage());
@@ -255,7 +256,6 @@ public class MyRecordVideoController {
     }
 
     private void updatePreview() {
-        // Fix: Added null checks for mDevice and mPreviewSession to prevent IllegalStateException
         if (mDevice == null || mPreviewSession == null || mRequestBuilder == null) {
             return;
         }
@@ -289,16 +289,16 @@ public class MyRecordVideoController {
         mRecorder.prepare();
     }
 
-    private void startRecordSession(final Activity activity, CaptureRequestStrategy strategy) throws CameraAccessException {
+    private void startRecordSession(final Context context, CaptureRequestStrategy strategy) throws CameraAccessException {
         mDevice.createCaptureSession(strategy.getSurfaces(), new CameraCaptureSession.StateCallback() {
             @Override
             public void onConfigured(@NonNull CameraCaptureSession session) {
                 mPreviewSession = session;
                 updatePreview();
-                activity.runOnUiThread(() -> {
+                new Handler(context.getMainLooper()).post(() -> {
                     try {
                         mRecorder.start();
-                        Utils.showToast(activity, "Recording...");
+                        Utils.showToast(context, "Recording...");
                     } catch (IllegalStateException e) {
                         Utils.error(this, "Failed to start recorder: " + e.getMessage());
                     }
@@ -321,8 +321,12 @@ public class MyRecordVideoController {
         return choices[choices.length - 1];
     }
 
-    public void registerListener(ControllerListener listener) {
+    public void registerListener(RecordListener listener) {
         mListener = listener;
+    }
+
+    public Size getPreviewSize() {
+        return mPreviewSize;
     }
 
     interface CaptureRequestStrategy {
@@ -351,7 +355,7 @@ public class MyRecordVideoController {
         }
     }
 
-    public interface ControllerListener {
+    public interface RecordListener {
         void onError(int result);
         void onFail(String msg);
         void onInfo(String msg);

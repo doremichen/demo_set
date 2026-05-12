@@ -26,6 +26,7 @@ import android.app.Application;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
+import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
@@ -36,13 +37,17 @@ import com.adam.app.demoset.camera.controller.MyCameraController;
 
 /**
  * ViewModel for CameraX Demo.
- * Orchestrates Activity commands to MyCameraController.
+ * Driven by State: Activity observes state changes to perform lifecycle bindings.
  */
 public class CameraXViewModel extends AndroidViewModel implements MyCameraController.CameraStatusCallback {
 
     private final MutableLiveData<String> mStatusText = new MutableLiveData<>("Initializing...");
     private final MutableLiveData<Uri> mLastPhotoUri = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mViewPhotoEvent = new MutableLiveData<>(false);
+    
+    // State-driven: The source of truth for lens facing
+    private final MutableLiveData<Integer> mLensFacing = new MutableLiveData<>(CameraSelector.LENS_FACING_BACK);
+    
     private final MyCameraController mController;
 
     public CameraXViewModel(@NonNull Application application) {
@@ -62,8 +67,26 @@ public class CameraXViewModel extends AndroidViewModel implements MyCameraContro
         return mViewPhotoEvent;
     }
 
+    public LiveData<Integer> getLensFacing() {
+        return mLensFacing;
+    }
+
+    /**
+     * Action called by Data Binding to update the state.
+     */
+    public void switchCamera() {
+        Integer current = mLensFacing.getValue();
+        if (current != null) {
+            mLensFacing.setValue(current == CameraSelector.LENS_FACING_BACK ? 
+                    CameraSelector.LENS_FACING_FRONT : CameraSelector.LENS_FACING_BACK);
+        }
+    }
+
     public void initializeCamera(LifecycleOwner lifecycleOwner, Preview.SurfaceProvider surfaceProvider) {
-        mController.startCamera(lifecycleOwner, surfaceProvider, this);
+        Integer facing = mLensFacing.getValue();
+        if (facing != null) {
+            mController.startCamera(lifecycleOwner, surfaceProvider, facing, this);
+        }
     }
 
     public void performCapture() {

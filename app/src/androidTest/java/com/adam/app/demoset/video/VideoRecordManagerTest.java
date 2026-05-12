@@ -37,6 +37,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.video.controller.VideoRecordManager;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -49,12 +50,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Advanced Instrumented tests for MyRecordVideoController.
- * Verifies camera opening, closing, and recording states.
- * Includes logic to keep the screen awake during testing.
+ * Advanced Instrumented tests for VideoRecordManager.
  */
 @RunWith(AndroidJUnit4.class)
-public class MyRecordVideoControllerTest {
+public class VideoRecordManagerTest {
 
     private static String sOriginalSleepTimeout;
 
@@ -68,18 +67,16 @@ public class MyRecordVideoControllerTest {
             Manifest.permission.RECORD_AUDIO
     );
 
-    private MyRecordVideoController controller;
+    private VideoRecordManager manager;
 
     @BeforeClass
     public static void keepScreenAwake() {
-        // Backup original timeout and set to a very large value (e.g., 30 mins) via shell
         sOriginalSleepTimeout = executeShellCommand("settings get system screen_off_timeout").trim();
         executeShellCommand("settings put system screen_off_timeout 1800000");
     }
 
     @AfterClass
     public static void restoreScreenSettings() {
-        // Restore original timeout
         if (sOriginalSleepTimeout != null && !sOriginalSleepTimeout.isEmpty()) {
             executeShellCommand("settings put system screen_off_timeout " + sOriginalSleepTimeout);
         }
@@ -99,8 +96,7 @@ public class MyRecordVideoControllerTest {
 
     @Before
     public void setUp() {
-        controller = MyRecordVideoController.newInstance();
-        // Force the activity window to stay on
+        manager = VideoRecordManager.getInstance();
         activityRule.getScenario().onActivity(activity -> {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
@@ -114,13 +110,13 @@ public class MyRecordVideoControllerTest {
             TextureView textureView = activity.findViewById(R.id.surface_record);
             
             if (textureView.isAvailable()) {
-                controller.openCamera(activity, textureView);
+                manager.openCamera(activity, textureView);
                 latch.countDown();
             } else {
                 textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
                     @Override
                     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
-                        controller.openCamera(activity, textureView);
+                        manager.openCamera(activity, textureView);
                         latch.countDown();
                     }
                     @Override public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surface, int width, int height) {}
@@ -136,17 +132,17 @@ public class MyRecordVideoControllerTest {
     @Test
     public void testRecordState_Consistency() {
         activityRule.getScenario().onActivity(activity -> {
-            assertFalse(controller.isRecording());
-            controller.closeCamera();
-            assertFalse(controller.isRecording());
+            assertFalse(manager.isRecording());
+            manager.closeCamera();
+            assertFalse(manager.isRecording());
         });
     }
 
     @Test
     public void testStopRecord_WhenNotActive() {
         activityRule.getScenario().onActivity(activity -> {
-            controller.stopRecord();
-            assertFalse(controller.isRecording());
+            manager.stopRecord();
+            assertFalse(manager.isRecording());
         });
     }
 }

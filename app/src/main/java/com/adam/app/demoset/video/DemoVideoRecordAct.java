@@ -23,19 +23,18 @@
 package com.adam.app.demoset.video;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.TextUtils;
+import android.util.Size;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Chronometer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,44 +43,40 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.databinding.ActivityDemoVideoRecordBinding;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
-import com.google.android.material.button.MaterialButton;
+import com.adam.app.demoset.video.viewmodel.VideoRecordViewModel;
 
 import java.io.File;
 
 public class DemoVideoRecordAct extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 0x2467;
-    private static final String KEY_PERMISSION = "key.permission";
-    //record  permission
     private static final String[] RECORD_PERMISSION = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
-    private MaterialButton mBtnRecorder;
-    private MaterialButton mBtnPlayVideo;
-    private View mRecDot;
-    private Chronometer mTimer;
+
+    private ActivityDemoVideoRecordBinding mBinding;
+    private VideoRecordViewModel mViewModel;
     private boolean mIsAllow;
-    private MyRecordVideoController mController;
-    private TextureView mSurfaceView;
     private String mFilePath;
-    private TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
+
+    private final TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             Utils.info(this, "onSurfaceTextureAvailable enter");
-            // Open camera
-            mController.openCamera(DemoVideoRecordAct.this, mSurfaceView);
-
+            mViewModel.openCamera(mBinding.surfaceRecord);
+            adjustAspectRatio();
         }
 
         @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
-        }
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {}
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -89,230 +84,169 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         }
 
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-        }
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {}
     };
-
-    private MyRecordVideoController.ControllerListener mControllerlistener = new MyRecordVideoController.ControllerListener() {
-        @Override
-        public void onError(int result) {
-            // Show alert dialog
-            Utils.showAlertDialog(DemoVideoRecordAct.this, "Open camera error result: " + result, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Finish UI
-                    DemoVideoRecordAct.this.finish();
-                }
-            });
-        }
-
-        @Override
-        public void onFail(String msg) {
-            // Show alert dialog
-            Utils.showAlertDialog(DemoVideoRecordAct.this, msg, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // not need to do something
-                }
-            });
-        }
-
-        @Override
-        public void onInfo(String msg) {
-            Utils.showToast(DemoVideoRecordAct.this, msg);
-        }
-
-        @Override
-        public String getPath() {
-            Utils.info(this, "getPath enter");
-            File fileDir = DemoVideoRecordAct.this.getFilesDir();
-            String fileName = System.currentTimeMillis() + ".mp4";
-            File outputDir = new File(fileDir, "videos");
-            if (!outputDir.exists()) {
-                outputDir.mkdirs(); // should succeed
-            }
-            File outputFile = new File(outputDir, fileName);
-
-            mFilePath = outputFile.getPath();
-            return mFilePath;
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // set decor fit system windows
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        setContentView(R.layout.activity_demo_video_record);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_video_record);
+        mViewModel = new ViewModelProvider(this).get(VideoRecordViewModel.class);
+        mBinding.setViewModel(mViewModel);
+        mBinding.setLifecycleOwner(this);
 
-        mSurfaceView = this.findViewById(R.id.surface_record);
-        mBtnRecorder = this.findViewById(R.id.btn_start_rec);
-        mBtnPlayVideo = this.findViewById(R.id.play_vedio);
-        mRecDot = this.findViewById(R.id.rec_dot);
-        mTimer = this.findViewById(R.id.timer);
-
-        // handle window insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_layout), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(mBinding.rootLayout, (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
 
-        // hide system bar
         UIUtils.hideSystemBar(getWindow());
 
-        // update timer info
-        this.mTimer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                int h = (int) (time / 3600000);
-                int m = (int) (time - h * 3600000) / 60000;
-                int s = (int) (time - h * 3600000 - m * 60000) / 1000;
-                String hh = h < 10 ? "0" + h : h + "";
-                String mm = m < 10 ? "0" + m : m + "";
-                String ss = s < 10 ? "0" + s : s + "";
-                // update info
-                mTimer.setText(TextUtils.concat(hh, ":", mm, ":", ss));
-
-            }
-        });
-
-
-        mController = MyRecordVideoController.newInstance();
-
-        mController.registerListener(mControllerlistener);
+        mBinding.timer.setOnChronometerTickListener(chronometer -> 
+            mViewModel.updateTimer(SystemClock.elapsedRealtime())
+        );
 
         if (Utils.askPermission(this, RECORD_PERMISSION, REQUEST_PERMISSION_CODE)) {
-            // Permission is granted
             mIsAllow = true;
         }
 
-        mController.startCameraThread();
+        mViewModel.startCameraThread();
+
+        observeViewModel();
+    }
+
+    private void observeViewModel() {
+        mViewModel.isRecording.observe(this, isRecording -> {
+            if (isRecording) {
+                startRecordingAnimation();
+                mBinding.timer.start();
+            } else {
+                stopRecordingAnimation();
+                mBinding.timer.stop();
+            }
+        });
+
+        mViewModel.errorResult.observe(this, result -> 
+            Utils.showAlertDialog(this, "Open camera error result: " + result, (dialog, which) -> finish())
+        );
+
+        mViewModel.failMsg.observe(this, msg -> 
+            Utils.showAlertDialog(this, msg, null)
+        );
+
+        mViewModel.infoMsg.observe(this, msg -> 
+            Utils.showToast(this, msg)
+        );
+
+        mViewModel.filePath.observe(this, path -> mFilePath = path);
+    }
+
+    private void adjustAspectRatio() {
+        Size previewSize = mViewModel.getPreviewSize();
+        if (previewSize == null) return;
+
+        int viewWidth = mBinding.surfaceRecord.getWidth();
+        int viewHeight = mBinding.surfaceRecord.getHeight();
+        
+        // Camera2 sizes are usually landscape, so we swap for portrait
+        int videoWidth = previewSize.getHeight();
+        int videoHeight = previewSize.getWidth();
+
+        double aspectRatio = (double) videoHeight / videoWidth;
+        int newWidth, newHeight;
+
+        if (viewHeight > (int) (viewWidth * aspectRatio)) {
+            newWidth = viewWidth;
+            newHeight = (int) (viewWidth * aspectRatio);
+        } else {
+            newWidth = (int) (viewHeight / aspectRatio);
+            newHeight = viewHeight;
+        }
+
+        ViewGroup.LayoutParams lp = mBinding.surfaceRecord.getLayoutParams();
+        lp.width = newWidth;
+        lp.height = newHeight;
+        mBinding.surfaceRecord.setLayoutParams(lp);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Utils.info(this, "onRequestPermissionsResult enter");
         if (requestCode == REQUEST_PERMISSION_CODE) {
             if (grantResults.length == RECORD_PERMISSION.length) {
                 for (int result : grantResults) {
-                    Utils.info(this, "result = " + result);
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         mIsAllow = false;
-                        // permission denied
                         this.finish();
-                        break;
-                    } else {
-                        mIsAllow = true;
+                        return;
                     }
                 }
+                mIsAllow = true;
+                if (mBinding.surfaceRecord.isAvailable()) {
+                    mViewModel.openCamera(mBinding.surfaceRecord);
+                    adjustAspectRatio();
+                }
             }
-
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        // Hide systemUI
         UIUtils.hideSystemBar(getWindow());
-//        View decoreView = this.getWindow().getDecorView();
-//        Utils.hideSystemUI(decoreView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Utils.info(this, "onResume mIsAllow = " + mIsAllow);
         if (mIsAllow) {
-            if (mSurfaceView.isAvailable()) {
-                // Open camera
-                mController.openCamera(this, mSurfaceView);
-
+            if (mBinding.surfaceRecord.isAvailable()) {
+                mViewModel.openCamera(mBinding.surfaceRecord);
+                adjustAspectRatio();
             } else {
-                this.mSurfaceView.setSurfaceTextureListener(mTextureViewListener);
+                mBinding.surfaceRecord.setSurfaceTextureListener(mTextureViewListener);
             }
         }
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Utils.info(this, "onPause mIsAllow = " + mIsAllow);
         if (mIsAllow) {
-            setEnabledRecording(false);
-            mController.closeCamera();
+            if (Boolean.TRUE.equals(mViewModel.isRecording.getValue())) {
+                onRecord(null);
+            }
+            mViewModel.closeCamera();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Utils.info(this, "onDestroy mIsAllow = " + mIsAllow);
-        mController.stopCameraThread();
+        mViewModel.stopCameraThread();
     }
 
     public void onRecord(View v) {
-        Utils.info(this, "onRecord: " + String.valueOf(mController.isRecording()));
-        setEnabledRecording(!mController.isRecording());
-        // change play button function
-        int visibility = (!mController.isRecording()) ? View.VISIBLE : View.INVISIBLE;
-        mBtnPlayVideo.setVisibility(visibility);
-
-    }
-
-    private void setEnabledRecording(boolean enabled) {
-        Utils.info(this, "setEnabledRecording: " + String.valueOf(enabled));
-        if (enabled) {
-            // start timer
-            this.mTimer.setBase(SystemClock.elapsedRealtime());
-            this.mTimer.start();
-            mController.startRecord(this);
-            // change stop icon
-            mBtnRecorder.setIconResource(android.R.drawable.ic_media_pause);
-
-            // start record animation
-            startRecordingAnimation();
-
-         } else {
-            // stop timer
-            this.mTimer.stop();
-            mController.stopRecord();
-            // change start icon
-            mBtnRecorder.setIconResource(android.R.drawable.ic_menu_camera);
-
-            // stop record animation
-            stopRecordingAnimation();
-        }
+        mViewModel.toggleRecord();
     }
 
     private void startRecordingAnimation() {
-        mRecDot.setVisibility(View.VISIBLE);
         AlphaAnimation blink = new AlphaAnimation(1.0f, 0.0f);
         blink.setDuration(500);
         blink.setRepeatMode(Animation.REVERSE);
         blink.setRepeatCount(Animation.INFINITE);
-        mRecDot.startAnimation(blink);
+        mBinding.recDot.startAnimation(blink);
     }
 
     private void stopRecordingAnimation() {
-        mRecDot.clearAnimation();
-        mRecDot.setVisibility(View.INVISIBLE);
+        mBinding.recDot.clearAnimation();
     }
 
     public void onPlayVideo(View v) {
-        Utils.info(this, "onPlayVideo");
-
-        // Start play video app
         Intent intent = playVideo();
         if (intent != null) {
             this.startActivity(intent);
@@ -324,25 +258,20 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     private Intent playVideo() {
-        Utils.info(this, "playVedioIntent");
-        Utils.info(this, "mFilePath = " + mFilePath);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
         if (this.mFilePath == null) {
             Utils.showToast(this, getString(R.string.demo_video_record_invalid_path_toast));
             return null;
         }
-        // Check file exists
         File file = new File(mFilePath);
         if (!file.exists()) {
             Utils.showToast(this, "No this file");
-        } else {
-            Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
-            Utils.showToast(this, "<content>" + contentUri);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setDataAndType(contentUri, "video/*");
-
+            return null;
         }
-
+        
+        Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.setDataAndType(contentUri, "video/*");
         return intent;
     }
 }
