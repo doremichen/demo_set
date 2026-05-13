@@ -41,28 +41,15 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
 
     private final VideoRecordManager mManager;
 
-    private final MutableLiveData<Boolean> _isRecording = new MutableLiveData<>(false);
-    public final LiveData<Boolean> isRecording = _isRecording;
+    private final MutableLiveData<Boolean> mIsRecording = new MutableLiveData<>(false);
+    private final MutableLiveData<String> mTimerText = new MutableLiveData<>("00:00:00");
+    private final MutableLiveData<Boolean> mCanPlay = new MutableLiveData<>(false);
+    private final MutableLiveData<String> mFilePath = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mErrorResult = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mFailResId = new MutableLiveData<>();
+    private final MutableLiveData<Integer> mInfoResId = new MutableLiveData<>();
 
-    private final MutableLiveData<String> _timerText = new MutableLiveData<>("00:00:00");
-    public final LiveData<String> timerText = _timerText;
-
-    private final MutableLiveData<Boolean> _canPlay = new MutableLiveData<>(false);
-    public final LiveData<Boolean> canPlay = _canPlay;
-
-    private final MutableLiveData<String> _filePath = new MutableLiveData<>();
-    public final LiveData<String> filePath = _filePath;
-
-    private final MutableLiveData<Integer> _errorResult = new MutableLiveData<>();
-    public final LiveData<Integer> errorResult = _errorResult;
-
-    private final MutableLiveData<String> _failMsg = new MutableLiveData<>();
-    public final LiveData<String> failMsg = _failMsg;
-
-    private final MutableLiveData<String> _infoMsg = new MutableLiveData<>();
-    public final LiveData<String> infoMsg = _infoMsg;
-
-    private long baseTime;
+    private long mBaseTime;
 
     public VideoRecordViewModel(@NonNull Application application) {
         super(application);
@@ -87,30 +74,35 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
     }
 
     public void toggleRecord() {
-        boolean nowRecording = !mManager.isRecording();
-        if (nowRecording) {
-            mManager.startRecord(getApplication());
-        } else {
-            mManager.stopRecord();
+        if (mManager.isRecording()) {
+            stopRecording();
+            return;
         }
-        _isRecording.setValue(nowRecording);
-        if (nowRecording) {
-            baseTime = SystemClock.elapsedRealtime();
-            _canPlay.setValue(false);
-        } else {
-            _canPlay.setValue(true);
-        }
+        startRecording();
+    }
+
+    private void startRecording() {
+        mManager.startRecord(getApplication());
+        mBaseTime = SystemClock.elapsedRealtime();
+        mIsRecording.setValue(true);
+        mCanPlay.setValue(false);
+    }
+
+    private void stopRecording() {
+        mManager.stopRecord();
+        mIsRecording.setValue(false);
+        mCanPlay.setValue(true);
     }
 
     public void updateTimer(long currentTime) {
-        long time = currentTime - baseTime;
+        long time = currentTime - mBaseTime;
         int h = (int) (time / 3600000);
         int m = (int) (time - h * 3600000) / 60000;
         int s = (int) (time - h * 3600000 - m * 60000) / 1000;
         String hh = h < 10 ? "0" + h : h + "";
         String mm = m < 10 ? "0" + m : m + "";
         String ss = s < 10 ? "0" + s : s + "";
-        _timerText.setValue(TextUtils.concat(hh, ":", mm, ":", ss).toString());
+        mTimerText.setValue(TextUtils.concat(hh, ":", mm, ":", ss).toString());
     }
 
     public Size getPreviewSize() {
@@ -121,32 +113,60 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
         mManager.configureTransform(width, height, rotation);
     }
 
+    public LiveData<Boolean> isRecording() {
+        return mIsRecording;
+    }
+
+    public LiveData<String> getTimerText() {
+        return mTimerText;
+    }
+
+    public LiveData<Boolean> canPlay() {
+        return mCanPlay;
+    }
+
+    public LiveData<String> getFilePath() {
+        return mFilePath;
+    }
+
+    public LiveData<Integer> getErrorResult() {
+        return mErrorResult;
+    }
+
+    public LiveData<Integer> getFailResId() {
+        return mFailResId;
+    }
+
+    public LiveData<Integer> getInfoResId() {
+        return mInfoResId;
+    }
+
     @Override
     public void onError(int result) {
-        _errorResult.postValue(result);
+        mErrorResult.postValue(result);
     }
 
     @Override
-    public void onFail(String msg) {
-        _failMsg.postValue(msg);
+    public void onFail(int resId) {
+        mFailResId.postValue(resId);
     }
 
     @Override
-    public void onInfo(String msg) {
-        _infoMsg.postValue(msg);
+    public void onInfo(int resId) {
+        mInfoResId.postValue(resId);
     }
 
     @Override
     public String getPath() {
         File fileDir = getApplication().getFilesDir();
-        String fileName = System.currentTimeMillis() + ".mp4";
         File outputDir = new File(fileDir, "videos");
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
+        if (!outputDir.exists() && !outputDir.mkdirs()) {
+            return null;
         }
+        String fileName = System.currentTimeMillis() + ".mp4";
         File outputFile = new File(outputDir, fileName);
         String path = outputFile.getPath();
-        _filePath.postValue(path);
+        mFilePath.postValue(path);
         return path;
     }
 }

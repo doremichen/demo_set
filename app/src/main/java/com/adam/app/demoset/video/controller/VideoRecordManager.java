@@ -43,6 +43,7 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
 
+import com.adam.app.demoset.R;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.IOException;
@@ -96,9 +97,10 @@ public class VideoRecordManager {
             Utils.error(this, "Camera onError: " + error);
             camera.close();
             mDevice = null;
-            if (mListener != null) {
-                mListener.onError(error);
+            if (mListener == null) {
+                return;
             }
+            mListener.onError(error);
         }
     };
 
@@ -115,24 +117,26 @@ public class VideoRecordManager {
 
     public void startCameraThread() {
         Utils.info(this, "startCameraThread");
-        if (mBgThread == null) {
-            mBgThread = new HandlerThread(CAMERA_WORK_THREAD_NAME);
-            mBgThread.start();
-            mHandler = new Handler(mBgThread.getLooper());
+        if (mBgThread != null) {
+            return;
         }
+        mBgThread = new HandlerThread(CAMERA_WORK_THREAD_NAME);
+        mBgThread.start();
+        mHandler = new Handler(mBgThread.getLooper());
     }
 
     public void stopCameraThread() {
         Utils.info(this, "stopCameraThread");
-        if (mBgThread != null) {
-            mBgThread.quitSafely();
-            try {
-                mBgThread.join();
-                mHandler = null;
-                mBgThread = null;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (mBgThread == null) {
+            return;
+        }
+        mBgThread.quitSafely();
+        try {
+            mBgThread.join();
+            mHandler = null;
+            mBgThread = null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -188,7 +192,7 @@ public class VideoRecordManager {
         }
 
         if (isRecording()) {
-            mListener.onInfo("Already recording");
+            mListener.onInfo(R.string.demo_video_record_info_already_recording);
             return;
         }
 
@@ -218,7 +222,7 @@ public class VideoRecordManager {
             mRecorder.setOnInfoListener(null);
             mRecorder.stop();
             mRecorder.reset();
-            mListener.onInfo("Recording stopped");
+            mListener.onInfo(R.string.demo_video_record_info_stopped);
         } catch (RuntimeException e) {
             Utils.error(this, "RuntimeException during recorder stop: " + e.getMessage());
         }
@@ -252,7 +256,9 @@ public class VideoRecordManager {
 
                 @Override
                 public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                    if (mListener != null) mListener.onFail("Preview config fail");
+                    if (mListener != null) {
+                        mListener.onFail(R.string.demo_video_record_fail_preview);
+                    }
                 }
             }, mHandler);
         } catch (CameraAccessException e) {
@@ -274,10 +280,11 @@ public class VideoRecordManager {
     }
 
     private void closePreviewSession() {
-        if (mPreviewSession != null) {
-            mPreviewSession.close();
-            mPreviewSession = null;
+        if (mPreviewSession == null) {
+            return;
         }
+        mPreviewSession.close();
+        mPreviewSession = null;
     }
 
     private void setUpVideoConfig() throws IOException {
@@ -303,7 +310,7 @@ public class VideoRecordManager {
                 new Handler(context.getMainLooper()).post(() -> {
                     try {
                         mRecorder.start();
-                        Utils.showToast(context, "Recording...");
+                        Utils.showToast(context, context.getString(R.string.demo_video_record_recording));
                     } catch (IllegalStateException e) {
                         Utils.error(this, "Failed to start recorder: " + e.getMessage());
                     }
@@ -312,7 +319,9 @@ public class VideoRecordManager {
 
             @Override
             public void onConfigureFailed(@NonNull CameraCaptureSession session) {
-                if (mListener != null) mListener.onFail("Record session failed");
+                if (mListener != null) {
+                    mListener.onFail(R.string.demo_video_record_fail_session);
+                }
             }
         }, mHandler);
     }
@@ -335,7 +344,9 @@ public class VideoRecordManager {
     }
 
     public void configureTransform(int viewWidth, int viewHeight, int rotation) {
-        if (null == mTextureView || null == mPreviewSize) return;
+        if (null == mTextureView || null == mPreviewSize) {
+            return;
+        }
 
         Matrix matrix = new Matrix();
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
@@ -368,9 +379,8 @@ public class VideoRecordManager {
     private boolean isDimensionSwapped(int rotation) {
         if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
             return mSensorOrientation == 90 || mSensorOrientation == 270;
-        } else {
-            return mSensorOrientation == 0 || mSensorOrientation == 180;
         }
+        return mSensorOrientation == 0 || mSensorOrientation == 180;
     }
 
     interface CaptureRequestStrategy {
@@ -401,8 +411,8 @@ public class VideoRecordManager {
 
     public interface RecordListener {
         void onError(int result);
-        void onFail(String msg);
-        void onInfo(String msg);
+        void onFail(int resId);
+        void onInfo(int resId);
         String getPath();
     }
 }

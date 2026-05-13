@@ -554,4 +554,15 @@
     <string name="demo_camera2_no_image_captured_yet_toast">尚未拍攝到影像！</string>
     <string name="demo_camera2_capture_done_toast">拍攝完成！</string>
     <string name="demo_camera2_save_complete_toast">影像儲存成功！</string>
+
+    <string name="demo_video_record_error_camera">開啟相機發生錯誤，結果碼：%1$d</string>
+    <string name="demo_video_record_fail_preview">預覽設定失敗</string>
+    <string name="demo_video_record_fail_session">錄影作業階段啟動失敗</string>
+    <string name="demo_video_record_info_already_recording">正在錄影中</string>
+    <string name="demo_video_record_info_stopped">錄影已停止</string>
+    <string name="demo_video_record_no_file">找不到該檔案</string>
+    <string name="demo_video_record_recording">正在錄影...</string>
+    <string name="demo_video_record_content_description_start">開始錄影</string>
+    <string name="demo_video_record_content_description_play">播放影片</string>
+    <string name="demo_video_record_content_description_exit">離開頁面</string>
 </resources>

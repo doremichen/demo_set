@@ -29,10 +29,8 @@ import android.graphics.SurfaceTexture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Size;
 import android.view.TextureView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -67,6 +65,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     private boolean mIsAllow;
     private String mFilePath;
 
+    // texture view listener
     private final TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -96,7 +95,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_video_record);
         mViewModel = new ViewModelProvider(this).get(VideoRecordViewModel.class);
-        mBinding.setViewModel(mViewModel);
+        mBinding.setMViewModel(mViewModel);
         mBinding.setLifecycleOwner(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(mBinding.rootLayout, (v, insets) -> {
@@ -121,50 +120,54 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     }
 
     private void observeViewModel() {
-        mViewModel.isRecording.observe(this, isRecording -> {
+        mViewModel.isRecording().observe(this, isRecording -> {
             if (isRecording) {
                 startRecordingAnimation();
                 mBinding.timer.start();
-            } else {
-                stopRecordingAnimation();
-                mBinding.timer.stop();
+                return;
             }
+            stopRecordingAnimation();
+            mBinding.timer.stop();
         });
 
-        mViewModel.errorResult.observe(this, result -> 
-            Utils.showAlertDialog(this, "Open camera error result: " + result, (dialog, which) -> finish())
+        mViewModel.getErrorResult().observe(this, result -> 
+            Utils.showAlertDialog(this, getString(R.string.demo_video_record_error_camera, result),
+                    (dialog, which) -> finish())
         );
 
-        mViewModel.failMsg.observe(this, msg -> 
-            Utils.showAlertDialog(this, msg, null)
+        mViewModel.getFailResId().observe(this, resId -> 
+            Utils.showAlertDialog(this, getString(resId), null)
         );
 
-        mViewModel.infoMsg.observe(this, msg -> 
-            Utils.showToast(this, msg)
+        mViewModel.getInfoResId().observe(this, resId -> 
+            Utils.showToast(this, getString(resId))
         );
 
-        mViewModel.filePath.observe(this, path -> mFilePath = path);
+        mViewModel.getFilePath().observe(this, path -> mFilePath = path);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_PERMISSION_CODE) {
-            if (grantResults.length == RECORD_PERMISSION.length) {
-                for (int result : grantResults) {
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        mIsAllow = false;
-                        this.finish();
-                        return;
-                    }
-                }
-                mIsAllow = true;
-                if (mBinding.surfaceRecord.isAvailable()) {
-                    mViewModel.openCamera(mBinding.surfaceRecord);
-                    mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
-                }
-            }
-        } else {
+        if (requestCode != REQUEST_PERMISSION_CODE) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        if (grantResults.length != RECORD_PERMISSION.length) {
+            return;
+        }
+
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                mIsAllow = false;
+                this.finish();
+                return;
+            }
+        }
+        mIsAllow = true;
+        if (mBinding.surfaceRecord.isAvailable()) {
+            mViewModel.openCamera(mBinding.surfaceRecord);
+            mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
         }
     }
 
@@ -177,25 +180,28 @@ public class DemoVideoRecordAct extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mIsAllow) {
-            if (mBinding.surfaceRecord.isAvailable()) {
-                mViewModel.openCamera(mBinding.surfaceRecord);
-                mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
-            } else {
-                mBinding.surfaceRecord.setSurfaceTextureListener(mTextureViewListener);
-            }
+        if (!mIsAllow) {
+            return;
         }
+
+        if (mBinding.surfaceRecord.isAvailable()) {
+            mViewModel.openCamera(mBinding.surfaceRecord);
+            mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
+            return;
+        }
+        mBinding.surfaceRecord.setSurfaceTextureListener(mTextureViewListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mIsAllow) {
-            if (Boolean.TRUE.equals(mViewModel.isRecording.getValue())) {
-                onRecord(null);
-            }
-            mViewModel.closeCamera();
+        if (!mIsAllow) {
+            return;
         }
+        if (Boolean.TRUE.equals(mViewModel.isRecording().getValue())) {
+            onRecord(null);
+        }
+        mViewModel.closeCamera();
     }
 
     @Override
@@ -238,7 +244,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         }
         File file = new File(mFilePath);
         if (!file.exists()) {
-            Utils.showToast(this, "No this file");
+            Utils.showToast(this, getString(R.string.demo_video_record_no_file));
             return null;
         }
         

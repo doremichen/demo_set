@@ -554,4 +554,15 @@
     <string name="demo_camera2_no_image_captured_yet_toast">No image captured yet!</string>
     <string name="demo_camera2_capture_done_toast">Capture Done!!!</string>
     <string name="demo_camera2_save_complete_toast">Image saved successfully!</string>
+
+    <string name="demo_video_record_error_camera">Open camera error result: %1$d</string>
+    <string name="demo_video_record_fail_preview">Preview configuration failed</string>
+    <string name="demo_video_record_fail_session">Record session failed</string>
+    <string name="demo_video_record_info_already_recording">Already recording</string>
+    <string name="demo_video_record_info_stopped">Recording stopped</string>
+    <string name="demo_video_record_no_file">No such file</string>
+    <string name="demo_video_record_recording">Recording...</string>
+    <string name="demo_video_record_content_description_start">Start recording</string>
+    <string name="demo_video_record_content_description_play">Play video</string>
+    <string name="demo_video_record_content_description_exit">Exit page</string>
 </resources>

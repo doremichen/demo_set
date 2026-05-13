@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="viewModel"
+            name="mViewModel"
             type="com.adam.app.demoset.video.viewmodel.VideoRecordViewModel" />
         <import type="android.view.View"/>
     </data>
@@ -52,7 +52,7 @@
                 android:layout_height="10dp"
                 android:layout_marginEnd="8dp"
                 android:background="@android:color/holo_red_light"
-                android:visibility="@{viewModel.isRecording ? View.VISIBLE : View.INVISIBLE}" />
+                android:visibility="@{mViewModel.isRecording ? View.VISIBLE : View.INVISIBLE}" />
 
             <Chronometer
                 android:id="@+id/timer"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:format="00:00:00"
-                android:text="@{viewModel.timerText}"
+                android:text="@{mViewModel.timerText}"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -90,13 +90,13 @@
                 android:onClick="onRecord"
                 app:backgroundTint="@android:color/holo_red_dark"
                 app:cornerRadius="12dp"
-                app:icon="@{viewModel.isRecording ? @android:drawable/ic_media_pause : @android:drawable/ic_menu_camera}"
+                app:icon="@{mViewModel.isRecording ? @android:drawable/ic_media_pause : @android:drawable/ic_menu_camera}"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
                 app:iconSize="30dp"
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="1dp"
-                android:contentDescription="開始錄影" />
+                android:contentDescription="@string/demo_video_record_content_description_start" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/play_vedio"
@@ -106,7 +106,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
                 android:onClick="onPlayVideo"
-                android:visibility="@{viewModel.canPlay ? View.VISIBLE : View.GONE}"
+                android:visibility="@{mViewModel.canPlay ? View.VISIBLE : View.GONE}"
                 app:cornerRadius="12dp"
                 app:icon="@android:drawable/ic_media_play"
                 app:iconGravity="textStart"
@@ -115,7 +115,7 @@
                 app:iconTint="@android:color/white"
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="1dp"
-                android:contentDescription="播放影片" />
+                android:contentDescription="@string/demo_video_record_content_description_play" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_exit"
@@ -133,7 +133,7 @@
                 app:iconTint="@android:color/white"
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="1dp"
-                android:contentDescription="離開頁面" />
+                android:contentDescription="@string/demo_video_record_content_description_exit" />
 
         </LinearLayout>
 
