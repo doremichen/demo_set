@@ -72,11 +72,13 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             Utils.info(this, "onSurfaceTextureAvailable enter");
             mViewModel.openCamera(mBinding.surfaceRecord);
-            adjustAspectRatio();
+            mViewModel.configureTransform(width, height, getWindowManager().getDefaultDisplay().getRotation());
         }
 
         @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {}
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+            mViewModel.configureTransform(width, height, getWindowManager().getDefaultDisplay().getRotation());
+        }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -144,34 +146,6 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         mViewModel.filePath.observe(this, path -> mFilePath = path);
     }
 
-    private void adjustAspectRatio() {
-        Size previewSize = mViewModel.getPreviewSize();
-        if (previewSize == null) return;
-
-        int viewWidth = mBinding.surfaceRecord.getWidth();
-        int viewHeight = mBinding.surfaceRecord.getHeight();
-        
-        // Camera2 sizes are usually landscape, so we swap for portrait
-        int videoWidth = previewSize.getHeight();
-        int videoHeight = previewSize.getWidth();
-
-        double aspectRatio = (double) videoHeight / videoWidth;
-        int newWidth, newHeight;
-
-        if (viewHeight > (int) (viewWidth * aspectRatio)) {
-            newWidth = viewWidth;
-            newHeight = (int) (viewWidth * aspectRatio);
-        } else {
-            newWidth = (int) (viewHeight / aspectRatio);
-            newHeight = viewHeight;
-        }
-
-        ViewGroup.LayoutParams lp = mBinding.surfaceRecord.getLayoutParams();
-        lp.width = newWidth;
-        lp.height = newHeight;
-        mBinding.surfaceRecord.setLayoutParams(lp);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION_CODE) {
@@ -186,7 +160,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
                 mIsAllow = true;
                 if (mBinding.surfaceRecord.isAvailable()) {
                     mViewModel.openCamera(mBinding.surfaceRecord);
-                    adjustAspectRatio();
+                    mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
                 }
             }
         } else {
@@ -206,7 +180,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         if (mIsAllow) {
             if (mBinding.surfaceRecord.isAvailable()) {
                 mViewModel.openCamera(mBinding.surfaceRecord);
-                adjustAspectRatio();
+                mViewModel.configureTransform(mBinding.surfaceRecord.getWidth(), mBinding.surfaceRecord.getHeight(), getWindowManager().getDefaultDisplay().getRotation());
             } else {
                 mBinding.surfaceRecord.setSurfaceTextureListener(mTextureViewListener);
             }

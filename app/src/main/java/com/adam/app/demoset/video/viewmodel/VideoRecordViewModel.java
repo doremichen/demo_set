@@ -117,6 +117,10 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
         return mManager.getPreviewSize();
     }
 
+    public void configureTransform(int width, int height, int rotation) {
+        mManager.configureTransform(width, height, rotation);
+    }
+
     @Override
     public void onError(int result) {
         _errorResult.postValue(result);

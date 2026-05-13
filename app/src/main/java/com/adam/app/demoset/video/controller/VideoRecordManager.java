@@ -24,6 +24,8 @@ package com.adam.app.demoset.video.controller;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -65,6 +67,7 @@ public class VideoRecordManager {
     private CaptureRequest.Builder mRequestBuilder;
     private CameraCaptureSession mPreviewSession;
     private Size mVideoSize;
+    private int mSensorOrientation = 0;
 
     private enum RecordState {
         START,
@@ -142,6 +145,8 @@ public class VideoRecordManager {
         try {
             String cameraId = cameraService.getCameraIdList()[0];
             CameraCharacteristics cameraChar = cameraService.getCameraCharacteristics(cameraId);
+            mSensorOrientation = cameraChar.get(CameraCharacteristics.SENSOR_ORIENTATION) != null ?
+                    cameraChar.get(CameraCharacteristics.SENSOR_ORIENTATION) : 0;
             StreamConfigurationMap map = cameraChar.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             
             if (map != null) {
@@ -327,6 +332,45 @@ public class VideoRecordManager {
 
     public Size getPreviewSize() {
         return mPreviewSize;
+    }
+
+    public void configureTransform(int viewWidth, int viewHeight, int rotation) {
+        if (null == mTextureView || null == mPreviewSize) return;
+
+        Matrix matrix = new Matrix();
+        RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+        float centerX = viewRect.centerX();
+        float centerY = viewRect.centerY();
+
+        float rotatedBufferWidth = isDimensionSwapped(rotation) ? mPreviewSize.getHeight() : mPreviewSize.getWidth();
+        float rotatedBufferHeight = isDimensionSwapped(rotation) ? mPreviewSize.getWidth() : mPreviewSize.getHeight();
+
+        float scaleX = 1.0f, scaleY = 1.0f;
+        float viewRatio = (float) viewWidth / viewHeight;
+        float bufferRatio = rotatedBufferWidth / rotatedBufferHeight;
+
+        // Center Crop logic
+        if (viewRatio > bufferRatio) {
+            scaleY = (viewWidth / rotatedBufferWidth) / (viewHeight / rotatedBufferHeight);
+        } else {
+            scaleX = (viewHeight / rotatedBufferHeight) / (viewWidth / rotatedBufferWidth);
+        }
+
+        matrix.postScale(scaleX, scaleY, centerX, centerY);
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+            matrix.postRotate(90 * (rotation - 2), centerX, centerY);
+        } else if (Surface.ROTATION_180 == rotation) {
+            matrix.postRotate(180, centerX, centerY);
+        }
+        mTextureView.setTransform(matrix);
+    }
+
+    private boolean isDimensionSwapped(int rotation) {
+        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+            return mSensorOrientation == 90 || mSensorOrientation == 270;
+        } else {
+            return mSensorOrientation == 0 || mSensorOrientation == 180;
+        }
     }
 
     interface CaptureRequestStrategy {
