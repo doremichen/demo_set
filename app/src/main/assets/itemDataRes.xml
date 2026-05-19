@@ -239,7 +239,13 @@
     <!-- Security -->
     <data category="category_security"
         titleRes="title_demo_encryption_database"
-        clsname="com.adam.app.demoset.encryption.DemoEncryptionAct"
+        clsname="com.adam.app.demoset.encryption.database.DemoEncryptionAct"
+        pkgname="com.adam.app.demoset"/>
+
+    <!-- Security -->
+    <data category="category_security"
+        titleRes="title_demo_encrypted_prefs"
+        clsname="com.adam.app.demoset.encryption.sharedprefs.DemoEncryptedSharedPrefsAct"
         pkgname="com.adam.app.demoset"/>
 
     <!-- UI -->

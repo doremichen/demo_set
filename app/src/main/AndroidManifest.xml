@@ -352,9 +352,14 @@
             android:label="@string/tile_activity_demo_usb_device"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".encryption.DemoEncryptionAct"
+            android:name=".encryption.database.DemoEncryptionAct"
             android:exported="true"
             android:label="Demo Encryption DB"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".encryption.sharedprefs.DemoEncryptedSharedPrefsAct"
+            android:exported="true"
+            android:label="Demo Encrypted Prefs"
             android:screenOrientation="nosensor" />
 
         <meta-data

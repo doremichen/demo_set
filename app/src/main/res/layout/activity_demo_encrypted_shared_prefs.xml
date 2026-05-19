@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2024 Adam Chen
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.adam.app.demoset.encryption.sharedprefs.viewmodel.EncryptedPrefsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".encryption.sharedprefs.DemoEncryptedSharedPrefsAct">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_demo_encrypted_prefs"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_instruction"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/label_prefs_demo_instruction"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+                <EditText
+                    android:id="@+id/et_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="name"
+                    android:hint="@string/hint_prefs_key"
+                    android:inputType="text"
+                    android:text="@={viewModel.keyInput}"
+                    app:layout_constraintTop_toBottomOf="@id/tv_instruction" />
+
+                <EditText
+                    android:id="@+id/et_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:autofillHints="password"
+                    android:hint="@string/hint_prefs_value"
+                    android:inputType="text"
+                    android:text="@={viewModel.valueInput}"
+                    app:layout_constraintTop_toBottomOf="@id/et_key" />
+
+                <!-- Button Chain for better screen adaptation -->
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:onClick="@{() -> viewModel.onSaveClicked()}"
+                    android:text="@string/btn_prefs_save"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_load"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_value" />
+
+                <Button
+                    android:id="@+id/btn_load"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:onClick="@{() -> viewModel.onLoadClicked()}"
+                    android:text="@string/btn_prefs_load"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_clear"
+                    app:layout_constraintStart_toEndOf="@+id/btn_save"
+                    app:layout_constraintTop_toTopOf="@id/btn_save" />
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:onClick="@{() -> viewModel.onClearClicked()}"
+                    android:text="@string/btn_prefs_clear"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_load"
+                    app:layout_constraintTop_toTopOf="@id/btn_save" />
+
+                <TextView
+                    android:id="@+id/tv_load_result_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@{viewModel.loadResultHeader}"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:visibility="@{viewModel.loadResultHeader.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_save" />
+
+                <!-- Card 1: Normal Prefs (Hacker View 1) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_load_result_header">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_normal_prefs_view"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_normal_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.normalValue}"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/label_normal_prefs_hint"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Card 2: Encrypted Raw (Hacker View 2 - The Junk) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_raw_encrypted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_normal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_raw_encrypted_view"
+                            android:textColor="#CC0000"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_raw_encrypted_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="@{viewModel.rawEncryptedValue}"
+                            android:textColor="#880000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/label_raw_encrypted_hint"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Card 3: Decrypted Safe (App View) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_encrypted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintTop_toBottomOf="@id/card_raw_encrypted">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_encrypted_prefs_view"
+                            android:textColor="#008800"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_decrypted_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.decryptedValue}"
+                            android:textColor="#004400" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/label_encrypted_prefs_hint"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{viewModel.statusMessage}"
+                    android:textColor="@android:color/holo_blue_dark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card_encrypted" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -71,6 +71,27 @@
     <string name="label_encryption_full_db_alias_prefix">全資料庫別名： </string>
     <string name="label_encryption_secret_data_prefix">機密資料： </string>
     <string name="label_encryption_visible_correct_key">(此資訊僅因資料庫以正確金鑰開啟才可見)</string>
+
+    <!-- EncryptedSharedPreferences Demo -->
+    <string name="title_demo_encrypted_prefs">加密偏好設定 (EncryptedSP)</string>
+    <string name="label_prefs_demo_instruction">比較一般與加密儲存。即使有人竊取您的 XML 檔案，他們也無法讀取加密資料。</string>
+    <string name="hint_prefs_key">設定鍵 (例如 user_token)</string>
+    <string name="hint_prefs_value">設定值</string>
+    <string name="btn_prefs_save">儲存鍵值對</string>
+    <string name="btn_prefs_load">讀取鍵值</string>
+    <string name="btn_prefs_clear">全部清除</string>
+    <string name="label_normal_prefs_view">標準 XML 儲存：</string>
+    <string name="label_normal_prefs_hint">(以純文字存放在 /shared_prefs/ 中)</string>
+    <string name="label_encrypted_prefs_view">解密後的明文 (安全視圖)：</string>
+    <string name="label_encrypted_prefs_hint">(透過 Keystore 自動透明解密)</string>
+    <string name="label_raw_encrypted_view">原始密文 (XML 檔案實際內容)：</string>
+    <string name="label_raw_encrypted_hint">(這是駭客直接打開 XML 檔案時看到的內容)</string>
+    <string name="label_prefs_load_result_title">鍵名 \"%1$s\" 的讀取結果：</string>
+    <string name="msg_prefs_init_error">初始化錯誤：%1$s</string>
+    <string name="msg_prefs_enter_key_value">請輸入鍵與值</string>
+    <string name="msg_prefs_enter_key_load">請輸入要讀取的鍵名</string>
+    <string name="msg_prefs_saved_success">儲存成功！</string>
+    <string name="msg_prefs_cleared_success">所有偏好設定已清除</string>
     <string name="title_demo_navigation">示範導航使用者介面</string>
 
     <!-- string for Demo USB device (註解掉) -->

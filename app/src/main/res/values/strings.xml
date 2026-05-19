@@ -72,6 +72,27 @@
     <string name="label_encryption_secret_data_prefix">Secret Data: </string>
     <string name="label_encryption_visible_correct_key">(This info is only visible because DB is OPENED with correct key)</string>
 
+    <!-- EncryptedSharedPreferences Demo -->
+    <string name="title_demo_encrypted_prefs">Encrypted SharedPreferences</string>
+    <string name="label_prefs_demo_instruction">Compare Normal vs Encrypted storage. Even if someone steals your XML file, they can\'t read encrypted data.</string>
+    <string name="hint_prefs_key">Setting Key (e.g. user_token)</string>
+    <string name="hint_prefs_value">Setting Value</string>
+    <string name="btn_prefs_save">Save Pair</string>
+    <string name="btn_prefs_load">Load Key</string>
+    <string name="btn_prefs_clear">Clear All</string>
+    <string name="label_normal_prefs_view">Standard XML Storage:</string>
+    <string name="label_normal_prefs_hint">(Stored as plain text in /shared_prefs/)</string>
+    <string name="label_encrypted_prefs_view">Decrypted (Safe View):</string>
+    <string name="label_encrypted_prefs_hint">(Auto-decrypted via Keystore)</string>
+    <string name="label_raw_encrypted_view">Raw Ciphertext (XML file content):</string>
+    <string name="label_raw_encrypted_hint">(This is what hackers see in the XML file)</string>
+    <string name="label_prefs_load_result_title">Current Load Results for key: \"%1$s\"</string>
+    <string name="msg_prefs_init_error">Error initializing: %1$s</string>
+    <string name="msg_prefs_enter_key_value">Please enter key and value</string>
+    <string name="msg_prefs_enter_key_load">Please enter a key to load</string>
+    <string name="msg_prefs_saved_success">Saved successfully!</string>
+    <string name="msg_prefs_cleared_success">All preferences cleared</string>
+
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
     <!-- Demo service item -->

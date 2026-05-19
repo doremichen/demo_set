@@ -9,17 +9,17 @@
     <data>
         <variable
             name="fieldViewModel"
-            type="com.adam.app.demoset.encryption.viewmodel.EncryptionViewModel" />
+            type="com.adam.app.demoset.encryption.database.viewmodel.EncryptionViewModel" />
         <variable
             name="fullViewModel"
-            type="com.adam.app.demoset.encryption.viewmodel.FullEncryptionViewModel" />
+            type="com.adam.app.demoset.encryption.database.viewmodel.FullEncryptionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".encryption.DemoEncryptionAct">
+        tools:context=".encryption.database.DemoEncryptionAct">
 
         <ScrollView
             android:layout_width="match_parent"
