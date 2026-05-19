@@ -5,6 +5,7 @@
     <string name="category_hardware">Hardware</string>
     <string name="category_network">Network</string>
     <string name="category_storage">Storage</string>
+    <string name="category_security">Android Security</string>
     <string name="category_ipc">IPC</string>
     <string name="category_ai">AI / ML</string>
     <!-- title string-->
@@ -50,6 +51,26 @@
     <string name="title_demo_page_3">Demo Page 3</string>
     <string name="title_demo_datastore">Demo DataStore</string>
     <string name="title_demo_datastore_koltlin"><![CDATA[Demo DataStore Koltlin]]></string>
+    <string name="title_demo_encryption_database">Demo Encryption Database</string>
+    <string name="title_activity_demo_encryption">Demo Encryption DB</string>
+    <string name="title_demo_full_encryption">Military-Grade DB Protection</string>
+    <string name="demo_encryption_instruction_title">1. Field-Level Encryption (Standard)</string>
+    <string name="demo_encryption_instruction">Only specific columns are encrypted using Android Keystore. The DB file itself is readable, but sensitive content is junk.</string>
+    <string name="label_full_encryption_instruction">Full Database Encryption: The entire .db file is encrypted using SQLCipher. Without the key, even the table names are invisible.</string>
+    <string name="demo_encryption_msg_fill_fields">Please enter all fields</string>
+    <string name="demo_encryption_msg_item_saved">Item saved</string>
+    <string name="hint_encryption_alias_keystore">Alias (Keystore)</string>
+    <string name="hint_encryption_sensitive_data">Sensitive Data</string>
+    <string name="btn_save_field_enc">Save (Field Enc)</string>
+    <string name="hint_encryption_alias_sqlcipher">Alias (SQLCipher)</string>
+    <string name="hint_encryption_secret_info">Secret Info</string>
+    <string name="btn_save_full_db_enc">Save (Full DB Enc)</string>
+    <string name="label_encryption_alias_prefix">Alias: </string>
+    <string name="label_encryption_encrypted_db">Encrypted (in DB): </string>
+    <string name="label_encryption_decrypted_safe">Decrypted (Safe): </string>
+    <string name="label_encryption_full_db_alias_prefix">Full DB Alias: </string>
+    <string name="label_encryption_secret_data_prefix">Secret Data: </string>
+    <string name="label_encryption_visible_correct_key">(This info is only visible because DB is OPENED with correct key)</string>
 
     <!-- string for Demo USB device (commented out) -->
     <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->

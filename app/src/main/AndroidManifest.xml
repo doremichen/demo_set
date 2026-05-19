@@ -263,11 +263,6 @@
             android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".jnidemo.legacy.DemoJNIAct"
-            android:exported="true"
-            android:label="@string/title_activity_demo_hello_jni"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".flashlight.DemoFlashLightAct"
             android:exported="true"
             android:label="@string/title_activity_demo_flash_light"
@@ -276,11 +271,6 @@
             android:name=".lockscreen.DemoDeviceAdminAct"
             android:exported="true"
             android:label="@string/title_activity_demo_device_admin"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".camera2.legacy.DemoCamera2Act"
-            android:exported="true"
-            android:label="@string/title_activity_demo_camera"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".camera2.DemoCamera2Act2"
@@ -357,28 +347,14 @@
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".material.DemoMaterialLogInAct"
-            android:exported="true"
-            android:label="@string/title_activity_demo_material_log_in"
-            android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".material.Next1Activity"
-            android:exported="false"
-            android:label="@string/title_activity_demo_material_log_in"
-            android:parentActivityName=".material.DemoMaterialLogInAct"
-            android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.NoActionBar">
-
-            <!-- Support old API: below api level 21. -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.adam.app.demoset.material.DemoMaterialLogInAct" />
-        </activity>
-        <activity
             android:name=".usb_storage.DemoUsbActivity"
             android:exported="true"
             android:label="@string/tile_activity_demo_usb_device"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".encryption.DemoEncryptionAct"
+            android:exported="true"
+            android:label="Demo Encryption DB"
             android:screenOrientation="nosensor" />
 
         <meta-data

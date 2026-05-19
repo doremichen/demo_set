@@ -236,6 +236,12 @@
         clsname="com.adam.app.demoset.datastore.koltlin.DataStoreDemoAct"
         pkgname="com.adam.app.demoset"/>
 
+    <!-- Security -->
+    <data category="category_security"
+        titleRes="title_demo_encryption_database"
+        clsname="com.adam.app.demoset.encryption.DemoEncryptionAct"
+        pkgname="com.adam.app.demoset"/>
+
     <!-- UI -->
     <data category="category_ui"
         titleRes="title_demo_navigation"

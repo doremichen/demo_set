@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2024 Adam Chen
+  -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="fieldViewModel"
+            type="com.adam.app.demoset.encryption.viewmodel.EncryptionViewModel" />
+        <variable
+            name="fullViewModel"
+            type="com.adam.app.demoset.encryption.viewmodel.FullEncryptionViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".encryption.DemoEncryptionAct">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Section 1: Field Level Encryption -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/demo_encryption_instruction_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/demo_encryption_instruction"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_alias_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/hint_encryption_alias_keystore"
+                    android:text="@={fieldViewModel.aliasInput}"
+                    android:autofillHints="name"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/et_data_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_encryption_sensitive_data"
+                    android:text="@={fieldViewModel.dataInput}"
+                    android:autofillHints="password"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/btn_save_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{() -> fieldViewModel.onSaveClick()}"
+                    android:text="@string/btn_save_field_enc" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_items_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#F0F0F0" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginVertical="24dp"
+                    android:background="@android:color/darker_gray" />
+
+                <!-- Section 2: Full DB Encryption -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_demo_full_encryption"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/label_full_encryption_instruction"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/et_alias_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/hint_encryption_alias_sqlcipher"
+                    android:text="@={fullViewModel.aliasInput}"
+                    android:autofillHints="name"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/et_data_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_encryption_secret_info"
+                    android:text="@={fullViewModel.dataInput}"
+                    android:autofillHints="password"
+                    android:inputType="text" />
+
+                <Button
+                    android:id="@+id/btn_save_full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{() -> fullViewModel.onSaveClick()}"
+                    android:text="@string/btn_save_full_db_enc" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_items_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#E0E0E0" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

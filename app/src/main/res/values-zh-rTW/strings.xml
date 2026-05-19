@@ -5,6 +5,7 @@
     <string name="category_hardware">硬體</string>
     <string name="category_network">網路</string>
     <string name="category_storage">儲存</string>
+    <string name="category_security">Android 安全性</string>
     <string name="category_ipc">程序通訊</string>
     <string name="category_ai">人工智慧 / 機器學習</string>
     <!-- title string -->
@@ -50,6 +51,26 @@
     <string name="title_demo_page_3">示範頁 3</string>
     <string name="title_demo_datastore">資料存儲 範例</string>
     <string name="title_demo_datastore_koltlin"><![CDATA[資料存儲 (Kotlin) 範例]]></string>
+    <string name="title_demo_encryption_database">加密資料庫範例</string>
+    <string name="title_activity_demo_encryption">加密資料庫展示</string>
+    <string name="title_demo_full_encryption">2. 軍規級資料庫保護 (SQLCipher)</string>
+    <string name="demo_encryption_instruction_title">1. 欄位級加密 (標準版)</string>
+    <string name="demo_encryption_instruction">僅對特定欄位使用 Android Keystore 進行加密。資料庫檔案本身可讀，但敏感內容為亂碼。</string>
+    <string name="label_full_encryption_instruction">全資料庫加密：整個 .db 檔案皆使用 SQLCipher 加密。沒有金鑰，連資料表名稱都無法看見。</string>
+    <string name="demo_encryption_msg_fill_fields">請輸入所有欄位</string>
+    <string name="demo_encryption_msg_item_saved">項目已儲存</string>
+    <string name="hint_encryption_alias_keystore">別名 (Keystore)</string>
+    <string name="hint_encryption_sensitive_data">敏感資料</string>
+    <string name="btn_save_field_enc">儲存 (欄位加密)</string>
+    <string name="hint_encryption_alias_sqlcipher">別名 (SQLCipher)</string>
+    <string name="hint_encryption_secret_info">機密資訊</string>
+    <string name="btn_save_full_db_enc">儲存 (全資料庫加密)</string>
+    <string name="label_encryption_alias_prefix">別名： </string>
+    <string name="label_encryption_encrypted_db">資料庫中的密文 (加密)： </string>
+    <string name="label_encryption_decrypted_safe">解密後的明文 (安全)： </string>
+    <string name="label_encryption_full_db_alias_prefix">全資料庫別名： </string>
+    <string name="label_encryption_secret_data_prefix">機密資料： </string>
+    <string name="label_encryption_visible_correct_key">(此資訊僅因資料庫以正確金鑰開啟才可見)</string>
     <string name="title_demo_navigation">示範導航使用者介面</string>
 
     <!-- string for Demo USB device (註解掉) -->
