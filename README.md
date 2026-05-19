@@ -38,6 +38,16 @@ Native Layer
 
 # 🧩 Feature Modules
 
+## 🔐 Android Security (Encryption)
+
+* **Multi-level Database Encryption**:
+    * **Standard (Field-level)**: Protects sensitive columns using **Android Keystore (AES-GCM)**.
+    * **Military-grade (Full-DB)**: Encrypts the entire database file using **SQLCipher** integration with Room.
+* **EncryptedSharedPreferences**: Secure Key-Value storage using **Jetpack Security** with hardware-backed master keys.
+* **Hacker View**: Visualization of raw encrypted ciphertext vs. safe decrypted views for security contrast.
+
+---
+
 ## 🔹 UI Demos
 
 * Material Design Components
@@ -124,6 +134,16 @@ This ensures a **clean separation of concerns** and avoids tight coupling with A
 
 ---
 
+# 🔥 Highlight: Security & Data Protection
+
+The Security module demonstrates enterprise-level data protection strategies:
+
+* **Hardware Isolation**: Secrets are never accessible to the app code; encryption is handled by the **TEE (Trusted Execution Environment)**.
+* **Layered Defense**: Combining SQLCipher for file-level protection and Keystore for logic-level protection.
+* **MVVM + DataBinding**: Clean handling of encrypted state transitions without bloating the UI code.
+
+---
+
 # 🏗️ Design Principles
 
 * **Separation of Concerns**
@@ -136,21 +156,21 @@ This ensures a **clean separation of concerns** and avoids tight coupling with A
 
 # 🧪 Use Cases Covered
 
-This project covers real-world scenarios such as:
-
 * Background task scheduling
 * Cross-process communication
 * Hardware interaction
 * Native performance integration
-* Data persistence strategies
+* **Advanced Data Persistence & Encryption**
 ---
 
 # 🛠️ Tech Stack
 
 * Java / Kotlin
-* Android SDK
-* ViewBinding / DataBinding
+* Android SDK / Jetpack
+* ViewBinding / **DataBinding**
 * LiveData / ViewModel
+* **Room / SQLCipher**
+* **Jetpack Security (EncryptedSP)**
 * WorkManager
 * Retrofit
 * JNI (C/C++)
