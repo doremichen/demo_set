@@ -126,6 +126,13 @@ public abstract class Utils {
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
     }
 
+    public static void info(String tag, String str) {
+        Log.i(TAG, tag + ": " + str);
+    }
+
+    public static void error(String tag, String str) {
+        Log.e(TAG, tag + ": " + str);
+    }
 
     public static void info(Object obj, String str) {
         Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);

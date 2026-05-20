@@ -26,6 +26,8 @@ import androidx.lifecycle.LiveData;
 import com.adam.app.demoset.encryption.database.data.dao.FullEncryptionDao;
 import com.adam.app.demoset.encryption.database.data.database.FullEncryptionDatabase;
 import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
+import com.adam.app.demoset.encryption.database.utils.AppExecutors;
+
 import java.util.List;
 
 public class FullEncryptionRepository {
@@ -41,11 +43,11 @@ public class FullEncryptionRepository {
     public LiveData<List<FullEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void insert(FullEncryptionItem item) {
-        FullEncryptionDatabase.databaseWriteExecutor.execute(() -> mDao.insert(item));
+        AppExecutors.getInstance().diskIO().execute(() -> mDao.insert(item));
     }
 
     public void deleteAll() {
-        FullEncryptionDatabase.databaseWriteExecutor.execute(mDao::deleteAll);
+        AppExecutors.getInstance().diskIO().execute(mDao::deleteAll);
     }
 }
 

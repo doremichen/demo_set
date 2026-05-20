@@ -24,14 +24,19 @@ package com.adam.app.demoset.encryption.database.controller;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
+
+import com.adam.app.demoset.utils.Utils;
+
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 
 public class CryptoManager {
+    private static final String TAG = "CryptoManager";
     private static final String ALGORITHM = KeyProperties.KEY_ALGORITHM_AES;
     private static final String BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM;
     private static final String PADDING = KeyProperties.ENCRYPTION_PADDING_NONE;
@@ -45,12 +50,17 @@ public class CryptoManager {
         try {
             keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
             keyStore.load(null);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            Utils.error(TAG, "Failed to initialize KeyStore: " + e);
+        }
     }
 
     private SecretKey getOrCreateKey() throws Exception {
         if (keyStore.containsAlias(KEY_ALIAS)) {
-            return ((KeyStore.SecretKeyEntry) keyStore.getEntry(KEY_ALIAS, null)).getSecretKey();
+            KeyStore.Entry entry = keyStore.getEntry(KEY_ALIAS, null);
+            if (entry instanceof KeyStore.SecretKeyEntry) {
+                return ((KeyStore.SecretKeyEntry) entry).getSecretKey();
+            }
         }
         KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM, ANDROID_KEYSTORE);
         keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_ALIAS,
@@ -62,26 +72,34 @@ public class CryptoManager {
     }
 
     public EncryptedData encrypt(String text) {
+        if (text == null) return null;
         try {
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
             cipher.init(Cipher.ENCRYPT_MODE, getOrCreateKey());
             byte[] iv = cipher.getIV();
             byte[] encryptedBytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
             return new EncryptedData(
-                    Base64.encodeToString(encryptedBytes, Base64.DEFAULT),
-                    Base64.encodeToString(iv, Base64.DEFAULT));
-        } catch (Exception e) { e.printStackTrace(); return null; }
+                    Base64.encodeToString(encryptedBytes, Base64.NO_WRAP),
+                    Base64.encodeToString(iv, Base64.NO_WRAP));
+        } catch (Exception e) {
+            Utils.error(TAG, "Encryption failed: " + e);
+            return null;
+        }
     }
 
     public String decrypt(String encryptedText, String iv) {
+        if (encryptedText == null || iv == null) return null;
         try {
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            GCMParameterSpec spec = new GCMParameterSpec(128, Base64.decode(iv, Base64.DEFAULT));
+            GCMParameterSpec spec = new GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP));
             cipher.init(Cipher.DECRYPT_MODE, getOrCreateKey(), spec);
-            byte[] decodedBytes = Base64.decode(encryptedText, Base64.DEFAULT);
+            byte[] decodedBytes = Base64.decode(encryptedText, Base64.NO_WRAP);
             byte[] decryptedBytes = cipher.doFinal(decodedBytes);
             return new String(decryptedBytes, StandardCharsets.UTF_8);
-        } catch (Exception e) { return "Decryption Error"; }
+        } catch (Exception e) {
+            Utils.error(TAG, "Decryption failed: " + e);
+            return "Decryption Error";
+        }
     }
 
     public static class EncryptedData {

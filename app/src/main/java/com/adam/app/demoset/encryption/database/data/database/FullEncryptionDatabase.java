@@ -27,9 +27,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.adam.app.demoset.encryption.database.data.dao.FullEncryptionDao;
 import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
+
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Database(entities = {FullEncryptionItem.class}, version = 1, exportSchema = false)
 public abstract class FullEncryptionDatabase extends RoomDatabase {
@@ -37,7 +36,6 @@ public abstract class FullEncryptionDatabase extends RoomDatabase {
     public abstract FullEncryptionDao fullEncryptionDao();
 
     private static volatile FullEncryptionDatabase INSTANCE;
-    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
 
     public static FullEncryptionDatabase getDatabase(final Context context, byte[] passphrase) {
         if (INSTANCE == null) {

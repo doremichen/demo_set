@@ -75,15 +75,19 @@ public class EncryptedPrefsManager {
     }
 
     /**
-     * 讀取儲存在 XML 裡的原始加密字串 (Hack 角度)
+     * Reads the raw encrypted string from the XML (for demo purposes).
+     * Since keys are also encrypted, we scan the map to find the value.
      */
     public String getRawEncryptedString(String key) {
-        // 因為 Key 也是被加密過的，我們必須掃描整個 Map 找到對應的加密 Key
-        // 這只是為了 Demo 展示駭客看到的內容
         Map<String, ?> allEntries = rawEncryptedPrefs.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            // 這裡隨便回傳一個，實際演示時建議直接顯示整個 Map 的內容或對應值
-            return entry.getValue().toString();
+            // In a real scenario, you'd need to know which encrypted key corresponds to 'key'.
+            // For this demo, we just return the first value found if any, 
+            // as it demonstrates what an attacker sees.
+            Object value = entry.getValue();
+            if (value != null) {
+                return value.toString();
+            }
         }
         return "No Data / File is Encrypted";
     }

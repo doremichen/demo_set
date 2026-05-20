@@ -19,36 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.adam.app.demoset.encryption.database.data.database;
 
-import android.content.Context;
+package com.adam.app.demoset.encryption.database.utils;
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import com.adam.app.demoset.encryption.database.data.dao.EncryptionDao;
-import com.adam.app.demoset.encryption.database.data.model.EncryptionItem;
+/**
+ * Global executor pools for the whole application.
+ * <p>
+ * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
+ * webservice requests).
+ */
+public class AppExecutors {
 
-@Database(entities = {EncryptionItem.class}, version = 1, exportSchema = false)
-public abstract class EncryptionDatabase extends RoomDatabase {
+    private static final Object LOCK = new Object();
+    private static volatile AppExecutors sInstance;
+    private final ExecutorService mDiskIO;
 
-    public abstract EncryptionDao encryptionDao();
+    private AppExecutors(ExecutorService diskIO) {
+        this.mDiskIO = diskIO;
+    }
 
-    private static volatile EncryptionDatabase INSTANCE;
-
-    public static EncryptionDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
-            synchronized (EncryptionDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    EncryptionDatabase.class, "encryption_database")
-                            .build();
+    public static AppExecutors getInstance() {
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                if (sInstance == null) {
+                    sInstance = new AppExecutors(Executors.newFixedThreadPool(4));
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
+    }
+
+    public ExecutorService diskIO() {
+        return mDiskIO;
     }
 }
-
-
