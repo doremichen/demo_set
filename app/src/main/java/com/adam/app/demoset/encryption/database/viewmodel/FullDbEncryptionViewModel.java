@@ -36,8 +36,8 @@ public class FullDbEncryptionViewModel extends AndroidViewModel {
     private final LiveData<List<FullDbEncryptionItem>> mAllItems;
 
     // For Data Binding
-    public final MutableLiveData<String> aliasInput = new MutableLiveData<>("");
-    public final MutableLiveData<String> dataInput = new MutableLiveData<>("");
+    public final MutableLiveData<String> mAliasInput = new MutableLiveData<>("");
+    public final MutableLiveData<String> mDataInput = new MutableLiveData<>("");
 
     public FullDbEncryptionViewModel(@NonNull Application application) {
         super(application);
@@ -50,12 +50,12 @@ public class FullDbEncryptionViewModel extends AndroidViewModel {
     public LiveData<List<FullDbEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void onSaveClick() {
-        String alias = aliasInput.getValue();
-        String data = dataInput.getValue();
+        String alias = mAliasInput.getValue();
+        String data = mDataInput.getValue();
         if (alias != null && !alias.isEmpty() && data != null && !data.isEmpty()) {
             insert(alias, data);
-            aliasInput.setValue("");
-            dataInput.setValue("");
+            mAliasInput.setValue("");
+            mDataInput.setValue("");
         }
     }
 
@@ -65,5 +65,3 @@ public class FullDbEncryptionViewModel extends AndroidViewModel {
 
     public void deleteAll() { mRepository.deleteAll(); }
 }
-
-

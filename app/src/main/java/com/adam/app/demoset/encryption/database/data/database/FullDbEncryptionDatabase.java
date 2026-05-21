@@ -36,25 +36,25 @@ public abstract class FullDbEncryptionDatabase extends RoomDatabase {
 
     public abstract FullDbEncryptionDao fullDbEncryptionDao();
 
-    private static volatile FullDbEncryptionDatabase INSTANCE;
-    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
+    private static volatile FullDbEncryptionDatabase sInstance;
+    public static final ExecutorService sDatabaseWriteExecutor = Executors.newFixedThreadPool(4);
 
     public static FullDbEncryptionDatabase getDatabase(final Context context, byte[] passphrase) {
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (FullDbEncryptionDatabase.class) {
-                if (INSTANCE == null) {
+                if (sInstance == null) {
                     // SQLCipher requires loading native libraries
                     System.loadLibrary("sqlcipher");
 
                     SupportOpenHelperFactory factory = new SupportOpenHelperFactory(passphrase);
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
                                     FullDbEncryptionDatabase.class, "full_encryption_database")
                             .openHelperFactory(factory)
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 }
 

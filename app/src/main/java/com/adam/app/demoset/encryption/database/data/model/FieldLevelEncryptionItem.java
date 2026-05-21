@@ -30,36 +30,34 @@ import androidx.room.PrimaryKey;
 public class FieldLevelEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int mId;
 
     @ColumnInfo(name = "alias")
-    private String alias;
+    private String mAlias;
 
     @ColumnInfo(name = "encrypted_data")
-    private String encryptedData;
+    private String mEncryptedData;
 
     @ColumnInfo(name = "iv")
-    private String iv;
+    private String mIv;
 
     @Ignore
-    private String decryptedData;
+    private String mDecryptedData;
 
     public FieldLevelEncryptionItem(String alias, String encryptedData, String iv) {
-        this.alias = alias;
-        this.encryptedData = encryptedData;
-        this.iv = iv;
+        this.mAlias = alias;
+        this.mEncryptedData = encryptedData;
+        this.mIv = iv;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getAlias() { return alias; }
-    public void setAlias(String alias) { this.alias = alias; }
-    public String getEncryptedData() { return encryptedData; }
-    public void setEncryptedData(String encryptedData) { this.encryptedData = encryptedData; }
-    public String getIv() { return iv; }
-    public void setIv(String iv) { this.iv = iv; }
-    public String getDecryptedData() { return decryptedData; }
-    public void setDecryptedData(String decryptedData) { this.decryptedData = decryptedData; }
+    public int getId() { return mId; }
+    public void setId(int id) { this.mId = id; }
+    public String getAlias() { return mAlias; }
+    public void setAlias(String alias) { this.mAlias = alias; }
+    public String getEncryptedData() { return mEncryptedData; }
+    public void setEncryptedData(String encryptedData) { this.mEncryptedData = encryptedData; }
+    public String getIv() { return mIv; }
+    public void setIv(String iv) { this.mIv = iv; }
+    public String getDecryptedData() { return mDecryptedData; }
+    public void setDecryptedData(String decryptedData) { this.mDecryptedData = decryptedData; }
 }
-
-

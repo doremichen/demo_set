@@ -44,20 +44,20 @@ public class CryptoManager {
     private static final String KEY_ALIAS = "encryption_demo_key";
     private static final String ANDROID_KEYSTORE = "AndroidKeyStore";
 
-    private KeyStore keyStore;
+    private KeyStore mKeyStore;
 
     public CryptoManager() {
         try {
-            keyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
-            keyStore.load(null);
+            mKeyStore = KeyStore.getInstance(ANDROID_KEYSTORE);
+            mKeyStore.load(null);
         } catch (Exception e) {
             Utils.error(TAG, "Failed to initialize KeyStore: " + e);
         }
     }
 
     private SecretKey getOrCreateKey() throws Exception {
-        if (keyStore.containsAlias(KEY_ALIAS)) {
-            KeyStore.Entry entry = keyStore.getEntry(KEY_ALIAS, null);
+        if (mKeyStore.containsAlias(KEY_ALIAS)) {
+            KeyStore.Entry entry = mKeyStore.getEntry(KEY_ALIAS, null);
             if (entry instanceof KeyStore.SecretKeyEntry) {
                 return ((KeyStore.SecretKeyEntry) entry).getSecretKey();
             }

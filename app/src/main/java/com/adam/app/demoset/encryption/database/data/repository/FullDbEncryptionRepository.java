@@ -29,24 +29,22 @@ import com.adam.app.demoset.encryption.database.data.model.FullDbEncryptionItem;
 import java.util.List;
 
 public class FullDbEncryptionRepository {
-    private final FullDbEncryptionDao mDao;
+    private final FullDbEncryptionDao mFullDbEncryptionDao;
     private final LiveData<List<FullDbEncryptionItem>> mAllItems;
 
     public FullDbEncryptionRepository(Application application, byte[] passphrase) {
         FullDbEncryptionDatabase db = FullDbEncryptionDatabase.getDatabase(application, passphrase);
-        mDao = db.fullDbEncryptionDao();
-        mAllItems = mDao.getAllItems();
+        mFullDbEncryptionDao = db.fullDbEncryptionDao();
+        mAllItems = mFullDbEncryptionDao.getAllItems();
     }
 
     public LiveData<List<FullDbEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void insert(FullDbEncryptionItem item) {
-        FullDbEncryptionDatabase.databaseWriteExecutor.execute(() -> mDao.insert(item));
+        FullDbEncryptionDatabase.sDatabaseWriteExecutor.execute(() -> mFullDbEncryptionDao.insert(item));
     }
 
     public void deleteAll() {
-        FullDbEncryptionDatabase.databaseWriteExecutor.execute(mDao::deleteAll);
+        FullDbEncryptionDatabase.sDatabaseWriteExecutor.execute(mFullDbEncryptionDao::deleteAll);
     }
 }
-
-

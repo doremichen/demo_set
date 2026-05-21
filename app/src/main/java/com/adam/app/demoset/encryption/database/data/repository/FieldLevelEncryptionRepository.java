@@ -41,11 +41,11 @@ public class FieldLevelEncryptionRepository {
     public LiveData<List<FieldLevelEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void insert(FieldLevelEncryptionItem item) {
-        FieldLevelEncryptionDatabase.databaseWriteExecutor.execute(() -> mFieldLevelEncryptionDao.insert(item));
+        FieldLevelEncryptionDatabase.sDatabaseWriteExecutor.execute(() -> mFieldLevelEncryptionDao.insert(item));
     }
 
     public void deleteAll() {
-        FieldLevelEncryptionDatabase.databaseWriteExecutor.execute(mFieldLevelEncryptionDao::deleteAll);
+        FieldLevelEncryptionDatabase.sDatabaseWriteExecutor.execute(mFieldLevelEncryptionDao::deleteAll);
     }
 }
 

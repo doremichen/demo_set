@@ -63,14 +63,14 @@ public class FieldLevelEncryptionAdapter extends ListAdapter<FieldLevelEncryptio
     }
 
     static class EncryptionViewHolder extends RecyclerView.ViewHolder {
-        private final ItemEncryptionBinding binding;
+        private final ItemEncryptionBinding mBinding;
         EncryptionViewHolder(ItemEncryptionBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
+            this.mBinding = binding;
         }
         void bind(FieldLevelEncryptionItem item) {
-            binding.setItem(item);
-            binding.executePendingBindings();
+            mBinding.setItem(item);
+            mBinding.executePendingBindings();
         }
     }
 }

@@ -37,14 +37,14 @@ public class EncryptedPrefsManager {
     private static final String ENCRYPTED_PREFS_NAME = "encrypted_demo_settings";
     private static final String NORMAL_PREFS_NAME = "normal_demo_settings";
 
-    private final SharedPreferences encryptedPrefs;
-    private final SharedPreferences normalPrefs;
-    private final SharedPreferences rawEncryptedPrefs; // 用於展示加密後的亂碼
-
+    private final SharedPreferences mEncryptedPrefs;
+    private final SharedPreferences mNormalPrefs;
+    private final SharedPreferences mRawEncryptedPrefs; // used for hacker view
+    
     public EncryptedPrefsManager(Context context) throws GeneralSecurityException, IOException {
         String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
 
-        encryptedPrefs = EncryptedSharedPreferences.create(
+        mEncryptedPrefs = EncryptedSharedPreferences.create(
                 ENCRYPTED_PREFS_NAME,
                 masterKeyAlias,
                 context,
@@ -52,48 +52,45 @@ public class EncryptedPrefsManager {
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         );
 
-        normalPrefs = context.getSharedPreferences(NORMAL_PREFS_NAME, Context.MODE_PRIVATE);
+        mNormalPrefs = context.getSharedPreferences(NORMAL_PREFS_NAME, Context.MODE_PRIVATE);
         
-        // 使用標準模式開啟同一個檔案，這會讓我們看到加密後的內容
-        rawEncryptedPrefs = context.getSharedPreferences(ENCRYPTED_PREFS_NAME, Context.MODE_PRIVATE);
+        // Opening the same file in standard mode will allow us to see the encrypted content.
+        mRawEncryptedPrefs = context.getSharedPreferences(ENCRYPTED_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public void saveToEncrypted(String key, String value) {
-        encryptedPrefs.edit().putString(key, value).apply();
+        mEncryptedPrefs.edit().putString(key, value).apply();
     }
 
     public void saveToNormal(String key, String value) {
-        normalPrefs.edit().putString(key, value).apply();
+        mNormalPrefs.edit().putString(key, value).apply();
     }
 
     public String getFromEncrypted(String key) {
-        return encryptedPrefs.getString(key, "");
+        return mEncryptedPrefs.getString(key, "");
     }
 
     public String getFromNormal(String key) {
-        return normalPrefs.getString(key, "");
+        return mNormalPrefs.getString(key, "");
     }
 
     /**
-     * Reads the raw encrypted string from the XML (for demo purposes).
-     * Since keys are also encrypted, we scan the map to find the value.
+     * Read the raw encrypted string stored in XML (from a hacking perspective)
      */
     public String getRawEncryptedString(String key) {
-        Map<String, ?> allEntries = rawEncryptedPrefs.getAll();
+        // Because the Key is also encrypted, we must scan the entire Map to
+        // find the corresponding encrypted Key
+        // This is just for the demo to show what the hacker sees
+        Map<String, ?> allEntries = mRawEncryptedPrefs.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            // In a real scenario, you'd need to know which encrypted key corresponds to 'key'.
-            // For this demo, we just return the first value found if any, 
-            // as it demonstrates what an attacker sees.
-            Object value = entry.getValue();
-            if (value != null) {
-                return value.toString();
-            }
+            // 這裡隨便回傳一個，實際演示時建議直接顯示整個 Map 的內容或對應值
+            return entry.getValue().toString();
         }
         return "No Data / File is Encrypted";
     }
 
     public void clearAll() {
-        encryptedPrefs.edit().clear().apply();
-        normalPrefs.edit().clear().apply();
+        mEncryptedPrefs.edit().clear().apply();
+        mNormalPrefs.edit().clear().apply();
     }
 }

@@ -60,14 +60,14 @@ public class FullDbEncryptionAdapter extends ListAdapter<FullDbEncryptionItem, F
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemFullEncryptionBinding binding;
+        private final ItemFullEncryptionBinding mBinding;
         ViewHolder(ItemFullEncryptionBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
+            this.mBinding = binding;
         }
         void bind(FullDbEncryptionItem item) {
-            binding.setItem(item);
-            binding.executePendingBindings();
+            mBinding.setItem(item);
+            mBinding.executePendingBindings();
         }
     }
 }

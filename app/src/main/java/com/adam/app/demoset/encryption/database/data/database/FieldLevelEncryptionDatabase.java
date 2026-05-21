@@ -38,20 +38,20 @@ public abstract class FieldLevelEncryptionDatabase extends RoomDatabase {
 
     public abstract FieldLevelEncryptionDao fieldLevelEncryptionDao();
 
-    private static volatile FieldLevelEncryptionDatabase INSTANCE;
-    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
+    private static volatile FieldLevelEncryptionDatabase sInstance;
+    public static final ExecutorService sDatabaseWriteExecutor = Executors.newFixedThreadPool(4);
 
     public static FieldLevelEncryptionDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
+        if (sInstance == null) {
             synchronized (FieldLevelEncryptionDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                if (sInstance == null) {
+                    sInstance = Room.databaseBuilder(context.getApplicationContext(),
                                     FieldLevelEncryptionDatabase.class, "encryption_database")
                             .build();
                 }
             }
         }
-        return INSTANCE;
+        return sInstance;
     }
 }
 

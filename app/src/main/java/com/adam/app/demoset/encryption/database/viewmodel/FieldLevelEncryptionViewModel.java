@@ -38,8 +38,8 @@ public class FieldLevelEncryptionViewModel extends AndroidViewModel {
     private final LiveData<List<FieldLevelEncryptionItem>> mAllItems;
 
     // For Data Binding
-    public final MutableLiveData<String> aliasInput = new MutableLiveData<>("");
-    public final MutableLiveData<String> dataInput = new MutableLiveData<>("");
+    public final MutableLiveData<String> mAliasInput = new MutableLiveData<>("");
+    public final MutableLiveData<String> mDataInput = new MutableLiveData<>("");
 
     public FieldLevelEncryptionViewModel(@NonNull Application application) {
         super(application);
@@ -56,12 +56,12 @@ public class FieldLevelEncryptionViewModel extends AndroidViewModel {
     public LiveData<List<FieldLevelEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void onSaveClick() {
-        String alias = aliasInput.getValue();
-        String data = dataInput.getValue();
+        String alias = mAliasInput.getValue();
+        String data = mDataInput.getValue();
         if (alias != null && !alias.isEmpty() && data != null && !data.isEmpty()) {
             encryptAndInsert(alias, data);
-            aliasInput.setValue("");
-            dataInput.setValue("");
+            mAliasInput.setValue("");
+            mDataInput.setValue("");
         }
     }
 
@@ -75,5 +75,3 @@ public class FieldLevelEncryptionViewModel extends AndroidViewModel {
 
     public void deleteAll() { mRepository.deleteAll(); }
 }
-
-

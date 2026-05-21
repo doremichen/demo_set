@@ -56,7 +56,7 @@
                     android:autofillHints="name"
                     android:hint="@string/hint_prefs_key"
                     android:inputType="text"
-                    android:text="@={viewModel.keyInput}"
+                    android:text="@={viewModel.mKeyInput}"
                     app:layout_constraintTop_toBottomOf="@id/tv_instruction" />
 
                 <EditText
@@ -67,7 +67,7 @@
                     android:autofillHints="password"
                     android:hint="@string/hint_prefs_value"
                     android:inputType="text"
-                    android:text="@={viewModel.valueInput}"
+                    android:text="@={viewModel.mValueInput}"
                     app:layout_constraintTop_toBottomOf="@id/et_key" />
 
                 <!-- Button Chain for better screen adaptation -->
@@ -114,10 +114,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="@{viewModel.loadResultHeader}"
+                    android:text="@{viewModel.mLoadResultHeader}"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    android:visibility="@{viewModel.loadResultHeader.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
+                    android:visibility="@{viewModel.mLoadResultHeader.empty ? android.view.View.GONE : android.view.View.VISIBLE}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_save" />
 
@@ -147,7 +147,7 @@
                             android:id="@+id/tv_normal_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.normalValue}"
+                            android:text="@{viewModel.mNormalValue}"
                             android:textColor="@android:color/black" />
 
                         <TextView
@@ -188,7 +188,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="@{viewModel.rawEncryptedValue}"
+                            android:text="@{viewModel.mRawEncryptedValue}"
                             android:textColor="#880000" />
 
                         <TextView
@@ -227,7 +227,7 @@
                             android:id="@+id/tv_decrypted_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{viewModel.decryptedValue}"
+                            android:text="@{viewModel.mDecryptedValue}"
                             android:textColor="#004400" />
 
                         <TextView
@@ -245,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="@{viewModel.statusMessage}"
+                    android:text="@{viewModel.mStatusMessage}"
                     android:textColor="@android:color/holo_blue_dark"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

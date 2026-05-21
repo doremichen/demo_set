@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="@string/hint_encryption_alias_keystore"
-                    android:text="@={fieldViewModel.aliasInput}"
+                    android:text="@={fieldViewModel.mAliasInput}"
                     android:autofillHints="name"
                     android:inputType="text" />
 
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_encryption_sensitive_data"
-                    android:text="@={fieldViewModel.dataInput}"
+                    android:text="@={fieldViewModel.mDataInput}"
                     android:autofillHints="password"
                     android:inputType="text" />
 
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="@string/hint_encryption_alias_sqlcipher"
-                    android:text="@={fullViewModel.aliasInput}"
+                    android:text="@={fullViewModel.mAliasInput}"
                     android:autofillHints="name"
                     android:inputType="text" />
 
@@ -116,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_encryption_secret_info"
-                    android:text="@={fullViewModel.dataInput}"
+                    android:text="@={fullViewModel.mDataInput}"
                     android:autofillHints="password"
                     android:inputType="text" />
 

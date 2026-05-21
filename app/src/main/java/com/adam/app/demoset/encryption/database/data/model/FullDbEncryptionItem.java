@@ -29,25 +29,23 @@ import androidx.room.PrimaryKey;
 public class FullDbEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int mId;
 
     @ColumnInfo(name = "alias")
-    private String alias;
+    private String mAlias;
 
     @ColumnInfo(name = "secret_info")
-    private String secretInfo;
+    private String mSecretInfo;
 
     public FullDbEncryptionItem(String alias, String secretInfo) {
-        this.alias = alias;
-        this.secretInfo = secretInfo;
+        this.mAlias = alias;
+        this.mSecretInfo = secretInfo;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getAlias() { return alias; }
-    public void setAlias(String alias) { this.alias = alias; }
-    public String getSecretInfo() { return secretInfo; }
-    public void setSecretInfo(String secretInfo) { this.secretInfo = secretInfo; }
+    public int getId() { return mId; }
+    public void setId(int id) { this.mId = id; }
+    public String getAlias() { return mAlias; }
+    public void setAlias(String alias) { this.mAlias = alias; }
+    public String getSecretInfo() { return mSecretInfo; }
+    public void setSecretInfo(String secretInfo) { this.mSecretInfo = secretInfo; }
 }
-
-
