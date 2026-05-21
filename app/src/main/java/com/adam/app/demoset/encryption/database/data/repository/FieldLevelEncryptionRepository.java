@@ -23,31 +23,29 @@ package com.adam.app.demoset.encryption.database.data.repository;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
-import com.adam.app.demoset.encryption.database.data.dao.FullEncryptionDao;
-import com.adam.app.demoset.encryption.database.data.database.FullEncryptionDatabase;
-import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
-import com.adam.app.demoset.encryption.database.utils.AppExecutors;
-
+import com.adam.app.demoset.encryption.database.data.dao.FieldLevelEncryptionDao;
+import com.adam.app.demoset.encryption.database.data.database.FieldLevelEncryptionDatabase;
+import com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem;
 import java.util.List;
 
-public class FullEncryptionRepository {
-    private final FullEncryptionDao mDao;
-    private final LiveData<List<FullEncryptionItem>> mAllItems;
+public class FieldLevelEncryptionRepository {
+    private final FieldLevelEncryptionDao mFieldLevelEncryptionDao;
+    private final LiveData<List<FieldLevelEncryptionItem>> mAllItems;
 
-    public FullEncryptionRepository(Application application, byte[] passphrase) {
-        FullEncryptionDatabase db = FullEncryptionDatabase.getDatabase(application, passphrase);
-        mDao = db.fullEncryptionDao();
-        mAllItems = mDao.getAllItems();
+    public FieldLevelEncryptionRepository(Application application) {
+        FieldLevelEncryptionDatabase db = FieldLevelEncryptionDatabase.getDatabase(application);
+        mFieldLevelEncryptionDao = db.fieldLevelEncryptionDao();
+        mAllItems = mFieldLevelEncryptionDao.getAllItems();
     }
 
-    public LiveData<List<FullEncryptionItem>> getAllItems() { return mAllItems; }
+    public LiveData<List<FieldLevelEncryptionItem>> getAllItems() { return mAllItems; }
 
-    public void insert(FullEncryptionItem item) {
-        AppExecutors.getInstance().diskIO().execute(() -> mDao.insert(item));
+    public void insert(FieldLevelEncryptionItem item) {
+        FieldLevelEncryptionDatabase.databaseWriteExecutor.execute(() -> mFieldLevelEncryptionDao.insert(item));
     }
 
     public void deleteAll() {
-        AppExecutors.getInstance().diskIO().execute(mDao::deleteAll);
+        FieldLevelEncryptionDatabase.databaseWriteExecutor.execute(mFieldLevelEncryptionDao::deleteAll);
     }
 }
 

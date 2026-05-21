@@ -27,7 +27,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "encryption_items")
-public class EncryptionItem {
+public class FieldLevelEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -44,7 +44,7 @@ public class EncryptionItem {
     @Ignore
     private String decryptedData;
 
-    public EncryptionItem(String alias, String encryptedData, String iv) {
+    public FieldLevelEncryptionItem(String alias, String encryptedData, String iv) {
         this.alias = alias;
         this.encryptedData = encryptedData;
         this.iv = iv;

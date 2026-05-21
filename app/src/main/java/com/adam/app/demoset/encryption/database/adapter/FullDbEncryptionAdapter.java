@@ -28,21 +28,21 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.adam.app.demoset.databinding.ItemFullEncryptionBinding;
-import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
+import com.adam.app.demoset.encryption.database.data.model.FullDbEncryptionItem;
 
-public class FullEncryptionAdapter extends ListAdapter<FullEncryptionItem, FullEncryptionAdapter.ViewHolder> {
+public class FullDbEncryptionAdapter extends ListAdapter<FullDbEncryptionItem, FullDbEncryptionAdapter.ViewHolder> {
 
-    public FullEncryptionAdapter() {
+    public FullDbEncryptionAdapter() {
         super(DIFF_CALLBACK);
     }
 
-    private static final DiffUtil.ItemCallback<FullEncryptionItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<FullEncryptionItem>() {
+    private static final DiffUtil.ItemCallback<FullDbEncryptionItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<FullDbEncryptionItem>() {
         @Override
-        public boolean areItemsTheSame(@NonNull FullEncryptionItem oldItem, @NonNull FullEncryptionItem newItem) {
+        public boolean areItemsTheSame(@NonNull FullDbEncryptionItem oldItem, @NonNull FullDbEncryptionItem newItem) {
             return oldItem.getId() == newItem.getId();
         }
         @Override
-        public boolean areContentsTheSame(@NonNull FullEncryptionItem oldItem, @NonNull FullEncryptionItem newItem) {
+        public boolean areContentsTheSame(@NonNull FullDbEncryptionItem oldItem, @NonNull FullDbEncryptionItem newItem) {
             return oldItem.getAlias().equals(newItem.getAlias()) && oldItem.getSecretInfo().equals(newItem.getSecretInfo());
         }
     };
@@ -65,7 +65,7 @@ public class FullEncryptionAdapter extends ListAdapter<FullEncryptionItem, FullE
             super(binding.getRoot());
             this.binding = binding;
         }
-        void bind(FullEncryptionItem item) {
+        void bind(FullDbEncryptionItem item) {
             binding.setItem(item);
             binding.executePendingBindings();
         }

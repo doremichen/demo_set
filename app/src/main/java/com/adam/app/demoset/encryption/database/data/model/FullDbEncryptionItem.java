@@ -26,7 +26,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "full_encryption_items")
-public class FullEncryptionItem {
+public class FullDbEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -37,7 +37,7 @@ public class FullEncryptionItem {
     @ColumnInfo(name = "secret_info")
     private String secretInfo;
 
-    public FullEncryptionItem(String alias, String secretInfo) {
+    public FullDbEncryptionItem(String alias, String secretInfo) {
         this.alias = alias;
         this.secretInfo = secretInfo;
     }

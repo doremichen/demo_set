@@ -28,22 +28,22 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.adam.app.demoset.databinding.ItemEncryptionBinding;
-import com.adam.app.demoset.encryption.database.data.model.EncryptionItem;
+import com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem;
 
-public class EncryptionAdapter extends ListAdapter<EncryptionItem, EncryptionAdapter.EncryptionViewHolder> {
+public class FieldLevelEncryptionAdapter extends ListAdapter<FieldLevelEncryptionItem, FieldLevelEncryptionAdapter.EncryptionViewHolder> {
 
-    public EncryptionAdapter() {
+    public FieldLevelEncryptionAdapter() {
         super(DIFF_CALLBACK);
     }
 
-    private static final DiffUtil.ItemCallback<EncryptionItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<EncryptionItem>() {
+    private static final DiffUtil.ItemCallback<FieldLevelEncryptionItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<FieldLevelEncryptionItem>() {
         @Override
-        public boolean areItemsTheSame(@NonNull EncryptionItem oldItem, @NonNull EncryptionItem newItem) {
+        public boolean areItemsTheSame(@NonNull FieldLevelEncryptionItem oldItem, @NonNull FieldLevelEncryptionItem newItem) {
             return oldItem.getId() == newItem.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull EncryptionItem oldItem, @NonNull EncryptionItem newItem) {
+        public boolean areContentsTheSame(@NonNull FieldLevelEncryptionItem oldItem, @NonNull FieldLevelEncryptionItem newItem) {
             return oldItem.getAlias().equals(newItem.getAlias()) &&
                     oldItem.getEncryptedData().equals(newItem.getEncryptedData()) &&
                     (oldItem.getDecryptedData() != null && oldItem.getDecryptedData().equals(newItem.getDecryptedData()));
@@ -68,7 +68,7 @@ public class EncryptionAdapter extends ListAdapter<EncryptionItem, EncryptionAda
             super(binding.getRoot());
             this.binding = binding;
         }
-        void bind(EncryptionItem item) {
+        void bind(FieldLevelEncryptionItem item) {
             binding.setItem(item);
             binding.executePendingBindings();
         }

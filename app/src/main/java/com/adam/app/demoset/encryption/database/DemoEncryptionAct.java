@@ -28,15 +28,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoEncryptionBinding;
-import com.adam.app.demoset.encryption.database.adapter.EncryptionAdapter;
-import com.adam.app.demoset.encryption.database.adapter.FullEncryptionAdapter;
-import com.adam.app.demoset.encryption.database.viewmodel.EncryptionViewModel;
-import com.adam.app.demoset.encryption.database.viewmodel.FullEncryptionViewModel;
+import com.adam.app.demoset.encryption.database.adapter.FieldLevelEncryptionAdapter;
+import com.adam.app.demoset.encryption.database.adapter.FullDbEncryptionAdapter;
+import com.adam.app.demoset.encryption.database.viewmodel.FieldLevelEncryptionViewModel;
+import com.adam.app.demoset.encryption.database.viewmodel.FullDbEncryptionViewModel;
 
 public class DemoEncryptionAct extends AppCompatActivity {
 
-    private EncryptionViewModel mFieldViewModel;
-    private FullEncryptionViewModel mFullViewModel;
+    private FieldLevelEncryptionViewModel mFieldViewModel;
+    private FullDbEncryptionViewModel mFullViewModel;
     private ActivityDemoEncryptionBinding mBinding;
 
     @Override
@@ -47,8 +47,8 @@ public class DemoEncryptionAct extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_encryption);
         mBinding.setLifecycleOwner(this);
         
-        mFieldViewModel = new ViewModelProvider(this).get(EncryptionViewModel.class);
-        mFullViewModel = new ViewModelProvider(this).get(FullEncryptionViewModel.class);
+        mFieldViewModel = new ViewModelProvider(this).get(FieldLevelEncryptionViewModel.class);
+        mFullViewModel = new ViewModelProvider(this).get(FullDbEncryptionViewModel.class);
 
         // Bind ViewModels to the XML variables
         mBinding.setFieldViewModel(mFieldViewModel);
@@ -59,17 +59,15 @@ public class DemoEncryptionAct extends AppCompatActivity {
 
     private void setupRecyclerViews() {
         // Section 1: Field Level
-        EncryptionAdapter fieldAdapter = new EncryptionAdapter();
+        FieldLevelEncryptionAdapter fieldAdapter = new FieldLevelEncryptionAdapter();
         mBinding.rvItemsField.setLayoutManager(new LinearLayoutManager(this));
         mBinding.rvItemsField.setAdapter(fieldAdapter);
         mFieldViewModel.getAllItems().observe(this, fieldAdapter::submitList);
 
         // Section 2: Full DB
-        FullEncryptionAdapter fullAdapter = new FullEncryptionAdapter();
+        FullDbEncryptionAdapter fullAdapter = new FullDbEncryptionAdapter();
         mBinding.rvItemsFull.setLayoutManager(new LinearLayoutManager(this));
         mBinding.rvItemsFull.setAdapter(fullAdapter);
         mFullViewModel.getAllItems().observe(this, fullAdapter::submitList);
     }
 }
-
-

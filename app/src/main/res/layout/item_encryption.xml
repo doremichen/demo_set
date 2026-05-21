@@ -8,7 +8,7 @@
     <data>
         <variable
             name="item"
-            type="com.adam.app.demoset.encryption.database.data.model.EncryptionItem" />
+            type="com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem" />
     </data>
 
     <androidx.cardview.widget.CardView

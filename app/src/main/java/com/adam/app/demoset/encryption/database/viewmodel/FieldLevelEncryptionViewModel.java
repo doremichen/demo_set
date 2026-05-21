@@ -26,41 +26,51 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
-import com.adam.app.demoset.encryption.database.data.repository.FullEncryptionRepository;
-import java.nio.charset.StandardCharsets;
+import androidx.lifecycle.Transformations;
+import com.adam.app.demoset.encryption.database.controller.CryptoManager;
+import com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem;
+import com.adam.app.demoset.encryption.database.data.repository.FieldLevelEncryptionRepository;
 import java.util.List;
 
-public class FullEncryptionViewModel extends AndroidViewModel {
-    private final FullEncryptionRepository mRepository;
-    private final LiveData<List<FullEncryptionItem>> mAllItems;
+public class FieldLevelEncryptionViewModel extends AndroidViewModel {
+    private final FieldLevelEncryptionRepository mRepository;
+    private final CryptoManager mCryptoManager;
+    private final LiveData<List<FieldLevelEncryptionItem>> mAllItems;
 
     // For Data Binding
     public final MutableLiveData<String> aliasInput = new MutableLiveData<>("");
     public final MutableLiveData<String> dataInput = new MutableLiveData<>("");
 
-    public FullEncryptionViewModel(@NonNull Application application) {
+    public FieldLevelEncryptionViewModel(@NonNull Application application) {
         super(application);
-        // In a real app, the passphrase should be securely derived, e.g., from Keystore
-        byte[] passphrase = "super_secret_passphrase".getBytes(StandardCharsets.UTF_8);
-        mRepository = new FullEncryptionRepository(application, passphrase);
-        mAllItems = mRepository.getAllItems();
+        mRepository = new FieldLevelEncryptionRepository(application);
+        mCryptoManager = new CryptoManager();
+        mAllItems = Transformations.map(mRepository.getAllItems(), items -> {
+            for (FieldLevelEncryptionItem item : items) {
+                item.setDecryptedData(mCryptoManager.decrypt(item.getEncryptedData(), item.getIv()));
+            }
+            return items;
+        });
     }
 
-    public LiveData<List<FullEncryptionItem>> getAllItems() { return mAllItems; }
+    public LiveData<List<FieldLevelEncryptionItem>> getAllItems() { return mAllItems; }
 
     public void onSaveClick() {
         String alias = aliasInput.getValue();
         String data = dataInput.getValue();
         if (alias != null && !alias.isEmpty() && data != null && !data.isEmpty()) {
-            insert(alias, data);
+            encryptAndInsert(alias, data);
             aliasInput.setValue("");
             dataInput.setValue("");
         }
     }
 
-    private void insert(String alias, String secretInfo) {
-        mRepository.insert(new FullEncryptionItem(alias, secretInfo));
+    private void encryptAndInsert(String alias, String plainText) {
+        CryptoManager.EncryptedData result = mCryptoManager.encrypt(plainText);
+        if (result != null) {
+            FieldLevelEncryptionItem newItem = new FieldLevelEncryptionItem(alias, result.data, result.iv);
+            mRepository.insert(newItem);
+        }
     }
 
     public void deleteAll() { mRepository.deleteAll(); }

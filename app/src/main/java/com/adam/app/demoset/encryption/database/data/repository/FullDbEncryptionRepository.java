@@ -19,28 +19,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.adam.app.demoset.encryption.database.data.dao;
+package com.adam.app.demoset.encryption.database.data.repository;
 
+import android.app.Application;
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import com.adam.app.demoset.encryption.database.data.model.FullEncryptionItem;
-
+import com.adam.app.demoset.encryption.database.data.dao.FullDbEncryptionDao;
+import com.adam.app.demoset.encryption.database.data.database.FullDbEncryptionDatabase;
+import com.adam.app.demoset.encryption.database.data.model.FullDbEncryptionItem;
 import java.util.List;
 
-@Dao
-public interface FullEncryptionDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(FullEncryptionItem item);
+public class FullDbEncryptionRepository {
+    private final FullDbEncryptionDao mDao;
+    private final LiveData<List<FullDbEncryptionItem>> mAllItems;
 
-    @Query("SELECT * FROM full_encryption_items ORDER BY id DESC")
-    LiveData<List<FullEncryptionItem>> getAllItems();
+    public FullDbEncryptionRepository(Application application, byte[] passphrase) {
+        FullDbEncryptionDatabase db = FullDbEncryptionDatabase.getDatabase(application, passphrase);
+        mDao = db.fullDbEncryptionDao();
+        mAllItems = mDao.getAllItems();
+    }
 
-    @Query("DELETE FROM full_encryption_items")
-    void deleteAll();
+    public LiveData<List<FullDbEncryptionItem>> getAllItems() { return mAllItems; }
+
+    public void insert(FullDbEncryptionItem item) {
+        FullDbEncryptionDatabase.databaseWriteExecutor.execute(() -> mDao.insert(item));
+    }
+
+    public void deleteAll() {
+        FullDbEncryptionDatabase.databaseWriteExecutor.execute(mDao::deleteAll);
+    }
 }
 
 

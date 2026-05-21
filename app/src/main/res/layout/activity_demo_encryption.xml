@@ -9,10 +9,10 @@
     <data>
         <variable
             name="fieldViewModel"
-            type="com.adam.app.demoset.encryption.database.viewmodel.EncryptionViewModel" />
+            type="com.adam.app.demoset.encryption.database.viewmodel.FieldLevelEncryptionViewModel" />
         <variable
             name="fullViewModel"
-            type="com.adam.app.demoset.encryption.database.viewmodel.FullEncryptionViewModel" />
+            type="com.adam.app.demoset.encryption.database.viewmodel.FullDbEncryptionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

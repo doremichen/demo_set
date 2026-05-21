@@ -19,36 +19,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.adam.app.demoset.encryption.database.data.repository;
+package com.adam.app.demoset.encryption.database.data.dao;
 
-import android.app.Application;
 import androidx.lifecycle.LiveData;
-import com.adam.app.demoset.encryption.database.data.dao.EncryptionDao;
-import com.adam.app.demoset.encryption.database.data.database.EncryptionDatabase;
-import com.adam.app.demoset.encryption.database.data.model.EncryptionItem;
-import com.adam.app.demoset.encryption.database.utils.AppExecutors;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem;
 
 import java.util.List;
 
-public class EncryptionRepository {
-    private final EncryptionDao mEncryptionDao;
-    private final LiveData<List<EncryptionItem>> mAllItems;
+@Dao
+public interface FieldLevelEncryptionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(FieldLevelEncryptionItem item);
 
-    public EncryptionRepository(Application application) {
-        EncryptionDatabase db = EncryptionDatabase.getDatabase(application);
-        mEncryptionDao = db.encryptionDao();
-        mAllItems = mEncryptionDao.getAllItems();
-    }
+    @Update
+    void update(FieldLevelEncryptionItem item);
 
-    public LiveData<List<EncryptionItem>> getAllItems() { return mAllItems; }
+    @Delete
+    void delete(FieldLevelEncryptionItem item);
 
-    public void insert(EncryptionItem item) {
-        AppExecutors.getInstance().diskIO().execute(() -> mEncryptionDao.insert(item));
-    }
+    @Query("SELECT * FROM encryption_items ORDER BY id DESC")
+    LiveData<List<FieldLevelEncryptionItem>> getAllItems();
 
-    public void deleteAll() {
-        AppExecutors.getInstance().diskIO().execute(mEncryptionDao::deleteAll);
-    }
+    @Query("DELETE FROM encryption_items")
+    void deleteAll();
 }
 
 

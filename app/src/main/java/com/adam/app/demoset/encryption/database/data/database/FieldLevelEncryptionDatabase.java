@@ -19,40 +19,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.adam.app.demoset.encryption.database.data.database;
 
-package com.adam.app.demoset.encryption.database.utils;
+import android.content.Context;
+
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
+import com.adam.app.demoset.encryption.database.data.dao.FieldLevelEncryptionDao;
+import com.adam.app.demoset.encryption.database.data.model.FieldLevelEncryptionItem;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- * Global executor pools for the whole application.
- * <p>
- * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
- * webservice requests).
- */
-public class AppExecutors {
+@Database(entities = {FieldLevelEncryptionItem.class}, version = 1, exportSchema = false)
+public abstract class FieldLevelEncryptionDatabase extends RoomDatabase {
 
-    private static final Object LOCK = new Object();
-    private static volatile AppExecutors sInstance;
-    private final ExecutorService mDiskIO;
+    public abstract FieldLevelEncryptionDao fieldLevelEncryptionDao();
 
-    private AppExecutors(ExecutorService diskIO) {
-        this.mDiskIO = diskIO;
-    }
+    private static volatile FieldLevelEncryptionDatabase INSTANCE;
+    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(4);
 
-    public static AppExecutors getInstance() {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                if (sInstance == null) {
-                    sInstance = new AppExecutors(Executors.newFixedThreadPool(4));
+    public static FieldLevelEncryptionDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (FieldLevelEncryptionDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    FieldLevelEncryptionDatabase.class, "encryption_database")
+                            .build();
                 }
             }
         }
-        return sInstance;
-    }
-
-    public ExecutorService diskIO() {
-        return mDiskIO;
+        return INSTANCE;
     }
 }
+
+

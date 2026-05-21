@@ -19,36 +19,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.adam.app.demoset.encryption.database.data.database;
+package com.adam.app.demoset.encryption.database.data.dao;
 
-import android.content.Context;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
+import com.adam.app.demoset.encryption.database.data.model.FullDbEncryptionItem;
 
-import com.adam.app.demoset.encryption.database.data.dao.EncryptionDao;
-import com.adam.app.demoset.encryption.database.data.model.EncryptionItem;
+import java.util.List;
 
-@Database(entities = {EncryptionItem.class}, version = 1, exportSchema = false)
-public abstract class EncryptionDatabase extends RoomDatabase {
+@Dao
+public interface FullDbEncryptionDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(FullDbEncryptionItem item);
 
-    public abstract EncryptionDao encryptionDao();
+    @Query("SELECT * FROM full_encryption_items ORDER BY id DESC")
+    LiveData<List<FullDbEncryptionItem>> getAllItems();
 
-    private static volatile EncryptionDatabase INSTANCE;
-
-    public static EncryptionDatabase getDatabase(final Context context) {
-        if (INSTANCE == null) {
-            synchronized (EncryptionDatabase.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    EncryptionDatabase.class, "encryption_database")
-                            .build();
-                }
-            }
-        }
-        return INSTANCE;
-    }
+    @Query("DELETE FROM full_encryption_items")
+    void deleteAll();
 }
 
 
