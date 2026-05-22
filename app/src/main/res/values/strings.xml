@@ -93,8 +93,11 @@
     <string name="msg_prefs_saved_success">Saved successfully!</string>
     <string name="msg_prefs_cleared_success">All preferences cleared</string>
 
-    <!-- string for Demo USB device (commented out) -->
-    <!-- <string name="title_demo_Usb device">Demo USB Device</string> -->
+    <string name="title_demo_usb_device">Demo USB Device</string>
+    <string name="action_refresh_usb">Refresh USB</string>
+    <string name="msg_no_usb_device">No USB device connected</string>
+    <string name="msg_all_files_access_required">All Files Access is required for this demo</string>
+    <string name="title_all_files_access_required">All Files Access Required</string>
     <!-- Demo service item -->
     <string name="start_service">Start service</string>
     <string name="stop_service">Stop service</string>

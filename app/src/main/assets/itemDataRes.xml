@@ -134,6 +134,11 @@
         clsname="com.adam.app.demoset.database.room.DemoRoomAct"
         pkgname="com.adam.app.demoset"/>
 
+    <data category="category_storage"
+        titleRes="title_demo_usb_device"
+        clsname="com.adam.app.demoset.usb_storage.view.DemoUsbActivity"
+        pkgname="com.adam.app.demoset"/>
+
     <!-- System -->
     <data category="category_system"
         titleRes="title_demo_system_ui"

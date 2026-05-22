@@ -347,7 +347,7 @@
             android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".usb_storage.DemoUsbActivity"
+            android:name=".usb_storage.view.DemoUsbActivity"
             android:exported="true"
             android:label="@string/tile_activity_demo_usb_device"
             android:screenOrientation="nosensor" />

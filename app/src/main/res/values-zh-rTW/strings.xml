@@ -94,8 +94,11 @@
     <string name="msg_prefs_cleared_success">所有偏好設定已清除</string>
     <string name="title_demo_navigation">示範導航使用者介面</string>
 
-    <!-- string for Demo USB device (註解掉) -->
-    <!-- <string name="title_demo_Usb device">USB 裝置範例</string> -->
+    <string name="title_demo_usb_device">USB 裝置範例</string>
+    <string name="action_refresh_usb">刷新USB</string>
+    <string name="msg_no_usb_device">未連接 USB 裝置</string>
+    <string name="msg_all_files_access_required">此演示需要所有文件存取權限</string>
+    <string name="title_all_files_access_required">需要存取所有文件</string>
     <!-- Demo service item -->
     <string name="start_service">開始服務</string>
     <string name="stop_service">停止服務</string>
