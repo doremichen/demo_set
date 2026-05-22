@@ -607,4 +607,18 @@
     <string name="demo_video_record_content_description_start">開始錄影</string>
     <string name="demo_video_record_content_description_play">播放影片</string>
     <string name="demo_video_record_content_description_exit">離開頁面</string>
+
+    <!-- ML Kit Demo -->
+    <string name="title_demo_mlkit">ML Kit 視覺範例</string>
+    <string name="demo_mlkit_instruction_title">設備端視覺辨識 (ML Kit)</string>
+    <string name="demo_mlkit_instruction">實時條碼掃描、人臉偵測與文字辨識。所有處理均在設備端完成，兼顧隱私與速度。</string>
+    <string name="label_mlkit_mode_barcode">條碼</string>
+    <string name="label_mlkit_mode_face">人臉</string>
+    <string name="label_mlkit_mode_text">文字</string>
+    <string name="msg_mlkit_barcode_detected">條碼: %1$s</string>
+    <string name="msg_mlkit_face_detected">偵測到人臉！</string>
+    <string name="msg_mlkit_text_detected">文字: %1$s</string>
+    <string name="msg_mlkit_mode_switched">模式已切換。準備就緒...</string>
+    <string name="msg_mlkit_error_prefix">錯誤: %1$s</string>
+    <string name="msg_mlkit_default_hint">請將相機對準目標</string>
 </resources>

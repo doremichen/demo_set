@@ -29,6 +29,7 @@ import androidx.room.PrimaryKey;
 public class FullDbEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int mId;
 
     @ColumnInfo(name = "alias")

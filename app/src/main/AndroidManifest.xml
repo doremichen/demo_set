@@ -361,6 +361,11 @@
             android:exported="true"
             android:label="Demo Encrypted Prefs"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".mlkit.MLKitActivity"
+            android:exported="false"
+            android:label="@string/title_demo_mlkit"
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="preloaded_fonts"

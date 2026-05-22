@@ -607,4 +607,18 @@
     <string name="demo_video_record_content_description_start">Start recording</string>
     <string name="demo_video_record_content_description_play">Play video</string>
     <string name="demo_video_record_content_description_exit">Exit page</string>
+
+    <!-- ML Kit Demo -->
+    <string name="title_demo_mlkit">Demo ML Kit Vision</string>
+    <string name="demo_mlkit_instruction_title">On-Device Vision (ML Kit)</string>
+    <string name="demo_mlkit_instruction">Real-time Barcode Scanning, Face Detection, and Text Recognition. All processing happens on-device for privacy and speed.</string>
+    <string name="label_mlkit_mode_barcode">Barcode</string>
+    <string name="label_mlkit_mode_face">Face</string>
+    <string name="label_mlkit_mode_text">Text</string>
+    <string name="msg_mlkit_barcode_detected">Barcode: %1$s</string>
+    <string name="msg_mlkit_face_detected">Face detected!</string>
+    <string name="msg_mlkit_text_detected">Text: %1$s</string>
+    <string name="msg_mlkit_mode_switched">Mode switched. Ready...</string>
+    <string name="msg_mlkit_error_prefix">Error: %1$s</string>
+    <string name="msg_mlkit_default_hint">Point camera at target</string>
 </resources>

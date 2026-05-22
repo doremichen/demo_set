@@ -266,4 +266,9 @@
         clsname="com.adam.app.demoset.tflite.TFLiteActivity"
         pkgname="com.adam.app.demoset"/>
 
+    <data category="category_ai"
+        titleRes="title_demo_mlkit"
+        clsname="com.adam.app.demoset.mlkit.MLKitActivity"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

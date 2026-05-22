@@ -30,6 +30,7 @@ import androidx.room.PrimaryKey;
 public class FieldLevelEncryptionItem {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int mId;
 
     @ColumnInfo(name = "alias")

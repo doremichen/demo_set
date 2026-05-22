@@ -86,8 +86,13 @@ Native Layer
 
 ## 🤖 AI / Machine Learning
 
-* TensorFlow Lite (Image Classification)
-* MVVM integration with TFLite Task Library
+* **Google ML Kit Vision**:
+    * **Barcode Scanning**: Real-time multi-format barcode detection.
+    * **Face Detection**: Fast on-device face presence tracking.
+    * **Text Recognition**: Latin-based OCR for real-time text extraction.
+* **TensorFlow Lite**:
+    * Image Classification using the TFLite Task Library.
+    * Full MVVM integration for asynchronous model inference.
 
 ---
 
@@ -114,6 +119,17 @@ Native Layer
 * Video Recording
 * Flashlight control
 * CameraX API (Modern lifecycle-aware)
+
+---
+
+# 🔥 Highlight: ML Kit & Strategy Pattern
+
+The ML Kit module showcases an optimized **State-Driven Strategy Pattern**:
+
+* **Consolidated Enum Strategy**: Detection logic is encapsulated within a single `VisionDetectionMode` enum, ensuring tight coupling between the mode and its processing logic.
+* **Adaptive Lens Switching**: Automatically flips between **Front (Selfie) Camera** for Face Detection and **Rear Camera** for Barcode/Text scanning.
+* **Dynamic Lifecycle Re-binding**: Real-time camera hardware re-configuration handled by the ViewModel without activity restarts.
+* **Multi-language Support**: Logic returns `R.string` IDs, ensuring all UI text is resolved through the Android localization system.
 
 ---
 
@@ -180,7 +196,6 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **On-Device Search & Vision**: Integration with Google ML Kit (Barcode, Face, Text detection).
 * **Biometric Authentication**: Fingerprint & Face Unlock (BiometricPrompt API).
 * **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
 * **Performance & Diagnostics**: Benchmarking, App Startup optimization, and LeakCanary integration.
