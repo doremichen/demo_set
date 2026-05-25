@@ -44,6 +44,7 @@ Native Layer
     * **Standard (Field-level)**: Protects sensitive columns using **Android Keystore (AES-GCM)**.
     * **Military-grade (Full-DB)**: Encrypts the entire database file using **SQLCipher** integration with Room.
 * **EncryptedSharedPreferences**: Secure Key-Value storage using **Jetpack Security** with hardware-backed master keys.
+* **Biometric Authentication**: Modern fingerprint and face unlock integration using the **BiometricPrompt API** with fallback to device credentials.
 * **Hacker View**: Visualization of raw encrypted ciphertext vs. safe decrypted views for security contrast.
 
 ---
@@ -196,7 +197,6 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **Biometric Authentication**: Fingerprint & Face Unlock (BiometricPrompt API).
 * **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
 * **Performance & Diagnostics**: Benchmarking, App Startup optimization, and LeakCanary integration.
 * **Advanced Graphics**: Rendering Engine with Vulkan or advanced Canvas 2D effects.

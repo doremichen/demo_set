@@ -613,6 +613,24 @@
 
     <!-- ML Kit Demo -->
     <string name="title_demo_mlkit">ML Kit 視覺範例</string>
+    <!-- Biometric Demo -->
+    <string name="title_demo_biometric">生物辨識認證</string>
+    <string name="biometric_status_success">可以使用生物辨識認證。</string>
+    <string name="biometric_status_no_hardware">此裝置不支援生物辨識功能。</string>
+    <string name="biometric_status_hw_unavailable">生物辨識功能目前無法使用。</string>
+    <string name="biometric_status_none_enrolled">使用者尚未註冊任何生物辨識憑證。</string>
+    <string name="biometric_status_security_update">需要安全性更新。</string>
+    <string name="biometric_status_unknown">生物辨識狀態未知。</string>
+    <string name="biometric_status_unexpected">檢查生物辨識可用性時發生預期外的錯誤。</string>
+    <string name="biometric_prompt_title">DemoSet 生物辨識登入</string>
+    <string name="biometric_prompt_subtitle">使用您的生物辨識憑證登入</string>
+    <string name="biometric_auth_error">認證錯誤：%1$s</string>
+    <string name="biometric_auth_success">認證成功！</string>
+    <string name="biometric_auth_failed">認證失敗</string>
+    <string name="label_instruction_title">功能說明：</string>
+    <string name="demo_biometric_instruction">此範例展示了 <b>BiometricPrompt API</b>，為指紋、臉部和虹膜認證提供統一的系統對話框。它會自動處理硬體可用性，並支援安全性回退至裝置憑證（PIN/圖形/密碼）。</string>
+    <string name="btn_authenticate">認證</string>
+
     <string name="demo_mlkit_instruction_title">設備端視覺辨識 (ML Kit)</string>
     <string name="demo_mlkit_instruction">實時條碼掃描、人臉偵測與文字辨識。所有處理均在設備端完成，兼顧隱私與速度。</string>
     <string name="label_mlkit_mode_barcode">條碼</string>

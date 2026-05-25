@@ -160,6 +160,7 @@ dependencies {
     implementation libs.androidx.camera.lifecycle
     implementation libs.androidx.camera.view
     implementation libs.androidx.security.crypto
+    implementation libs.androidx.biometric
 
     // ML Kit
     implementation libs.mlkit.barcode.scanning

@@ -613,6 +613,24 @@
 
     <!-- ML Kit Demo -->
     <string name="title_demo_mlkit">Demo ML Kit Vision</string>
+    <!-- Biometric Demo -->
+    <string name="title_demo_biometric">Biometric Authentication</string>
+    <string name="biometric_status_success">Biometric authentication is available.</string>
+    <string name="biometric_status_no_hardware">No biometric features available on this device.</string>
+    <string name="biometric_status_hw_unavailable">Biometric features are currently unavailable.</string>
+    <string name="biometric_status_none_enrolled">The user hasn\'t associated any biometric credentials.</string>
+    <string name="biometric_status_security_update">A security update is required.</string>
+    <string name="biometric_status_unknown">Biometric status unknown.</string>
+    <string name="biometric_status_unexpected">Unexpected error checking biometric availability.</string>
+    <string name="biometric_prompt_title">Biometric login for DemoSet</string>
+    <string name="biometric_prompt_subtitle">Log in using your biometric credential</string>
+    <string name="biometric_auth_error">Authentication error: %1$s</string>
+    <string name="biometric_auth_success">Authentication succeeded!</string>
+    <string name="biometric_auth_failed">Authentication failed</string>
+    <string name="label_instruction_title">Instruction:</string>
+    <string name="demo_biometric_instruction">This demo demonstrates <b>BiometricPrompt API</b>, providing a unified system dialog for fingerprint, face, and iris authentication. It automatically handles hardware availability and security fallback to device credentials (PIN/Pattern/Password).</string>
+    <string name="btn_authenticate">Authenticate</string>
+
     <string name="demo_mlkit_instruction_title">On-Device Vision (ML Kit)</string>
     <string name="demo_mlkit_instruction">Real-time Barcode Scanning, Face Detection, and Text Recognition. All processing happens on-device for privacy and speed.</string>
     <string name="label_mlkit_mode_barcode">Barcode</string>
