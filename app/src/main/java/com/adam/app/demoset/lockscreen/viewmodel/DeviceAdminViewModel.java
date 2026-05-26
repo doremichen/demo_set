@@ -31,58 +31,69 @@ import com.adam.app.demoset.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DeviceAdminViewModel
+ *
+ * ViewModel that manages Device Admin actions and console logs.
+ */
 public class DeviceAdminViewModel extends ViewModel {
     public static final String UNKNOWN = "Unknown";
-    // live data: logs
     private final MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<AdminAction>> mAdminActions = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<String> mNavigation = new MutableLiveData<>(UNKNOWN);
+
+    public DeviceAdminViewModel() {
+        buildAdminActions();
+    }
+
     public LiveData<List<String>> getLogs() {
         return mLogs;
     }
 
-    // live data: strategy
-    private final MutableLiveData<List<Strategy>> mStrategy = new MutableLiveData<>(new ArrayList<>());
-    public LiveData<List<Strategy>> getStrategy() {
-        return mStrategy;
+    public LiveData<List<AdminAction>> getAdminActions() {
+        return mAdminActions;
     }
 
-    // live data: navigation
-    private final MutableLiveData<String> mNavigation = new MutableLiveData<>(UNKNOWN);
     public LiveData<String> getNavigation() {
         return mNavigation;
     }
 
-    // construct
-    public DeviceAdminViewModel() {
-        buildStrategy();
-    }
-
     /**
-     * add log
+     * Add a log entry to the console.
+     * @param log Log message
      */
     public void addLog(String log) {
         List<String> logs = this.mLogs.getValue();
-        logs.add(log);
-        this.mLogs.setValue(logs);
+        if (logs != null) {
+            logs.add(log);
+            this.mLogs.setValue(logs);
+        }
     }
 
     /**
-     * done navigation
+     * Clear the navigation event state.
      */
     public void doneNavigation() {
         this.mNavigation.setValue(UNKNOWN);
     }
 
-    public void buildStrategy() {
-        List<Strategy> strategy = new ArrayList<>();
-        for (Strategy s : Strategy.values()) {
-            strategy.add(s);
+    /**
+     * Build the list of available admin actions from the enum.
+     */
+    public void buildAdminActions() {
+        List<AdminAction> actions = new ArrayList<>();
+        for (AdminAction a : AdminAction.values()) {
+            actions.add(a);
         }
-        this.mStrategy.setValue(strategy);
+        this.mAdminActions.setValue(actions);
     }
 
-    public enum Strategy {
-        ENABLE_ADAMIN {
-
+    /**
+     * AdminAction Enum
+     * Defines the strategies for different Device Admin and Security tasks.
+     */
+    public enum AdminAction {
+        ENABLE_ADMIN {
             @Override
             public int getResIdName() {
                 return R.string.item_enable_admin;
@@ -90,12 +101,10 @@ public class DeviceAdminViewModel extends ViewModel {
 
             @Override
             public void process(DeviceAdminViewModel vm) {
-                // navigate to enable admin activity
                 vm.mNavigation.setValue(this.name());
             }
         },
         DISABLE_ADMIN {
-
             @Override
             public int getResIdName() {
                 return R.string.item_disable_admin;
@@ -103,12 +112,10 @@ public class DeviceAdminViewModel extends ViewModel {
 
             @Override
             public void process(DeviceAdminViewModel vm) {
-                // navigate to disable admin activity
                 vm.mNavigation.setValue(this.name());
             }
         },
         LOCK_SCREEN {
-
             @Override
             public int getResIdName() {
                 return R.string.item_lock_screen;
@@ -116,12 +123,10 @@ public class DeviceAdminViewModel extends ViewModel {
 
             @Override
             public void process(DeviceAdminViewModel vm) {
-                // navigate to lock screen activity
                 vm.mNavigation.setValue(this.name());
             }
         },
         SECURITY_LOCK {
-
             @Override
             public int getResIdName() {
                 return R.string.item_security_lock;
@@ -129,12 +134,10 @@ public class DeviceAdminViewModel extends ViewModel {
 
             @Override
             public void process(DeviceAdminViewModel vm) {
-                // navigate to security lock activity
                 vm.mNavigation.setValue(this.name());
             }
         },
         EXIT {
-
             @Override
             public int getResIdName() {
                 return R.string.label_exit;
@@ -142,7 +145,6 @@ public class DeviceAdminViewModel extends ViewModel {
 
             @Override
             public void process(DeviceAdminViewModel vm) {
-                // navigate to exit activity
                 vm.mNavigation.setValue(this.name());
             }
         };
@@ -150,6 +152,4 @@ public class DeviceAdminViewModel extends ViewModel {
         public abstract int getResIdName();
         public abstract void process(DeviceAdminViewModel vm);
     }
-
-
 }

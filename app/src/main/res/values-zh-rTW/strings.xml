@@ -491,8 +491,12 @@
     <string name="demo_notification_update_instruction">這展示了如何動態修改已發出的通知內容。</string>
     <string name="demo_notification_info_title">資訊: 測試</string>
     <string name="demo_notification_info_content">這是展示通知</string>
-    <string name="demo_lock_screen_instruction_title">設備安全管理演示</string>
-    <string name="demo_lock_screen_instruction">本單元演示 Android 設備管理員 (Device Admin) 的高級權限控制。透過策略模式 (Strategy Pattern) 實作，您可以測試遠端鎖屏、安全驗證以及管理權限的啟動流。這對於企業級醫療設備的安全性維護至關重要。</string>
+    <string name="demo_lock_screen_instruction_title">設備管理員與安全驗證範例</string>
+    <string name="demo_lock_screen_instruction">本單元演示了 <b>DevicePolicyManager</b> 與 <b>BiometricPrompt</b> 的區別：
+        \n\n1. <b>設備管理員</b>：高權限控制（如強制鎖屏）。需要在系統設定中手動啟動。
+        \n2. <b>安全鎖定</b>：直接調用 <i>KeyguardManager</i> 進行 PIN/圖形/密碼驗證。
+        \n\n註：<i>BiometricPrompt</i>（請見另一個範例）是結合生物辨識與裝置憑證的現代化標準方式。</string>
+    <string name="demo_lock_screen_instruction_fallback">請驗證身份以繼續。</string>
     <string name="demo_alarm_instruction"><![CDATA[本 Demo 展示 AlarmManager 的多種觸發機制：\n• Repeat: 嚴格週期性鬧鐘 (需 > 60s)\n• Inexact: 系統優化省電模式 (需 > 15min)\n• AllowWhileIdle: 即使在 Doze 模式也能觸發]]></string>
     <string name="demo_xml_instruction_title">XML Pull Parser 演示</string>
     <string name="demo_xml_instruction">透過 State Pattern 解析 XML 資源並動態生成資料清單。</string>
