@@ -25,6 +25,7 @@ package com.adam.app.demoset.filemanager;
 
 import android.Manifest;
 import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -88,19 +89,19 @@ abstract class FileUtils {
     }
 
 
-    public static String getPermissionStatus(AppCompatActivity activity) {
+    public static String getPermissionStatus(Context context) {
         // check sdk version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            return checkStoragePermissionApi30(activity).toString();
-        return checkStoragePermissionApi19(activity).toString();
+            return checkStoragePermissionApi30(context).toString();
+        return checkStoragePermissionApi19(context).toString();
     }
 
-    public static Boolean checkStoragePermission(AppCompatActivity activity) {
+    public static Boolean checkStoragePermission(Context context) {
         Utils.info(FileUtils.class, "checkStoragePermission");
         // check sdk version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            return checkStoragePermissionApi30(activity);
-        return checkStoragePermissionApi19(activity);
+            return checkStoragePermissionApi30(context);
+        return checkStoragePermissionApi19(context);
     }
 
     public static void requestStoragePermission(AppCompatActivity activity) {
@@ -114,12 +115,12 @@ abstract class FileUtils {
     }
 
     @RequiresApi(30)
-    private static Boolean checkStoragePermissionApi30(AppCompatActivity activity) {
-        AppOpsManager appOps = (AppOpsManager) activity.getSystemService(AppOpsManager.class);
+    private static Boolean checkStoragePermissionApi30(Context context) {
+        AppOpsManager appOps = (AppOpsManager) context.getSystemService(AppOpsManager.class);
         int mode = appOps.unsafeCheckOpNoThrow(
                 MANAGE_EXTERNAL_STORAGE_PERMISSION,
-                activity.getApplicationInfo().uid,
-                activity.getPackageName()
+                context.getApplicationInfo().uid,
+                context.getPackageName()
         );
 
         return mode == AppOpsManager.MODE_ALLOWED;
@@ -133,8 +134,8 @@ abstract class FileUtils {
     }
 
     @RequiresApi(19)
-    private static Boolean checkStoragePermissionApi19(AppCompatActivity activity) {
-        int status = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE);
+    private static Boolean checkStoragePermissionApi19(Context context) {
+        int status = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
         return status == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -155,16 +156,19 @@ abstract class FileUtils {
     }
 
 
-    public static void  openFile(AppCompatActivity activity, File selectedItem) {
+    public static void  openFile(Context context, File selectedItem) {
         // Get Uri and mime type
-        Uri uri = FileProvider.getUriForFile(activity.getApplicationContext(), AUTHORITY, selectedItem);
+        Uri uri = FileProvider.getUriForFile(context.getApplicationContext(), AUTHORITY, selectedItem);
         String mime = getMimeType(uri.toString());
 
         // Open file with user selected app
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (!(context instanceof AppCompatActivity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         intent.setDataAndType(uri, mime);
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
 
@@ -190,13 +194,13 @@ abstract class FileUtils {
         return resultList;
     }
 
-    public static String ParentLinkLabel(AppCompatActivity activity) {
-        return activity.getString(R.string.go_parent_label);
+    public static String ParentLinkLabel(Context context) {
+        return context.getString(R.string.go_parent_label);
     }
 
-    public static String ItemLabel(AppCompatActivity activity, File file) {
-        return (file.isDirectory())? activity.getString(R.string.folder_item, file.getName()):
-                activity.getString(R.string.file_item, file.getName());
+    public static String ItemLabel(Context context, File file) {
+        return (file.isDirectory())? context.getString(R.string.folder_item, file.getName()):
+                context.getString(R.string.file_item, file.getName());
     }
 
 

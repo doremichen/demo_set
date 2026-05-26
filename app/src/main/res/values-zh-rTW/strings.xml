@@ -241,6 +241,7 @@
     <string name="legacy_external_storage_warning_message">您需要在 AndroidManifest.xml 檔案中啟用 <b>requestLegacyExternalStorage</b> 標誌</string>
     <string name="settings_title">檔案管理設定</string>
     <string name="file_manager_title">檔案管理範例</string>
+    <string name="about_file_manager_content">檔案管理員示範\n版本: 1.0\n版權所有 (c) 2026 Adam Chen</string>
     <string name="sdk_codename_info">SDK 代號：%1$s</string>
     <string name="sdk_version_info">SDK 版本：%1$s</string>
     <string name="legacy_storage_info">傳統外部儲存：%1$s</string>

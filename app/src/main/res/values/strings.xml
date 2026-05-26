@@ -241,6 +241,7 @@
     <string name="legacy_external_storage_warning_message">You need to enable the <b>requestLegacyExternalStorage</b>\n flag in the AndroidManifest.xml file</string>
     <string name="settings_title">File Manager settings</string>
     <string name="file_manager_title">File Manager sample</string>
+    <string name="about_file_manager_content">File Manager Demo\nVersion: 1.0\nCopyright (c) 2026 Adam Chen</string>
     <string name="sdk_codename_info">SDK codename: %1$s</string>
     <string name="sdk_version_info">SDK version: %1$s</string>
     <string name="legacy_storage_info">Legacy External Storage: %1$s</string>
