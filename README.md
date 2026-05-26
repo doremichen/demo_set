@@ -25,9 +25,10 @@ UI Layer
  ├── ViewBinding / DataBinding
  │
 ViewModel Layer
- ├── LiveData / State handling
+ ├── LiveData / State handling / Flows
  │
-Domain / System Layer
+Domain / Repository Layer
+ ├── Repository Pattern (Room, DataStore)
  ├── Service / WorkManager / Binder
  │
 Native Layer
@@ -40,6 +41,7 @@ Native Layer
 
 ## 🔐 Android Security (Encryption)
 
+* **Device Administrator**: Demonstrates requesting elevated privileges to perform system-level tasks like immediate screen locking and credential confirmation via **DevicePolicyManager**.
 * **Multi-level Database Encryption**:
     * **Standard (Field-level)**: Protects sensitive columns using **Android Keystore (AES-GCM)**.
     * **Military-grade (Full-DB)**: Encrypts the entire database file using **SQLCipher** integration with Room.
@@ -72,7 +74,7 @@ Native Layer
 * Modern Permission Model (ActivityResult API)
 * System UI control
 * Quick Settings Tile
-* Device Admin
+* **Notification Management**: Advanced notification demos including intent handling and result callbacks.
 
 ---
 
@@ -120,14 +122,16 @@ Native Layer
 * Video Recording
 * Flashlight control
 * CameraX API (Modern lifecycle-aware)
+* **USB Host / Mass Storage (OTG)**: File management on external USB drives using `libaums`.
 
 ---
 
 # 🔥 Highlight: ML Kit & Strategy Pattern
 
-The ML Kit module showcases an optimized **State-Driven Strategy Pattern**:
+The ML Kit module showcases an optimized **State-Driven Strategy Pattern** integrated with **CameraX**:
 
 * **Consolidated Enum Strategy**: Detection logic is encapsulated within a single `VisionDetectionMode` enum, ensuring tight coupling between the mode and its processing logic.
+* **CameraX Analyzer Integration**: Uses `ImageAnalysis.Analyzer` for non-blocking, real-time frame processing.
 * **Adaptive Lens Switching**: Automatically flips between **Front (Selfie) Camera** for Face Detection and **Rear Camera** for Barcode/Text scanning.
 * **Dynamic Lifecycle Re-binding**: Real-time camera hardware re-configuration handled by the ViewModel without activity restarts.
 * **Multi-language Support**: Logic returns `R.string` IDs, ensuring all UI text is resolved through the Android localization system.
@@ -188,6 +192,7 @@ The Security module demonstrates enterprise-level data protection strategies:
 * LiveData / ViewModel
 * **Room / SQLCipher**
 * **Jetpack Security (EncryptedSP)**
+* **libaums** (USB Mass Storage)
 * WorkManager
 * Retrofit
 * JNI (C/C++)
