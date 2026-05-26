@@ -8,6 +8,7 @@
     <string name="category_security">Android 安全性</string>
     <string name="category_ipc">程序通訊</string>
     <string name="category_ai">人工智慧 / 機器學習</string>
+    <string name="category_dynamic">動態交付 (Dynamic Delivery)</string>
     <!-- title string -->
     <!-- string for Demo shutdown (註解掉) -->
     <!-- <string name="title_demo_Shutdown">關機範例</string> -->
@@ -618,6 +619,9 @@
 
     <!-- ML Kit Demo -->
     <string name="title_demo_mlkit">ML Kit 視覺範例</string>
+    <string name="title_demo_dynamic_delivery">動態功能模組</string>
+    <string name="title_dynamic_feature">動態功能演示</string>
+
     <!-- Biometric Demo -->
     <string name="title_demo_biometric">生物辨識認證</string>
     <string name="biometric_status_success">可以使用生物辨識認證。</string>
@@ -647,4 +651,12 @@
     <string name="msg_mlkit_mode_switched">模式已切換。準備就緒...</string>
     <string name="msg_mlkit_error_prefix">錯誤: %1$s</string>
     <string name="msg_mlkit_default_hint">請將相機對準目標</string>
+
+    <!-- Dynamic Delivery Demo -->
+    <string name="demo_dynamic_instruction_title">按需功能交付 (Dynamic Delivery)</string>
+    <string name="demo_dynamic_instruction">此範例演示使用 Google Play Feature Delivery 的<b>動態交付</b>。它允許根據需要下載和安裝功能，顯著縮小初始安裝體積。註：真實下載需 Play 商店環境，本地可使用 \"bundletool\" 進行測試。</string>
+    <string name="btn_install_feature">安裝功能</string>
+    <string name="btn_launch_feature">啟動功能</string>
+    <string name="btn_uninstall_feature">解除安裝 (延遲)</string>
+    <string name="msg_feature_status">模組狀態：%1$s</string>
 </resources>

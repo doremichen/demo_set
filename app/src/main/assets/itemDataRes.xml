@@ -281,4 +281,9 @@
         clsname="com.adam.app.demoset.mlkit.MLKitActivity"
         pkgname="com.adam.app.demoset"/>
 
+    <data category="category_dynamic"
+        titleRes="title_demo_dynamic_delivery"
+        clsname="com.adam.app.demoset.dynamicdelivery.DynamicDeliveryActivity"
+        pkgname="com.adam.app.demoset"/>
+
 </List>

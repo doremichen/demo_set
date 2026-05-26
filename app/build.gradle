@@ -68,6 +68,14 @@ android {
         compose = true
     }
 
+    dynamicFeatures = [':features:dynamic_feature']
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path = file("CMakeLists.txt")
@@ -161,6 +169,8 @@ dependencies {
     implementation libs.androidx.camera.view
     implementation libs.androidx.security.crypto
     implementation libs.androidx.biometric
+    implementation libs.play.feature.delivery
+    implementation libs.play.feature.delivery.ktx
 
     // ML Kit
     implementation libs.mlkit.barcode.scanning

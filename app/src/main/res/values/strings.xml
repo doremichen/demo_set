@@ -8,6 +8,7 @@
     <string name="category_security">Android Security</string>
     <string name="category_ipc">IPC</string>
     <string name="category_ai">AI / ML</string>
+    <string name="category_dynamic">Dynamic Delivery</string>
     <!-- title string-->
     <!-- string for Demo shutdown (commented out) -->
     <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->
@@ -618,6 +619,9 @@
 
     <!-- ML Kit Demo -->
     <string name="title_demo_mlkit">Demo ML Kit Vision</string>
+    <string name="title_demo_dynamic_delivery">Dynamic Feature Modules</string>
+    <string name="title_dynamic_feature">Dynamic Feature Demo</string>
+
     <!-- Biometric Demo -->
     <string name="title_demo_biometric">Biometric Authentication</string>
     <string name="biometric_status_success">Biometric authentication is available.</string>
@@ -647,4 +651,12 @@
     <string name="msg_mlkit_mode_switched">Mode switched. Ready...</string>
     <string name="msg_mlkit_error_prefix">Error: %1$s</string>
     <string name="msg_mlkit_default_hint">Point camera at target</string>
+
+    <!-- Dynamic Delivery Demo -->
+    <string name="demo_dynamic_instruction_title">On-Demand Feature Delivery</string>
+    <string name="demo_dynamic_instruction">This demo demonstrates <b>Dynamic Delivery</b> using Google Play Feature Delivery. It allows downloading and installing features on-demand, significantly reducing initial APK size. Note: Requires Play Store environment for real downloads, but can be tested with \"bundletool\" locally.</string>
+    <string name="btn_install_feature">Install Feature</string>
+    <string name="btn_launch_feature">Launch Feature</string>
+    <string name="btn_uninstall_feature">Uninstall (Deferred)</string>
+    <string name="msg_feature_status">Module Status: %1$s</string>
 </resources>

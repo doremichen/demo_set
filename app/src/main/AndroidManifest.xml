@@ -372,6 +372,11 @@
             android:exported="false"
             android:label="Demo Biometric"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".dynamicdelivery.DynamicDeliveryActivity"
+            android:exported="false"
+            android:label="@string/title_demo_dynamic_delivery"
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="preloaded_fonts"

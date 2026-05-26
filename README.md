@@ -66,6 +66,7 @@ Native Layer
 
 ## ⚙️ System & Background Execution
 
+* **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
 * Started / Bound Service
 * JobScheduler / JobService
 * WorkManager (Modern background tasks)
@@ -202,7 +203,6 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
 * **Performance & Diagnostics**: Benchmarking, App Startup optimization, and LeakCanary integration.
 * **Advanced Graphics**: Rendering Engine with Vulkan or advanced Canvas 2D effects.
 
