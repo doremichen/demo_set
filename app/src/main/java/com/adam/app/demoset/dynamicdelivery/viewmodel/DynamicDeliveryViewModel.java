@@ -117,8 +117,12 @@ public class DynamicDeliveryViewModel extends AndroidViewModel implements Dynami
 
     @Override
     public void onFailure(String errorMessage) {
-        addLog("Action failed: " + errorMessage);
-        mToastMessage.setValue("Action failed: " + errorMessage);
+        String friendlyMessage = errorMessage;
+        if (errorMessage.contains("-5")) {
+            friendlyMessage = "API Not Available (-5): Deferred Uninstall requires a real Google Play Store environment and is not supported in local testing mode.";
+        }
+        addLog("Action failed: " + friendlyMessage);
+        mToastMessage.setValue("Action failed: " + friendlyMessage);
     }
 
     @Override
