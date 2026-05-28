@@ -34,20 +34,28 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-Write-Host "--- [3/4] Preparing Device (Uninstalling existing App) ---" -ForegroundColor Cyan
-# Check if device is connected
-$devices = adb devices | Select-String -Pattern "\tdevice$"
-if (-not $devices) {
-    Write-Host "Error: No device connected via ADB. Please connect a device and try again." -ForegroundColor Red
-    exit 1
+Write-Host "--- [3/4] Checking Device Connection ---" -ForegroundColor Cyan
+while ($true) {
+    $devices = adb devices | Select-String -Pattern "\tdevice$"
+    if ($devices) {
+        Write-Host "Device detected: $(($devices[0].ToString()).Split("`t")[0])" -ForegroundColor Green
+        break
+    }
+
+    Write-Host "No device connected via ADB. Please connect your phone and ensure USB debugging is enabled." -ForegroundColor Red
+    $choice = Read-Host "Do you want to retry checking for the device? (y/n)"
+    if ($choice -notmatch "^y$") {
+        Write-Host "Operation cancelled. Script exiting..." -ForegroundColor Gray
+        exit 0
+    }
 }
 
+Write-Host "--- [4/4] Preparing Device & Final Confirmation ---" -ForegroundColor Yellow
 Write-Host "Uninstalling $PACKAGE_NAME to ensure clean local-testing state..."
 adb uninstall $PACKAGE_NAME
 
-Write-Host "--- [4/4] Final Confirmation ---" -ForegroundColor Yellow
-$confirmation = Read-Host "Do you want to install the APKS to the connected device? (y/n)"
-if ($confirmation -eq 'y') {
+$confirmation = Read-Host "Do you want to install the APKS to the connected device now? (y/n)"
+if ($confirmation -match "^y$") {
     Write-Host "Installing APKS..." -ForegroundColor Green
     java -jar $BUNDLETOOL_JAR install-apks --apks=$APKS_PATH
     Write-Host "Success! You can now open the App and test Dynamic Delivery." -ForegroundColor Green
