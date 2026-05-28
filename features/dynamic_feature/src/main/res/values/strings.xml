@@ -1,3 +1,4 @@
 <resources>
     <string name="welcome_dynamic_feature">Welcome to the Dynamic Feature Module!</string>
+    <string name="label_dynamic_feature_title">Dynamic Feature</string>
 </resources>

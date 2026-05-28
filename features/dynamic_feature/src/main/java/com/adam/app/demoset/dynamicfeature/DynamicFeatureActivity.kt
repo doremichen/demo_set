@@ -44,7 +44,7 @@ class DynamicFeatureActivity : AppCompatActivity() {
         setContentView(mBinding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Dynamic Feature"
+        supportActionBar?.title = getString(R.string.label_dynamic_feature_title)
 
         mBinding.textView.text = getString(R.string.welcome_dynamic_feature)
     }

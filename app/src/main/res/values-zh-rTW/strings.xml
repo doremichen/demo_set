@@ -659,4 +659,19 @@
     <string name="btn_launch_feature">啟動功能</string>
     <string name="btn_uninstall_feature">解除安裝 (延遲)</string>
     <string name="msg_feature_status">模組狀態：%1$s</string>
+
+    <!-- Status Strings -->
+    <string name="state_pending">等待中</string>
+    <string name="state_downloading">下載中</string>
+    <string name="state_installing">安裝中</string>
+    <string name="state_installed">已安裝</string>
+    <string name="state_not_installed">未安裝</string>
+    <string name="state_failed">失敗 (%1$d)</string>
+    <string name="state_canceled">已取消</string>
+    <string name="state_unknown">未知 (%1$d)</string>
+    <string name="log_module_installed_success">模組安裝成功！</string>
+    <string name="log_module_install_failed">安裝失敗，錯誤碼：%1$d</string>
+    <string name="err_msg_api_not_available">API 不可用 (-5)：延遲解除安裝需要真實的 Google Play 商店環境，本地測試模式不支援此功能。</string>
+    <string name="log_action_failed">操作失敗：%1$s</string>
+    <string name="log_uninstallation_requested">已請求解除安裝。系統將於背景執行此操作。</string>
 </resources>

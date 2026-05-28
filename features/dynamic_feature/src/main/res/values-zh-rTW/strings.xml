@@ -1,0 +1,4 @@
+<resources>
+    <string name="welcome_dynamic_feature">歡迎來到動態功能模組！</string>
+    <string name="label_dynamic_feature_title">動態功能</string>
+</resources>

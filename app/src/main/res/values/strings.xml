@@ -659,4 +659,19 @@
     <string name="btn_launch_feature">Launch Feature</string>
     <string name="btn_uninstall_feature">Uninstall (Deferred)</string>
     <string name="msg_feature_status">Module Status: %1$s</string>
+
+    <!-- Status Strings -->
+    <string name="state_pending">Pending</string>
+    <string name="state_downloading">Downloading</string>
+    <string name="state_installing">Installing</string>
+    <string name="state_installed">Installed</string>
+    <string name="state_not_installed">Not Installed</string>
+    <string name="state_failed">Failed (%1$d)</string>
+    <string name="state_canceled">Canceled</string>
+    <string name="state_unknown">Unknown (%1$d)</string>
+    <string name="log_module_installed_success">Module installed successfully!</string>
+    <string name="log_module_install_failed">Installation failed with error code: %1$d</string>
+    <string name="err_msg_api_not_available">API Not Available (-5): Deferred Uninstall requires a real Google Play Store environment and is not supported in local testing mode.</string>
+    <string name="log_action_failed">Action failed: %1$s</string>
+    <string name="log_uninstallation_requested">Uninstallation requested. It will happen in the background.</string>
 </resources>
