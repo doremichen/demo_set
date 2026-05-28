@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoTfliteBinding;
 import com.adam.app.demoset.tflite.viewmodel.TFLiteViewModel;
+import com.adam.app.demoset.utils.ThreadHelper;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 
@@ -72,20 +73,57 @@ public class TFLiteActivity extends AppCompatActivity {
     }
 
     private void processImage(Uri uri) {
-        try {
-            Bitmap bitmap;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), uri), (decoder, info, source) -> {
-                    decoder.setMutableRequired(true);
-                });
-            } else {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            }
-            
-            mBinding.ivPreview.setImageBitmap(bitmap);
-            mViewModel.analyzeImage(bitmap);
-        } catch (IOException e) {
-            Utils.showToast(this, getString(R.string.msg_error_loading_image));
-        }
+
+        ThreadHelper<Bitmap> helper = new ThreadHelper.Builder<Bitmap>()
+                .setTask(() -> {
+                    try {
+                        Bitmap bitmap;
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), uri), (decoder, info, source) -> {
+                                decoder.setMutableRequired(true);
+                            });
+                        } else {
+                            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                        }
+                        return bitmap;
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .setCallback( new ThreadHelper.ThreadCallback<Bitmap>() {
+
+                    @Override
+                    public void onStarted() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Bitmap result) {
+                        // result check
+                        if (result == null) return;
+
+                        mBinding.ivPreview.setImageBitmap(result);
+                        mViewModel.analyzeImage(result);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        // show toast
+                        Utils.showToast(TFLiteActivity.this, "Error: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onCancelled() {
+
+                    }
+
+                    @Override
+                    public void onFinished() {
+
+                    }
+                }).build();
+
+        // start
+        helper.start();
     }
 }

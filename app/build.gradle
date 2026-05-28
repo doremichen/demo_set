@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "com.adam.app.demoset"
     compileSdk = 35
-    ndkVersion = "21.4.7075529"
+    ndkVersion = "26.1.10909125"
 
     signingConfigs {
         getByName("debug") {
@@ -38,6 +38,13 @@ android {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
     }
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
 
     buildTypes {
         release {
@@ -86,6 +93,10 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+
+    aaptOptions {
+        noCompress "tflite"
     }
 
     lint {
@@ -161,6 +172,8 @@ dependencies {
     // Others
     implementation "org.jspecify:jspecify:1.0.0"
     implementation "org.tensorflow:tensorflow-lite-task-vision:0.4.4"
+    implementation "org.tensorflow:tensorflow-lite:2.14.0"
+    implementation "org.tensorflow:tensorflow-lite-gpu:2.14.0"
 
     // CameraX
     implementation libs.androidx.camera.core

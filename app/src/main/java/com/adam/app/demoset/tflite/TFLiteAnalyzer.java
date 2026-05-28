@@ -26,13 +26,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
 
+import androidx.annotation.NonNull;
+
+import com.adam.app.demoset.utils.ThreadHelper;
 import com.adam.app.demoset.utils.Utils;
 
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.task.vision.classifier.Classifications;
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,37 +44,136 @@ public class TFLiteAnalyzer {
     private static final String MODEL_FILE = "mobilenet_v2_1.0_224_quant.tflite";
     private ImageClassifier mImageClassifier;
 
+    // init helper, classification helper
+    private ThreadHelper<ImageClassifier> mInitHelper;
+    private ThreadHelper<AnalysisResult> mClassificationHelper;
+
+
+    private static class AnalysisResult {
+        final List<Classifications> classifications;
+        final long inferenceTime;
+
+        AnalysisResult(List<Classifications> classifications, long inferenceTime) {
+            this.classifications = classifications;
+            this.inferenceTime = inferenceTime;
+        }
+    }
+
     public interface ClassifierListener {
         void onError(String error);
         void onResults(List<Classifications> results, long inferenceTime);
     }
 
-    public void init(Context context, ClassifierListener listener) {
-        ImageClassifier.ImageClassifierOptions options =
-                ImageClassifier.ImageClassifierOptions.builder()
-                        .setMaxResults(3)
-                        .setScoreThreshold(0.5f)
-                        .build();
-
-        try {
-            mImageClassifier = ImageClassifier.createFromFileAndOptions(context, MODEL_FILE, options);
-        } catch (IOException e) {
-            listener.onError("TFLite failed to load model: " + e.getMessage());
-            Utils.error(this, "Error initializing classifier: " + e.getMessage());
-        }
-    }
-
-    public void classify(Bitmap bitmap, ClassifierListener listener) {
-        if (mImageClassifier == null) {
-            listener.onError("Classifier not initialized");
+    public void init(@NonNull final Context context, @NonNull final ClassifierListener listener) {
+        // precondition check
+        if (mImageClassifier != null || (mInitHelper != null && mInitHelper.isRunning())) {
             return;
         }
 
-        long startTime = SystemClock.uptimeMillis();
-        TensorImage image = TensorImage.fromBitmap(bitmap);
-        List<Classifications> results = mImageClassifier.classify(image);
-        long inferenceTime = SystemClock.uptimeMillis() - startTime;
+        mInitHelper = new ThreadHelper.Builder<ImageClassifier>()
+                .setTask(() -> {
+                    ImageClassifier.ImageClassifierOptions options =
+                            ImageClassifier.ImageClassifierOptions.builder()
+                                    .setMaxResults(3)
+                                    .setScoreThreshold(0.5f)
+                                    .build();
+                    return ImageClassifier.createFromFileAndOptions(context, MODEL_FILE, options);
+                })
+                .setCallback(new ThreadHelper.ThreadCallback<ImageClassifier>() {
+                    @Override
+                    public void onStarted() {
+                    }
+                    @Override
+                    public void onSuccess(ImageClassifier result) {
+                        mImageClassifier = result;
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        mImageClassifier = null;
+                        listener.onError("TFLite failed to load model: " + e.getMessage());
+                        Utils.error(TFLiteAnalyzer.this, "Error initializing classifier: " + e.getMessage());
+                    }
+                    @Override
+                    public void onCancelled() {
+                    }
+                    @Override
+                    public void onFinished() {
+                    }
+                })
+                .build();
+        // start
+        mInitHelper.start();
+    }
 
-        listener.onResults(results, inferenceTime);
+    public void classify(@NonNull final Bitmap bitmap, @NonNull final ClassifierListener listener) {
+        if (mImageClassifier == null) {
+            listener.onError("Classifier is not initialized yet.");
+            return;
+        }
+
+        // stop it if the Classification is running
+        if (mClassificationHelper != null && mClassificationHelper.isRunning()) {
+            mClassificationHelper.stop();
+        }
+
+        mClassificationHelper = new ThreadHelper.Builder<AnalysisResult>()
+                .setTask(() -> {
+                    long startTime = SystemClock.uptimeMillis();
+                    TensorImage tensorImage = TensorImage.fromBitmap(bitmap);
+                    List<Classifications> results = mImageClassifier.classify(tensorImage);
+                    long inferenceTime = SystemClock.uptimeMillis() - startTime;
+
+                    return new AnalysisResult(results, inferenceTime);
+                })
+                .setCallback(new ThreadHelper.ThreadCallback<AnalysisResult>() {
+                    @Override
+                    public void onStarted() {
+                    }
+                    @Override
+                    public void onSuccess(AnalysisResult result) {
+                        // result check
+                        if (result == null) return;
+                        // callback
+                        listener.onResults(result.classifications, result.inferenceTime);
+                    }
+                    @Override
+                    public void onError(Exception e) {
+                        listener.onError("Error classifying frame: " + e.getMessage());
+                        Utils.error(TFLiteAnalyzer.this, "Error classifying frame: " + e.getMessage());
+                    }
+                    @Override
+                    public void onCancelled() {
+                        // callback
+                        listener.onError("Classification cancelled.");
+                    }
+                    @Override
+                    public void onFinished() {
+                    }
+                })
+                .build();
+
+        // start
+        mClassificationHelper.start();
+    }
+
+    /**
+     * release resource
+     */
+    public void release() {
+        if (mInitHelper != null) {
+            mInitHelper.stop();
+            mInitHelper.shutDown();
+        }
+        if (mClassificationHelper != null) {
+            mClassificationHelper.stop();
+            mClassificationHelper.shutDown();
+        }
+
+        // close Image Classifier
+        if (mImageClassifier != null) {
+            mImageClassifier.close();
+            mImageClassifier = null;
+        }
+
     }
 }

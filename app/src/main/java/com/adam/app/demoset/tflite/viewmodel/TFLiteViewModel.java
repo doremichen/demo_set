@@ -80,4 +80,11 @@ public class TFLiteViewModel extends AndroidViewModel implements TFLiteAnalyzer.
 
         mResultText.postValue(sb.toString());
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // release
+        if (mAnalyzer != null) mAnalyzer.release();
+    }
 }

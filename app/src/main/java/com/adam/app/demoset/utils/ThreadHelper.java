@@ -81,6 +81,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadHelper<T> {
 
@@ -172,6 +173,17 @@ public class ThreadHelper<T> {
     public void shutDown() {
         if (mExecutorService != null) {
             mExecutorService.shutdown();
+
+            // wait for shutdown
+            try {
+                if (!mExecutorService.awaitTermination(1000L, TimeUnit.MILLISECONDS)) {
+                    // shutdown now
+                    mExecutorService.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                // shutdown now
+                mExecutorService.shutdownNow();
+            }
         }
     }
 
