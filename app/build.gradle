@@ -12,7 +12,7 @@ android {
     ndkVersion = "26.1.10909125"
 
     signingConfigs {
-        getByName("debug") {
+        debug {
             storeFile = file("$rootDir/SingApk/SignDemo.jks")
             storePassword = project.findProperty("STORE_PASSWORD")
             keyAlias = project.findProperty("KEY_ALIAS")
@@ -50,12 +50,12 @@ android {
         release {
             signingConfig = signingConfigs.release
             minifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
             signingConfig = signingConfigs.debug
             minifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -95,7 +95,7 @@ android {
         }
     }
 
-    aaptOptions {
+    androidResources {
         noCompress "tflite"
     }
 
@@ -113,18 +113,18 @@ dependencies {
 
     implementation libs.androidx.core
     implementation libs.androidx.core.ktx
-    implementation "androidx.activity:activity:1.10.0"
+    implementation libs.androidx.activity.ktx
     implementation libs.androidx.activity.compose
 
-    implementation "androidx.recyclerview:recyclerview:1.4.0"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "org.jetbrains:annotations:24.0.1"
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.cardview
+    implementation libs.jetbrains.annotations
 
     // ===== Room =====
     implementation libs.androidx.room.runtime
     implementation libs.androidx.paging.common
     implementation libs.androidx.paging.runtime.ktx
-    kapt libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
     androidTestImplementation libs.androidx.room.testing
 
     // ===== SQLCipher =====
@@ -136,14 +136,14 @@ dependencies {
     implementation libs.androidx.lifecycle.runtime.ktx
 
     // WorkManager
-    implementation("androidx.work:work-runtime:${rootProject.ext["workingVersion"]}")
+    implementation libs.androidx.work.runtime
 
     // Glide
     implementation libs.glide
 
     // Logger / USB
-    implementation "com.orhanobut:logger:2.2.0"
-    implementation "com.github.mjdev:libaums:0.7.4"
+    implementation libs.logger
+    implementation libs.libaums
 
     // Coroutine + Retrofit
     implementation libs.retrofit
@@ -161,19 +161,19 @@ dependencies {
     // DataStore
     implementation libs.androidx.datastore.preferences
     implementation libs.androidx.datastore.preferences.rxjava3
-    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
-    implementation "io.reactivex.rxjava3:rxjava:3.1.5"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.10.0"
+    implementation libs.rxandroid3
+    implementation libs.rxjava3
+    implementation libs.androidx.lifecycle.reactivestreams.ktx
 
     // ===== Navigation =====
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
 
     // Others
-    implementation "org.jspecify:jspecify:1.0.0"
-    implementation "org.tensorflow:tensorflow-lite-task-vision:0.4.4"
-    implementation "org.tensorflow:tensorflow-lite:2.14.0"
-    implementation "org.tensorflow:tensorflow-lite-gpu:2.14.0"
+    implementation libs.jspecify
+    implementation libs.tensorflow.lite.task.vision
+    implementation libs.tensorflow.lite
+    implementation libs.tensorflow.lite.gpu
 
     // CameraX
     implementation libs.androidx.camera.core
@@ -192,11 +192,11 @@ dependencies {
 
     // Testing
     testImplementation libs.junit
-    testImplementation "org.mockito:mockito-core:5.16.0"
-    testImplementation "org.robolectric:robolectric:4.14.1"
-    testImplementation "androidx.arch.core:core-testing:2.2.0"
-    testImplementation "androidx.test:core:1.6.1"
+    testImplementation libs.mockito.core
+    testImplementation libs.robolectric
+    testImplementation libs.androidx.arch.core.testing
+    testImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
-    androidTestImplementation "androidx.test:rules:1.6.1"
+    androidTestImplementation libs.androidx.test.rules
 }
