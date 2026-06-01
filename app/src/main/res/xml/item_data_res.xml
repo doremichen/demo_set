@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<List xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Storage -->
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_file_expore"
+        app:clsname="com.adam.app.demoset.filemanager.FileExploreAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_service"
+        app:clsname="com.adam.app.demoset.demoService.DemoServiceActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_animation"
+        app:clsname="com.adam.app.demoset.animation.DemoGifAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_job_service"
+        app:clsname="com.adam.app.demoset.jobService.DemoJobSvrAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_floating_alert_dialog"
+        app:clsname="com.adam.app.demoset.floatingDlg.DemoFloatingDialogAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_floating_alert_window"
+        app:clsname="com.adam.app.demoset.floatingwindow.DemoFloatingWindowAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_bluetooth"
+        app:clsname="com.adam.app.demoset.bluetooth.DemoBTAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_ble"
+        app:clsname="com.adam.app.demoset.bluetooth.DemoBLEActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_notification"
+        app:clsname="com.adam.app.demoset.notification.DemoNotificationAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- IPC -->
+    <data app:category="@string/category_ipc"
+        app:titleRes="@string/title_demo_share_provide_action"
+        app:clsname="com.adam.app.demoset.shareprovider.DemoShareProvidAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+
+    <!-- IPC -->
+    <data app:category="@string/category_ipc"
+        app:titleRes="@string/title_demo_hello_jni"
+        app:clsname="com.adam.app.demoset.jnidemo.DemoJniAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_flash_light"
+        app:clsname="com.adam.app.demoset.flashlight.DemoFlashLightAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_camera"
+        app:clsname="com.adam.app.demoset.camera2.DemoCamera2Act2"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_camerax"
+        app:clsname="com.adam.app.demoset.camera.CameraXActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Hardware -->
+    <data app:category="@string/category_hardware"
+        app:titleRes="@string/title_demo_video_record"
+        app:clsname="com.adam.app.demoset.video.DemoVideoRecordAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_alarm"
+        app:clsname="com.adam.app.demoset.alarm.DemoAlarmAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- IPC -->
+    <data app:category="@string/category_ipc"
+        app:titleRes="@string/title_demo_binder_Call"
+        app:clsname="com.adam.app.demoset.binder.DemoBinderAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_scheduler_service"
+        app:clsname="com.adam.app.demoset.scheduler.DemoScheduleServiceAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_table_layout"
+        app:clsname="com.adam.app.demoset.tablelayout.DemoTableAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Storage -->
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_database"
+        app:clsname="com.adam.app.demoset.database.contentprovider.DemoDatabaseAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Storage -->
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_room_database"
+        app:clsname="com.adam.app.demoset.database.room.DemoRoomAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_usb_device"
+        app:clsname="com.adam.app.demoset.usb_storage.view.DemoUsbActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_system_ui"
+        app:clsname="com.adam.app.demoset.systemUI.DemoSysUIAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_work_manager"
+        app:clsname="com.adam.app.demoset.workmanager.DemoExecuteTaskAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_work_manager_legacy_1"
+        app:clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_work_manager_legacy_2"
+        app:clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_quick_setting"
+        app:clsname="com.adam.app.demoset.quicksetting.DemoQuickSetting"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_material_widget"
+        app:clsname="com.adam.app.demoset.material.MaterialDemoAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_handler_thread"
+        app:clsname="com.adam.app.demoset.myHandlerThread.DemoMyHandlerThreadAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_xml_parser"
+        app:clsname="com.adam.app.demoset.xmlparser.DemoXmlParserAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Network -->
+    <data app:category="@string/category_network"
+        app:titleRes="@string/title_demo_wifi"
+        app:clsname="com.adam.app.demoset.wifi2.DemoWifiAct2"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_binding"
+        app:clsname="com.adam.app.demoset.databinding.DemoBindingAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_simple_coroutine"
+        app:clsname="com.adam.app.demoset.coroutine.DemoSimpleCoroutineAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Network -->
+    <data app:category="@string/category_network"
+        app:titleRes="@string/title_demo_retrofit_coroutine"
+        app:clsname="com.adam.app.demoset.coroutine.DemoRetrofitCoroutineAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_compose_ui"
+        app:clsname="com.adam.app.demoset.composeui.DemoComposeAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_flow"
+        app:clsname="com.adam.app.demoset.flowlab.FlowLabActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_page_3"
+        app:clsname="com.adam.app.demoset.page3.PagingLabActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Storage -->
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_datastore"
+        app:clsname="com.adam.app.demoset.datastore.java.DataStoreDemoAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Storage -->
+    <data app:category="@string/category_storage"
+        app:titleRes="@string/title_demo_datastore_koltlin"
+        app:clsname="com.adam.app.demoset.datastore.koltlin.DataStoreDemoAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Security -->
+    <data app:category="@string/category_security"
+        app:titleRes="@string/title_demo_device_admin"
+        app:clsname="com.adam.app.demoset.lockscreen.DemoDeviceAdminAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <data app:category="@string/category_security"
+        app:titleRes="@string/title_demo_encryption_database"
+        app:clsname="com.adam.app.demoset.encryption.database.DemoEncryptionAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Security -->
+    <data app:category="@string/category_security"
+        app:titleRes="@string/title_demo_encrypted_prefs"
+        app:clsname="com.adam.app.demoset.encryption.sharedprefs.DemoEncryptedSharedPrefsAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- Security -->
+    <data app:category="@string/category_security"
+        app:titleRes="@string/title_demo_biometric"
+        app:clsname="com.adam.app.demoset.biometric.DemoBiometricAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_navigation"
+        app:clsname="com.adam.app.demoset.navigation.DemoNavigationAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_permission_model"
+        app:clsname="com.adam.app.demoset.permissions.PermissionDemoActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- AI / ML -->
+    <data app:category="@string/category_ai"
+        app:titleRes="@string/title_demo_tflite"
+        app:clsname="com.adam.app.demoset.tflite.TFLiteActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <data app:category="@string/category_ai"
+        app:titleRes="@string/title_demo_mlkit"
+        app:clsname="com.adam.app.demoset.mlkit.MLKitActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <data app:category="@string/category_dynamic"
+        app:titleRes="@string/title_demo_dynamic_delivery"
+        app:clsname="com.adam.app.demoset.dynamicdelivery.DynamicDeliveryActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+</List>

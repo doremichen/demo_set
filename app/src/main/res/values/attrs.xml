@@ -3,4 +3,9 @@
     <declare-styleable name="GifView">
         <attr name="gifSrc" format="reference"  />
     </declare-styleable>
+
+    <attr name="category" format="reference|string" />
+    <attr name="titleRes" format="reference|string" />
+    <attr name="clsname" format="string" />
+    <attr name="pkgname" format="string" />
 </resources>

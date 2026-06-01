@@ -111,7 +111,10 @@ public class DemoBTAct extends AppCompatActivity {
             } else if (BTReceiver.ACTION_FOUND_BT_DEVICE.equals(action)) {
                 Utils.info(DemoBTAct.this, "Get ACTION_FOUND_BT_DEVICE....");
                 final Bundle data = intent.getExtras();
-                mScanDevices = data.getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
+                if (data != null) {
+                    mScanDevices = data.getParcelableArrayList(BTReceiver.KEY_DEVICE_LIST);
+                }
+
                 // null check
                 if (!Utils.checkValidObject(mScanDevices, mScanAdapter, mBinding.scanList)) return;
                 Utils.info(DemoBTAct.this, mScanDevices.toString());
@@ -362,6 +365,15 @@ public class DemoBTAct extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        // Cancel discovery when activity is not visible to save battery and memory
+        if (mBTAdapter != null && mBTAdapter.isDiscovering()) {
+            mBTAdapter.cancelDiscovery();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBTReceiver);
@@ -437,7 +449,7 @@ public class DemoBTAct extends AppCompatActivity {
      */
     private void updatePairedList() {
         Set<BluetoothDevice> btSet = mBTAdapter.getBondedDevices();
-        mPairedDevices = new ArrayList<BluetoothDevice>(btSet);
+        mPairedDevices = new ArrayList<>(btSet);
 
         mPairedAdapter.setData(mPairedDevices);
         mPairedAdapter.setButtonListener(new PairedItemButtonClick(mPairedDevices));

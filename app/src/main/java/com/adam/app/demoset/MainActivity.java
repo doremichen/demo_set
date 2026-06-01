@@ -24,7 +24,7 @@ package com.adam.app.demoset;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -36,6 +36,7 @@ import android.widget.ListView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -43,36 +44,21 @@ import com.adam.app.demoset.databinding.ActivityMainBinding;
 import com.adam.app.demoset.main.ItemContent;
 import com.adam.app.demoset.utils.Utils;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String LOG_STATUS = "log.status";
     private static final String[] PERMISSIONS = {
             Manifest.permission.POST_NOTIFICATIONS
     };
+    private static final String STATE_SHOWING_CATEGORY = "showing_category";
+    private static final String STATE_SELECTED_CATEGORY = "selected_category";
+
     // view binding
     private ActivityMainBinding mBinding;
 
@@ -81,34 +67,22 @@ public class MainActivity extends AppCompatActivity {
     private List<String> mCategoryList = new ArrayList<>();
 
     private boolean mShowingCategory = true;
+    private String mSelectedCategory = "";
 
     // main adapter
     private MainListAdapter mAdapter;
 
 
-    private static Map<String, Integer> buildItemResMap(String prefix) {
-        Map<String, Integer> map = new HashMap<>();
-        try {
-            // Use reflection to get all the fields in R.string
-            Field[] fields = R.string.class.getFields();
-            for (Field field : fields) {
-                String name = field.getName();
-                if (name.startsWith(prefix)) {
-                    int resId = field.getInt(null); // use null in static field
-                    map.put(name, resId);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            Utils.info(MainActivity.class, "buildItemResMap error");
-            e.printStackTrace();
-        }
-        return map;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate");
+
+        if (savedInstanceState != null) {
+            mShowingCategory = savedInstanceState.getBoolean(STATE_SHOWING_CATEGORY, true);
+            mSelectedCategory = savedInstanceState.getString(STATE_SELECTED_CATEGORY, "");
+        }
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
@@ -121,13 +95,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (mAllDemoList != null) {
             buildCategoryList();
-            showCategoryList();
+            if (mShowingCategory) {
+                showCategoryList();
+            } else {
+                showDemoList(mSelectedCategory);
+            }
             listView.setOnItemClickListener(this::onItemClick);
         }
 
         setupBackHandler();
 
         requestNotificationPermission();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull android.os.Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(STATE_SHOWING_CATEGORY, mShowingCategory);
+        outState.putString(STATE_SELECTED_CATEGORY, mSelectedCategory);
     }
 
     /**
@@ -155,16 +140,15 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * build category list
-     *
      */
     private void buildCategoryList() {
-      mCategoryList.clear();
-
-      for (ItemContent item : mAllDemoList) {
-          if (!mCategoryList.contains(item.getCategory())) {
-              mCategoryList.add(item.getCategory());
-          }
-      }
+        mCategoryList.clear();
+        for (ItemContent item : mAllDemoList) {
+            String category = item.getCategory();
+            if (!mCategoryList.contains(category)) {
+                mCategoryList.add(category);
+            }
+        }
     }
 
     /**
@@ -172,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showCategoryList() {
         mShowingCategory = true;
+        mSelectedCategory = "";
         mCurrentList.clear();
 
         for (String cat: mCategoryList) {
@@ -192,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showDemoList(String category) {
         mShowingCategory = false;
+        mSelectedCategory = category;
 
         mCurrentList.clear();
 
@@ -302,60 +288,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method reads an XML file ("itemData.xml") from the assets folder,
-     * parses it using a DOM parser, extracts relevant attributes
-     * from elements tagged "data", creates ItemContent objects representing
-     * this data
+     * This method reads an XML file from the res/xml folder,
+     * parses it using a XmlResourceParser which is pre-compiled and more efficient.
      *
      * @return a list of these objects or null if the some exception is occurred.
      */
     private List<ItemContent> parseItemData() {
-        try (InputStream iStream = getResources().getAssets().open("itemDataRes.xml")) { // Use try-with-resources for automatic resource closure
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(iStream);
+        List<ItemContent> list = new ArrayList<>();
+        try (XmlResourceParser parser = getResources().getXml(R.xml.item_data_res)) {
+            int eventType = parser.getEventType();
+            while (eventType != XmlResourceParser.END_DOCUMENT) {
+                if (eventType == XmlResourceParser.START_TAG && "data".equals(parser.getName())) {
+                    // Get resource IDs directly from compiled XML
+                    int catResId = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto", "category", 0);
+                    int titleResId = parser.getAttributeResourceValue("http://schemas.android.com/apk/res-auto", "titleRes", 0);
 
-            Element root = document.getDocumentElement();
-            NodeList nodes = root.getElementsByTagName("data");
+                    String category = (catResId != 0) ? getString(catResId) : "";
+                    String localizedTitle = (titleResId != 0) ? getString(titleResId) : "";
+                    String clsname = parser.getAttributeValue("http://schemas.android.com/apk/res-auto", "clsname");
+                    String pkgname = parser.getAttributeValue("http://schemas.android.com/apk/res-auto", "pkgname");
 
-
-            Map<String, Integer> categoryResMap = buildItemResMap("category_");
-            Map<String, Integer> titleResMap = buildItemResMap("title_demo_");
-            return IntStream.range(0, nodes.getLength())
-                    .mapToObj(nodes::item)
-                    .filter(node -> node.getNodeType() == Node.ELEMENT_NODE)
-                    .map(node -> (Element) node)
-                    .map(itemData -> {
-                        String category = getString(itemData, "category_", "category");
-                        String localizedTitle = getString(itemData, "title_demo_", "titleRes");
-                        return new ItemContent(
-                                category,
-                                localizedTitle,
-                                itemData.getAttribute("clsname"),
-                                itemData.getAttribute("pkgname")
-                        );
-
-                    })
-
-                    .collect(Collectors.toList());
-
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace(); // Handle exceptions appropriately (e.g., log, display error message)
-            return null; // Indicate parsing failure
+                    list.add(new ItemContent(category, localizedTitle, clsname, pkgname));
+                }
+                eventType = parser.next();
+            }
+        } catch (Exception e) {
+            Utils.info(this, "parseItemData error: " + e.getMessage());
+            return null;
         }
+        return list;
     }
 
 
-    private String getString(Element itemData, String prefix, String attribute) {
-
-        Resources res = getResources();
-
-        Map<String, Integer> resMap = buildItemResMap(prefix);
-        String attri = itemData.getAttribute(attribute);
-        int resId = resMap.getOrDefault(attri, 0);
-        return resId != 0 ? res.getString(resId) : attri;
-
-    }
 
 
     @Override
@@ -368,19 +332,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.start_log:
-                enableLogcat(Utils.TRUE);
-                break;
-            case R.id.stop_log:
-                enableLogcat(Utils.FALSE);
-                break;
-            case R.id.exit:
-                Utils.info(this, "press exit item!!!");
-                finish();
+        int id = item.getItemId();
+        if (id == R.id.start_log) {
+            enableLogcat(Utils.TRUE);
+        } else if (id == R.id.stop_log) {
+            enableLogcat(Utils.FALSE);
+        } else if (id == R.id.exit) {
+            Utils.info(this, "press exit item!!!");
+            finish();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
-        return false;
+        return true;
     }
 
 

@@ -154,13 +154,12 @@ public class GifView extends AppCompatImageView {
         }
     }
 
-    @NonNull
     @Override
-    public String toString() {
-        return "GifView{" +
-                "mIsPlaying=" + mIsPlaying +
-                ", hasDrawable=" + (mAnimatedDrawable != null) +
-                '}';
+    protected void onDetachedFromWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            stop();
+        }
+        super.onDetachedFromWindow();
     }
 
     /**

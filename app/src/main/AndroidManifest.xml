@@ -105,7 +105,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="nosensor">
+            android:launchMode="singleTop"
+            android:screenOrientation="nosensor"
+            tools:targetApi="33">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -464,12 +466,12 @@
             android:name=".binder.service.MyAidlService"
             android:enabled="true"
             android:exported="true"
-            android:process=":Remote_aidl" />
+            android:process=":remote" />
         <service
             android:name=".binder.service.MyMessengerService"
             android:enabled="true"
             android:exported="true"
-            android:process=":Remote_messenger" />
+            android:process=":remote" />
         <service
             android:name=".quicksetting.qsservice.QuickSettingService"
             android:exported="true"

@@ -24,7 +24,6 @@ package com.adam.app.demoset.binder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,14 +34,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.adam.app.demoset.utils.LogAdapter;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.binder.service.BinderType;
 import com.adam.app.demoset.binder.service.MyAidlService;
 import com.adam.app.demoset.binder.service.MyMessengerService;
 import com.adam.app.demoset.binder.viewmodel.BinderViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoBinderBinding;
+import com.adam.app.demoset.utils.LogAdapter;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,7 @@ public class DemoBinderAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // set fit system windows
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // view binding
         mBinding = ActivityDemoBinderBinding.inflate(getLayoutInflater());
@@ -72,7 +71,7 @@ public class DemoBinderAct extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(mBinding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+            return WindowInsetsCompat.CONSUMED;
         });
 
         // init view model
@@ -108,9 +107,17 @@ public class DemoBinderAct extends AppCompatActivity {
         mBinding.recyclerLog.setAdapter(mLogAdapter);
     }
 
-    private void binderMyService(Context context, Class<?> target, ServiceConnection connection) {
-        Utils.info(this, "binderMyService enter");
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unbind services to release resources and remote process links
+        unbindService(BinderType.AIDL.getConnect());
+        unbindService(BinderType.MESSENGER.getConnect());
+    }
+
+    private void binderMyService(Context context, Class<?> target, android.content.ServiceConnection connection) {
+        Utils.info(this, "binderMyService enter: " + target.getSimpleName());
         Intent intent = new Intent(context, target);
-        this.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        this.bindService(intent, connection, Context.BIND_AUTO_CREATE | Context.BIND_ALLOW_OOM_MANAGEMENT);
     }
 }
