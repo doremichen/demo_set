@@ -332,18 +332,55 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.start_log) {
-            enableLogcat(Utils.TRUE);
-        } else if (id == R.id.stop_log) {
-            enableLogcat(Utils.FALSE);
-        } else if (id == R.id.exit) {
-            Utils.info(this, "press exit item!!!");
-            finish();
-        } else {
-            return super.onOptionsItemSelected(item);
+        MenuAction action = MenuAction.fromId(item.getItemId());
+        if (action != null) {
+            // log item
+            Utils.info(this, "onOptionsItemSelected: " + item.getTitle());
+            action.execute(this);
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Enum implementing Strategy pattern for Menu Actions
+     */
+    private enum MenuAction {
+        START_LOG(R.id.start_log) {
+            @Override
+            void execute(MainActivity activity) {
+                activity.enableLogcat(Utils.TRUE);
+            }
+        },
+        STOP_LOG(R.id.stop_log) {
+            @Override
+            void execute(MainActivity activity) {
+                activity.enableLogcat(Utils.FALSE);
+            }
+        },
+        EXIT(R.id.exit) {
+            @Override
+            void execute(MainActivity activity) {
+                activity.finish();
+            }
+        };
+
+        private final int menuId;
+
+        MenuAction(int menuId) {
+            this.menuId = menuId;
+        }
+
+        abstract void execute(MainActivity activity);
+
+        static MenuAction fromId(int id) {
+            for (MenuAction action : values()) {
+                if (action.menuId == id) {
+                    return action;
+                }
+            }
+            return null;
+        }
     }
 
 

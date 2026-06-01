@@ -96,7 +96,9 @@ public class ThreadHelper<T> {
     // thread callback
     private ThreadCallback<T> mThreadCallback;
     // main handler
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    // Auto shutdown flag
+    private boolean mAutoShutDown = false;
 
     /**
      * Constructor
@@ -141,6 +143,11 @@ public class ThreadHelper<T> {
                 mHandler.post(() -> {
                     if (mThreadCallback != null)
                         mThreadCallback.onFinished();
+                    
+                    // Auto shutdown if requested
+                    if (mAutoShutDown) {
+                        shutDown();
+                    }
                 });
             }
             return null;
@@ -215,6 +222,15 @@ public class ThreadHelper<T> {
 
         public Builder<T> setCallback(ThreadCallback<T> callback) {
             mThreadHelper.mThreadCallback = callback;
+            return this;
+        }
+
+        /**
+         * Enable auto shutdown of the internal executor after the task finished.
+         * Useful for fire-and-forget tasks.
+         */
+        public Builder<T> setAutoShutDown(boolean autoShutDown) {
+            mThreadHelper.mAutoShutDown = autoShutDown;
             return this;
         }
 

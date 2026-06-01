@@ -523,78 +523,77 @@ public abstract class Utils {
 //                | View.SYSTEM_UI_FLAG_FULLSCREEN);
 //    }
 
-    public static void enableLog(String enable, String path) {
-        Utils.info(Utils.class, "enableLog enter");
-        if (TRUE.equals(enable)) {
-            Utils.info(Utils.class, "true");
-            // Clear logcat
-            executeCommend("logcat -c");
-            // Log file
-            executeCommend("logcat -f " + path);
+    private static Process sActiveLogcatProcess;
 
+    /**
+     * Enum implementing Command Pattern for Logcat operations.
+     */
+    private enum LogTask {
+        // Run once and wait for completion (e.g., clear buffer)
+        SHORT {
+            @Override
+            String run(String cmd) throws Exception {
+                Process process = new ProcessBuilder(cmd.trim().split("\\s+")).redirectErrorStream(true).start();
+                String output = consumeInputStream(process.getInputStream());
+                process.waitFor();
+                return "Short task done: " + output;
+            }
+        },
+        // Run and keep handle for later destruction (e.g., persistent logging)
+        PERSISTENT {
+            @Override
+            String run(String cmd) throws Exception {
+                // Command must not call waitFor() to stay alive in background
+                sActiveLogcatProcess = new ProcessBuilder(cmd.trim().split("\\s+")).redirectErrorStream(true).start();
+                return "Persistent task started: " + cmd;
+            }
+        };
+
+        abstract String run(String cmd) throws Exception;
+    }
+
+    public static void enableLog(String enable, String path) {
+        Utils.info(Utils.class, "enableLog: " + enable);
+        
+        // Always try to stop previous persistent logcat first
+        stopLogcat();
+
+        if (TRUE.equals(enable)) {
+            // Sequence: Clear (SHORT) -> Start Logging (PERSISTENT)
+            dispatchLogTask(LogTask.SHORT, "logcat -c");
+            dispatchLogTask(LogTask.PERSISTENT, "logcat -f " + path);
         } else {
-            Utils.info(Utils.class, "false");
-            // Dump log and exits
-            executeCommend("logcat -d");
+            dispatchLogTask(LogTask.SHORT, "logcat -d");
+        }
+    }
+
+    private static void dispatchLogTask(LogTask taskType, String cmd) {
+        new ThreadHelper.Builder<String>()
+                .setTask(() -> taskType.run(cmd))
+                .setCallback(new ThreadHelper.ThreadCallback<String>() {
+                    @Override public void onStarted() {}
+                    @Override public void onSuccess(String result) { Utils.info(Utils.class, result); }
+                    @Override public void onError(Exception e) { Utils.error(Utils.class, "Task Error [" + cmd + "]: " + e.getMessage()); }
+                    @Override public void onCancelled() {}
+                    @Override public void onFinished() {}
+                })
+                .setAutoShutDown(true)
+                .build()
+                .start();
+    }
+
+    /**
+     * Stop the persistent logcat process.
+     */
+    private static void stopLogcat() {
+        if (sActiveLogcatProcess != null) {
+            Utils.info(Utils.class, "Stopping and destroying existing logcat process...");
+            sActiveLogcatProcess.destroy();
+            sActiveLogcatProcess = null;
         }
     }
 
 
-    private static void executeCommend(String cmd) {
-        int pid = android.os.Process.myPid();
-        Utils.info(Utils.class, "pid: " + pid);
-
-        ExecutorService executorSvr = Executors.newSingleThreadExecutor();
-        executorSvr.execute(new Runnable() {
-            @Override
-            public void run() {
-                Process process = null;
-                try {
-                    // Use ProcessBuilder for better control and security
-                    ProcessBuilder processBuilder = new ProcessBuilder(cmd.split(" ")); // Assuming cmd is a space-separated command string
-                    processBuilder.redirectErrorStream(true); // Merge error stream into input stream
-                    process = processBuilder.start();
-
-                    // Consume the combined output stream
-                    String output = consumeInputStream(process.getInputStream());
-                    Utils.info(Utils.class, "Command output: " + output);
-
-                    int exitCode = process.waitFor();
-                    Utils.info(Utils.class, "Command: " + cmd + ", Exit code: " + exitCode);
-                } catch (IOException | InterruptedException e) {
-                    // Handle exceptions more specifically if possible
-                    throw new RuntimeException("Error executing command: " + cmd, e);
-                } finally {
-                    if (process != null) {
-                        process.destroy();
-                    }
-                }
-            }
-
-            private void backUpMethod() {
-                Process process = null;
-                try {
-                    process = Runtime.getRuntime().exec(cmd);
-                    String inStr = consumeInputStream(process.getInputStream());
-                    String errStr = consumeInputStream(process.getErrorStream());
-
-                    int exitCode = process.waitFor();
-                    Utils.info(Utils.class, "cmd: " + cmd + " " + "exitCode: " + String.valueOf(exitCode));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    if (process != null) {
-                        process.destroy();
-                    }
-                }
-            }
-        });
-
-        executorSvr.shutdown();
-
-    }
 
 
     private static String consumeInputStream(InputStream is) throws IOException {
