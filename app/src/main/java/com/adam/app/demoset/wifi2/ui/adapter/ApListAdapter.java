@@ -38,6 +38,7 @@ import java.util.List;
 public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder> {
 
     private List<ScanResult> mList = new ArrayList<>();
+    private String mConnectedSsid;
     private final OnItemLongClickListener mListener;
 
     public ApListAdapter(OnItemLongClickListener listener) {
@@ -55,6 +56,11 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder
         }
     }
 
+    public void updateConnectedSsid(String ssid) {
+        this.mConnectedSsid = ssid;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +71,7 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ScanResult result = this.mList.get(position);
-        holder.bind(result, mListener);
+        holder.bind(result, mConnectedSsid, mListener);
     }
 
     @Override
@@ -86,8 +92,9 @@ public class ApListAdapter extends RecyclerView.Adapter<ApListAdapter.ViewHolder
             this.binding = binding;
         }
 
-        public void bind(ScanResult result, OnItemLongClickListener listener) {
+        public void bind(ScanResult result, String connectedSsid, OnItemLongClickListener listener) {
             binding.setScanResult(result);
+            binding.setIsConnected(result.SSID != null && result.SSID.equals(connectedSsid));
             binding.getRoot().setOnLongClickListener(v -> {
                 if (listener != null) {
                     listener.onLongClick(result);

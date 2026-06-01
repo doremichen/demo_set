@@ -686,5 +686,6 @@
     <string name="wifi_network_connected">Network connected</string>
     <string name="wifi_network_connecting">Network connecting</string>
     <string name="wifi_not_found">No WiFi found</string>
+    <string name="wifi_status_connected">Connected</string>
     <string name="wifi_scan_result_log">Scan result: %1$s</string>
 </resources>

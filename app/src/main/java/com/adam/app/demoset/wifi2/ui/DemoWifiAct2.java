@@ -125,6 +125,11 @@ public class DemoWifiAct2 extends AppCompatActivity {
             mAdapter.updateList(list);
         });
 
+        mViewModel.getConnectedSsid().observe(this, ssid -> {
+            Utils.info(this, "onConnectedSsidChanged: " + ssid);
+            mAdapter.updateConnectedSsid(ssid);
+        });
+
         mViewModel.getToastMessage().observe(this, msg -> {
             if (msg != null) {
                 Utils.showToast(this, msg);

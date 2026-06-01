@@ -27,6 +27,7 @@ public class WifiViewModel extends AndroidViewModel implements WifiController.Wi
     private final MutableLiveData<List<ScanResult>> mWifiList = new MutableLiveData<>();
     private final MutableLiveData<String> mToastMessage = new MutableLiveData<>();
     private final MutableLiveData<Boolean> mIsScanning = new MutableLiveData<>(false);
+    private final MutableLiveData<String> mConnectedSsid = new MutableLiveData<>(null);
     private final HandlerThread mScanHandlerThread;
     private final Handler mHandler;
 
@@ -60,6 +61,10 @@ public class WifiViewModel extends AndroidViewModel implements WifiController.Wi
         return mIsScanning;
     }
 
+    public LiveData<String> getConnectedSsid() {
+        return mConnectedSsid;
+    }
+
     public void startScan() {
         mHandler.sendEmptyMessage(SCAN_WIFI);
     }
@@ -70,22 +75,26 @@ public class WifiViewModel extends AndroidViewModel implements WifiController.Wi
             mWifiCtl.connectWifiAfterQ(ssid, password, new WifiController.ConnectListener() {
                 @Override
                 public void onSuccess() {
+                    mConnectedSsid.postValue(ssid);
                     mToastMessage.postValue(getApplication().getString(R.string.wifi_connect_success));
                 }
 
                 @Override
                 public void onFail(String msg) {
+                    mConnectedSsid.postValue(null);
                     mToastMessage.postValue(getApplication().getString(R.string.wifi_connect_fail, msg));
                 }
             });
         } else {
             mWifiCtl.connectWifiBeforeQ(ssid, password);
+            mConnectedSsid.postValue(ssid); // In before Q, it's usually immediate in this simple impl
             mToastMessage.postValue(getApplication().getString(R.string.wifi_connecting_legacy));
         }
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void disconnect() {
+        mConnectedSsid.postValue(null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             mWifiCtl.disconnectWifiAfterQ();
         } else {

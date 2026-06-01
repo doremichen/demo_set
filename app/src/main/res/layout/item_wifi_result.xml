@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="scanResult"
             type="android.net.wifi.ScanResult" />
+        <variable
+            name="isConnected"
+            type="boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@{scanResult.SSID}"
+            android:text='@{scanResult.SSID + (isConnected ? "    " + @string/wifi_status_connected : "")}'
             android:textColor="?android:attr/textColorPrimary"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"

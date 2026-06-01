@@ -686,5 +686,6 @@
     <string name="wifi_network_connected">網路已連線</string>
     <string name="wifi_network_connecting">網路連線中...</string>
     <string name="wifi_not_found">未找到 WiFi</string>
+    <string name="wifi_status_connected">已連線</string>
     <string name="wifi_scan_result_log">掃描結果：%1$s</string>
 </resources>
