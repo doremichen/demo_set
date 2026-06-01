@@ -184,7 +184,7 @@
     <!-- Network -->
     <data app:category="@string/category_network"
         app:titleRes="@string/title_demo_wifi"
-        app:clsname="com.adam.app.demoset.wifi2.DemoWifiAct2"
+        app:clsname="com.adam.app.demoset.wifi2.ui.DemoWifiAct2"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- UI -->

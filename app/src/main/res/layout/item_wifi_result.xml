@@ -1,72 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/item_label_SSID"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_wifi_result_item_ssid"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/item_label_Level"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="scanResult"
+            type="android.net.wifi.ScanResult" />
+    </data>
 
-    <TextView
-        android:id="@+id/item_label_BSSID"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_wifi_result_item_bssid"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
-        app:layout_constraintStart_toStartOf="@+id/item_label_SSID"
-        app:layout_constraintTop_toBottomOf="@+id/item_label_SSID" />
+        android:background="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/item_label_Cap"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_wifi_result_item_capabilities"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
-        app:layout_constraintStart_toStartOf="@+id/item_label_BSSID"
-        app:layout_constraintTop_toBottomOf="@+id/item_label_BSSID" />
+        <TextView
+            android:id="@+id/item_label_SSID"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{scanResult.SSID}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/item_label_Level"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="SSID Name" />
 
-    <TextView
-        android:id="@+id/item_label_Frequency"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/label_wifi_result_item_frequency"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
-        app:layout_constraintStart_toStartOf="@+id/item_label_BSSID"
-        app:layout_constraintTop_toBottomOf="@+id/item_label_Cap" />
+        <TextView
+            android:id="@+id/item_label_BSSID"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{scanResult.BSSID}"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
+            app:layout_constraintStart_toStartOf="@+id/item_label_SSID"
+            app:layout_constraintTop_toBottomOf="@+id/item_label_SSID"
+            tools:text="00:11:22:33:44:55" />
 
-    <TextView
-        android:id="@+id/item_label_Level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/label_wifi_result_item_level"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/item_label_BSSID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_label_SSID" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/item_label_Cap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{scanResult.capabilities}"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
+            app:layout_constraintStart_toStartOf="@+id/item_label_BSSID"
+            app:layout_constraintTop_toBottomOf="@+id/item_label_BSSID"
+            tools:text="[WPA2-PSK-CCMP]" />
+
+        <TextView
+            android:id="@+id/item_label_Frequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@{String.valueOf(scanResult.frequency)}"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/item_label_Level"
+            app:layout_constraintStart_toStartOf="@+id/item_label_BSSID"
+            app:layout_constraintTop_toBottomOf="@+id/item_label_Cap"
+            tools:text="2412" />
+
+        <TextView
+            android:id="@+id/item_label_Level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{String.valueOf(scanResult.level)}"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/item_label_BSSID"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/item_label_SSID"
+            tools:text="-50" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

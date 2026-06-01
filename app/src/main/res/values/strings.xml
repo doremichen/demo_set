@@ -674,4 +674,17 @@
     <string name="err_msg_api_not_available">API Not Available (-5): Deferred Uninstall requires a real Google Play Store environment and is not supported in local testing mode.</string>
     <string name="log_action_failed">Action failed: %1$s</string>
     <string name="log_uninstallation_requested">Uninstallation requested. It will happen in the background.</string>
+
+    <string name="wifi_connect_success">Connected successfully</string>
+    <string name="wifi_connect_fail">Connection failed: %1$s</string>
+    <string name="wifi_connecting_legacy">Connecting (Legacy mode)...</string>
+    <string name="wifi_permission_granted">Permission is granted</string>
+    <string name="wifi_permission_denied">Permission is not granted</string>
+    <string name="wifi_state_disabled">WiFi state disabled</string>
+    <string name="wifi_state_enabled">WiFi state enabled</string>
+    <string name="wifi_network_disconnected">Network disconnected</string>
+    <string name="wifi_network_connected">Network connected</string>
+    <string name="wifi_network_connecting">Network connecting</string>
+    <string name="wifi_not_found">No WiFi found</string>
+    <string name="wifi_scan_result_log">Scan result: %1$s</string>
 </resources>

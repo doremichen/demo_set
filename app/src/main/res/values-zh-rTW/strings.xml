@@ -674,4 +674,17 @@
     <string name="err_msg_api_not_available">API 不可用 (-5)：延遲解除安裝需要真實的 Google Play 商店環境，本地測試模式不支援此功能。</string>
     <string name="log_action_failed">操作失敗：%1$s</string>
     <string name="log_uninstallation_requested">已請求解除安裝。系統將於背景執行此操作。</string>
+
+    <string name="wifi_connect_success">連線成功</string>
+    <string name="wifi_connect_fail">連線失敗：%1$s</string>
+    <string name="wifi_connecting_legacy">連線中 (傳統模式)...</string>
+    <string name="wifi_permission_granted">已授予權限</string>
+    <string name="wifi_permission_denied">權限被拒絕</string>
+    <string name="wifi_state_disabled">WiFi 已關閉</string>
+    <string name="wifi_state_enabled">WiFi 已開啟</string>
+    <string name="wifi_network_disconnected">網路已斷開</string>
+    <string name="wifi_network_connected">網路已連線</string>
+    <string name="wifi_network_connecting">網路連線中...</string>
+    <string name="wifi_not_found">未找到 WiFi</string>
+    <string name="wifi_scan_result_log">掃描結果：%1$s</string>
 </resources>
