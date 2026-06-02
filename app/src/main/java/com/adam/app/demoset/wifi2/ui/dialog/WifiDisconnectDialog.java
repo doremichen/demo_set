@@ -49,7 +49,7 @@ public class WifiDisconnectDialog extends BaseWifiDialog {
     protected void setupButtons(AlertDialog dialog) {
         mBinding.btnConnect.setOnClickListener(v -> {
             if (mListener != null) {
-                mListener.onResult(new WifiConnectData(mScanResult.SSID, null));
+                mListener.onResult(new WifiConnectData(mScanResult.SSID, null, mScanResult.capabilities));
             }
             dialog.dismiss();
         });

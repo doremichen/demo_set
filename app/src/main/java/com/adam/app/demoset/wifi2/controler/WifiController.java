@@ -22,13 +22,10 @@
 
 package com.adam.app.demoset.wifi2.controler;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.WIFI_SERVICE;
 
 import android.Manifest;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
@@ -47,14 +44,10 @@ import java.util.List;
 
 public class WifiController {
 
-    private final ConnectivityManager mConnectMgr;
     private final WifiManager mWifiManager;
-    private ConnectivityManager.NetworkCallback mNetWorkCallback;
-    private WIFISTATE mState = WIFISTATE.DISCONNECTED;
 
     public WifiController(Context context) {
         this.mWifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
-        this.mConnectMgr = (ConnectivityManager) context.getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -89,120 +82,52 @@ public class WifiController {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public void connectWifiAfterQ(String ssid, String password, @NonNull ConnectListener listener) {
-        Utils.info(this, "connectWifiAfterQ: " + ssid);
+    public NetworkRequest createNetworkRequest(String ssid, String password, String capabilities) {
+        Utils.info(this, "createNetworkRequest for: " + ssid);
         
-        if (this.mState == WIFISTATE.CONNECTED) {
-            Utils.info(this, "Already connected to wifi!!!");
-            return;
+        WifiNetworkSpecifier.Builder builder = new WifiNetworkSpecifier.Builder()
+                .setSsid(ssid);
+
+        if (capabilities != null) {
+            if (capabilities.contains("WPA3")) {
+                builder.setWpa3Passphrase(password);
+            } else if (capabilities.contains("WPA2") || capabilities.contains("WPA")) {
+                builder.setWpa2Passphrase(password);
+            }
         }
 
-        unregisterCallbackInternal();
-
-        WifiNetworkSpecifier specifier = new WifiNetworkSpecifier.Builder()
-                .setSsid(ssid)
-                .setWpa2Passphrase(password)
+        return new NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
+                .setNetworkSpecifier(builder.build())
                 .build();
-
-        NetworkRequest request =
-                new NetworkRequest.Builder()
-                        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                        .removeCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                        .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
-                        .setNetworkSpecifier(specifier)
-                        .build();
-
-        this.mNetWorkCallback = new ConnectivityManager.NetworkCallback() {
-            @Override
-            public void onAvailable(@NonNull Network network) {
-                super.onAvailable(network);
-                Utils.info(this, "onAvailable");
-                if (WifiController.this.mConnectMgr != null) {
-                    WifiController.this.mConnectMgr.bindProcessToNetwork(network);
-                }
-                WifiController.this.mState = WIFISTATE.CONNECTED;
-                listener.onSuccess();
-            }
-
-            @Override
-            public void onUnavailable() {
-                super.onUnavailable();
-                Utils.info(this, "onUnavailable");
-                WifiController.this.mState = WIFISTATE.DISCONNECTED;
-                listener.onFail("network unavailable!!!");
-                unregisterCallbackInternal();
-            }
-
-            @Override
-            public void onLost(@NonNull Network network) {
-                super.onLost(network);
-                Utils.info(this, "onLost");
-                WifiController.this.mState = WIFISTATE.DISCONNECTED;
-                if (WifiController.this.mConnectMgr != null) {
-                    WifiController.this.mConnectMgr.bindProcessToNetwork(null);
-                }
-            }
-        };
-
-        Utils.info(this, "requestNetwork started");
-        this.mConnectMgr.requestNetwork(request, mNetWorkCallback);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    public void disconnectWifiAfterQ() {
-        Utils.info(this, "disconnectWifiAfterQ");
-        unregisterCallbackInternal();
-        this.mState = WIFISTATE.DISCONNECTED;
-    }
-
-    private void unregisterCallbackInternal() {
-        if (this.mNetWorkCallback != null && this.mConnectMgr != null) {
-            Utils.info(this, "unregistering old callback");
-            try {
-                this.mConnectMgr.unregisterNetworkCallback(this.mNetWorkCallback);
-                this.mConnectMgr.bindProcessToNetwork(null);
-            } catch (Exception e) {
-                Utils.error(this, "Unregister failed: " + e.getMessage());
-            }
-            this.mNetWorkCallback = null;
-        }
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    public void connectWifiBeforeQ(@NonNull String ssid, @NonNull String password) {
-        if (this.mState == WIFISTATE.CONNECTED) {
-            Utils.info(this, "Has connected to wifi!!!");
-            return;
-        }
-        
+    public void connectWifiBeforeQ(@NonNull String ssid, @NonNull String password, String capabilities) {
         WifiConfiguration config = new WifiConfiguration();
         config.SSID = "\"" + ssid + "\"";
-        config.preSharedKey = "\"" + password + "\"";
-        config.status = WifiConfiguration.Status.ENABLED;
-        config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        
+        if (capabilities != null && (capabilities.contains("WPA2") || capabilities.contains("WPA"))) {
+            config.preSharedKey = "\"" + password + "\"";
+            config.status = WifiConfiguration.Status.ENABLED;
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        } else {
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        }
 
         int netId = this.mWifiManager.addNetwork(config);
         if (netId != -1) {
             this.mWifiManager.disconnect();
             this.mWifiManager.enableNetwork(netId, true);
             this.mWifiManager.reconnect();
-            this.mState = WIFISTATE.CONNECTED;
         }
     }
 
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     public void disconnectWifiBeforeQ() {
-        this.mWifiManager.disconnect();
-        this.mState = WIFISTATE.DISCONNECTED;
-    }
-
-    public enum WIFISTATE {
-        CONNECTED,
-        DISCONNECTED
-    }
-
-    public interface ConnectListener {
-        void onSuccess();
-        void onFail(String msg);
+        if (this.mWifiManager != null) {
+            this.mWifiManager.disconnect();
+        }
     }
 }

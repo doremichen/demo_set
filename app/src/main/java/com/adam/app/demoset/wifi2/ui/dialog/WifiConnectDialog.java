@@ -49,7 +49,7 @@ public class WifiConnectDialog extends BaseWifiDialog {
         mBinding.btnConnect.setOnClickListener(v -> {
             String password = mBinding.editWifiPassword.getText().toString();
             if (mListener != null) {
-                mListener.onResult(new WifiConnectData(mScanResult.SSID, password));
+                mListener.onResult(new WifiConnectData(mScanResult.SSID, password, mScanResult.capabilities));
             }
             dialog.dismiss();
         });

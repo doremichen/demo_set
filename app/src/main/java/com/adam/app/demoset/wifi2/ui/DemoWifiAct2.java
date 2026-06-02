@@ -29,7 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.NetworkInfo;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,41 +55,43 @@ import com.adam.app.demoset.wifi2.ui.dialog.WifiDisconnectDialog;
 import com.adam.app.demoset.wifi2.ui.dialog.WifiRequestSettingDialog;
 import com.adam.app.demoset.wifi2.viewmodel.WifiViewModel;
 
+import java.util.List;
+
 public class DemoWifiAct2 extends AppCompatActivity {
 
     public static final int REQUEST_WIFI_PERMISSION_CODE = 0x1357;
     private static final String[] WIFI_PERMISSION = {
             Manifest.permission.ACCESS_FINE_LOCATION,
     };
-    
-    private final WifiBroadcastReceiver mWifiReceiv = new WifiBroadcastReceiver();
-    private WifiViewModel mViewModel;
+
     private ActivityDemoWifiAct2Binding mBinding;
+    private WifiViewModel mViewModel;
     private ApListAdapter mAdapter;
-    private boolean mPermissionGranted;
     private AlertDialog mProgressDialog;
     private AlertDialog mWifiSettingDialog;
+
+    private final WifiBroadcastReceiver mWifiReceiv = new WifiBroadcastReceiver();
 
     private final BaseWifiDialog.DialogListener mListener = new BaseWifiDialog.DialogListener() {
         @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         @Override
         public void onResult(WifiConnectData data) {
-            if (data != null) {
-                if (data.getPassword() != null) {
-                    mViewModel.connectWifi(data.getSsid(), data.getPassword());
-                } else {
-                    mViewModel.disconnect();
-                }
+            if (data == null) return;
+            if (data.getPassword() != null) {
+                mViewModel.connect(data);
+            } else {
+                mViewModel.disconnect();
             }
         }
     };
 
+    // --- Lifecycle ---
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate");
-        
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_wifi_act2);
         mViewModel = new ViewModelProvider(this).get(WifiViewModel.class);
         mBinding.setViewModel(mViewModel);
@@ -99,96 +101,126 @@ public class DemoWifiAct2 extends AppCompatActivity {
 
         initViews();
         observeViewModel();
-
-        if (Utils.askPermission(this, WIFI_PERMISSION, REQUEST_WIFI_PERMISSION_CODE)) {
-            Utils.info(this, getString(R.string.wifi_permission_granted));
-            this.mPermissionGranted = true;
-        }
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter, RECEIVER_EXPORTED);
-        } else {
-            this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mPermissionGranted) {
-            checkWifiState();
-        }
+        checkPermissions();
+        registerWifiReceiver();
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    private void checkWifiState() {
-        if (!mViewModel.checkWifiEnabled()) {
-            if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) {
-                return;
-            }
-            mWifiSettingDialog = new WifiRequestSettingDialog(this, data -> {
-                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                startActivity(intent);
-            }).create();
-            mWifiSettingDialog.show();
-        } else {
-            if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) {
-                mWifiSettingDialog.dismiss();
-            }
-            mViewModel.refreshState();
-        }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getApplicationContext().unregisterReceiver(mWifiReceiv);
     }
 
-    private void initViews() {
-        mBinding.wifiList.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.wifiList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        
-        this.mAdapter = new ApListAdapter(result -> {
-            String connectedSsid = mViewModel.getConnectedSsid().getValue();
-            if (result.SSID != null && result.SSID.equals(connectedSsid)) {
-                showDisconnectDialog(result);
-            } else {
-                Utils.info(DemoWifiAct2.this, getString(R.string.wifi_scan_result_log, result.toString()));
-                new WifiConnectDialog(DemoWifiAct2.this, result, DemoWifiAct2.this.mListener).create().show();
-            }
-        });
-        mBinding.wifiList.setAdapter(this.mAdapter);
+    // --- Initialization ---
 
+    private void initViews() {
+        setupWifiRecyclerView();
         mBinding.btnExitWifi.setOnClickListener(v -> finish());
     }
 
-    private void showDisconnectDialog(android.net.wifi.ScanResult result) {
-        new WifiDisconnectDialog(this, result, mListener).create().show();
+    private void setupWifiRecyclerView() {
+        mBinding.wifiList.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.wifiList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mAdapter = new ApListAdapter(this::onWifiItemClicked);
+        mBinding.wifiList.setAdapter(mAdapter);
     }
 
     private void observeViewModel() {
-        mViewModel.getWifiList().observe(this, list -> {
-            Utils.info(this, "onUpdateWifiList");
-            mAdapter.updateList(list);
-        });
-
-        mViewModel.getConnectedSsid().observe(this, ssid -> {
-            Utils.info(this, "onConnectedSsidChanged: " + ssid);
-            mAdapter.updateConnectedSsid(ssid);
-        });
-
-        mViewModel.getToastMessage().observe(this, msg -> {
-            if (msg != null) {
-                Utils.showToast(this, msg);
-            }
-        });
-
-        mViewModel.getProgressMessageRes().observe(this, resId -> {
-            if (resId != null && resId != 0) {
-                showProgressDialog(resId);
+        mViewModel.getWifiList().observe(this, this::handleWifiListUpdate);
+        mViewModel.getConnectedSsid().observe(this, this::handleConnectedSsidChanged);
+        mViewModel.getToastMessage().observe(this, this::handleToastMessage);
+        mViewModel.getProgressMessageRes().observe(this, this::handleProgressDialog);
+        mViewModel.isWifiEnabled().observe(this, isEnabled -> {
+            if (isEnabled == null) return;
+            if (isEnabled) {
+                dismissWifiSettingDialog();
+                mViewModel.refreshState();
             } else {
-                dismissProgressDialog();
+                showWifiSettingDialog();
             }
         });
+    }
+
+    private void checkPermissions() {
+        Utils.askPermission(this, WIFI_PERMISSION, REQUEST_WIFI_PERMISSION_CODE);
+    }
+
+    private void registerWifiReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getApplicationContext().registerReceiver(mWifiReceiv, filter, RECEIVER_EXPORTED);
+        } else {
+            getApplicationContext().registerReceiver(mWifiReceiv, filter);
+        }
+    }
+
+    // --- UI Handlers ---
+
+    private void onWifiItemClicked(@NonNull ScanResult result) {
+        Utils.info(this, "onWifiItemClicked: " + result.SSID);
+        if (result.SSID == null) return;
+
+        String connectedSsid = mViewModel.getConnectedSsid().getValue();
+        if (result.SSID.equals(connectedSsid)) {
+            showDisconnectDialog(result);
+        } else {
+            showConnectDialog(result);
+        }
+    }
+
+    private void handleWifiListUpdate(List<ScanResult> list) {
+        Utils.info(this, "onUpdateWifiList");
+        mAdapter.updateList(list);
+    }
+
+    private void handleConnectedSsidChanged(String ssid) {
+        Utils.info(this, "onConnectedSsidChanged: " + ssid);
+        mAdapter.updateConnectedSsid(ssid);
+    }
+
+    private void handleToastMessage(String msg) {
+        if (msg != null) {
+            Utils.showToast(this, msg);
+        }
+    }
+
+    private void handleProgressDialog(Integer resId) {
+        if (resId != null && resId != 0) {
+            showProgressDialog(resId);
+        } else {
+            dismissProgressDialog();
+        }
+    }
+
+    // --- Dialog Management ---
+
+    private void showConnectDialog(ScanResult result) {
+        new WifiConnectDialog(this, result, mListener).create().show();
+    }
+
+    private void showDisconnectDialog(ScanResult result) {
+        new WifiDisconnectDialog(this, result, mListener).create().show();
+    }
+
+    private void showWifiSettingDialog() {
+        if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) return;
+        mWifiSettingDialog = new WifiRequestSettingDialog(this, data -> navigateToWifiSettings()).create();
+        mWifiSettingDialog.show();
+    }
+
+    private void dismissWifiSettingDialog() {
+        if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) {
+            mWifiSettingDialog.dismiss();
+        }
+    }
+
+    private void navigateToWifiSettings() {
+        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+        startActivity(intent);
     }
 
     private void showProgressDialog(int resId) {
@@ -209,36 +241,33 @@ public class DemoWifiAct2 extends AppCompatActivity {
         }
     }
 
+    // --- Permission ---
+
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.getApplicationContext().unregisterReceiver(this.mWifiReceiv);
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_WIFI_PERMISSION_CODE) {
-            if (grantResults.length == WIFI_PERMISSION.length) {
-                boolean allGranted = true;
-                for (int result : grantResults) {
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        allGranted = false;
-                        break;
-                    }
-                }
-                if (allGranted) {
-                    Utils.showToast(this, getString(R.string.wifi_permission_granted));
-                    this.mPermissionGranted = true;
-                    checkWifiState();
-                } else {
-                    Utils.showToast(this, getString(R.string.wifi_permission_denied));
-                }
-            }
-        } else {
+        if (requestCode != REQUEST_WIFI_PERMISSION_CODE) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        if (isAllPermissionsGranted(grantResults)) {
+            Utils.showToast(this, getString(R.string.wifi_permission_granted));
+            mViewModel.checkWifiEnabled();
+        } else {
+            Utils.showToast(this, getString(R.string.wifi_permission_denied));
         }
     }
+
+    private boolean isAllPermissionsGranted(@NonNull int[] grantResults) {
+        if (grantResults.length == 0) return false;
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) return false;
+        }
+        return true;
+    }
+
+    // --- Inner Classes ---
 
     private class WifiBroadcastReceiver extends BroadcastReceiver {
         @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -247,42 +276,9 @@ public class DemoWifiAct2 extends AppCompatActivity {
             String action = intent.getAction();
             if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
                 int state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
-                handleWifiState(state);
-            } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
-                NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-                if (info != null) {
-                    handleNetworkState(info.getState());
-                }
+                mViewModel.onWifiStateChanged(state);
             } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)) {
-                Utils.info(DemoWifiAct2.this, "Scan results available!");
                 mViewModel.fetchScanResults();
-            }
-        }
-
-        private void handleWifiState(int state) {
-            switch (state) {
-                case WifiManager.WIFI_STATE_DISABLED:
-                    Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_state_disabled));
-                    checkWifiState();
-                    break;
-                case WifiManager.WIFI_STATE_ENABLED:
-                    Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_state_enabled));
-                    checkWifiState();
-                    break;
-            }
-        }
-
-        private void handleNetworkState(NetworkInfo.State state) {
-            switch (state) {
-                case DISCONNECTED:
-                    Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_network_disconnected));
-                    break;
-                case CONNECTED:
-                    Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_network_connected));
-                    break;
-                case CONNECTING:
-                    Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_network_connecting));
-                    break;
             }
         }
     }

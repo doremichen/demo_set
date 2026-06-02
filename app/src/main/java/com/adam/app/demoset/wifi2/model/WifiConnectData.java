@@ -28,15 +28,18 @@ public class WifiConnectData {
 
     private String mSsid;
     private String mPassword;
+    private String mCapabilities;
 
-    public WifiConnectData(String ssid, String password) {
+    public WifiConnectData(String ssid, String password, String capabilities) {
         this.mSsid = ssid;
         this.mPassword = password;
+        this.mCapabilities = capabilities;
     }
 
     public void clear() {
         this.mSsid = null;
         this.mPassword = null;
+        this.mCapabilities = null;
     }
 
     public String getSsid() {
@@ -47,13 +50,17 @@ public class WifiConnectData {
         return this.mPassword;
     }
 
+    public String getCapabilities() {
+        return this.mCapabilities;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        String stb = "\n===================================\n" +
+        return "\n===================================\n" +
                 "ssid: " + this.mSsid + "\n" +
-                "password: " + this.mPassword + "\n" +
+                "password: " + (this.mPassword != null ? "********" : "null") + "\n" +
+                "capabilities: " + this.mCapabilities + "\n" +
                 "===================================\n";
-        return stb;
     }
 }
