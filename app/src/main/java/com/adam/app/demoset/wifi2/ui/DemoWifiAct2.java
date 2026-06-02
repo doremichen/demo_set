@@ -23,6 +23,7 @@
 package com.adam.app.demoset.wifi2.ui;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
@@ -47,7 +49,10 @@ import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.wifi2.model.WifiConnectData;
 import com.adam.app.demoset.wifi2.ui.adapter.ApListAdapter;
+import com.adam.app.demoset.wifi2.ui.dialog.BaseWifiDialog;
 import com.adam.app.demoset.wifi2.ui.dialog.WifiConnectDialog;
+import com.adam.app.demoset.wifi2.ui.dialog.WifiDisconnectDialog;
+import com.adam.app.demoset.wifi2.ui.dialog.WifiRequestSettingDialog;
 import com.adam.app.demoset.wifi2.viewmodel.WifiViewModel;
 
 public class DemoWifiAct2 extends AppCompatActivity {
@@ -62,12 +67,20 @@ public class DemoWifiAct2 extends AppCompatActivity {
     private ActivityDemoWifiAct2Binding mBinding;
     private ApListAdapter mAdapter;
     private boolean mPermissionGranted;
+    private AlertDialog mProgressDialog;
+    private AlertDialog mWifiSettingDialog;
 
-    private final WifiConnectDialog.DialogListener mListener = new WifiConnectDialog.DialogListener() {
+    private final BaseWifiDialog.DialogListener mListener = new BaseWifiDialog.DialogListener() {
         @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         @Override
         public void onResult(WifiConnectData data) {
-            mViewModel.connectWifi(data.getSsid(), data.getPassword());
+            if (data != null) {
+                if (data.getPassword() != null) {
+                    mViewModel.connectWifi(data.getSsid(), data.getPassword());
+                } else {
+                    mViewModel.disconnect();
+                }
+            }
         }
     };
 
@@ -92,16 +105,41 @@ public class DemoWifiAct2 extends AppCompatActivity {
             this.mPermissionGranted = true;
         }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-            filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter, RECEIVER_EXPORTED);
-            } else {
-                this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter, RECEIVER_EXPORTED);
+        } else {
+            this.getApplicationContext().registerReceiver(this.mWifiReceiv, filter);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mPermissionGranted) {
+            checkWifiState();
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    private void checkWifiState() {
+        if (!mViewModel.checkWifiEnabled()) {
+            if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) {
+                return;
             }
+            mWifiSettingDialog = new WifiRequestSettingDialog(this, data -> {
+                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                startActivity(intent);
+            }).create();
+            mWifiSettingDialog.show();
+        } else {
+            if (mWifiSettingDialog != null && mWifiSettingDialog.isShowing()) {
+                mWifiSettingDialog.dismiss();
+            }
+            mViewModel.refreshState();
         }
     }
 
@@ -110,13 +148,21 @@ public class DemoWifiAct2 extends AppCompatActivity {
         mBinding.wifiList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         
         this.mAdapter = new ApListAdapter(result -> {
-            Utils.info(DemoWifiAct2.this, getString(R.string.wifi_scan_result_log, result.toString()));
-            WifiConnectDialog dialog = new WifiConnectDialog(DemoWifiAct2.this, result, DemoWifiAct2.this.mListener);
-            dialog.create().show();
+            String connectedSsid = mViewModel.getConnectedSsid().getValue();
+            if (result.SSID != null && result.SSID.equals(connectedSsid)) {
+                showDisconnectDialog(result);
+            } else {
+                Utils.info(DemoWifiAct2.this, getString(R.string.wifi_scan_result_log, result.toString()));
+                new WifiConnectDialog(DemoWifiAct2.this, result, DemoWifiAct2.this.mListener).create().show();
+            }
         });
         mBinding.wifiList.setAdapter(this.mAdapter);
 
         mBinding.btnExitWifi.setOnClickListener(v -> finish());
+    }
+
+    private void showDisconnectDialog(android.net.wifi.ScanResult result) {
+        new WifiDisconnectDialog(this, result, mListener).create().show();
     }
 
     private void observeViewModel() {
@@ -135,14 +181,39 @@ public class DemoWifiAct2 extends AppCompatActivity {
                 Utils.showToast(this, msg);
             }
         });
+
+        mViewModel.getProgressMessageRes().observe(this, resId -> {
+            if (resId != null && resId != 0) {
+                showProgressDialog(resId);
+            } else {
+                dismissProgressDialog();
+            }
+        });
     }
 
+    private void showProgressDialog(int resId) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.setMessage(getString(resId));
+            return;
+        }
+        mProgressDialog = new AlertDialog.Builder(this)
+                .setMessage(resId)
+                .setCancelable(false)
+                .create();
+        mProgressDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            this.getApplicationContext().unregisterReceiver(this.mWifiReceiv);
-        }
+        this.getApplicationContext().unregisterReceiver(this.mWifiReceiv);
     }
 
     @Override
@@ -159,6 +230,7 @@ public class DemoWifiAct2 extends AppCompatActivity {
                 if (allGranted) {
                     Utils.showToast(this, getString(R.string.wifi_permission_granted));
                     this.mPermissionGranted = true;
+                    checkWifiState();
                 } else {
                     Utils.showToast(this, getString(R.string.wifi_permission_denied));
                 }
@@ -169,6 +241,7 @@ public class DemoWifiAct2 extends AppCompatActivity {
     }
 
     private class WifiBroadcastReceiver extends BroadcastReceiver {
+        @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -181,8 +254,8 @@ public class DemoWifiAct2 extends AppCompatActivity {
                     handleNetworkState(info.getState());
                 }
             } else if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)) {
-                // If we were waiting for scan results
-                mViewModel.startScan(); // This will trigger getScanResults in the current implementation
+                Utils.info(DemoWifiAct2.this, "Scan results available!");
+                mViewModel.fetchScanResults();
             }
         }
 
@@ -190,9 +263,11 @@ public class DemoWifiAct2 extends AppCompatActivity {
             switch (state) {
                 case WifiManager.WIFI_STATE_DISABLED:
                     Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_state_disabled));
+                    checkWifiState();
                     break;
                 case WifiManager.WIFI_STATE_ENABLED:
                     Utils.showToast(DemoWifiAct2.this, getString(R.string.wifi_state_enabled));
+                    checkWifiState();
                     break;
             }
         }

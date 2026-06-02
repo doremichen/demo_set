@@ -70,7 +70,7 @@
                 android:layout_gravity="center"
                 android:text="@string/wifi_not_found"
                 android:textColor="@android:color/white"
-                android:visibility="@{viewModel.wifiList.empty &amp;&amp; !viewModel.isScanning ? android.view.View.VISIBLE : android.view.View.GONE}" />
+                android:visibility="@{(!viewModel.isWifiEnabled || (viewModel.wifiList.empty &amp;&amp; !viewModel.isScanning)) ? android.view.View.VISIBLE : android.view.View.GONE}" />
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -90,26 +90,10 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_scan_wifi"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="@string/action_scan_wifi"
-                android:textSize="16sp"
-                android:onClick="@{() -> viewModel.startScan()}"
-                android:enabled="@{!viewModel.isScanning}"
-                app:cornerRadius="16dp"
-                app:icon="@android:drawable/ic_menu_rotate"/>
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_exit_wifi"
                 style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
                 android:text="@string/action_exit_wifi"
                 android:textSize="16sp"
                 app:cornerRadius="16dp"

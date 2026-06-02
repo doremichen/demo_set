@@ -36,7 +36,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiNetworkSpecifier;
 import android.os.Build;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -59,19 +58,34 @@ public class WifiController {
     }
 
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    public void wifiScan(@NonNull WifiScanListener listener) {
-        Utils.info(this, "wifiScan");
-        // enable wifi
-        if (!this.mWifiManager.isWifiEnabled()) {
-            this.mWifiManager.setWifiEnabled(true);
+    public String getConnectedSsid() {
+        if (this.mWifiManager != null && this.mWifiManager.getConnectionInfo() != null) {
+            String ssid = this.mWifiManager.getConnectionInfo().getSSID();
+            if (ssid != null && ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                ssid = ssid.substring(1, ssid.length() - 1);
+            }
+            if ("<unknown ssid>".equals(ssid)) return null;
+            return ssid;
         }
-        // start scan
-        this.mWifiManager.startScan();
-        // get wifi list
-        List<ScanResult> list = this.mWifiManager.getScanResults();
-        Utils.info(this, "list size: " + (list != null ? list.size() : 0));
-        // notify ui
-        listener.onUpdateWifiList(list);
+        return null;
+    }
+
+    public boolean isWifiEnabled() {
+        return mWifiManager != null && mWifiManager.isWifiEnabled();
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    public void triggerScan() {
+        Utils.info(this, "triggerScan");
+        if (this.mWifiManager != null) {
+            this.mWifiManager.startScan();
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    public List<ScanResult> getScanResults() {
+        Utils.info(this, "getScanResults");
+        return this.mWifiManager != null ? this.mWifiManager.getScanResults() : null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -83,7 +97,6 @@ public class WifiController {
             return;
         }
 
-        // Clean up old callback to prevent memory leak
         unregisterCallbackInternal();
 
         WifiNetworkSpecifier specifier = new WifiNetworkSpecifier.Builder()
@@ -125,7 +138,6 @@ public class WifiController {
                 super.onLost(network);
                 Utils.info(this, "onLost");
                 WifiController.this.mState = WIFISTATE.DISCONNECTED;
-                // Bind null to clear binding when network is lost
                 if (WifiController.this.mConnectMgr != null) {
                     WifiController.this.mConnectMgr.bindProcessToNetwork(null);
                 }
@@ -187,10 +199,6 @@ public class WifiController {
     public enum WIFISTATE {
         CONNECTED,
         DISCONNECTED
-    }
-
-    public interface WifiScanListener {
-        void onUpdateWifiList(List<ScanResult> list);
     }
 
     public interface ConnectListener {

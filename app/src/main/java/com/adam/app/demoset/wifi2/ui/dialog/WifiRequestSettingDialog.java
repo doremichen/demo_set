@@ -24,32 +24,30 @@ package com.adam.app.demoset.wifi2.ui.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.net.wifi.ScanResult;
 
 import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.wifi2.model.WifiConnectData;
 
-public class WifiConnectDialog extends BaseWifiDialog {
+public class WifiRequestSettingDialog extends BaseWifiDialog {
 
-    public WifiConnectDialog(Context ctx, ScanResult result, @NonNull DialogListener listener) {
-        super(ctx, result, listener);
+    public WifiRequestSettingDialog(Context ctx, @NonNull DialogListener listener) {
+        super(ctx, null, listener);
     }
 
     @Override
     protected void setupContent() {
-        mBinding.setTitle(mContext.getString(R.string.label_edit_title));
-        mBinding.setShowPassword(true);
-        mBinding.setButtonText(mContext.getString(R.string.label_ok_btn));
+        mBinding.setTitle(mContext.getString(R.string.wifi_state_disabled));
+        mBinding.setMessage(mContext.getString(R.string.label_info_demo_qs)); // Reusing a general info string or we could use something more specific
+        mBinding.setShowPassword(false);
+        mBinding.setButtonText(mContext.getString(R.string.label_setting_btn));
     }
 
     @Override
     protected void setupButtons(AlertDialog dialog) {
         mBinding.btnConnect.setOnClickListener(v -> {
-            String password = mBinding.editWifiPassword.getText().toString();
             if (mListener != null) {
-                mListener.onResult(new WifiConnectData(mScanResult.SSID, password));
+                mListener.onResult(null);
             }
             dialog.dismiss();
         });

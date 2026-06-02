@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="ssid"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="showPassword"
+            type="boolean" />
+        <variable
+            name="buttonText"
+            type="String" />
+        <variable
+            name="message"
             type="String" />
     </data>
 
@@ -36,11 +49,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text='@{"連線至 " + ssid}'
+                android:text='@{title != null ? title : @string/wifi_connect_to(ssid)}'
                 android:textColor="?attr/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="連線至 Adam_AP" />
+
+            <TextView
+                android:id="@+id/dialog_wifi_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text='@{message}'
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                android:visibility="@{message != null ? View.VISIBLE : View.GONE}"
+                tools:text="Are you sure you want to disconnect?" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -48,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:hint="@string/hint_input_password"
+                android:visibility="@{showPassword ? View.VISIBLE : View.GONE}"
                 app:boxStrokeColor="?attr/colorPrimary"
                 app:endIconMode="password_toggle"
                 app:hintTextColor="?attr/colorPrimary"
@@ -85,10 +111,10 @@
                     android:layout_weight="1.2"
                     android:layout_marginStart="12dp"
                     android:backgroundTint="?attr/colorPrimary"
-                    android:text="@string/label_ok_btn"
+                    android:text='@{buttonText != null ? buttonText : @string/label_ok_btn}'
                     android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:hideKeyboardOnClick="@{true}" /> </LinearLayout>
+                    app:cornerRadius="12dp" /> </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
 </layout>

@@ -676,6 +676,7 @@
     <string name="log_uninstallation_requested">已請求解除安裝。系統將於背景執行此操作。</string>
 
     <string name="wifi_connect_success">連線成功</string>
+    <string name="wifi_connect_to">連線至 %s</string>
     <string name="wifi_connect_fail">連線失敗：%1$s</string>
     <string name="wifi_connecting_legacy">連線中 (傳統模式)...</string>
     <string name="wifi_permission_granted">已授予權限</string>
@@ -687,5 +688,10 @@
     <string name="wifi_network_connecting">網路連線中...</string>
     <string name="wifi_not_found">未找到 WiFi</string>
     <string name="wifi_status_connected">已連線</string>
+    <string name="wifi_status_scanning">正在掃描 WiFi，請稍候...</string>
+    <string name="wifi_status_connecting">正在連線 WiFi，請稍候...</string>
+    <string name="wifi_status_disconnecting">正在斷開連線，請稍候...</string>
+    <string name="wifi_disconnect_title">中斷連線</string>
+    <string name="wifi_disconnect_msg">你確定要斷開連線嗎？</string>
     <string name="wifi_scan_result_log">掃描結果：%1$s</string>
 </resources>

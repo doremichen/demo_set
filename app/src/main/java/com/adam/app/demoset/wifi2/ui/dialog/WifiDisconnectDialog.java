@@ -31,25 +31,25 @@ import androidx.annotation.NonNull;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.wifi2.model.WifiConnectData;
 
-public class WifiConnectDialog extends BaseWifiDialog {
+public class WifiDisconnectDialog extends BaseWifiDialog {
 
-    public WifiConnectDialog(Context ctx, ScanResult result, @NonNull DialogListener listener) {
+    public WifiDisconnectDialog(Context ctx, ScanResult result, @NonNull DialogListener listener) {
         super(ctx, result, listener);
     }
 
     @Override
     protected void setupContent() {
-        mBinding.setTitle(mContext.getString(R.string.label_edit_title));
-        mBinding.setShowPassword(true);
+        mBinding.setTitle(mContext.getString(R.string.wifi_disconnect_title));
+        mBinding.setMessage(mContext.getString(R.string.wifi_disconnect_msg));
+        mBinding.setShowPassword(false);
         mBinding.setButtonText(mContext.getString(R.string.label_ok_btn));
     }
 
     @Override
     protected void setupButtons(AlertDialog dialog) {
         mBinding.btnConnect.setOnClickListener(v -> {
-            String password = mBinding.editWifiPassword.getText().toString();
             if (mListener != null) {
-                mListener.onResult(new WifiConnectData(mScanResult.SSID, password));
+                mListener.onResult(new WifiConnectData(mScanResult.SSID, null));
             }
             dialog.dismiss();
         });
