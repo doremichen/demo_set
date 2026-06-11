@@ -380,6 +380,21 @@
             android:exported="false"
             android:label="@string/title_demo_dynamic_delivery"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".performance.presentation.leak.LeakDemoActivity"
+            android:exported="false"
+            android:label="@string/title_demo_leakcanary"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".performance.presentation.startup.StartupDemoActivity"
+            android:exported="false"
+            android:label="@string/title_demo_startup"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".performance.presentation.benchmark.BenchmarkDemoActivity"
+            android:exported="false"
+            android:label="@string/title_demo_benchmark"
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="preloaded_fonts"

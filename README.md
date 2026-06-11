@@ -108,6 +108,16 @@ Native Layer
 
 ---
 
+## 🚀 Performance & Diagnostics
+
+*   **LeakCanary Integration**: In-app memory leak detection and analysis. Demonstrates how to catch leaks in static references and custom objects.
+*   **App Startup Optimization**: Contrast between Synchronous Blocking and Asynchronous Coroutine-based initialization using **Jetpack Startup** concepts.
+*   **Benchmarking**:
+    *   **Micro-benchmark**: Algorithmic performance measurement (e.g., Bubble Sort vs. Quick Sort simulation).
+    *   **Macro-benchmark**: Real-time **Frame Metrics** monitoring to detect UI jank and calculate drop-frame rates.
+
+---
+
 ## 📡 Network
 
 * Wi-Fi management
@@ -203,7 +213,6 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **Performance & Diagnostics**: Benchmarking, App Startup optimization, and LeakCanary integration.
 * **Advanced Graphics**: Rendering Engine with Vulkan or advanced Canvas 2D effects.
 
 ---

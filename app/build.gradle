@@ -9,7 +9,7 @@ plugins {
 android {
     namespace = "com.adam.app.demoset"
     compileSdk = 35
-    ndkVersion = "26.1.10909125"
+    ndkVersion = "27.0.12077973"
 
     signingConfigs {
         debug {
@@ -36,6 +36,15 @@ android {
 
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+                arguments "-DANDROID_STL=c++_shared"
+                // Add the flag to support 16 KB page sizes
+                abiFilters "arm64-v8a", "x86_64"
+            }
         }
     }
 
@@ -101,6 +110,13 @@ android {
 
     lint {
         abortOnError = false
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.graphics:graphics-path:1.1.0'
+            force 'com.google.mlkit:face-detection:16.1.7'
+        }
     }
 }
 
@@ -189,6 +205,9 @@ dependencies {
     implementation libs.mlkit.barcode.scanning
     implementation libs.mlkit.face.detection
     implementation libs.mlkit.text.recognition
+
+    // LeakCanary
+    debugImplementation libs.leakcanary.android
 
     // Testing
     testImplementation libs.junit

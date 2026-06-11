@@ -694,4 +694,56 @@
     <string name="wifi_disconnect_title">中斷連線</string>
     <string name="wifi_disconnect_msg">你確定要斷開連線嗎？</string>
     <string name="wifi_scan_result_log">掃描結果：%1$s</string>
+
+    <!-- Performance & Diagnostics -->
+    <string name="title_demo_leakcanary">LeakCanary 記憶體洩漏偵測</string>
+    <string name="title_demo_startup">App 啟動效能優化</string>
+    <string name="title_demo_benchmark">系統基準測試實驗室</string>
+    <string name="instruction_label">【技術描述 (Instruction)】</string>
+    <string name="core_tech_label">- 核心技術：</string>
+    <string name="test_scenario_label">- 測試場景：</string>
+    <string name="expected_result_label">- 預期結果：</string>
+    <string name="btn_run_test">執行：進入 %1$s 測試頁面</string>
+
+    <string name="leak_canary_tech">LeakCanary 2.x, Heap Dump</string>
+    <string name="leak_canary_scenario">模擬 Activity 銷毀後遭靜態變數強引用</string>
+    <string name="leak_canary_result">返回主畫面後 5 秒內觸發洩漏通知</string>
+    <string name="leak_title">LeakCanary 整合測試</string>
+    <string name="leak_simulate_btn">製造記憶體洩漏 (Simulate Leak)</string>
+    <string name="leak_current_status">當前狀態: %1$s</string>
+    <string name="leak_report_list">洩漏報告列表:</string>
+    <string name="leak_class_label">類別: %1$s</string>
+    <string name="leak_path_label">路徑: %1$s</string>
+    <string name="leak_size_label">大小: %1$d bytes</string>
+    <string name="leak_no_report">尚無報告，請點擊上方按鈕並等待 LeakCanary 分析</string>
+
+    <string name="startup_tech">Jetpack Startup, Coroutines</string>
+    <string name="startup_scenario">對比同步阻塞與異步優化啟動</string>
+    <string name="startup_result">展示啟動時間縮短與主執行緒釋放</string>
+    <string name="startup_title">App 啟動優化測試</string>
+    <string name="startup_desc">測試不同啟動策略對效能的影響</string>
+    <string name="startup_sync_btn">同步阻塞啟動</string>
+    <string name="startup_async_btn">異步優化啟動</string>
+    <string name="startup_running">執行中...</string>
+    <string name="startup_jank_detected">偵測到明顯卡頓！</string>
+    <string name="startup_smooth">啟動流程流暢</string>
+    <string name="startup_duration">總耗時：%1$d ms</string>
+    <string name="startup_task_count">完成任務數：%1$d</string>
+
+    <string name="benchmark_tech">Jetpack Microbenchmark, Frame Metrics</string>
+    <string name="benchmark_scenario">演算法效能與 UI 滾動掉幀測試</string>
+    <string name="benchmark_result">產生量化報告與對比圖表</string>
+    <string name="benchmark_title">基準測試 (Benchmarking)</string>
+    <string name="benchmark_desc">效能基準測試與量化分析</string>
+    <string name="benchmark_micro_label">1. 微觀測試: 演算法比較</string>
+    <string name="benchmark_run_algo_btn">執行演算法 Benchmark</string>
+    <string name="benchmark_macro_label">2. 巨集測試: UI 幀時長監測</string>
+    <string name="benchmark_start_ui_btn">開始追蹤 UI</string>
+    <string name="benchmark_stop_ui_btn">停止並產生報告</string>
+    <string name="benchmark_scenario_label">場景: %1$s</string>
+    <string name="benchmark_type_label">類型: %1$s</string>
+    <string name="benchmark_exec_time_label">執行時間: %1$.2f ms</string>
+    <string name="benchmark_median_frame_label">中位數幀時: %1$.2f ms</string>
+    <string name="benchmark_jank_count_label">掉幀數 (Jank): %1$d</string>
+    <string name="benchmark_jank_rate_label">掉幀率: %1$.2f%%</string>
 </resources>

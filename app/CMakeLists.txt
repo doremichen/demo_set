@@ -1,6 +1,8 @@
 # Set minimum version
 cmake_minimum_required(VERSION 3.4.1)
 
+project(DemoJni)
+
 # Specifies build list and target
 add_library( # target name
              demo-jni
@@ -27,3 +29,6 @@ target_link_libraries( # target
 
                        # link lib list
                        ${log-lib})
+
+# Support 16 KB page sizes
+target_link_options(demo-jni PRIVATE "-Wl,-z,max-page-size=16384")
