@@ -1,5 +1,5 @@
 # buildDemoApp.ps1
-# Usage: ./buildDemoApp.ps1 -d | -b | -c | -r | -p
+# Usage: ./buildDemoApp.ps1 -d [debug|release] | -b [debug|release] | -c | -r [debug|release] | -p
 
 $BUNDLETOOL_JAR = "bundletool-all-1.18.3.jar"
 $PACKAGE_NAME = "com.adam.app.demoset"
@@ -9,18 +9,27 @@ $ALIAS = "SignDemo"
 $APKS_PATH = "app.apks"
 
 function Show-Usage {
-    Write-Host "Usage: buildDemoApp [option]" -ForegroundColor Yellow
+    Write-Host "Usage: buildDemoApp [option] [buildType]" -ForegroundColor Yellow
     Write-Host "  -d  Build bundle, generate local testing APKS, and install to device"
     Write-Host "  -b  Build APK"
     Write-Host "  -c  Perform gradlew clean"
     Write-Host "  -r  Perform gradlew clean and build APK"
     Write-Host "  -p  Check device connection and install if confirmed"
+    Write-Host ""
+    Write-Host "Build types (Optional):"
+    Write-Host "  debug / d   : Build in debug mode (Default)"
+    Write-Host "  release / r : Build in release mode"
+    Write-Host ""
+    Write-Host "Examples:"
+    Write-Host "  .\buildDemoApp.ps1 -d          # Default debug build and install"
+    Write-Host "  .\buildDemoApp.ps1 -d release  # Release build and install"
+    Write-Host "  .\buildDemoApp.ps1 -b release  # Build release APK"
     exit 0
 }
 
 function Get-BuildType {
-    $type = Read-Host "Select Build Type (d: Debug / r: Release) [default: d]"
-    if ($type -eq "r") { return "Release" }
+    param($InputType)
+    if ($InputType -eq "release" -or $InputType -eq "r") { return "Release" }
     return "Debug"
 }
 
@@ -43,9 +52,11 @@ function Install-Process {
 
 if ($args.Count -eq 0) { Show-Usage }
 
-switch ($args[0]) {
+$command = $args[0]
+$bt = Get-BuildType $args[1]
+
+switch ($command) {
     "-d" {
-        $bt = Get-BuildType
         $AAB_PATH = "app/build/outputs/bundle/$($bt.ToLower())/app-$($bt.ToLower()).aab"
 
         Write-Host "--- [1/3] Building App Bundle ($bt) ---" -ForegroundColor Cyan
@@ -69,7 +80,6 @@ switch ($args[0]) {
         }
     }
     "-b" {
-        $bt = Get-BuildType
         Write-Host "--- Building $bt APK ---" -ForegroundColor Cyan
         ./gradlew ":app:assemble$bt"
     }
@@ -78,18 +88,11 @@ switch ($args[0]) {
         ./gradlew clean
     }
     "-r" {
-        $bt = Get-BuildType
         Write-Host "--- Cleaning and Building $bt APK ---" -ForegroundColor Cyan
         ./gradlew clean ":app:assemble$bt"
     }
     "-p" {
-        $choice = Read-Host "Is the phone connected? (y/n)"
-        if ($choice -eq "y") {
-            Install-Process
-        } else {
-            Write-Host "Operation cancelled. Script exiting..." -ForegroundColor Gray
-            exit 0
-        }
+        Install-Process
     }
     default { Show-Usage }
 }
