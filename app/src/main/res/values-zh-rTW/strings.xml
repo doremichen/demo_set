@@ -710,12 +710,17 @@
     <string name="leak_canary_result">返回主畫面後 5 秒內觸發洩漏通知</string>
     <string name="leak_title">LeakCanary 整合測試</string>
     <string name="leak_simulate_btn">製造記憶體洩漏 (Simulate Leak)</string>
+    <string name="leak_watch_btn">手動監測 (無洩漏)</string>
+    <string name="leak_watch_toast">對象現在正由 AppWatcher 監測中</string>
+    <string name="leak_clear_history_btn">清空歷史紀錄</string>
     <string name="leak_current_status">當前狀態: %1$s</string>
     <string name="leak_report_list">洩漏報告列表:</string>
     <string name="leak_class_label">類別: %1$s</string>
     <string name="leak_path_label">路徑: %1$s</string>
     <string name="leak_size_label">大小: %1$d bytes</string>
     <string name="leak_no_report">尚無報告，請點擊上方按鈕並等待 LeakCanary 分析</string>
+    <string name="leak_analyzing_title">分析進行中</string>
+    <string name="leak_analyzing">LeakCanary 正在分析堆疊轉儲 (Heap Dump)，請稍候幾秒...</string>
 
     <string name="startup_tech">Jetpack Startup, Coroutines</string>
     <string name="startup_scenario">對比同步阻塞與異步優化啟動</string>

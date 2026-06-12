@@ -20,16 +20,16 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.performance.domain.repository
+package com.adam.app.demoset.performance.domain.usecases
 
-import com.adam.app.demoset.performance.domain.model.LeakReport
 import com.adam.app.demoset.performance.domain.model.LeakStatus
+import com.adam.app.demoset.performance.domain.repository.LeakRepository
 import kotlinx.coroutines.flow.Flow
 
-interface LeakRepository {
-    fun watchInstance(instance: Any, description: String)
-    fun simulateLeak(instance: Any)
-    fun clearLeakedReferences()
-    fun getLeakReports(): Flow<LeakReport>
-    fun getStatusUpdates(): Flow<LeakStatus>
+class MonitorStatusUseCase(
+    private val repository: LeakRepository
+) {
+    operator fun invoke(): Flow<LeakStatus> {
+        return repository.getStatusUpdates()
+    }
 }

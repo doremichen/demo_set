@@ -20,16 +20,31 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.performance.domain.repository
+package com.adam.app.demoset.performance.framework.LeakCanary
 
 import com.adam.app.demoset.performance.domain.model.LeakReport
-import com.adam.app.demoset.performance.domain.model.LeakStatus
+import com.adam.app.demoset.performance.domain.repository.LeakRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-interface LeakRepository {
-    fun watchInstance(instance: Any, description: String)
-    fun simulateLeak(instance: Any)
-    fun clearLeakedReferences()
-    fun getLeakReports(): Flow<LeakReport>
-    fun getStatusUpdates(): Flow<LeakStatus>
+/**
+ * No-op implementation for Release builds.
+ */
+class LeakCanaryBridge : LeakRepository {
+
+    override fun watchInstance(instance: Any, description: String) {
+        // Do nothing in release
+    }
+
+    override fun simulateLeak(instance: Any) {
+        // Do nothing in release
+    }
+
+    override fun clearLeakedReferences() {
+        // Do nothing in release
+    }
+
+    override fun getLeakReports(): Flow<LeakReport> {
+        return emptyFlow()
+    }
 }

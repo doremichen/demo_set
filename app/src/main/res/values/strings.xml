@@ -710,12 +710,17 @@
     <string name="leak_canary_result">Leak notification triggered within 5 seconds after returning to main screen.</string>
     <string name="leak_title">LeakCanary Integration</string>
     <string name="leak_simulate_btn">Simulate Memory Leak</string>
+    <string name="leak_watch_btn">Manual Watch (No Leak)</string>
+    <string name="leak_watch_toast">Object is now being watched by AppWatcher</string>
+    <string name="leak_clear_history_btn">Clear History</string>
     <string name="leak_current_status">Current Status: %1$s</string>
     <string name="leak_report_list">Leak Reports:</string>
     <string name="leak_class_label">Class: %1$s</string>
     <string name="leak_path_label">Path: %1$s</string>
     <string name="leak_size_label">Size: %1$d bytes</string>
     <string name="leak_no_report">No reports yet. Click the button above and wait for LeakCanary analysis.</string>
+    <string name="leak_analyzing_title">Analysis in Progress</string>
+    <string name="leak_analyzing">LeakCanary is analyzing the heap dump. This may take a few seconds...</string>
 
     <string name="startup_tech">Jetpack Startup, Coroutines</string>
     <string name="startup_scenario">Compare Synchronous Blocking vs. Asynchronous Optimized Startup.</string>
