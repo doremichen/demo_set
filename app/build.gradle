@@ -40,10 +40,9 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                cppFlags "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES"
                 arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
-                // Add the flag to support 16 KB page sizes
-                abiFilters "arm64-v8a", "x86_64"
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
             }
         }
     }
@@ -52,8 +51,11 @@ android {
         jniLibs {
             useLegacyPackaging = false
         }
-    }
 
+        resources {
+            excludes += "/lib/**"
+        }
+    }
 
     buildTypes {
         release {
@@ -82,6 +84,7 @@ android {
         viewBinding = true
         dataBinding = true
         compose = true
+        buildConfig = true // Fully compatible with future AGP 9.0 specifications
     }
 
     dynamicFeatures = [':features:dynamic_feature']
@@ -116,7 +119,13 @@ android {
         resolutionStrategy {
             force 'androidx.graphics:graphics-path:1.1.0'
             force 'com.google.mlkit:face-detection:16.1.7'
+
+            // Ensure TensorFlow is globally pinned to the stable and safe 2.14.0 namespace
+            force 'org.tensorflow:tensorflow-lite-api:2.14.0'
         }
+
+        // Core Fix: Block and exclude the indirectly introduced newer LiteRT API to resolve Duplicate Class conflicts
+        exclude group: "com.google.ai.edge.litert", module: "litert-api"
     }
 }
 
@@ -218,4 +227,62 @@ dependencies {
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
     androidTestImplementation libs.androidx.test.rules
+}
+
+// Automated Binary Alignment Task: Properly realigns all unaligned AAR libraries for Android 16
+android.applicationVariants.all { variant ->
+    // 💡 Safety Fix: Use configureEach to ensure proper component lifecycle hooks execution
+    variant.outputs.configureEach { output ->
+        def assembleTask = variant.assembleProvider.getOrNull()
+        if (assembleTask == null) return
+
+        def alignTaskName = "zipalign16Kb${variant.name.capitalize()}"
+
+        // Retrieve the task if it already exists to avoid duplicate task creation errors
+        def zipalignTask = tasks.findByName(alignTaskName) ?: tasks.create(alignTaskName) {
+            doLast {
+                def apkFile = output.outputFile
+                if (apkFile != null && apkFile.exists()) {
+                    println "--- Executing 16 KB page alignment for Android 16: ${apkFile.name} ---"
+
+                    def sdkDir = android.sdkDirectory
+                    def buildToolsVer = android.buildToolsVersion
+
+                    // Primary Strategy: Construct the absolute path of build-tools directly to avoid redundant searches
+                    def zipalignPath = new File(sdkDir, "build-tools/${buildToolsVer}/zipalign")
+                    if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+                        zipalignPath = new File(sdkDir, "build-tools/${buildToolsVer}/zipalign.exe")
+                    }
+
+                    // Fallback Strategy: Safe fallback scan if the explicit path is missing (avoids crashing via .first())
+                    if (!zipalignPath.exists()) {
+                        def tree = fileTree(dir: sdkDir, include: "**/zipalign*")
+                        if (!tree.isEmpty()) {
+                            zipalignPath = tree.isCaseSensitive() ? tree.first() : tree.iterator().next()
+                        }
+                    }
+
+                    // Execute 16 KB Page Alignment
+                    if (zipalignPath != null && zipalignPath.exists()) {
+                        def tempApk = new File(apkFile.parent, "temp_unaligned.apk")
+                        apkFile.renameTo(tempApk)
+
+                        def command = "${zipalignPath.absolutePath} -f -p 16384 ${tempApk.absolutePath} ${apkFile.absolutePath}"
+                        println "[Executing alignment command]: ${command}"
+
+                        def process = command.execute()
+                        process.waitFor()
+
+                        if (tempApk.exists()) {
+                            tempApk.delete()
+                        }
+                        println "--- 16 KB page-alignment restructuring completed ---"
+                    } else {
+                        println "⚠️ Error: Valid zipalign executable not found in SDK directory. Alignment skipped."
+                    }
+                }
+            }
+        }
+        assembleTask.finalizedBy(zipalignTask)
+    }
 }

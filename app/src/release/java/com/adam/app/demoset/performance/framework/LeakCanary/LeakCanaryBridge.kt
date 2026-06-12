@@ -23,6 +23,7 @@
 package com.adam.app.demoset.performance.framework.LeakCanary
 
 import com.adam.app.demoset.performance.domain.model.LeakReport
+import com.adam.app.demoset.performance.domain.model.LeakStatus
 import com.adam.app.demoset.performance.domain.repository.LeakRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -45,6 +46,10 @@ class LeakCanaryBridge : LeakRepository {
     }
 
     override fun getLeakReports(): Flow<LeakReport> {
+        return emptyFlow()
+    }
+
+    override fun getStatusUpdates(): Flow<LeakStatus> {
         return emptyFlow()
     }
 }

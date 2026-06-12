@@ -60,7 +60,8 @@ switch ($command) {
         $AAB_PATH = "app/build/outputs/bundle/$($bt.ToLower())/app-$($bt.ToLower()).aab"
 
         Write-Host "--- [1/3] Building App Bundle ($bt) ---" -ForegroundColor Cyan
-        ./gradlew clean ":app:bundle$bt"
+        # Added --stacktrace --info here to capture 16kb failure details
+        ./gradlew clean ":app:bundle$bt" --stacktrace --info
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
         Write-Host "--- [2/3] Generating Local Testing APKS ---" -ForegroundColor Cyan
@@ -81,7 +82,8 @@ switch ($command) {
     }
     "-b" {
         Write-Host "--- Building $bt APK ---" -ForegroundColor Cyan
-        ./gradlew ":app:assemble$bt"
+        # Added detailed error output
+        ./gradlew ":app:assemble$bt" --stacktrace --info
     }
     "-c" {
         Write-Host "--- Cleaning Project ---" -ForegroundColor Cyan
@@ -89,7 +91,8 @@ switch ($command) {
     }
     "-r" {
         Write-Host "--- Cleaning and Building $bt APK ---" -ForegroundColor Cyan
-        ./gradlew clean ":app:assemble$bt"
+        # Added detailed error output
+        ./gradlew clean ":app:assemble$bt" --stacktrace --info
     }
     "-p" {
         Install-Process
