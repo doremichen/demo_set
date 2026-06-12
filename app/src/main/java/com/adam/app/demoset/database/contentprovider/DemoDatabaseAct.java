@@ -24,69 +24,42 @@ package com.adam.app.demoset.database.contentprovider;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.common.MyTouchItemListener;
 import com.adam.app.demoset.database.contentprovider.entity.Note;
+import com.adam.app.demoset.database.contentprovider.viewmodel.NoteViewModel;
 import com.adam.app.demoset.database.dialog.CreateNoteDialog;
 import com.adam.app.demoset.database.dialog.NoteDialog;
 import com.adam.app.demoset.database.dialog.UpdateNoteDialog;
+import com.adam.app.demoset.databinding.ActivityDemoDatabaseBinding;
 import com.adam.app.demoset.utils.UIUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DemoDatabaseAct extends AppCompatActivity {
 
-    public static final int REQUEST_VIBRATOR_PERMISSION_CODE = 0X1357;
-    private static final int ACTION_SHOW_OPTION = 0X2456;
-    private RecyclerView mRecyclerView;
-    private TextView mEmptyNoteView;
-
+    private ActivityDemoDatabaseBinding mBinding;
     private UIListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
-    private ArrayList<Note> mNotes;
-    private final Handler mUIHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Utils.info(this, "UI handleMessage enter");
-            if (msg.what == ACTION_SHOW_OPTION) {
-                int position = msg.arg1;
-                showOptionDlg(position);
-            }
-        }
-    };
-    private final View.OnClickListener mFabClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Utils.info(this, "Floating button clicked....");
-            showAddNoteDlg();
-        }
-    };
+    private final ArrayList<Note> mNotes = new ArrayList<>();
+    private NoteViewModel mViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -94,162 +67,95 @@ public class DemoDatabaseAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Utils.info(this, "onCreate enter");
 
+        mBinding = ActivityDemoDatabaseBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        setContentView(R.layout.activity_demo_database);
+        UIUtils.applySystemBarInsets(mBinding.rootLayout, mBinding.toolbarLayout);
 
-        UIUtils.applySystemBarInsets(findViewById(R.id.root_layout), findViewById(R.id.toolbar_layout));
+        // Set technical description
+        mBinding.content.demoDescription.setText(R.string.demo_content_provider_description);
 
-
-        mRecyclerView = this.findViewById(R.id.recycler_view);
-        mEmptyNoteView = this.findViewById(R.id.empty_notes_view);
-
-        // Set content resolver
-        DBController.INSTANCE.setContentResolver(this.getContentResolver());
-
-        // list view
-        mNotes = new ArrayList<Note>();
-
-        // Create list adapter
+        // Setup RecyclerView
         mAdapter = new UIListAdapter(mNotes);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mAdapter);
+        mBinding.content.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.content.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mBinding.content.recyclerView.setAdapter(mAdapter);
+
+        // Initialize ViewModel
+        mViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        mViewModel.getNotes().observe(this, notes -> {
+            Utils.info(this, "Notes observed update");
+            mNotes.clear();
+            if (notes != null) {
+                mNotes.addAll(notes);
+            }
+            mAdapter.notifyDataSetChanged();
+            showEmptyIfNoData();
+        });
 
         // Click listener
         mTouchListener = new MyTouchItemListener();
-        mTouchListener.setonItemClickListener(new MyTouchItemListener.onItemClickListener() {
-            @Override
-            public void onLongClick(int position) {
-                Utils.info(this, "onLongClick");
-                triggerVibrator();
-
-                Message msg = Message.obtain();
-                msg.what = ACTION_SHOW_OPTION;
-                msg.arg1 = position;
-                mUIHandler.sendMessage(msg);
-            }
-
-
+        mTouchListener.setonItemClickListener(position -> {
+            Utils.info(this, "onLongClick");
+            triggerVibrator();
+            runOnUiThread(() -> showOptionDlg(position));
         });
-        mRecyclerView.addOnItemTouchListener(mTouchListener);
+        mBinding.content.recyclerView.addOnItemTouchListener(mTouchListener);
 
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-        fab.setOnClickListener(mFabClickListener);
-
-        loadData(mNotes);
-
-        showEmptyIfNoData();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Utils.info(this, "onResume enter");
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Utils.info(this, "onPause enter");
+        setSupportActionBar(mBinding.toolbar);
+        mBinding.fab.setOnClickListener(view -> showAddNoteDlg());
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Utils.info(this, "onDestroy enter");
-        mTouchListener.release();
+        if (mTouchListener != null) {
+            mTouchListener.release();
+        }
+        mBinding = null;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_exit, menu);
-
+        getMenuInflater().inflate(R.menu.action_exit, menu);
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.demo_exit:
-                this.finish();
-                return true;
+        if (item.getItemId() == R.id.demo_exit) {
+            finish();
+            return true;
         }
-
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void triggerVibrator() {
         Utils.info(this, "triggerVibrator enter");
-        Vibrator vib = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
-    }
-
-    private void loadData(List<Note> notes) {
-        Utils.info(this, "updateList enter");
-        Cursor c = DBController.INSTANCE.queryNote("");
-
-        // loop all data and add to list
-        if (c.moveToFirst()) {
-            do {
-                Note note = new Note(c);
-                notes.add(note);
-            } while (c.moveToNext());
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vib != null) {
+            vib.vibrate(VibrationEffect.createOneShot(1000L, VibrationEffect.DEFAULT_AMPLITUDE));
         }
-
-        // Update list
-        mAdapter.notifyDataSetChanged();
-
     }
 
     private void showEmptyIfNoData() {
         Utils.info(this, "showEmptyIfNoData enter");
-        if (mNotes.size() != 0) {
-            mEmptyNoteView.setVisibility(View.GONE);
-        } else {
-            mEmptyNoteView.setVisibility(View.VISIBLE);
-        }
+        mBinding.content.emptyNotesView.setVisibility(mNotes.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     private void showAddNoteDlg() {
-        // Show create note dialog
-        NoteDialog dlg = new CreateNoteDialog(DemoDatabaseAct.this);
+        NoteDialog dlg = new CreateNoteDialog(this);
         dlg.registerListener(new NoteDialog.OnDlgCallBack() {
             @Override
             public void onShowMessage(String msg) {
-                Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.info(this, "updateList enter");
-
-                // Insert data to database
-                Uri uri = DBController.INSTANCE.addNote(content);
-                Utils.info(this, "newUri: " + uri.getLastPathSegment());
-
-                // Query data form database
-                Cursor c = DBController.INSTANCE.queryNote(content);
-
-                if (c != null) {
-                    c.moveToFirst();
-                    Note newNote = new Note(c);
-                    mNotes.add(newNote);
-
-                    // Notify list adapter
-                    mAdapter.notifyDataSetChanged();
-                }
-
-                showEmptyIfNoData();
+                mViewModel.addNote(content);
             }
         });
         dlg.create().show();
@@ -261,73 +167,40 @@ public class DemoDatabaseAct extends AppCompatActivity {
                 getString(R.string.demo_database_dlg_update),
                 getString(R.string.demo_database_dlg_delete)};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.demo_database_dlg_option);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Utils.info(this, "onClick enter which = " + which);
-                switch (which) {
-                    case 0:     // Update
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.demo_database_dlg_option)
+                .setItems(items, (dialog, which) -> {
+                    if (which == 0) {
                         showUpdateDlg(position);
-                        break;
-                    case 1:     // Delete
+                    } else if (which == 1) {
                         deleteNote(position);
-                        break;
-                }
-            }
-        });
-        Utils.info(this, "showOptionDlg show");
-        builder.create().show();
+                    }
+                })
+                .show();
     }
 
     private void showUpdateDlg(final int position) {
-        Utils.info(this, "showUpdateDlg enter");
-
+        if (position < 0 || position >= mNotes.size()) return;
         final Note note = mNotes.get(position);
 
-        NoteDialog dlg = new UpdateNoteDialog(DemoDatabaseAct.this);
+        NoteDialog dlg = new UpdateNoteDialog(this);
         dlg.registerListener(new NoteDialog.OnDlgCallBack() {
             @Override
             public void onShowMessage(String msg) {
-                Utils.info(this, "info enter");
                 Utils.showToast(DemoDatabaseAct.this, msg);
             }
 
             @Override
             public void updateList(String content) {
-                Utils.info(this, "updateList enter");
-
-                // Update data
-                int updateId = DBController.INSTANCE.updateNote(note.getId(), content);
-                Utils.info(this, "updateId: " + updateId);
-
-                // Query data form database
-                Cursor c = DBController.INSTANCE.queryNote(content);
-
-                if (c != null) {
-                    c.moveToFirst();
-                    note.updateData(c);
-                    mNotes.set(position, note);
-
-                    // Notify list adapter
-                    mAdapter.notifyDataSetChanged();
-                }
-
-                showEmptyIfNoData();
+                mViewModel.updateNote(note.getId(), content);
             }
         });
         dlg.create().show();
     }
 
     private void deleteNote(int position) {
-        Utils.info(this, "deleteNote enter");
+        if (position < 0 || position >= mNotes.size()) return;
         Note note = mNotes.get(position);
-        DBController.INSTANCE.deleteNote(note.getId());
-        // reload data
-        mNotes.clear();
-        loadData(mNotes);
-        showEmptyIfNoData();
+        mViewModel.deleteNote(note.getId());
     }
-
 }

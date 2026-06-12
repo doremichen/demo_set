@@ -408,6 +408,10 @@
     <string name="demo_database_dlg_cancel">Cancel\n</string>
     <string name="demo_database_dlg_option">Option: </string>
     <string name="demo_database_dlg_delete">Delete</string>
+
+    <string name="demo_description_title">Technical Instruction</string>
+    <string name="demo_content_provider_description">This demo demonstrates the <b>Content Provider</b> and <b>Content Resolver</b> mechanism. Content Providers manage access to a central repository of data, allowing applications to securely share data with other apps. Content Resolvers act as an interface to communicate with providers using URIs.</string>
+    <string name="demo_room_description">This demo showcases the <b>Room Persistence Library</b>. Room provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite. It features DAOs (Data Access Objects) for clean separation of concerns and compile-time verification of SQL queries.</string>
     <string name="demo_service_service_monitor_title">Service Monitor</string>
     <string name="demo_service_service_mode_remote">Remote service mode</string>
     <string name="demo_service_service_mode_local">local service mode</string>

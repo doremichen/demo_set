@@ -408,6 +408,10 @@
     <string name="demo_database_dlg_cancel">取消</string>
     <string name="demo_database_dlg_option">選擇: </string>
     <string name="demo_database_dlg_delete">刪除</string>
+
+    <string name="demo_description_title">技術說明</string>
+    <string name="demo_content_provider_description">本範例展示了 <b>Content Provider</b> 與 <b>Content Resolver</b> 機制。Content Provider 用於管理中央資料庫的存取，使應用程式能安全地與其他 App 共享資料。Content Resolver 則作為介面，透過 URI 與 Provider 進行通訊。</string>
+    <string name="demo_room_description">本範例展示了 <b>Room 持久化函式庫</b>。Room 在 SQLite 之上提供了一個抽象層，在充分利用 SQLite 威力的同時，實現流暢的資料庫存取。其特色包含用於關注點分離的 DAO (資料存取物件) 以及 SQL 查詢的編譯時驗證。</string>
     <string name="demo_service_service_monitor_title">服務監控</string>
     <string name="demo_service_service_mode_remote">遠端服務模式</string>
     <string name="demo_service_service_mode_local">本地服務模式</string>

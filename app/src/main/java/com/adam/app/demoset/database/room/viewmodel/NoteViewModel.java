@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.database.room;
+package com.adam.app.demoset.database.room.viewmodel;
 
 import android.app.Application;
 
@@ -30,14 +30,14 @@ import androidx.lifecycle.LiveData;
 
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.room.entity.Note;
-import com.adam.app.demoset.database.room.room.NoteRepository;
+import com.adam.app.demoset.database.room.repository.NoteRepository;
 
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
 
     private final NoteRepository mRepository;
-    LiveData<List<Note>> mAllNotes;
+    private final LiveData<List<Note>> mAllNotes;
 
 
     /**
@@ -50,6 +50,10 @@ public class NoteViewModel extends AndroidViewModel {
         Utils.info(this, "Constructor ");
         mRepository = new NoteRepository(application);
         mAllNotes = mRepository.loadAllNotes();
+    }
+
+    public LiveData<List<Note>> getAllNotes() {
+        return mAllNotes;
     }
 
     /**

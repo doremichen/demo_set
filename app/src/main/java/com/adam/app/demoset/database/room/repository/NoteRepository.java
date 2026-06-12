@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.database.room.room;
+package com.adam.app.demoset.database.room.repository;
 
 import android.app.Application;
 
@@ -28,6 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.database.room.room.NoteDao;
+import com.adam.app.demoset.database.room.room.NoteRoomDatabase;
 import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
