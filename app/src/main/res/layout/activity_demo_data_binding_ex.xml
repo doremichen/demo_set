@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.adam.app.demoset.filemanager.FileExploreViewModel" />
+            type="com.adam.app.demoset.filemanager.viewmodel.FileExploreViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

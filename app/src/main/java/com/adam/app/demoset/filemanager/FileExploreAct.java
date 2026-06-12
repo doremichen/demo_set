@@ -22,32 +22,37 @@
 
 package com.adam.app.demoset.filemanager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoDataBindingExBinding;
+import com.adam.app.demoset.filemanager.viewmodel.FileExploreViewModel;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import android.widget.ArrayAdapter;
-
 public class FileExploreAct extends AppCompatActivity {
-
-    static final int MANAGE_EXTERNAL_STORAGE_PERMISSION_REQUEST = 1;
-    static final int READ_EXTERNAL_STORAGE_PERMISSION_REQUEST = 2;
 
     private ActivityDemoDataBindingExBinding mBinding;
     private FileExploreViewModel mViewModel;
+    private final ActivityResultLauncher<Intent> mManageStorageLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> mViewModel.updateState());
+    private final ActivityResultLauncher<String> mReadStorageLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> mViewModel.updateState());
     private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         info("onCreate");
 
@@ -73,7 +78,7 @@ public class FileExploreAct extends AppCompatActivity {
 
     private void setupUi() {
         info("setupUi");
-        
+
         mBinding.toolbar.inflateMenu(R.menu.action_menu_file_manager);
         mBinding.toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_settings) {
@@ -83,7 +88,7 @@ public class FileExploreAct extends AppCompatActivity {
             return false;
         });
 
-        mBinding.permissionButton.setOnClickListener(v -> FileUtils.requestStoragePermission(this));
+        mBinding.permissionButton.setOnClickListener(v -> FileUtils.requestStorageAccess(getPackageName(), mManageStorageLauncher, mReadStorageLauncher));
 
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         mBinding.filesTreeView.setAdapter(mAdapter);

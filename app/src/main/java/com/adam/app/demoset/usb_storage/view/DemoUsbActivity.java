@@ -129,13 +129,13 @@ public class DemoUsbActivity extends AppCompatActivity {
             Utils.showAlertDialog(this, 
                     getString(R.string.title_all_files_access_required), 
                     (dialog, which) -> {
+                        Toast.makeText(this, getString(R.string.msg_no_usb_device), Toast.LENGTH_SHORT).show();
+                        finish();
+                    },
+                    (dialog, which) -> {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                         intent.setData(Uri.parse("package:" + getPackageName()));
                         mSettingsLauncher.launch(intent);
-                    },
-                    (dialog, which) -> {
-                        Toast.makeText(this, getString(R.string.msg_no_usb_device), Toast.LENGTH_SHORT).show();
-                        finish();
                     });
         } else {
             mViewModel.initUsbHelper();

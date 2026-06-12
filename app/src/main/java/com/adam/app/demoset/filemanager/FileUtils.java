@@ -34,12 +34,14 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.webkit.MimeTypeMap;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
+import com.adam.app.demoset.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,77 +50,80 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
+/**
+ * Utility class for file operations and storage permission management.
+ * Refactored to use ActivityResultLauncher for better decoupling and memory safety.
+ */
+public abstract class FileUtils {
 
-abstract class FileUtils {
-
+    public static final String OP_MANAGE_EXTERNAL_STORAGE = "android:manage_external_storage";
+    public static final String NOT_APPLICABLE = "N/A";
     private static final String AUTHORITY = "com.adam.app.demoset.filemanager.provider";
 
-    public static final String MANAGE_EXTERNAL_STORAGE_PERMISSION = "android:manage_external_storage";
-    public static final String NOT_APPLICABLE = "N/A";
+    /**
+     * Integrated API to request storage access using ActivityResultLauncher.
+     * Uses ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION to jump directly to the app's settings.
+     *
+     * @param packageName           The package name of the application
+     * @param manageStorageLauncher Launcher for Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION (API 30+)
+     * @param readStorageLauncher   Launcher for Manifest.permission.READ_EXTERNAL_STORAGE (API < 30)
+     */
+    public static void requestStorageAccess(
+            @NonNull String packageName,
+            @NonNull ActivityResultLauncher<Intent> manageStorageLauncher,
+            @NonNull ActivityResultLauncher<String> readStorageLauncher) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Correct Action for specific package: ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent.setData(Uri.parse("package:" + packageName));
+            manageStorageLauncher.launch(intent);
+        } else {
+            readStorageLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    /**
+     * Checks if the app has the necessary storage permissions.
+     */
+    public static boolean hasStoragePermission(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return isExternalStorageManager(context);
+        }
+        return isReadExternalStorageGranted(context);
+    }
 
     public static String getStoragePermissionName() {
-        // check sdk version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            return MANAGE_EXTERNAL_STORAGE_PERMISSION;
+            return "All Files Access";
         return Manifest.permission.READ_EXTERNAL_STORAGE;
     }
 
-    public static void openPermissionSettings(AppCompatActivity activity) {
-        // check sdk version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            requestStoragePermissionApi30(activity);
-            return;
+    public static void openPermissionSettings(@NonNull Context context) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        if (!(context instanceof AppCompatActivity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-
-        activity.startActivity(
-                new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                        Uri.fromParts("package", activity.getPackageName(), null)
-                )
-        );
+        context.startActivity(intent);
     }
 
     public static String getLegacyStorageStatus() {
-        // check sdk version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             return String.valueOf(Environment.isExternalStorageLegacy());
 
         return NOT_APPLICABLE;
     }
 
-
-    public static String getPermissionStatus(Context context) {
-        // check sdk version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            return checkStoragePermissionApi30(context).toString();
-        return checkStoragePermissionApi19(context).toString();
-    }
-
-    public static Boolean checkStoragePermission(Context context) {
-        Utils.info(FileUtils.class, "checkStoragePermission");
-        // check sdk version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-            return checkStoragePermissionApi30(context);
-        return checkStoragePermissionApi19(context);
-    }
-
-    public static void requestStoragePermission(AppCompatActivity activity) {
-        // check sdk version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            requestStoragePermissionApi30(activity);
-            return;
-        }
-
-        requestStoragePermissionApi19(activity);
+    public static String getPermissionStatus(@NonNull Context context) {
+        return String.valueOf(hasStoragePermission(context));
     }
 
     @RequiresApi(30)
-    private static Boolean checkStoragePermissionApi30(Context context) {
-        AppOpsManager appOps = (AppOpsManager) context.getSystemService(AppOpsManager.class);
+    private static boolean isExternalStorageManager(Context context) {
+        AppOpsManager appOps = context.getSystemService(AppOpsManager.class);
+        if (appOps == null) return false;
         int mode = appOps.unsafeCheckOpNoThrow(
-                MANAGE_EXTERNAL_STORAGE_PERMISSION,
+                OP_MANAGE_EXTERNAL_STORAGE,
                 context.getApplicationInfo().uid,
                 context.getPackageName()
         );
@@ -126,37 +131,20 @@ abstract class FileUtils {
         return mode == AppOpsManager.MODE_ALLOWED;
     }
 
-    @RequiresApi(30)
-    private static void requestStoragePermissionApi30(AppCompatActivity activity) {
-        Intent intent =new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-        // start activity
-        activity.startActivityForResult(intent, FileExploreAct.MANAGE_EXTERNAL_STORAGE_PERMISSION_REQUEST);
-    }
-
-    @RequiresApi(19)
-    private static Boolean checkStoragePermissionApi19(Context context) {
+    private static boolean isReadExternalStorageGranted(Context context) {
         int status = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
         return status == PackageManager.PERMISSION_GRANTED;
     }
 
-    @RequiresApi(19)
-    private static void requestStoragePermissionApi19(AppCompatActivity activity) {
-        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-        ActivityCompat.requestPermissions(
-                activity,
-                permissions,
-                FileExploreAct.READ_EXTERNAL_STORAGE_PERMISSION_REQUEST
-        );
-    }
-
     private static String getMimeType(String uriStr) {
+
         String ext = MimeTypeMap.getFileExtensionFromUrl(uriStr);
         String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
-        return (mime != null)? mime: "text/plain";
+        return (mime != null) ? mime : "text/plain";
     }
 
 
-    public static void  openFile(Context context, File selectedItem) {
+    public static void openFile(Context context, File selectedItem) {
         // Get Uri and mime type
         Uri uri = FileProvider.getUriForFile(context.getApplicationContext(), AUTHORITY, selectedItem);
         String mime = getMimeType(uri.toString());
@@ -199,7 +187,7 @@ abstract class FileUtils {
     }
 
     public static String ItemLabel(Context context, File file) {
-        return (file.isDirectory())? context.getString(R.string.folder_item, file.getName()):
+        return (file.isDirectory()) ? context.getString(R.string.folder_item, file.getName()) :
                 context.getString(R.string.file_item, file.getName());
     }
 
