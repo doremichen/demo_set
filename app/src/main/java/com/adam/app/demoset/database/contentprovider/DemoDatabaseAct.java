@@ -23,7 +23,6 @@
 package com.adam.app.demoset.database.contentprovider;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -32,7 +31,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,10 +53,10 @@ import java.util.ArrayList;
 
 public class DemoDatabaseAct extends AppCompatActivity {
 
+    private final ArrayList<Note> mNotes = new ArrayList<>();
     private ActivityDemoDatabaseBinding mBinding;
     private UIListAdapter mAdapter;
     private MyTouchItemListener mTouchListener;
-    private final ArrayList<Note> mNotes = new ArrayList<>();
     private NoteViewModel mViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.O)

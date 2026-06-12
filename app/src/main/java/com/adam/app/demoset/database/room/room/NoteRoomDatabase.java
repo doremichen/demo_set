@@ -30,8 +30,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.utils.Utils;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {

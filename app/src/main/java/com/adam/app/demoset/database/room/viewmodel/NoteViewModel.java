@@ -28,9 +28,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.room.entity.Note;
 import com.adam.app.demoset.database.room.repository.NoteRepository;
+import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
 

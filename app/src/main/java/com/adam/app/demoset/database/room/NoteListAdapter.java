@@ -31,8 +31,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

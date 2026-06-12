@@ -33,8 +33,8 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.database.contentprovider.entity.Note;
+import com.adam.app.demoset.utils.Utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

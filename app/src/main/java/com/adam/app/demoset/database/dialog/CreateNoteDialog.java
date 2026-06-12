@@ -29,7 +29,7 @@ import com.adam.app.demoset.utils.Utils;
 
 public class CreateNoteDialog extends NoteDialog {
 
-    private Context mContext;
+    private final Context mContext;
 
     public CreateNoteDialog(Context context) {
         super(context);

@@ -28,16 +28,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.DialogEditNoteBinding;
+import com.adam.app.demoset.utils.Utils;
 
 public abstract class NoteDialog {
 
     private final AlertDialog.Builder mAlertBuilder;
     private final LayoutInflater mInflater;
-    private OnDlgCallBack mCallback;
-
     private final Context mContext;
+    private OnDlgCallBack mCallback;
 
     protected NoteDialog(Context context) {
         mInflater = LayoutInflater.from(context);
