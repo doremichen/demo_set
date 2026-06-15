@@ -22,50 +22,71 @@
 
 package com.adam.app.demoset.shutdown;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.utils.Utils;
+import com.adam.app.demoset.databinding.ActivityDemoShutdownBinding;
 
-public class DemoMainActivity extends AppCompatActivity {
+public class DemoShutdownActivity extends AppCompatActivity {
+
+    private ShutdownViewModel viewModel;
+    private ActivityDemoShutdownBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_demo_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        
+        // Initialize Data Binding
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_demo_shutdown);
+        
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(ShutdownViewModel.class);
+        
+        // Set up Binding
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        observeViewModel();
     }
 
-    public void onExecute(View v) {
-        Utils.showToast(this, "Execute is clicked!!!");
-        Utils.info(this, "onExecute");
+    private void observeViewModel() {
+        viewModel.getPerformIntentShutdown().observe(this, perform -> {
+            if (perform != null && perform) {
+                requestShutdown();
+                viewModel.onIntentShutdownHandled();
+            }
+        });
+    }
+
+    private void requestShutdown() {
+        Intent intent = new Intent("com.android.internal.intent.action.REQUEST_SHUTDOWN");
+        intent.putExtra("android.intent.extra.KEY_CONFIRM", true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
-            Utils.info(this, "start to turn off!!!");
-            Process proc = Runtime.getRuntime()
-                    .exec(new String[]{ "reboot","-p" });
-            proc.waitFor();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            startActivity(intent);
+        } catch (SecurityException e) {
+            // Specific catch for permission denial
+            viewModel.onActionError(getString(R.string.power_msg_system_intent_denied));
+            e.printStackTrace();
+        } catch (Exception e) {
+            viewModel.onActionError(e.getMessage());
+            e.printStackTrace();
         }
-
-//        Intent intent = new Intent("com.android.internal.intent.action.REQUEST_SHUTDOWN");
-//        intent.putExtra("android.intent.extra.KEY_CONFIRM", true);
-////        intent.putExtra(Intent.EXTRA_REASON,
-////                PowerManager.SHUTDOWN_BATTERY_THERMAL_STATE);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
     }
-
 }

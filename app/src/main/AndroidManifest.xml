@@ -186,8 +186,9 @@
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".shutdown.DemoMainActivity"
+            android:name=".shutdown.DemoShutdownActivity"
             android:exported="false"
+            android:label="@string/title_demo_shutdown"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".wifi2.ui.DemoWifiAct2"

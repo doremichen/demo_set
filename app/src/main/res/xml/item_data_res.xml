@@ -286,6 +286,12 @@
         app:clsname="com.adam.app.demoset.dynamicdelivery.DynamicDeliveryActivity"
         app:pkgname="com.adam.app.demoset"/>
 
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_shutdown"
+        app:clsname="com.adam.app.demoset.shutdown.DemoShutdownActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
     <!-- Performance -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_leakcanary"

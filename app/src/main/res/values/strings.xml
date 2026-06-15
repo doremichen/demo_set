@@ -10,8 +10,7 @@
     <string name="category_ai">AI / ML</string>
     <string name="category_dynamic">Dynamic Delivery</string>
     <!-- title string-->
-    <!-- string for Demo shutdown (commented out) -->
-    <!-- <string name="title_demo_Shutdown">Demo Shutdown</string> -->
+    <string name="title_demo_shutdown">Demo Shutdown</string>
     <string name="title_demo_file_expore">Demo FileExplore</string>
     <string name="title_demo_service">Demo Service</string>
     <string name="title_demo_animation">Demo Animation</string>
@@ -796,4 +795,34 @@
     <string name="benchmark_median_frame_label">Median Frame Time: %1$.2f ms</string>
     <string name="benchmark_jank_count_label">Jank Count: %1$d</string>
     <string name="benchmark_jank_rate_label">Jank Rate: %1$.2f%%</string>
+
+    <!-- Power Management Demo -->
+    <string name="power_title">Power Management Demo</string>
+    <string name="power_instruction_label">Instruction</string>
+    <string name="power_instruction_text">This module demonstrates various power actions. \n\n1. Shell Commands: Requires Root (su) for most actions.\n2. System Intent: Requires the app to be a System App or have specific permissions (android.permission.SHUTDOWN).</string>
+    <string name="power_status_label">Status: %1$s</string>
+    <string name="power_status_waiting">Waiting...</string>
+    <string name="power_status_root_access">Device has Root access.</string>
+    <string name="power_status_no_root">Device does NOT have Root access.</string>
+    <string name="power_btn_standard_reboot">Standard Reboot</string>
+    <string name="power_btn_power_off_shell">Power Off (Shell)</string>
+    <string name="power_btn_power_off_intent">Power Off (System Intent)</string>
+    <string name="power_label_basic_actions">Basic Actions</string>
+    <string name="power_label_advanced_reboot">Advanced Reboot Options (Root)</string>
+    <string name="power_btn_reboot_recovery">Reboot to Recovery</string>
+    <string name="power_btn_reboot_bootloader">Reboot to Bootloader</string>
+    <string name="power_btn_soft_reboot">Soft Reboot (Zygote)</string>
+    <string name="power_label_other_utilities">Other Utilities</string>
+    <string name="power_btn_turn_off_screen">Turn Off Screen (Power Key)</string>
+    <string name="power_msg_attempting_reboot">Attempting Reboot...</string>
+    <string name="power_msg_attempting_shutdown">Attempting Shutdown...</string>
+    <string name="power_msg_attempting_recovery">Attempting Reboot to Recovery...</string>
+    <string name="power_msg_attempting_bootloader">Attempting Reboot to Bootloader...</string>
+    <string name="power_msg_attempting_soft_reboot">Attempting Soft Reboot (Restart Zygote)...</string>
+    <string name="power_msg_attempting_screen_off">Attempting to turn off screen...</string>
+    <string name="power_msg_requesting_intent_shutdown">Requesting Shutdown via Intent...</string>
+    <string name="power_msg_command_success">Command success.</string>
+    <string name="power_msg_command_failed">Command failed (Exit: %1$d). Root required.</string>
+    <string name="power_msg_error">Error: %1$s</string>
+    <string name="power_msg_system_intent_denied">System Intent failed: android.permission.SHUTDOWN required. (System App only)</string>
 </resources>
