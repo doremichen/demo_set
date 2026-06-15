@@ -160,7 +160,7 @@
     <!-- System -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_quick_setting"
-        app:clsname="com.adam.app.demoset.quicksetting.DemoQuickSetting"
+        app:clsname="com.adam.app.demoset.quicksetting.presentation.QuickSettingActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- UI -->

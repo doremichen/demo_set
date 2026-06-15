@@ -312,16 +312,18 @@
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
-            android:name=".quicksetting.DemoQuickSetting"
+            android:name=".quicksetting.presentation.QuickSettingActivity"
             android:exported="true"
             android:label="@string/title_activity_demo_quick_setting"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
-            android:name=".quicksetting.QuickSettingResultAct"
+            android:name=".quicksetting.presentation.QuickSettingResultAct"
             android:exported="true"
             android:label="@string/title_activity_result_activity"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor"
+            android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
             android:name=".workmanager.DemoWorkManagerMainAct"
             android:exported="true"
@@ -469,31 +471,53 @@
             android:enabled="true"
             android:exported="true"
             android:process=":remote" />
+        <receiver
+            android:name=".quicksetting.service.DemoAppWidgetProvider"
+            android:exported="true"
+            android:label="@string/qs_feature_widget_title">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/demo_widget_info" />
+        </receiver>
+
         <service
-            android:name=".quicksetting.qsservice.QuickSettingService"
+            android:name=".quicksetting.service.QuickSettingService"
             android:exported="true"
             android:icon="@drawable/ic_demo_qs1_active"
-            android:label="Demo quick setting1"
+            android:label="@string/qs_service_toggle_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
         <service
-            android:name=".quicksetting.qsservice.QuickSettingDialogService"
+            android:name=".quicksetting.service.QuickSettingDialogService"
             android:exported="true"
             android:icon="@drawable/ic_demo_qs2_dialog"
-            android:label="Demo quick setting2"
+            android:label="@string/qs_service_dialog_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
         <service
-            android:name=".quicksetting.qsservice.QuickSettingIntentService"
+            android:name=".quicksetting.service.QuickSettingIntentService"
             android:exported="true"
             android:icon="@drawable/ic_demo_qs3"
-            android:label="Demo quick setting3"
+            android:label="@string/qs_service_intent_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".quicksetting.service.QuickSettingSecureService"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/qs_service_secure_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

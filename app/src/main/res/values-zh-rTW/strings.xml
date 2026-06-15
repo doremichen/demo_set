@@ -38,7 +38,49 @@
     <string name="title_demo_work_manager">工作管理範例</string>
     <string name="title_demo_work_manager_legacy_1">工作管理&#10;舊版一</string>
     <string name="title_demo_work_manager_legacy_2">工作管理&#10;舊版二</string>
-    <string name="title_demo_quick_setting">快速設定範例</string>
+    <string name="title_demo_quick_setting">系統 UI 整合實驗室</string>
+    <string name="label_info_demo_qs">本實驗室展示了快速設定圖塊 (Quick Setting Tiles) 與桌面小工具 (App Widgets) 的五大核心支柱。這些組件將您的應用程序直接整合到 Android 系統 UI 中，實現高效率互動。</string>
+
+    <!-- 5 Pillars Headers -->
+    <string name="qs_pillar_toggle_title">1. 即時切換與回饋</string>
+    <string name="qs_pillar_toggle_desc">單擊操作（如手電筒），配合觸覺回饋與即時狀態變更。</string>
+
+    <string name="qs_pillar_status_title">2. 即時狀態感知</string>
+    <string name="qs_pillar_status_desc">動態標籤與副標題，無需開啟 UI 即可根據背景 App 狀態自動更新。</string>
+
+    <string name="qs_pillar_shortcut_title">3. 深度跳轉捷徑</string>
+    <string name="qs_pillar_shortcut_desc">瞬間導航至特定功能，並自動收起系統通知欄。</string>
+
+    <string name="qs_pillar_dialog_title">4. 無干擾式互動</string>
+    <string name="qs_pillar_dialog_desc">透過顯示在通知欄上方的系統對話框修改設定，讓用戶留在當前任務中。</string>
+
+    <string name="qs_pillar_secure_title">5. 鎖定畫面安全存取</string>
+    <string name="qs_pillar_secure_desc">演示裝置在鎖定與解鎖狀態下的不同行為（例如敏感操作需要 PIN 碼）。</string>
+
+    <string name="qs_feature_request_title">系統整合操作</string>
+    <string name="qs_btn_request_add">要求添加圖塊 (API 33+)</string>
+    <string name="qs_btn_pin_widget">釘選桌面小工具 (API 26+)</string>
+
+    <string name="qs_service_toggle_title">切換與狀態圖塊</string>
+    <string name="qs_service_dialog_title">設定對話框圖塊</string>
+    <string name="qs_service_intent_title">深度跳轉捷徑圖塊</string>
+    <string name="qs_service_secure_title">安全操作圖塊</string>
+
+    <string name="qs_msg_add_tile_success">圖塊已成功添加到您的系統面板！</string>
+    <string name="qs_msg_add_tile_already_exists">圖塊已經存在於快捷設定面板中。</string>
+    <string name="qs_msg_add_tile_failed">圖塊未添加 (結果碼：%1$d)</string>
+    <string name="qs_msg_api_unavailable">請求添加圖塊僅支援 Android 13 (API 33) 以上版本。</string>
+    <string name="qs_msg_widget_pin_requested">已向主畫面發送釘選小工具請求。</string>
+    <string name="qs_msg_widget_api_unavailable">釘選小工具僅支援 Android 8.0 (API 26) 以上版本。</string>
+    <string name="qs_msg_locked_warning">裝置已鎖定！請先驗證身份以執行此操作。</string>
+    <string name="qs_msg_unlock_required">請解鎖裝置以透過對話框變更設定。</string>
+    <string name="qs_msg_dialog_updated">已透過對話框更新圖塊狀態。</string>
+    <string name="qs_msg_auth_success">驗證成功！正在執行安全操作...</string>
+    <string name="qs_msg_secure_complete">安全操作已完成。</string>
+    <string name="qs_msg_tile_updated_format">圖塊已更新：%1$s</string>
+    <string name="qs_result_toolbar_title">跳轉結果</string>
+    <string name="qs_result_btn_back">返回範例</string>
+    <string name="qs_feature_widget_title">釘選小工具</string>
     <string name="title_demo_material_widget">Material 控制元件登入範例</string>
     <string name="title_demo_handler_thread">Handler 執行緒範例</string>
     <string name="title_demo_xml_parser">XML 解析範例</string>
@@ -192,7 +234,7 @@
     <string name="label_set_trigger_interval_type">設定觸發時間類型：</string>
     <string name="label_option_wifi_network">WiFi</string>
     <string name="label_interval_no_set">未設定</string>
-    <string name="label_info_demo_qs">歡迎使用快速設定範例。請從手機上方向下滑開啟通知面板，展開設定並點選操作選單選擇按鈕順序。</string>
+
     <string name="label_dialog_info">對話框資訊</string>
     <string name="label_qs_turn_on">開啟</string>
     <string name="label_qs_turn_off">關閉</string>

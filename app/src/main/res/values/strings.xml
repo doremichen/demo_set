@@ -38,7 +38,49 @@
     <string name="title_demo_work_manager">Demo Work Manager</string>
     <string name="title_demo_work_manager_legacy_1">Demo Work Manager&#10; Legacy 1</string>
     <string name="title_demo_work_manager_legacy_2">Demo Work Manager&#10; Legacy 2</string>
-    <string name="title_demo_quick_setting">Demo Quick Setting</string>
+    <string name="title_demo_quick_setting">System UI Integration Lab</string>
+    <string name="label_info_demo_qs">This lab demonstrates 5 core pillars of Quick Setting Tiles &amp; App Widgets. These components integrate your app directly into the Android System UI for high-frequency interactions.</string>
+
+    <!-- 5 Pillars Headers -->
+    <string name="qs_pillar_toggle_title">1. Instant Toggle &amp; Feedback</string>
+    <string name="qs_pillar_toggle_desc">One-tap actions (like Flashlight) with haptic feedback and immediate state change.</string>
+
+    <string name="qs_pillar_status_title">2. Real-time Status Awareness</string>
+    <string name="qs_pillar_status_desc">Dynamic labels and subtitles that update based on background app state without opening the UI.</string>
+
+    <string name="qs_pillar_shortcut_title">3. Deep Link Shortcuts</string>
+    <string name="qs_pillar_shortcut_desc">Instant navigation to specific app features, collapsing the notification shade automatically.</string>
+
+    <string name="qs_pillar_dialog_title">4. Non-Intrusive Interaction</string>
+    <string name="qs_pillar_dialog_desc">Modify settings via system dialogs that appear over the shade, keeping users in their current task.</string>
+
+    <string name="qs_pillar_secure_title">5. Secure Lock-Screen Access</string>
+    <string name="qs_pillar_secure_desc">Demonstrates different behaviors when the device is locked vs unlocked (e.g., requiring PIN for sensitive actions).</string>
+
+    <string name="qs_feature_request_title">System Integration Actions</string>
+    <string name="qs_btn_request_add">Request Add Tile (API 33+)</string>
+    <string name="qs_btn_pin_widget">Pin Home Widget (API 26+)</string>
+
+    <string name="qs_service_toggle_title">Toggle &amp; Status Tile</string>
+    <string name="qs_service_dialog_title">Configuration Dialog Tile</string>
+    <string name="qs_service_intent_title">Deep Link Shortcut Tile</string>
+    <string name="qs_service_secure_title">Secure Action Tile</string>
+
+    <string name="qs_msg_add_tile_success">Tile successfully added to your system panel!</string>
+    <string name="qs_msg_add_tile_already_exists">Tile is already in your Quick Settings panel.</string>
+    <string name="qs_msg_add_tile_failed">Tile not added (Result Code: %1$d)</string>
+    <string name="qs_msg_api_unavailable">Request Add Tile is only available on Android 13+ (API 33).</string>
+    <string name="qs_msg_widget_pin_requested">Widget pin request sent to Home Screen.</string>
+    <string name="qs_msg_widget_api_unavailable">Pinning widgets is only available on Android 8.0+ (API 26).</string>
+    <string name="qs_msg_locked_warning">Device is locked! Please verify identity to perform this action.</string>
+    <string name="qs_msg_unlock_required">Please unlock the device to change settings via dialog.</string>
+    <string name="qs_msg_dialog_updated">Tile state updated via dialog.</string>
+    <string name="qs_msg_auth_success">Authentication successful! Performing secure action...</string>
+    <string name="qs_msg_secure_complete">Secure Action Complete.</string>
+    <string name="qs_msg_tile_updated_format">Tile updated: %1$s</string>
+    <string name="qs_result_toolbar_title">Launch Result</string>
+    <string name="qs_result_btn_back">Back to Demo</string>
+    <string name="qs_feature_widget_title">Pin App Widget</string>
     <string name="title_demo_material_widget">Demo Material Widget</string>
     <string name="title_demo_handler_thread">Demo Handler Thread</string>
     <string name="title_demo_xml_parser">Demo XML Parser</string>
@@ -191,8 +233,7 @@
     <string name="label_set_trigger_interval_type">Set trigger interval type:</string>
     <string name="label_option_wifi_network">Wifi</string>
     <string name="label_interval_no_set">No set</string>
-    <string name="label_info_demo_qs">Welcome to demo quick setting. To open the notification shade,
-        swipe down from the top of the phone. Expand the setting and click the action menu to select the button order.</string>
+
     <string name="label_dialog_info">dialog info</string>
     <string name="label_qs_turn_on">turn on</string>
     <string name="label_qs_turn_off">turn off</string>
