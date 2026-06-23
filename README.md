@@ -56,6 +56,7 @@ Native Layer
 * Material Design Components
 * DataBinding / ViewBinding
 * Animation & GIF rendering
+* **Advanced Graphics**: High-performance 2D rendering using the **Android Canvas API**, featuring real-time path animations, dynamic shaders (`LinearGradient`), and mathematical transformations (Sine waves & Spirals).
 * Floating Dialog / Floating Window
 * Table Layout rendering
 * Compose UI
@@ -213,7 +214,7 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **Advanced Graphics**: Rendering Engine with Vulkan or advanced Canvas 2D effects.
+* **Advanced Graphics**: Integration with Vulkan or OpenGL ES for 3D rendering.
 
 ---
 

@@ -826,4 +826,13 @@
     <string name="power_msg_command_failed">指令執行失敗 (結果碼：%1$d)。可能需要 Root 權限。</string>
     <string name="power_msg_error">錯誤：%1$s</string>
     <string name="power_msg_system_intent_denied">系統 Intent 執行失敗：需要 android.permission.SHUTDOWN 權限 (僅限系統 App)。</string>
+
+    <!-- 進階繪圖範例 -->
+    <string name="title_demo_graphics">進階繪圖範例</string>
+    <string name="demo_graphics_instruction_title">進階 Canvas 2D 特效</string>
+    <string name="demo_graphics_instruction">本範例展示了使用 Android Canvas API 的進階 2D 繪圖技術。包含即時路徑動畫、動態著色器 (LinearGradient) 以及數學變換（正弦波與螺旋線）。所有渲染均在自定義 View 中處理，以確保最佳效能並實現對繪製過程的精細控制。</string>
+    <string name="demo_graphics_toggle_anim">切換動畫</string>
+    <string name="demo_graphics_switch_effect">切換特效</string>
+    <string name="demo_graphics_effect_wave">波浪特效</string>
+    <string name="demo_graphics_effect_spiral">螺旋特效</string>
 </resources>

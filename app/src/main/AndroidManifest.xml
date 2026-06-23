@@ -381,6 +381,11 @@
             android:exported="false"
             android:label="@string/title_demo_benchmark"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".graphics.DemoGraphicsAct"
+            android:exported="true"
+            android:label="@string/title_demo_graphics"
+            android:screenOrientation="nosensor" />
 
         <meta-data
             android:name="preloaded_fonts"

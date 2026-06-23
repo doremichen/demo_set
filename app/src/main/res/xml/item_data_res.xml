@@ -264,6 +264,12 @@
         app:clsname="com.adam.app.demoset.navigation.DemoNavigationAct"
         app:pkgname="com.adam.app.demoset"/>
 
+    <!-- UI -->
+    <data app:category="@string/category_ui"
+        app:titleRes="@string/title_demo_graphics"
+        app:clsname="com.adam.app.demoset.graphics.DemoGraphicsAct"
+        app:pkgname="com.adam.app.demoset"/>
+
     <!-- System -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_permission_model"

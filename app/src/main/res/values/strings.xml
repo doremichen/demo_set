@@ -825,4 +825,13 @@
     <string name="power_msg_command_failed">Command failed (Exit: %1$d). Root required.</string>
     <string name="power_msg_error">Error: %1$s</string>
     <string name="power_msg_system_intent_denied">System Intent failed: android.permission.SHUTDOWN required. (System App only)</string>
+
+    <!-- Advanced Graphics -->
+    <string name="title_demo_graphics">Advanced Graphics</string>
+    <string name="demo_graphics_instruction_title">Advanced Canvas 2D Effects</string>
+    <string name="demo_graphics_instruction">This demo demonstrates advanced 2D graphics techniques using the Android Canvas API. It includes real-time path animation, dynamic shaders (LinearGradient), and mathematical transformations (Sine waves and Spirals). All rendering is handled in a custom View to ensure optimal performance and fine-grained control over the drawing process.</string>
+    <string name="demo_graphics_toggle_anim">Toggle Animation</string>
+    <string name="demo_graphics_switch_effect">Switch Effect</string>
+    <string name="demo_graphics_effect_wave">Wave Effect</string>
+    <string name="demo_graphics_effect_spiral">Spiral Effect</string>
 </resources>

@@ -31,6 +31,7 @@ import android.widget.TextView;
 import androidx.databinding.BindingAdapter;
 
 import com.adam.app.demoset.animation.view.GifView;
+import com.adam.app.demoset.graphics.view.AdvancedGraphicsView;
 import com.google.android.material.button.MaterialButton;
 
 public class UIBindingAdapters {
@@ -73,5 +74,21 @@ public class UIBindingAdapters {
                 view.stop();
             }
         }
+    }
+
+    /**
+     * DataBinding Adapter for AdvancedGraphicsView playback state.
+     */
+    @BindingAdapter("isPlaying")
+    public static void setIsPlaying(AdvancedGraphicsView view, boolean isPlaying) {
+        view.setAnimating(isPlaying);
+    }
+
+    /**
+     * DataBinding Adapter for AdvancedGraphicsView effect type.
+     */
+    @BindingAdapter("effectType")
+    public static void setEffectType(AdvancedGraphicsView view, int type) {
+        view.setEffectType(type);
     }
 }
