@@ -28,6 +28,7 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.ThreadHelper;
 import com.adam.app.demoset.utils.Utils;
 
@@ -41,7 +42,7 @@ import java.util.List;
  * Helper class for TFLite Image Classification.
  */
 public class TFLiteAnalyzer {
-    private static final String MODEL_FILE = "mobilenet_v2_1.0_224_quant.tflite";
+    private static final String MODEL_FILE = DemoAppConstants.TFLITE_MODEL_FILE;
     private ImageClassifier mImageClassifier;
 
     // init helper, classification helper

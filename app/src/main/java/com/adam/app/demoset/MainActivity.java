@@ -42,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.databinding.ActivityMainBinding;
 import com.adam.app.demoset.main.ItemContent;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
@@ -52,12 +53,9 @@ import java.util.Map;
 @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
 public class MainActivity extends AppCompatActivity {
 
-    private static final String LOG_STATUS = "log.status";
     private static final String[] PERMISSIONS = {
             Manifest.permission.POST_NOTIFICATIONS
     };
-    private static final String STATE_SHOWING_CATEGORY = "showing_category";
-    private static final String STATE_SELECTED_CATEGORY = "selected_category";
 
     // view binding
     private ActivityMainBinding mBinding;
@@ -80,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         Utils.info(this, "onCreate");
 
         if (savedInstanceState != null) {
-            mShowingCategory = savedInstanceState.getBoolean(STATE_SHOWING_CATEGORY, true);
-            mSelectedCategory = savedInstanceState.getString(STATE_SELECTED_CATEGORY, "");
+            mShowingCategory = savedInstanceState.getBoolean(DemoAppConstants.STATE_SHOWING_CATEGORY, true);
+            mSelectedCategory = savedInstanceState.getString(DemoAppConstants.STATE_SELECTED_CATEGORY, "");
         }
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -111,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull android.os.Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_SHOWING_CATEGORY, mShowingCategory);
-        outState.putString(STATE_SELECTED_CATEGORY, mSelectedCategory);
+        outState.putBoolean(DemoAppConstants.STATE_SHOWING_CATEGORY, mShowingCategory);
+        outState.putString(DemoAppConstants.STATE_SELECTED_CATEGORY, mSelectedCategory);
     }
 
     /**
@@ -349,13 +347,13 @@ public class MainActivity extends AppCompatActivity {
         START_LOG(R.id.start_log) {
             @Override
             void execute(MainActivity activity) {
-                activity.enableLogcat(Utils.TRUE);
+                activity.enableLogcat(DemoAppConstants.TRUE);
             }
         },
         STOP_LOG(R.id.stop_log) {
             @Override
             void execute(MainActivity activity) {
-                activity.enableLogcat(Utils.FALSE);
+                activity.enableLogcat(DemoAppConstants.FALSE);
             }
         },
         EXIT(R.id.exit) {
@@ -405,14 +403,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void enableLogcat(String enable) {
         Utils.info(this, "enableLogcat enter");
-        String logStatus = System.getProperty(LOG_STATUS);
+        String logStatus = System.getProperty(DemoAppConstants.LOG_STATUS);
         if (logStatus != null && logStatus.equals(enable)) {
             Utils.showToast(this, "The log status has been " +
-                    (Utils.TRUE.equals(enable) ? "enabled" : "disabled"));
+                    (DemoAppConstants.TRUE.equals(enable) ? "enabled" : "disabled"));
             return;
         }
 
-        System.setProperty(LOG_STATUS, enable);
+        System.setProperty(DemoAppConstants.LOG_STATUS, enable);
 
 
         File fileDir = this.getFilesDir();

@@ -31,6 +31,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.adam.app.demoset.database.room.entity.Note;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 @Database(entities = {Note.class}, version = 1, exportSchema = false)
@@ -49,7 +50,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
         if (sInatance == null) {
             synchronized (NoteRoomDatabase.class) {
                 sInatance = Room.
-                        databaseBuilder(ctx.getApplicationContext(), NoteRoomDatabase.class, "AdamNoteDB").
+                        databaseBuilder(ctx.getApplicationContext(), NoteRoomDatabase.class, DemoAppConstants.DATABASE_NAME_ROOM).
                         addCallback(sCallback).
                         build();
             }

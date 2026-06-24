@@ -47,6 +47,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.alarm.viewmodel.AlarmViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoAlarmBinding;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 
@@ -55,8 +56,6 @@ import com.adam.app.demoset.utils.Utils;
  * Acts as the 'Worker' for the ViewModel (Expert).
  */
 public class DemoAlarmAct extends AppCompatActivity implements AlarmViewModel.AlarmScheduler {
-
-    public static final String ACTION_UPDATE_INFO = "com.adam.app.demoset.alarm.ACTION_UPDATE_INFO";
 
     private AlarmViewModel mViewModel;
     private AlarmManager mAlarmManager;
@@ -96,7 +95,7 @@ public class DemoAlarmAct extends AppCompatActivity implements AlarmViewModel.Al
 
         mUIReceiver = new UIReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_UPDATE_INFO);
+        filter.addAction(DemoAppConstants.ACTION_UPDATE_ALARM_INFO);
         filter.addAction(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED);
         registerReceiver(mUIReceiver, filter, RECEIVER_EXPORTED);
     }
@@ -187,7 +186,7 @@ public class DemoAlarmAct extends AppCompatActivity implements AlarmViewModel.Al
         @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (ACTION_UPDATE_INFO.equals(intent.getAction())) {
+            if (DemoAppConstants.ACTION_UPDATE_ALARM_INFO.equals(intent.getAction())) {
                 mViewModel.incrementCount();
                 Boolean running = mViewModel.isRunning().getValue();
                 if (Boolean.TRUE.equals(running)) {

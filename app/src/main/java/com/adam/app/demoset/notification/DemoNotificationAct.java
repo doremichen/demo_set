@@ -41,6 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
 
@@ -50,7 +51,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
 
     public static final int NOTIFICATION_ID = 1;
-    private static final String NOTIFY_CHANNEL_ID = "test_notification_channel_id";
+    private static final String NOTY_CHANNEL_ID = DemoAppConstants.NOTIFY_CHANNEL_ID_TEST;
     private NotificationManager mManager;
     private NotificationCompat.Builder mBuilder;
 
@@ -79,7 +80,7 @@ public class DemoNotificationAct extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             // Create notification channel id
-            NotificationChannel channel = new NotificationChannel(NOTIFY_CHANNEL_ID,
+            NotificationChannel channel = new NotificationChannel(NOTY_CHANNEL_ID,
                     "my test notification",
                     NotificationManager.IMPORTANCE_HIGH);
 
@@ -100,7 +101,7 @@ public class DemoNotificationAct extends AppCompatActivity {
         Bitmap largeIcon = BitmapFactory.decodeResource(this.getResources(), R.drawable.ic_notification_test);
 
         // Create Notification builder
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFY_CHANNEL_ID);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTY_CHANNEL_ID);
 
         // Config notification
         builder.setSmallIcon(R.drawable.ic_notification_test);

@@ -24,7 +24,7 @@ package com.adam.app.demoset.database.contentprovider.entity;
 
 import android.database.Cursor;
 
-import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 public class Note {
@@ -36,9 +36,9 @@ public class Note {
     public Note(Cursor c) {
         Utils.info(this, "Note constructor");
         // check index
-        int resColumnId = getResId(c.getColumnIndex(MyDBProvider.COLUMN_ID));
-        int resTimeStamp = getResId(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
-        int resNote = getResId(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
+        int resColumnId = getResId(c.getColumnIndex(DemoAppConstants.COLUMN_ID));
+        int resTimeStamp = getResId(c.getColumnIndex(DemoAppConstants.COLUMN_TIMESTAMP));
+        int resNote = getResId(c.getColumnIndex(DemoAppConstants.COLUMN_NOTE));
 
         this.mId = c.getString(resColumnId);
         this.mTimeStamp = c.getString(resTimeStamp);
@@ -48,8 +48,8 @@ public class Note {
 
     public void updateData(Cursor c) {
         Utils.info(this, "updateData enter");
-        int resTimeStamp = getResId(c.getColumnIndex(MyDBProvider.COLUMN_TIMESTAMP));
-        int resNote = getResId(c.getColumnIndex(MyDBProvider.COLUMN_NOTE));
+        int resTimeStamp = getResId(c.getColumnIndex(DemoAppConstants.COLUMN_TIMESTAMP));
+        int resNote = getResId(c.getColumnIndex(DemoAppConstants.COLUMN_NOTE));
 
         this.mTimeStamp = c.getString(resTimeStamp);
         this.mNote = c.getString(resNote);

@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoFlashLightBinding;
 import com.adam.app.demoset.utils.UIUtils;
@@ -39,7 +40,7 @@ import com.adam.app.demoset.utils.UIUtils;
 public class DemoFlashLightAct extends AppCompatActivity implements FlashLightViewModel.ViewModelCallBack {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 1;
-    public static final String PROP_FLASH_LIGHT_ENABLE = "flash light enable";
+    public static final String PROP_FLASH_LIGHT_ENABLE = DemoAppConstants.PROP_FLASH_LIGHT_ENABLE;
     private static final boolean USE_SERVICE = true;
     // flash light view model
     private FlashLightViewModel mFlViewModel;

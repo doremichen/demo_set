@@ -24,6 +24,7 @@ package com.adam.app.demoset.dynamicdelivery.controller;
 
 import android.content.Context;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.google.android.play.core.splitinstall.SplitInstallManager;
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory;
 import com.google.android.play.core.splitinstall.SplitInstallRequest;
@@ -34,7 +35,7 @@ import java.util.Collections;
 
 public class DynamicDeliveryController {
 
-    private static final String sMODULE_NAME = "dynamic_feature";
+    private static final String sMODULE_NAME = DemoAppConstants.MODULE_NAME_DYNAMIC;
     private final SplitInstallManager mSplitInstallManager;
 
     public interface OnControllerCallback {

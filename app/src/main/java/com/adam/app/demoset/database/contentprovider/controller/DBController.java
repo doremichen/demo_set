@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.adam.app.demoset.database.contentprovider.provider.MyDBProvider;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -68,8 +69,8 @@ public enum DBController {
 
         // Build content values
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MyDBProvider.COLUMN_NOTE, content);
-        contentValues.put(MyDBProvider.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+        contentValues.put(DemoAppConstants.COLUMN_NOTE, content);
+        contentValues.put(DemoAppConstants.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
 
         // Insert data
         Uri newUri = mResolver.insert(MyDBProvider.MYTABLE_URI, contentValues);
@@ -93,11 +94,11 @@ public enum DBController {
 
         // Build content values
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MyDBProvider.COLUMN_NOTE, content);
-        contentValues.put(MyDBProvider.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+        contentValues.put(DemoAppConstants.COLUMN_NOTE, content);
+        contentValues.put(DemoAppConstants.COLUMN_TIMESTAMP, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
 
 
-        String selection = MyDBProvider.COLUMN_ID + "=?";
+        String selection = DemoAppConstants.COLUMN_ID + "=?";
         String[] selectionArgs = {id};
 
         // Update data
@@ -121,7 +122,7 @@ public enum DBController {
         }
 
         // Define projection
-        String[] projection = {MyDBProvider.COLUMN_ID, MyDBProvider.COLUMN_TIMESTAMP, MyDBProvider.COLUMN_NOTE};
+        String[] projection = {DemoAppConstants.COLUMN_ID, DemoAppConstants.COLUMN_TIMESTAMP, DemoAppConstants.COLUMN_NOTE};
 
         String selection = null;
         String[] selectionArgs = new String[1];
@@ -129,7 +130,7 @@ public enum DBController {
         if (TextUtils.isEmpty(note)) {
             selectionArgs = null;
         } else {
-            selection = MyDBProvider.COLUMN_NOTE + "=?";
+            selection = DemoAppConstants.COLUMN_NOTE + "=?";
             selectionArgs[0] = note;
         }
 
@@ -158,7 +159,7 @@ public enum DBController {
         if (TextUtils.isEmpty(id)) {
             selectionArgs = null;
         } else {
-            selection = MyDBProvider.COLUMN_ID + "=?";
+            selection = DemoAppConstants.COLUMN_ID + "=?";
             selectionArgs[0] = id;
         }
 

@@ -31,6 +31,7 @@ import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
 import androidx.datastore.rxjava3.RxDataStore;
 
 import com.adam.app.demoset.datastore.model.SettingsModel;
+import com.adam.app.demoset.utils.DemoAppConstants;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -38,14 +39,14 @@ import io.reactivex.rxjava3.core.Single;
 public class SettingsRepository {
 
     // user setting name
-    public static final String USER_SETTINGS = "user_settings";
+    public static final String USER_SETTINGS = DemoAppConstants.USER_SETTINGS;
 
     // define keys ---
     private static final Preferences.Key<Boolean> IS_DARK_MODE = PreferencesKeys.booleanKey("is_dark_mode");
     private static final Preferences.Key<String> LANGUAGE = PreferencesKeys.stringKey("language");
     private static final Preferences.Key<Float> FONT_SIZE = PreferencesKeys.floatKey("font_size");
 
-    public static final String LANG_ZH_TW = "zh_TW";
+    public static final String LANG_ZH_TW = DemoAppConstants.LANG_ZH_TW;
 
 
     // data store

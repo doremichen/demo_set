@@ -93,25 +93,25 @@ import java.util.concurrent.Executors;
 
 public abstract class Utils {
 
-    public static final String ITEM_START_SERVICE = "start_service";
-    public static final String ITEM_STOP_SERVICE = "stop_service";
-    public static final String ITEM_BIND_SERVICE = "bind_service";
-    public static final String ITEM_UNBIND_SERVICE = "unbind_service";
-    public static final String ITEM_SERVICE_REQUEST = "service_request";
-    public static final String ITEM_EXIT = "label_exit";
-    public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
+    public static final String ITEM_START_SERVICE = DemoAppConstants.ITEM_START_SERVICE;
+    public static final String ITEM_STOP_SERVICE = DemoAppConstants.ITEM_STOP_SERVICE;
+    public static final String ITEM_BIND_SERVICE = DemoAppConstants.ITEM_BIND_SERVICE;
+    public static final String ITEM_UNBIND_SERVICE = DemoAppConstants.ITEM_UNBIND_SERVICE;
+    public static final String ITEM_SERVICE_REQUEST = DemoAppConstants.ITEM_SERVICE_REQUEST;
+    public static final String ITEM_EXIT = DemoAppConstants.ITEM_EXIT;
+    public static final String ACTION_SHOW_SNACKBAR = DemoAppConstants.ACTION_SHOW_SNACKBAR;
     public static final String KEY_MSG = "service status";
-    public static final String THE_SELECTED_IMAGE = "The selected image";
-    private static final String TAG = "DemoSet";
-    public static final String TRUE = "True";
-    public static final String FALSE = "False";
-    public static final String NOTIFY_CHANNEL_ID = "0x1357";
+    public static final String THE_SELECTED_IMAGE = DemoAppConstants.THE_SELECTED_IMAGE;
+    private static final String TAG = DemoAppConstants.TAG_DEMO_SET;
+    public static final String TRUE = DemoAppConstants.TRUE;
+    public static final String FALSE = DemoAppConstants.FALSE;
+    public static final String NOTIFY_CHANNEL_ID = DemoAppConstants.NOTIFY_CHANNEL_ID_DEFAULT;
 
 
-    public static final String OUTPUT_PATH = "blur_filter_outputs";
-    public static final String  TAG_IMG_OUTPUT = "OUTPUT";
+    public static final String OUTPUT_PATH = DemoAppConstants.OUTPUT_PATH;
+    public static final String  TAG_IMG_OUTPUT = DemoAppConstants.TAG_IMG_OUTPUT;
     // The name of the image manipulation work
-    public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
+    public static final String IMAGE_MANIPULATION_WORK_NAME = DemoAppConstants.IMAGE_MANIPULATION_WORK_NAME;
     // for remote service
 
     public static volatile String sImagePath;

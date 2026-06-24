@@ -32,6 +32,7 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.lang.ref.WeakReference;
@@ -40,13 +41,13 @@ import java.util.Arrays;
 public class BTReceiver extends BroadcastReceiver {
 
     // Find bt device action
-    public static final String ACTION_FOUND_BT_DEVICE = "find bt device";
-    public static final String KEY_DEVICE_LIST = "device.list";
+    public static final String ACTION_FOUND_BT_DEVICE = DemoAppConstants.ACTION_FOUND_BT_DEVICE;
+    public static final String KEY_DEVICE_LIST = DemoAppConstants.KEY_DEVICE_LIST;
 
     // Update bt bound state
-    public static final String ACTION_UPDATE_BT_BOUND_STATE = "bt bound state";
-    public static final String KEY_BT_DEVICE = "bluetooth.device";
-    public static final String KEY_BUNDLE_DEVICE = "bundle device";
+    public static final String ACTION_UPDATE_BT_BOUND_STATE = DemoAppConstants.ACTION_UPDATE_BT_BOUND_STATE;
+    public static final String KEY_BT_DEVICE = DemoAppConstants.KEY_BT_DEVICE;
+    public static final String KEY_BUNDLE_DEVICE = DemoAppConstants.KEY_BUNDLE_DEVICE;
 
     private WeakReference<DemoBTAct> mActRef;
 

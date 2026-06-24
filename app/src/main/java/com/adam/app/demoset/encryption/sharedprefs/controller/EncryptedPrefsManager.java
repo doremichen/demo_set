@@ -28,14 +28,16 @@ import android.content.SharedPreferences;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
 public class EncryptedPrefsManager {
 
-    private static final String ENCRYPTED_PREFS_NAME = "encrypted_demo_settings";
-    private static final String NORMAL_PREFS_NAME = "normal_demo_settings";
+    private static final String ENCRYPTED_PREFS_NAME = DemoAppConstants.ENCRYPTED_PREFS_NAME;
+    private static final String NORMAL_PREFS_NAME = DemoAppConstants.NORMAL_PREFS_NAME;
 
     private final SharedPreferences mEncryptedPrefs;
     private final SharedPreferences mNormalPrefs;

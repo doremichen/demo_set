@@ -29,6 +29,7 @@ import android.hardware.camera2.CameraManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.util.HashMap;
@@ -37,10 +38,10 @@ import java.util.Map;
 public class FlashLightService extends JobIntentService {
 
     private static final int JOB_ID = 0x0316;
-    private static final String KEY_COMMEND = "key.commend";
+    private static final String KEY_COMMEND = DemoAppConstants.KEY_COMMEND;
 
-    public static final String CMD_FLASH_LIGHT_ON = "flash light on";
-    public static final String CMD_FLASH_LIGHT_OFF = "flash light off";
+    public static final String CMD_FLASH_LIGHT_ON = DemoAppConstants.CMD_FLASH_LIGHT_ON;
+    public static final String CMD_FLASH_LIGHT_OFF = DemoAppConstants.CMD_FLASH_LIGHT_OFF;
 
 
     public static void execute(Context context, String cmd) {

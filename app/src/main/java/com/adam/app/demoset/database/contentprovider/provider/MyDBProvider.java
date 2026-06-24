@@ -36,6 +36,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 public class MyDBProvider extends ContentProvider {
@@ -43,33 +44,26 @@ public class MyDBProvider extends ContentProvider {
     // Index for Uri matcher
     public static final int MYTABLE = 1;
     public static final int MYTABLE_ID = 2;
-    // The column name of database
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NOTE = "note";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
-    // Database information
-    private static final String DATABASE_NAME = "Adam";
-    private static final String TABLE_NAME = "NoteTable";
+
     // Create table sqlite
     public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_TIMESTAMP + " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP, "
-                    + COLUMN_NOTE + " TEXT"
+            "CREATE TABLE " + DemoAppConstants.TABLE_NAME_NOTE + "("
+                    + DemoAppConstants.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + DemoAppConstants.COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
+                    + DemoAppConstants.COLUMN_NOTE + " TEXT"
                     + ")";
     private static final int DATABSE_VERSION = 1;
     // Build the uri
-    private static final String AUTHORITY = "com.adam.app.demoset.provider.MyNote";
-    private static final String URL = "content://" + AUTHORITY + "/"
-            + TABLE_NAME;
+    private static final String URL = "content://" + DemoAppConstants.AUTHORITY_MY_NOTE + "/"
+            + DemoAppConstants.TABLE_NAME_NOTE;
     public static final Uri MYTABLE_URI = Uri.parse(URL);
     // Construct Uri matcher
     private static final UriMatcher URI_MATCHER = new UriMatcher(
             UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME, MYTABLE);
-        URI_MATCHER.addURI(AUTHORITY, TABLE_NAME + "/#", MYTABLE_ID);
+        URI_MATCHER.addURI(DemoAppConstants.AUTHORITY_MY_NOTE, DemoAppConstants.TABLE_NAME_NOTE, MYTABLE);
+        URI_MATCHER.addURI(DemoAppConstants.AUTHORITY_MY_NOTE, DemoAppConstants.TABLE_NAME_NOTE + "/#", MYTABLE_ID);
     }
 
     private SQLiteDatabase mWriteDatabase;
@@ -104,7 +98,7 @@ public class MyDBProvider extends ContentProvider {
                         @Nullable String sortOrder) {
         Utils.info(this, "query enter");
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        queryBuilder.setTables(TABLE_NAME);
+        queryBuilder.setTables(DemoAppConstants.TABLE_NAME_NOTE);
 
         // Check uri type
         int uriType = URI_MATCHER.match(uri);
@@ -113,7 +107,7 @@ public class MyDBProvider extends ContentProvider {
             case MYTABLE:
                 break;
             case MYTABLE_ID:
-                queryBuilder.appendWhere(COLUMN_ID + "=" + uri.getLastPathSegment());
+                queryBuilder.appendWhere(DemoAppConstants.COLUMN_ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 throw new IllegalArgumentException("Unknown uri");
@@ -167,7 +161,7 @@ public class MyDBProvider extends ContentProvider {
         switch (uriType) {
             case MYTABLE:
                 // insert data
-                id = mWriteDatabase.insert(TABLE_NAME, null, values);
+                id = mWriteDatabase.insert(DemoAppConstants.TABLE_NAME_NOTE, null, values);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown uri");
@@ -176,7 +170,7 @@ public class MyDBProvider extends ContentProvider {
         // Notify content resolver
         this.getContext().getContentResolver().notifyChange(uri, null);
 
-        return Uri.parse(TABLE_NAME + "/" + id);
+        return Uri.parse(DemoAppConstants.TABLE_NAME_NOTE + "/" + id);
     }
 
     /**
@@ -195,15 +189,15 @@ public class MyDBProvider extends ContentProvider {
 
         switch (uriType) {
             case MYTABLE:
-                rowDelete = mWriteDatabase.delete(TABLE_NAME, selection, selectionArgs);
+                rowDelete = mWriteDatabase.delete(DemoAppConstants.TABLE_NAME_NOTE, selection, selectionArgs);
                 break;
             case MYTABLE_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowDelete = mWriteDatabase.delete(TABLE_NAME, COLUMN_ID + "=" + id, null);
+                    rowDelete = mWriteDatabase.delete(DemoAppConstants.TABLE_NAME_NOTE, DemoAppConstants.COLUMN_ID + "=" + id, null);
                 } else {
-                    rowDelete = mWriteDatabase.delete(TABLE_NAME,
-                            COLUMN_ID + "=" + id + "AND" + selection, selectionArgs);
+                    rowDelete = mWriteDatabase.delete(DemoAppConstants.TABLE_NAME_NOTE,
+                            DemoAppConstants.COLUMN_ID + "=" + id + " AND " + selection, selectionArgs);
                 }
                 break;
             default:
@@ -224,15 +218,15 @@ public class MyDBProvider extends ContentProvider {
 
         switch (uriType) {
             case MYTABLE:
-                rowUpdate = mWriteDatabase.update(TABLE_NAME, values, selection, selectionArgs);
+                rowUpdate = mWriteDatabase.update(DemoAppConstants.TABLE_NAME_NOTE, values, selection, selectionArgs);
                 break;
             case MYTABLE_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowUpdate = mWriteDatabase.update(TABLE_NAME, values, COLUMN_ID + "=" + id, null);
+                    rowUpdate = mWriteDatabase.update(DemoAppConstants.TABLE_NAME_NOTE, values, DemoAppConstants.COLUMN_ID + "=" + id, null);
                 } else {
-                    rowUpdate = mWriteDatabase.update(TABLE_NAME, values,
-                            COLUMN_ID + "=" + id + "AND" + selection, selectionArgs);
+                    rowUpdate = mWriteDatabase.update(DemoAppConstants.TABLE_NAME_NOTE, values,
+                            DemoAppConstants.COLUMN_ID + "=" + id + " AND " + selection, selectionArgs);
                 }
                 break;
             default:
@@ -249,7 +243,7 @@ public class MyDBProvider extends ContentProvider {
     private static class MyDBHelper extends SQLiteOpenHelper {
 
         public MyDBHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABSE_VERSION);
+            super(context, DemoAppConstants.DATABASE_NAME_CP, null, DATABSE_VERSION);
             Utils.info(this, "MyDbHelper constructor...");
         }
 
@@ -264,7 +258,7 @@ public class MyDBProvider extends ContentProvider {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Utils.info(this, "onUpgrade enter");
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + DemoAppConstants.TABLE_NAME_NOTE);
             onCreate(db);
         }
     }

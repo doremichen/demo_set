@@ -31,11 +31,12 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 public class FlashLightWork extends Worker {
 
-    public static final String KEY_ON = "key.on";
+    public static final String KEY_ON = DemoAppConstants.KEY_ON;
 
     private CameraManager mCameraManger;
 

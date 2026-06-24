@@ -25,6 +25,7 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.nio.charset.StandardCharsets;
@@ -41,8 +42,8 @@ public class CryptoManager {
     private static final String BLOCK_MODE = KeyProperties.BLOCK_MODE_GCM;
     private static final String PADDING = KeyProperties.ENCRYPTION_PADDING_NONE;
     private static final String TRANSFORMATION = ALGORITHM + "/" + BLOCK_MODE + "/" + PADDING;
-    private static final String KEY_ALIAS = "encryption_demo_key";
-    private static final String ANDROID_KEYSTORE = "AndroidKeyStore";
+    private static final String KEY_ALIAS = DemoAppConstants.KEY_ALIAS_ENCRYPTION;
+    private static final String ANDROID_KEYSTORE = DemoAppConstants.KEYSTORE_ANDROID;
 
     private KeyStore mKeyStore;
 

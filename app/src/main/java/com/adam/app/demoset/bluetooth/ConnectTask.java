@@ -32,6 +32,7 @@ import android.os.ParcelUuid;
 
 import androidx.core.content.ContextCompat;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.IOException;
@@ -39,8 +40,8 @@ import java.util.UUID;
 
 public class ConnectTask implements Runnable {
 
-    public static final String ACTION_UPDATE_CONNECT_INFO = "connect.info";
-    public static final String KEY_CONNECT_INFO = "key.connect";
+    public static final String ACTION_UPDATE_CONNECT_INFO = DemoAppConstants.ACTION_UPDATE_CONNECT_INFO;
+    public static final String KEY_CONNECT_INFO = DemoAppConstants.KEY_CONNECT_INFO;
 
     private final BluetoothDevice mDevice;
     private final BluetoothAdapter mBTAdapter;

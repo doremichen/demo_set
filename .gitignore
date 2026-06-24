@@ -33,6 +33,7 @@ proguard/
 
 # Log Files
 *.log
+*log.txt
 dump.txt
 lob.txt
 deps.txt

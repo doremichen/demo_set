@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 /**
@@ -49,7 +50,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         }
 
         // Notify UI
-        Intent updateIntent = new Intent(DemoAlarmAct.ACTION_UPDATE_INFO);
+        Intent updateIntent = new Intent(DemoAppConstants.ACTION_UPDATE_ALARM_INFO);
         updateIntent.setPackage(context.getPackageName());
         context.sendBroadcast(updateIntent);
     }

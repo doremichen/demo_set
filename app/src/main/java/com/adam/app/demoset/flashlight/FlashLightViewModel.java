@@ -32,13 +32,14 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
 
 public class FlashLightViewModel extends ViewModel {
 
-    private static final String TAG_FLASH_LIGHT_WORK = "tag.flash.light.work";
+    private static final String TAG_FLASH_LIGHT_WORK = DemoAppConstants.TAG_FLASH_LIGHT_WORK;
 
     private WorkManager mWorkManger;
     private LiveData<List<WorkInfo>> mListOfWork;
