@@ -37,6 +37,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +49,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class MyCameraController {
 
-    private static final String FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS";
+    private static final String FILENAME_FORMAT = DemoAppConstants.FILENAME_FORMAT_CAMERA;
     
     private final Context mContext;
     private ImageCapture mImageCapture;

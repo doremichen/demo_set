@@ -32,6 +32,7 @@ import android.view.TextureView;
 
 import androidx.annotation.NonNull;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
@@ -52,7 +53,7 @@ import java.util.List;
 public final class MyCameraController {
 
     private static final String TAG = "MyCameraController";
-    private static final String THREAD_NAME = "CameraBackground";
+    private static final String THREAD_NAME = DemoAppConstants.THREAD_NAME_CAMERA;
     private static final int MAX_PREVIEW_WIDTH = 1920;
     private static final int MAX_PREVIEW_HEIGHT = 1080;
 

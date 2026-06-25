@@ -30,6 +30,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityQuickSettingResultBinding;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.UIUtils;
 
 /**
@@ -54,7 +55,7 @@ public class QuickSettingResultAct extends AppCompatActivity {
 
         // Set data to binding
         binding.setTitle(qsTitle != null ? qsTitle : "Unknown Title");
-        binding.setStatus("Current Status: " + (qsStatus != null ? qsStatus : "Unknown"));
+        binding.setStatus("Current Status: " + (qsStatus != null ? qsStatus : DemoAppConstants.UNKNOWN_STATUS));
 
         setupUI(binding);
     }

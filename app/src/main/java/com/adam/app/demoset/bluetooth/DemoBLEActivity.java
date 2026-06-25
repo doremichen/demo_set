@@ -49,6 +49,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoBluetoothBinding;
 import com.adam.app.demoset.utils.UIUtils;
@@ -172,7 +173,7 @@ public class DemoBLEActivity extends AppCompatActivity {
                     int prevBondState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
 
                     Utils.info(DemoBLEActivity.this,
-                            "Bond state changed: " + (device != null ? device.getName() : "Unknown") +
+                            "Bond state changed: " + (device != null ? device.getName() : DemoAppConstants.UNKNOWN_STATUS) +
                                     " from " + prevBondState + " to " + bondState);
 
                     // Update paired device list when bond state changes

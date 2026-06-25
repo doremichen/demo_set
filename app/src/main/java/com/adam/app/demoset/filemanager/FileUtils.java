@@ -42,6 +42,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,9 +57,9 @@ import java.util.stream.Collectors;
  */
 public abstract class FileUtils {
 
-    public static final String OP_MANAGE_EXTERNAL_STORAGE = "android:manage_external_storage";
-    public static final String NOT_APPLICABLE = "N/A";
-    private static final String AUTHORITY = "com.adam.app.demoset.filemanager.provider";
+    public static final String OP_MANAGE_EXTERNAL_STORAGE = DemoAppConstants.OP_MANAGE_EXTERNAL_STORAGE;
+    public static final String NOT_APPLICABLE = DemoAppConstants.NOT_APPLICABLE;
+    private static final String AUTHORITY = DemoAppConstants.AUTHORITY_FILE_PROVIDER;
 
     /**
      * Integrated API to request storage access using ActivityResultLauncher.

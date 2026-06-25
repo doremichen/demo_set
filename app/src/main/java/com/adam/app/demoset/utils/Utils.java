@@ -93,64 +93,41 @@ import java.util.concurrent.Executors;
 
 public abstract class Utils {
 
-    public static final String ITEM_START_SERVICE = DemoAppConstants.ITEM_START_SERVICE;
-    public static final String ITEM_STOP_SERVICE = DemoAppConstants.ITEM_STOP_SERVICE;
-    public static final String ITEM_BIND_SERVICE = DemoAppConstants.ITEM_BIND_SERVICE;
-    public static final String ITEM_UNBIND_SERVICE = DemoAppConstants.ITEM_UNBIND_SERVICE;
-    public static final String ITEM_SERVICE_REQUEST = DemoAppConstants.ITEM_SERVICE_REQUEST;
-    public static final String ITEM_EXIT = DemoAppConstants.ITEM_EXIT;
-    public static final String ACTION_SHOW_SNACKBAR = DemoAppConstants.ACTION_SHOW_SNACKBAR;
-    public static final String KEY_MSG = "service status";
-    public static final String THE_SELECTED_IMAGE = DemoAppConstants.THE_SELECTED_IMAGE;
-    private static final String TAG = DemoAppConstants.TAG_DEMO_SET;
-    public static final String TRUE = DemoAppConstants.TRUE;
-    public static final String FALSE = DemoAppConstants.FALSE;
-    public static final String NOTIFY_CHANNEL_ID = DemoAppConstants.NOTIFY_CHANNEL_ID_DEFAULT;
-
-
-    public static final String OUTPUT_PATH = DemoAppConstants.OUTPUT_PATH;
-    public static final String  TAG_IMG_OUTPUT = DemoAppConstants.TAG_IMG_OUTPUT;
-    // The name of the image manipulation work
-    public static final String IMAGE_MANIPULATION_WORK_NAME = DemoAppConstants.IMAGE_MANIPULATION_WORK_NAME;
-    // for remote service
-
     public static volatile String sImagePath;
-
-    public static final long DELAY_TIME_MILLIS = 3000L;
 
     // reference: https://github.com/orhanobut/logger/tree/master
     static {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().
-                tag(TAG).
+                tag(DemoAppConstants.TAG_DEMO_SET).
                 build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
     }
 
     public static void info(String tag, String str) {
-        Log.i(TAG, tag + ": " + str);
+        Log.i(DemoAppConstants.TAG_DEMO_SET, tag + ": " + str);
     }
 
     public static void error(String tag, String str) {
-        Log.e(TAG, tag + ": " + str);
+        Log.e(DemoAppConstants.TAG_DEMO_SET, tag + ": " + str);
     }
 
     public static void info(Object obj, String str) {
-        Log.i(TAG, obj.getClass().getSimpleName() + ": " + str);
+        Log.i(DemoAppConstants.TAG_DEMO_SET, obj.getClass().getSimpleName() + ": " + str);
         //Logger.i(obj.getClass().getSimpleName() + ": " + str);
     }
 
     public static void info(Class<?> clazz, String str) {
-        Log.i(TAG, clazz.getSimpleName() + ": " + str);
+        Log.i(DemoAppConstants.TAG_DEMO_SET, clazz.getSimpleName() + ": " + str);
         //Logger.i(clazz.getSimpleName() + ": " + str);
     }
 
     public static void error(Object obj, String str) {
-        Log.e(TAG, obj.getClass().getSimpleName() + ": " + str);
+        Log.e(DemoAppConstants.TAG_DEMO_SET, obj.getClass().getSimpleName() + ": " + str);
         //Logger.e(obj.getClass().getSimpleName() + ": " + str);
     }
 
     public static void log(String tag, String msg) {
-        Log.i(TAG, tag + ": " + msg);
+        Log.i(DemoAppConstants.TAG_DEMO_SET, tag + ": " + msg);
     }
 
 
@@ -269,9 +246,9 @@ public abstract class Utils {
         // log
         Utils.info(Utils.class, "showSnackBar enter");
 
-        Intent intent = new Intent(ACTION_SHOW_SNACKBAR);
+        Intent intent = new Intent(DemoAppConstants.ACTION_SHOW_SNACKBAR);
         if (!TextUtils.isEmpty(message)) {
-            intent.putExtra(KEY_MSG, context.getClass().getSimpleName() + " " + message);
+            intent.putExtra(DemoAppConstants.KEY_SNACKBAR_MSG, context.getClass().getSimpleName() + " " + message);
         }
         // log
         Utils.info(Utils.class, "showSnackBar send broadcast!!!");
@@ -558,7 +535,7 @@ public abstract class Utils {
         // Always try to stop previous persistent logcat first
         stopLogcat();
 
-        if (TRUE.equals(enable)) {
+        if (DemoAppConstants.TRUE.equals(enable)) {
             // Sequence: Clear (SHORT) -> Start Logging (PERSISTENT)
             dispatchLogTask(LogTask.SHORT, "logcat -c");
             dispatchLogTask(LogTask.PERSISTENT, "logcat -f " + path);
@@ -659,7 +636,7 @@ public abstract class Utils {
             @NonNull Bitmap bitmap) throws FileNotFoundException {
 
         String name = String.format("blur-filter-output-%s.png", UUID.randomUUID().toString());
-        File outputDir = new File(applicationContext.getFilesDir(), OUTPUT_PATH);
+        File outputDir = new File(applicationContext.getFilesDir(), DemoAppConstants.OUTPUT_PATH);
         if (!outputDir.exists()) {
             outputDir.mkdirs(); // should succeed
         }
@@ -704,7 +681,7 @@ public abstract class Utils {
             String description = "This is demoset notification";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel =
-                    new NotificationChannel(NOTIFY_CHANNEL_ID, name, importance);
+                    new NotificationChannel(DemoAppConstants.NOTIFY_CHANNEL_ID_DEFAULT, name, importance);
             channel.setDescription(description);
             channel.enableVibration(true);
             channel.setVibrationPattern(new long[]{0L, 1000L, 1000L});
@@ -721,7 +698,7 @@ public abstract class Utils {
         }
 
         // Create the notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFY_CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DemoAppConstants.NOTIFY_CHANNEL_ID_DEFAULT)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("DemoSet notification")
                 .setContentText(message)
@@ -740,7 +717,7 @@ public abstract class Utils {
         try {
             Thread.sleep(time, 0);
         } catch (InterruptedException e) {
-            Log.d(TAG, e.getMessage());
+            Log.d(DemoAppConstants.TAG_DEMO_SET, e.getMessage());
         }
     }
 

@@ -44,6 +44,7 @@ import android.view.Surface;
 import android.view.TextureView;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ import java.util.List;
  */
 public class VideoRecordManager {
 
-    public static final String CAMERA_WORK_THREAD_NAME = "camera work thread";
+    public static final String CAMERA_WORK_THREAD_NAME = DemoAppConstants.THREAD_NAME_VIDEO;
     private HandlerThread mBgThread;
     private Handler mHandler;
     private Size mPreviewSize;

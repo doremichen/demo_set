@@ -29,6 +29,7 @@ import com.adam.app.demoset.R;
 import com.adam.app.demoset.camera2.controller.MyCameraController;
 import com.adam.app.demoset.camera2.viewmodel.Camera2ViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoCamera2Act2Binding;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 
@@ -41,7 +42,7 @@ public class DemoCamera2Act2 extends AppCompatActivity {
 
     public static final int REQUEST_CAMERA_PERMISSION_CODE = 0x1357;
     private static final String[] CAMERA_PERMISSION = {Manifest.permission.CAMERA};
-    public static final String URI_AUTHORITY = "com.adam.app.demoset.filemanager.provider";
+    public static final String URI_AUTHORITY = DemoAppConstants.AUTHORITY_FILE_PROVIDER;
 
     private boolean mCanOpenCamera;
     private Camera2ViewModel mViewModel;

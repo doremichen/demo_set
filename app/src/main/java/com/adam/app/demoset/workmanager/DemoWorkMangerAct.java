@@ -43,6 +43,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
 
@@ -95,7 +96,7 @@ public class DemoWorkMangerAct extends AppCompatActivity {
                             Data outputData = workInfo.getOutputData();
 
                             // get output image uri
-                            String OutputImageUriStr = outputData.getString(Utils.THE_SELECTED_IMAGE);
+                            String OutputImageUriStr = outputData.getString(DemoAppConstants.THE_SELECTED_IMAGE);
                             Utils.info(DemoWorkMangerAct.this, "OutputImageUriStr: " + OutputImageUriStr);
                             // the see file button is visble when the file exists
                             if (!TextUtils.isEmpty(OutputImageUriStr)) {
@@ -159,7 +160,7 @@ public class DemoWorkMangerAct extends AppCompatActivity {
         }
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
+        Uri contentUri = FileProvider.getUriForFile(this, DemoAppConstants.AUTHORITY_FILE_PROVIDER, file);
         Utils.info(this, "<content>" + contentUri);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -194,7 +195,7 @@ public class DemoWorkMangerAct extends AppCompatActivity {
     private Data createInputDataForUri() {
         Utils.info(this, "createInputDataForUri enter mImageUri = " + this.mImgUri.toString());
         Data.Builder builder = new Data.Builder();
-        builder.putString(Utils.THE_SELECTED_IMAGE, this.mImgUri.toString());
+        builder.putString(DemoAppConstants.THE_SELECTED_IMAGE, this.mImgUri.toString());
         return builder.build();
     }
 

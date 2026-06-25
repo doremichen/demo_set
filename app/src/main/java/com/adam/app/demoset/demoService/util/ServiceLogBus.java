@@ -25,6 +25,8 @@ package com.adam.app.demoset.demoService.util;
 import android.content.Context;
 import android.content.Intent;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
+
 public final class ServiceLogBus {
 
     private ServiceLogBus() {
@@ -34,7 +36,7 @@ public final class ServiceLogBus {
     public static final String ACTION_LOG =
             "com.adam.service.LOG";
 
-    public static final String KEY_MSG = "msg";
+    public static final String KEY_MSG = DemoAppConstants.KEY_MSG;
 
     public static void send(Context ctx, String msg) {
         Intent intent = new Intent(ACTION_LOG);

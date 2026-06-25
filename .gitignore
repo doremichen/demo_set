@@ -109,5 +109,5 @@ note.txt
 # ai
 .artifacts
 
-# temp folder
-.koltlin
+# kotlin compiler temp folder
+.kotlin

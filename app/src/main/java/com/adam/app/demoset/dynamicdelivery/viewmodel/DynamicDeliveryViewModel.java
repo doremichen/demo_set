@@ -32,6 +32,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.dynamicdelivery.controller.DynamicDeliveryController;
 import com.adam.app.demoset.dynamicdelivery.viewmodel.state.InstallSessionStateContext;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.google.android.play.core.splitinstall.SplitInstallSessionState;
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener;
 
@@ -41,7 +42,7 @@ public class DynamicDeliveryViewModel extends AndroidViewModel implements Dynami
     private final InstallSessionStateContext mStateContext;
     private int mSessionId = 0;
 
-    private final MutableLiveData<String> mStatus = new MutableLiveData<>("Unknown");
+    private final MutableLiveData<String> mStatus = new MutableLiveData<>(DemoAppConstants.UNKNOWN_STATUS);
     private final MutableLiveData<Integer> mProgress = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> mIsProgressVisible = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> mIsInstallEnabled = new MutableLiveData<>(true);

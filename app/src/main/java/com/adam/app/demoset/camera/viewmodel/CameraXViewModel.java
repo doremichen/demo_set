@@ -34,6 +34,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.adam.app.demoset.camera.controller.MyCameraController;
+import com.adam.app.demoset.utils.DemoAppConstants;
 
 /**
  * ViewModel for CameraX Demo.
@@ -113,7 +114,7 @@ public class CameraXViewModel extends AndroidViewModel implements MyCameraContro
     @Override
     public void onPhotoSaved(Uri uri) {
         mLastPhotoUri.postValue(uri);
-        mStatusText.postValue("Photo Saved: " + (uri != null ? uri.getLastPathSegment() : "unknown"));
+        mStatusText.postValue("Photo Saved: " + (uri != null ? uri.getLastPathSegment() : DemoAppConstants.UNKNOWN_STATUS.toLowerCase()));
     }
 
     @Override

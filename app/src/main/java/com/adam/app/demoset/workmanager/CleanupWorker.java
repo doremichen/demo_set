@@ -22,12 +22,15 @@
 
 package com.adam.app.demoset.workmanager;
 
+import android.Manifest;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.File;
@@ -39,6 +42,7 @@ public class CleanupWorker extends Worker {
         super(context, workerParams);
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     @NonNull
     @Override
     public Result doWork() {
@@ -47,10 +51,10 @@ public class CleanupWorker extends Worker {
 
         // Make a notification when the work starts and slows down the work
         Utils.makeStatusNotification(appCtx, "Clean up old temporary files");
-        Utils.delay(Utils.DELAY_TIME_MILLIS);
+        Utils.delay(DemoAppConstants.DELAY_TIME_MILLIS);
 
         try {
-            File outputDir = new File(appCtx.getFilesDir(), Utils.OUTPUT_PATH);
+            File outputDir = new File(appCtx.getFilesDir(), DemoAppConstants.OUTPUT_PATH);
             File[] files = outputDir.exists() ? outputDir.listFiles() : null;
 
             if (!Utils.isArrayNullOrEmpty(files)) {

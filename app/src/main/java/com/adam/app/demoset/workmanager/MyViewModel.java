@@ -41,6 +41,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class MyViewModel extends AndroidViewModel {
         this.mImageUri = buildImageUri(app.getApplicationContext());
 
         // UI listen to work change
-        this.mSaveWorkInfo = this.mManager.getWorkInfosByTagLiveData(Utils.TAG_IMG_OUTPUT);
+        this.mSaveWorkInfo = this.mManager.getWorkInfosByTagLiveData(DemoAppConstants.TAG_IMG_OUTPUT);
     }
 
     public void updateImgUri(@NonNull Uri imgUri) {
@@ -105,7 +106,7 @@ public class MyViewModel extends AndroidViewModel {
      */
     void cancelWork() {
         Utils.info(this, "cancelWork enter");
-        mManager.cancelUniqueWork(Utils.IMAGE_MANIPULATION_WORK_NAME);
+        mManager.cancelUniqueWork(DemoAppConstants.IMAGE_MANIPULATION_WORK_NAME);
     }
 
 
@@ -143,7 +144,7 @@ public class MyViewModel extends AndroidViewModel {
 
         // Start with cleanup work request
         WorkContinuation continuation = mManager.beginUniqueWork(
-                Utils.IMAGE_MANIPULATION_WORK_NAME,
+                DemoAppConstants.IMAGE_MANIPULATION_WORK_NAME,
                 ExistingWorkPolicy.REPLACE,
                 OneTimeWorkRequest.from(CleanupWorker.class)
         );
@@ -173,7 +174,7 @@ public class MyViewModel extends AndroidViewModel {
         // Constraints and save request
         OneTimeWorkRequest saveReq = new OneTimeWorkRequest.Builder(SaveToFileWorker.class)
                 .setConstraints(new Constraints.Builder().setRequiresCharging(false).build())
-                .addTag(Utils.TAG_IMG_OUTPUT)
+                .addTag(DemoAppConstants.TAG_IMG_OUTPUT)
                 .build();
 
         // Chain save request and start work process
@@ -241,7 +242,7 @@ public class MyViewModel extends AndroidViewModel {
     private Data createInputDataForUri() {
         Utils.info(this, "createInputDataForUri enter mImageUri = " + mImageUri.toString());
         Data.Builder data = new Data.Builder();
-        data.putString(Utils.THE_SELECTED_IMAGE, mImageUri.toString());
+        data.putString(DemoAppConstants.THE_SELECTED_IMAGE, mImageUri.toString());
         return data.build();
     }
 

@@ -22,6 +22,7 @@
 
 package com.adam.app.demoset.workmanager;
 
+import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,10 +30,12 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.FileNotFoundException;
@@ -44,6 +47,7 @@ public class MyWork extends Worker {
         super(context, workerParams);
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     @NonNull
     @Override
     public Result doWork() {
@@ -51,9 +55,9 @@ public class MyWork extends Worker {
         Context appCtx = this.getApplicationContext();
 
         Utils.makeStatusNotification(appCtx, "Blurring Image!!!");
-        Utils.delay(Utils.DELAY_TIME_MILLIS);
+        Utils.delay(DemoAppConstants.DELAY_TIME_MILLIS);
 
-        String resUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
+        String resUri = getInputData().getString(DemoAppConstants.THE_SELECTED_IMAGE);
 
         if (TextUtils.isEmpty(resUri)) {
             Utils.info(this, "Invalid input uri...");
@@ -73,7 +77,7 @@ public class MyWork extends Worker {
 
             // Prepare Result Data to pass
             Data outputData = new Data.Builder()
-                    .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
+                    .putString(DemoAppConstants.THE_SELECTED_IMAGE, outputUri.toString())
                     .build();
 
             return Result.success(outputData);

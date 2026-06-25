@@ -36,6 +36,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.jobService.SecurJobService;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class DemoJobSvrViewModel extends AndroidViewModel {
     private final MutableLiveData<String> mIntervalText = new MutableLiveData<>("");
     private final MutableLiveData<Boolean> mCanSetTrigger = new MutableLiveData<>(false);
 
-    private int mJobId = 0;
+    private int mJobId = DemoAppConstants.JOB_ID_SECUR;
 
     public DemoJobSvrViewModel(@NonNull Application application) {
         super(application);

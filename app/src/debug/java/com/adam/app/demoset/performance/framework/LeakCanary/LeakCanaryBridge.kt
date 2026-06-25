@@ -26,6 +26,7 @@ import com.adam.app.demoset.performance.domain.model.LeakConfig
 import com.adam.app.demoset.performance.domain.model.LeakReport
 import com.adam.app.demoset.performance.domain.model.LeakStatus
 import com.adam.app.demoset.performance.domain.repository.LeakRepository
+import com.adam.app.demoset.utils.DemoAppConstants
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -52,6 +53,9 @@ class LeakCanaryBridge : LeakRepository {
     }
 
     override fun watchInstance(instance: Any, description: String) {
+        // Log start of monitoring
+        android.util.Log.d(DemoAppConstants.TAG_LEAK_CANARY, "Monitoring instance: $description")
+
         // 1. Real call to LeakCanary framework
         AppWatcher.objectWatcher.expectWeaklyReachable(instance, description)
 

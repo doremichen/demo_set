@@ -30,11 +30,12 @@ import android.os.IBinder;
 import android.view.WindowManager;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 public class FloatingDialogSvr extends Service {
 
-    public static final String ACTION_SHOW_FLOATING_DIALOG = "show floating dialog";
+    public static final String ACTION_SHOW_FLOATING_DIALOG = DemoAppConstants.ACTION_SHOW_FLOATING_DIALOG;
     private AlertDialog mDialog;
 
     @Override

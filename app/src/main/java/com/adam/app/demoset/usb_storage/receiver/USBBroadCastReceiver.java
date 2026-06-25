@@ -31,6 +31,7 @@ import android.hardware.usb.UsbManager;
 import androidx.annotation.NonNull;
 import androidx.core.content.IntentCompat;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 public class USBBroadCastReceiver extends BroadcastReceiver {
@@ -38,7 +39,7 @@ public class USBBroadCastReceiver extends BroadcastReceiver {
     private UsbListener mUsbListener;
 
 
-    public static final String USB_PERMISSION = "com.demo.app.usb.permission";
+    public static final String USB_PERMISSION = DemoAppConstants.USB_PERMISSION;
 
     /**
      * Receive action

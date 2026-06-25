@@ -46,6 +46,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoBluetoothBinding;
 import com.adam.app.demoset.utils.UIUtils;
@@ -103,8 +104,8 @@ public class DemoBTAct extends AppCompatActivity {
             Utils.info(DemoBTAct.this, "[onReceive@UI receiver]");
 
             String action = intent.getAction();
-            if (Utils.ACTION_SHOW_SNACKBAR.equals(action)) {
-                String msg = intent.getStringExtra(Utils.KEY_MSG);
+            if (DemoAppConstants.ACTION_SHOW_SNACKBAR.equals(action)) {
+                String msg = intent.getStringExtra(DemoAppConstants.KEY_SNACKBAR_MSG);
 
                 Snackbar.make(mBinding.getRoot(), "Service status: " + msg, Snackbar.LENGTH_SHORT).show();
 
@@ -224,7 +225,7 @@ public class DemoBTAct extends AppCompatActivity {
 
         // Register snack listener
         String[] uiActions = {
-                Utils.ACTION_SHOW_SNACKBAR,
+                DemoAppConstants.ACTION_SHOW_SNACKBAR,
                 BTReceiver.ACTION_FOUND_BT_DEVICE,
                 BTReceiver.ACTION_UPDATE_BT_BOUND_STATE,
                 ConnectTask.ACTION_UPDATE_CONNECT_INFO,

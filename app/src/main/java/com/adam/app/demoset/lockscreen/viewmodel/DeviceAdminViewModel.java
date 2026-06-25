@@ -27,6 +27,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
  * ViewModel that manages Device Admin actions and console logs.
  */
 public class DeviceAdminViewModel extends ViewModel {
-    public static final String UNKNOWN = "Unknown";
+    public static final String UNKNOWN = DemoAppConstants.UNKNOWN_STATUS;
     private final MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<AdminAction>> mAdminActions = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<String> mNavigation = new MutableLiveData<>(UNKNOWN);

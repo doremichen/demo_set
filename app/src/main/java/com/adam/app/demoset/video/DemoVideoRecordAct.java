@@ -46,8 +46,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoVideoRecordBinding;
-import com.adam.app.demoset.utils.Utils;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.video.viewmodel.VideoRecordViewModel;
 
 import java.io.File;
@@ -248,7 +249,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
             return null;
         }
         
-        Uri contentUri = FileProvider.getUriForFile(this, "com.adam.app.demoset.filemanager.provider", file);
+        Uri contentUri = FileProvider.getUriForFile(this, DemoAppConstants.AUTHORITY_FILE_PROVIDER, file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setDataAndType(contentUri, "video/*");

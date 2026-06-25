@@ -35,6 +35,7 @@ import androidx.work.Data;
 import androidx.work.WorkInfo;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoExecuteTaskBinding;
 import com.adam.app.demoset.utils.UIUtils;
@@ -60,7 +61,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
         this.mViewModel = new ViewModelProvider(this).get(MyViewModel.class);
 
         // update image uri if intent needed
-        String uriStr = this.getIntent().getStringExtra(Utils.THE_SELECTED_IMAGE);
+        String uriStr = this.getIntent().getStringExtra(DemoAppConstants.THE_SELECTED_IMAGE);
         if (!TextUtils.isEmpty(uriStr)) {
             Utils.info(this, "uriStr: " + uriStr);
             Uri ImagUri = Uri.parse(uriStr);
@@ -90,7 +91,7 @@ public class DemoExecuteTaskAct extends AppCompatActivity {
                 if (isFinished) {
                     Data outputData = workInfo.getOutputData();
                     // get output image uri
-                    String OutputImageUriStr = outputData.getString(Utils.THE_SELECTED_IMAGE);
+                    String OutputImageUriStr = outputData.getString(DemoAppConstants.THE_SELECTED_IMAGE);
                     Utils.info(DemoExecuteTaskAct.this, "OutputImageUriStr: " + OutputImageUriStr);
                     // the see file button is visble when the file exists
                     if (!TextUtils.isEmpty(OutputImageUriStr)) {

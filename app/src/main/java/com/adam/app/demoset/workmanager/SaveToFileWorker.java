@@ -35,6 +35,7 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 
 import java.io.FileNotFoundException;
@@ -60,12 +61,12 @@ public class SaveToFileWorker extends Worker {
         Context appCtx = getApplicationContext();
 
         Utils.makeStatusNotification(appCtx, "Saving data!!!");
-        Utils.delay(Utils.DELAY_TIME_MILLIS);
+        Utils.delay(DemoAppConstants.DELAY_TIME_MILLIS);
 
         // get resolver
         ContentResolver resolver = appCtx.getContentResolver();
 
-        String imageUri = getInputData().getString(Utils.THE_SELECTED_IMAGE);
+        String imageUri = getInputData().getString(DemoAppConstants.THE_SELECTED_IMAGE);
         Utils.info(this, "imageUri = " + imageUri);
         try {
             Bitmap picture = BitmapFactory.decodeStream(resolver.openInputStream(Uri.parse(imageUri)));
@@ -82,7 +83,7 @@ public class SaveToFileWorker extends Worker {
 
             // Return output for the temp file
             Data outputData = new Data.Builder()
-                    .putString(Utils.THE_SELECTED_IMAGE, outputUri.toString())
+                    .putString(DemoAppConstants.THE_SELECTED_IMAGE, outputUri.toString())
                     .build();
             Utils.makeStatusNotification(appCtx, "Save success");
             return Result.success(outputData);

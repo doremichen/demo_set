@@ -35,6 +35,8 @@ public final class DemoAppConstants {
     public static final String KEY_MSG = "msg";
     @DemoItem("General")
     public static final String TAG_DEMO_SET = "DemoSet";
+    @DemoItem("General")
+    public static final long DELAY_TIME_MILLIS = 3000L;
 
     // --- Storage Demo Items ---
     @DemoItem("Content Provider")
@@ -78,16 +80,6 @@ public final class DemoAppConstants {
     public static final String ACTION_START_SECUR_SERVICE = "com.adam.app.demo.start.secur_servcie";
     @DemoItem("Service")
     public static final String PERMISSION_SECUR_SERVICE = "com.adam.app.permission.SECUR_SERVICE";
-    @DemoItem("Service")
-    public static final String ITEM_START_SERVICE = "start_service";
-    @DemoItem("Service")
-    public static final String ITEM_STOP_SERVICE = "stop_service";
-    @DemoItem("Service")
-    public static final String ITEM_BIND_SERVICE = "bind_service";
-    @DemoItem("Service")
-    public static final String ITEM_UNBIND_SERVICE = "unbind_service";
-    @DemoItem("Service")
-    public static final String ITEM_SERVICE_REQUEST = "service_request";
 
     @DemoItem("WorkManager")
     public static final String IMAGE_MANIPULATION_WORK_NAME = "image_manipulation_work";
@@ -104,11 +96,11 @@ public final class DemoAppConstants {
     public static final String STATE_SHOWING_CATEGORY = "showing_category";
     @DemoItem("UI/Navigation")
     public static final String STATE_SELECTED_CATEGORY = "selected_category";
-    @DemoItem("UI/Navigation")
-    public static final String ITEM_EXIT = "label_exit";
 
     @DemoItem("UI")
     public static final String ACTION_SHOW_SNACKBAR = "show snackbar";
+    @DemoItem("UI")
+    public static final String KEY_SNACKBAR_MSG = "service status";
     @DemoItem("UI")
     public static final String THE_SELECTED_IMAGE = "The selected image";
 

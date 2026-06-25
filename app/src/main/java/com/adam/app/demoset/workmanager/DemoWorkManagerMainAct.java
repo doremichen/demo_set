@@ -35,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.utils.UIUtils;
 
@@ -97,7 +98,7 @@ public class DemoWorkManagerMainAct extends AppCompatActivity {
             Utils.info(this, "Uri: " + uri.toString());
             // Start execute picture activity
             Intent intent = new Intent(this, DemoExecuteTaskAct.class);
-            intent.putExtra(Utils.THE_SELECTED_IMAGE, uri.toString());
+            intent.putExtra(DemoAppConstants.THE_SELECTED_IMAGE, uri.toString());
             this.startActivity(intent);
         }
     }
