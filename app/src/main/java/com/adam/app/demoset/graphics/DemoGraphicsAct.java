@@ -22,6 +22,7 @@
 
 package com.adam.app.demoset.graphics;
 
+import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,27 +30,98 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.graphics.strategies.CubeStrategy;
 import com.adam.app.demoset.graphics.viewmodel.GraphicsViewModel;
 import com.adam.app.demoset.databinding.ActivityDemoGraphicsBinding;
 import com.adam.app.demoset.utils.UIUtils;
 
 /**
- * Activity for Advanced Graphics demo using MVVM and DataBinding.
+ * Activity focusing solely on UI observation and system lifecycle forwarding.
  */
 public class DemoGraphicsAct extends AppCompatActivity {
+
+    private ActivityDemoGraphicsBinding mBinding;
+    private GraphicsViewModel mViewModel;
+    private boolean mIsGLRendererSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        ActivityDemoGraphicsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_demo_graphics);
-        GraphicsViewModel viewModel = new ViewModelProvider(this).get(GraphicsViewModel.class);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_graphics);
+        mViewModel = new ViewModelProvider(this).get(GraphicsViewModel.class);
         
-        binding.setVm(viewModel);
-        binding.setLifecycleOwner(this);
+        mBinding.setVm(mViewModel);
+        mBinding.setLifecycleOwner(this);
 
-        UIUtils.applySystemBarInsets(binding.getRoot(), binding.appBarWrapper);
+        // Observe strategy changes to update UI components
+        mViewModel.getActiveStrategy().observe(this, activeStrategy -> {
+            if (activeStrategy instanceof CubeStrategy) {
+                setupGLPipeline((CubeStrategy) activeStrategy);
+            } else {
+                mBinding.graphicsView.setStrategy(activeStrategy);
+            }
+        });
 
-        binding.btnExit.setOnClickListener(v -> finish());
+        // Observe animation switch directly for 2D view
+        mViewModel.getIsAnimating().observe(this, isAnimating -> {
+            mBinding.graphicsView.setAnimating(isAnimating);
+        });
+
+        UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
+        mBinding.btnExit.setOnClickListener(v -> finish());
+    }
+
+    private void setupGLPipeline(CubeStrategy strategy) {
+        if (!mIsGLRendererSet) {
+            mBinding.glSurfaceView.setEGLContextClientVersion(3);
+            mBinding.glSurfaceView.setRenderer(strategy.getRenderer());
+            mBinding.glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+            mIsGLRendererSet = true;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        
+        // Notify VM first to stop all animators (2D & 3D)
+        if (mViewModel != null) {
+            mViewModel.onActivityPause();
+        }
+
+        // Suspend GL rendering
+        if (mBinding != null && mIsGLRendererSet) {
+            mBinding.glSurfaceView.onPause();
+        }
+        
+        // Clear focus to reduce IME (keyboard) warnings on Samsung devices
+        if (mBinding != null) {
+            mBinding.getRoot().clearFocus();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Fix for NPE: GLSurfaceView requires setRenderer() before onResume()
+        if (mBinding != null && mIsGLRendererSet) {
+            mBinding.glSurfaceView.onResume();
+        }
+
+        // Notify VM to restore controller state
+        if (mViewModel != null) {
+            mViewModel.onActivityResume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBinding != null) {
+            // Note: Do NOT set renderer to null on GLSurfaceView, it's not supported.
+            // Just clearing binding reference to avoid context leak.
+            mBinding = null;
+        }
     }
 }

@@ -829,10 +829,14 @@
 
     <!-- 進階繪圖範例 -->
     <string name="title_demo_graphics">進階繪圖範例</string>
-    <string name="demo_graphics_instruction_title">進階 Canvas 2D 特效</string>
-    <string name="demo_graphics_instruction">本範例展示了使用 Android Canvas API 的進階 2D 繪圖技術。包含即時路徑動畫、動態著色器 (LinearGradient) 以及數學變換（正弦波與螺旋線）。所有渲染均在自定義 View 中處理，以確保最佳效能並實現對繪製過程的精細控制。</string>
+    <string name="demo_graphics_instruction_title">繪圖引擎與著色器</string>
+    <string name="demo_graphics_instruction">本模組展示了 Android 繪圖技術從 2D Canvas 到 3D 硬體加速的演進。
+        \n\n1. <b>2D Canvas</b>：路徑動畫與線性著色器。
+        \n2. <b>3D 引擎 (OpenGL/Vulkan)</b>：使用 GLSurfaceView 與可編程管線的硬體加速渲染。
+        \n\n切換特效以比較不同的渲染技術與效能表現。</string>
     <string name="demo_graphics_toggle_anim">切換動畫</string>
     <string name="demo_graphics_switch_effect">切換特效</string>
-    <string name="demo_graphics_effect_wave">波浪特效</string>
-    <string name="demo_graphics_effect_spiral">螺旋特效</string>
+    <string name="demo_graphics_effect_wave">波浪特效 (2D)</string>
+    <string name="demo_graphics_effect_spiral">螺旋特效 (2D)</string>
+    <string name="demo_graphics_effect_3d">3D 立方體 (GL ES 3.0)</string>
 </resources>

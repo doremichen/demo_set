@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
+        <import type="com.adam.app.demoset.graphics.viewmodel.GraphicsViewModel" />
         <variable
             name="vm"
             type="com.adam.app.demoset.graphics.viewmodel.GraphicsViewModel" />
@@ -75,12 +77,36 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
-                    <com.adam.app.demoset.graphics.view.AdvancedGraphicsView
-                        android:id="@+id/graphics_view"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:isPlaying="@{vm.isAnimating}"
-                        app:effectType="@{vm.effectType}" />
+                        android:layout_height="match_parent">
+
+                        <com.adam.app.demoset.graphics.view.AdvancedGraphicsView
+                            android:id="@+id/graphics_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="@{vm.effectType != GraphicsViewModel.EFFECT_3D ? View.VISIBLE : View.GONE}" />
+
+                        <!-- Hardware Accelerated 3D Container -->
+                        <android.opengl.GLSurfaceView
+                            android:id="@+id/gl_surface_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="@{vm.effectType == GraphicsViewModel.EFFECT_3D ? View.VISIBLE : View.GONE}" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="12dp"
+                            android:background="#80000000"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:text="@{vm.effectType == GraphicsViewModel.EFFECT_3D ? @string/demo_graphics_effect_3d : (vm.effectType == GraphicsViewModel.EFFECT_WAVE ? @string/demo_graphics_effect_wave : @string/demo_graphics_effect_spiral)}"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp" />
+                    </FrameLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>

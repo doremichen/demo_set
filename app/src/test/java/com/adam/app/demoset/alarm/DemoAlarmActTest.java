@@ -38,6 +38,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.alarm.viewmodel.AlarmViewModel;
+import com.adam.app.demoset.utils.DemoAppConstants;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,7 +96,7 @@ public class DemoAlarmActTest {
                 Integer initialCount = viewModel.getAlarmCount().getValue();
                 int baseCount = initialCount != null ? initialCount : 0;
 
-                Intent intent = new Intent(DemoAlarmAct.ACTION_UPDATE_INFO);
+                Intent intent = new Intent(DemoAppConstants.ACTION_UPDATE_ALARM_INFO);
                 // Set package to ensure it targets this app's receivers in some environments
                 intent.setPackage(activity.getPackageName());
                 activity.sendBroadcast(intent);

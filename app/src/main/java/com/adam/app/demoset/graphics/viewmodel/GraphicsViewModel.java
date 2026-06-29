@@ -26,16 +26,36 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.adam.app.demoset.graphics.core.GraphicsController;
+import com.adam.app.demoset.graphics.core.IGraphicsStrategy;
+
 /**
- * ViewModel for Advanced Graphics demo.
+ * ViewModel that owns and directs the GraphicsController.
+ * Acts as the single source of truth for the UI.
  */
 public class GraphicsViewModel extends ViewModel {
 
     public static final int EFFECT_WAVE = 0;
     public static final int EFFECT_SPIRAL = 1;
+    public static final int EFFECT_3D = 2;
 
     private final MutableLiveData<Boolean> isAnimating = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> effectType = new MutableLiveData<>(EFFECT_WAVE);
+    private final MutableLiveData<IGraphicsStrategy> activeStrategy = new MutableLiveData<>();
+    
+    // ViewModel is the creator and owner
+    private final GraphicsController mController = new GraphicsController();
+
+    public GraphicsViewModel() {
+        // ViewModel directs the controller's callbacks back to LiveData
+        mController.setOnEffectChangedListener((type, strategy) -> {
+            effectType.setValue(type);
+            activeStrategy.setValue(strategy);
+        });
+        
+        // Push initial state
+        activeStrategy.setValue(mController.getCurrentStrategy());
+    }
 
     public LiveData<Boolean> getIsAnimating() {
         return isAnimating;
@@ -45,18 +65,52 @@ public class GraphicsViewModel extends ViewModel {
         return effectType;
     }
 
-    public void toggleAnimation() {
-        Boolean current = isAnimating.getValue();
-        isAnimating.setValue(current != null && !current);
+    public LiveData<IGraphicsStrategy> getActiveStrategy() {
+        return activeStrategy;
     }
 
-    public void setEffectType(int type) {
-        effectType.setValue(type);
+    public void toggleAnimation() {
+        Boolean current = isAnimating.getValue();
+        boolean nextState = (current != null && !current);
+        isAnimating.setValue(nextState);
+        mController.setAnimating(nextState);
     }
 
     public void switchEffect() {
         Integer current = effectType.getValue();
         if (current == null) return;
-        setEffectType(current == EFFECT_WAVE ? EFFECT_SPIRAL : EFFECT_WAVE);
+        
+        int nextEffect;
+        if (current == EFFECT_WAVE) {
+            nextEffect = EFFECT_SPIRAL;
+        } else if (current == EFFECT_SPIRAL) {
+            nextEffect = EFFECT_3D;
+        } else {
+            nextEffect = EFFECT_WAVE;
+        }
+        
+        mController.setEffectType(nextEffect);
+    }
+
+    /**
+     * Directed from Activity to ensure controller state syncs with OS lifecycle.
+     */
+    public void onActivityResume() {
+        Boolean animating = isAnimating.getValue();
+        mController.setAnimating(animating != null && animating);
+    }
+
+    /**
+     * Directed from Activity to ensure background tasks stop.
+     */
+    public void onActivityPause() {
+        mController.setAnimating(false);
+        isAnimating.setValue(false); // Sync LiveData to stop 2D animator immediately
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mController.release();
     }
 }
