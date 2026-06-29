@@ -56,7 +56,10 @@ Native Layer
 * Material Design Components
 * DataBinding / ViewBinding
 * Animation & GIF rendering
-* **Advanced Graphics**: High-performance 2D rendering using the **Android Canvas API**, featuring real-time path animations, dynamic shaders (`LinearGradient`), and mathematical transformations (Sine waves & Spirals).
+* **Advanced Graphics (Strategy Pattern)**: A unified graphics engine demonstrating the transition from 2D Canvas to 3D hardware acceleration:
+    * **2D Canvas**: Real-time path animations, dynamic shaders (`LinearGradient`), and mathematical transformations (Sine waves & Spirals).
+    * **3D OpenGL ES**: Hardware-accelerated rendering using **OpenGL ES 3.0**, featuring programmable pipelines and rotating primitive geometries.
+    * **Engine Orchestration**: Centralized **GraphicsController** and **Strategy Pattern** implementation for seamless effect switching and efficient lifecycle-aware resource cleanup.
 * Floating Dialog / Floating Window
 * Table Layout rendering
 * Compose UI
@@ -214,7 +217,7 @@ The Security module demonstrates enterprise-level data protection strategies:
 # 📌 Future Roadmap
 
 Planned upgrades:
-* **Advanced Graphics**: Integration with Vulkan or OpenGL ES for 3D rendering.
+* **Vulkan Integration**: Exploring Vulkan API for low-overhead graphics processing.
 
 ---
 
