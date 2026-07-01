@@ -35,41 +35,56 @@ import com.adam.app.demoset.utils.UIUtils;
 
 import java.util.ArrayList;
 
+/**
+ * DemoJniAct - A demonstration of JNI (Java Native Interface) implementation.
+ *
+ * Refactored using Clean Architecture Principles:
+ * - Domain Layer: Defines JniRepository interface and UseCases (GetHello, PerformCalculation).
+ * - Data Layer: Implements JniRepository via JniRepositoryImpl and NativeUtils (JNI Bridge).
+ * - Presentation Layer: JNIViewModel interacts with UseCases to handle UI logic and state.
+ *
+ * Features:
+ * 1. Basic String retrieval from Native layer.
+ * 2. Static/Instance data callbacks from Native to Java.
+ * 3. Native calculations (passing parameters).
+ * 4. Fetching system information directly from C++ layer.
+ */
 public class DemoJniAct extends AppCompatActivity {
 
-    // view binding
+    // View binding
     private ActivityDemoJniBinding mBinding;
-    // view model
+    // View model
     private JNIViewModel mViewModel;
 
-    // log adapter
+    // Log adapter
     private LogAdapter mLogAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // view binding
+        // View binding initialization
         mBinding = ActivityDemoJniBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
         UIUtils.applySystemBarInsets(mBinding.getRoot(), mBinding.appBarWrapper);
 
-        // init view model
+        // Init view model
         mViewModel = new ViewModelProvider(this).get(JNIViewModel.class);
         mBinding.setVm(mViewModel);
         mBinding.setLifecycleOwner(this);
 
-        // binding view model to jni
+        // Binding view model to JNI for callbacks
         NativeUtils.setViewModel(mViewModel);
 
         initRecycler();
-
-        observerLog();
-
+        observeLog();
     }
 
-    private void observerLog() {
+    /**
+     * Observe logs from ViewModel and update RecyclerView
+     */
+    private void observeLog() {
         mViewModel.getLogs().observe(this, logs -> {
             mLogAdapter.submitList(new ArrayList<>(logs), () -> {
                 mBinding.recyclerLog.scrollToPosition(mLogAdapter.getItemCount() - 1);
@@ -77,10 +92,13 @@ public class DemoJniAct extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initialize RecyclerView for logging
+     */
     private void initRecycler() {
         mLogAdapter = new LogAdapter();
 
-        // set layout manager
+        // Set layout manager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         linearLayoutManager.setReverseLayout(true);

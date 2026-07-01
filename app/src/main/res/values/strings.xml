@@ -852,4 +852,7 @@
     <string name="demo_graphics_effect_wave">Wave Effect (2D)</string>
     <string name="demo_graphics_effect_spiral">Spiral Effect (2D)</string>
     <string name="demo_graphics_effect_3d">3D Cube (GL ES 3.0)</string>
+    <string name="demo_jni_say_hello_btn">Say Hello</string>
+    <string name="demo_jni_calculate_btn">Calc (5+7)</string>
+    <string name="demo_jni_sys_info_btn">Sys Info</string>
 </resources>

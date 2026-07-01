@@ -162,23 +162,81 @@
                 android:layout_marginBottom="8dp">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSayHello"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/demo_jni_say_hello_btn"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:paddingHorizontal="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:onClick="@{() -> vm.sayHello()}"
+                    app:cornerRadius="8dp"
+                    app:backgroundTint="#4CAF50"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCalculate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="4dp"
+                    android:text="@string/demo_jni_calculate_btn"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:paddingHorizontal="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:onClick="@{() -> vm.performCalculation(5, 7)}"
+                    app:cornerRadius="8dp"
+                    app:backgroundTint="#2196F3"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSysInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="52dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/demo_jni_sys_info_btn"
+                    android:textAllCaps="false"
+                    android:textSize="13sp"
+                    android:paddingHorizontal="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:onClick="@{() -> vm.fetchSystemInfo()}"
+                    app:cornerRadius="8dp"
+                    app:backgroundTint="#9C27B0"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnObjectCallback"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/demo_jni_instance_callback_native_obj_btn"
                     android:onClick="@{() -> vm.objectCallback()}"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="8dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnClassCallback"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
                     android:text="@string/demo_jni_static_callback_native_class_btn"
                     android:onClick="@{() -> vm.classCallback()}"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="8dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -190,7 +248,7 @@
                     android:id="@+id/btnClearObject"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="@string/demo_jni_clear_object_btn"
@@ -202,7 +260,7 @@
                     android:id="@+id/btnClearClass"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="@string/demo_jni_clear_class_btn"
                     android:textColor="#FF8A80"

@@ -22,79 +22,90 @@
 
 package com.adam.app.demoset.jnidemo;
 
+import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;
 import com.adam.app.demoset.utils.Utils;
 
-import com.adam.app.demoset.jnidemo.viewmodel.JNIViewModel;
-
+/**
+ * NativeUtils - Acts as the Infrastructure/Data Layer Bridge for JNI operations.
+ * This class is the lowest level of the Clean Architecture in this module,
+ * responsible for direct communication with the native shared library.
+ */
 public class NativeUtils {
 
-
-
-    // jni view model
-    private static JNIViewModel mViewModel;
-
-
-    // Load the jni shared lib
+    // Load the native shared library
     static {
-        System.loadLibrary("demo-jni");
+        System.loadLibrary("demo-native");
     }
 
-    /**
-     * As following information are triggered by native layer
-     */
+    // ViewModel instance for UI callbacks
+    private static JNIViewModel mViewModel;
+
+    // Fields updated by the native layer via reflection
     private String mDataFromNative = "unChange";
     public static boolean sDataFromNative = false;
 
     private NativeUtils() {
+        // Private constructor for singleton
     }
 
+    /**
+     * Get instance of NativeUtils (Singleton)
+     * @return NativeUtils instance
+     */
     public static NativeUtils newInstance() {
         return Helper.INSTANCE;
     }
 
     /**
-     * set view model
+     * Set the ViewModel to receive callbacks from JNI
+     * @param viewModel The JNIViewModel instance
      */
     public static void setViewModel(JNIViewModel viewModel) {
         mViewModel = viewModel;
     }
 
+    /**
+     * Static callback triggered by the native layer
+     * @param message Message sent from native code
+     */
     private static void notifyClazz(String message) {
-        Utils.info(NativeUtils.class, "notify is called and message: " + message);
-        if (mViewModel == null) {
-            throw new NullPointerException("mViewModel is null");
+        Utils.info(NativeUtils.class, "Native callback (Static): " + message);
+        if (mViewModel != null) {
+            mViewModel.updateClazzData(sDataFromNative, message);
         }
-        mViewModel.updateClazzData(sDataFromNative, message);
-
-// legacy        DemoJNIAct.notifyUI(sDataFromNative, message);
-
     }
 
+    /**
+     * Instance callback triggered by the native layer
+     * @param message Message sent from native code
+     */
     private void notifyObj(String message) {
-        Utils.info(this, "notify is called and message: " + message);
- // legacy       DemoJNIAct.notifyUI(mDataFromNative, message);
-        if (mViewModel == null) {
-            throw new NullPointerException("mViewModel is null");
+        Utils.info(this, "Native callback (Instance): " + message);
+        if (mViewModel != null) {
+            mViewModel.updateObjData(mDataFromNative, message);
         }
-        mViewModel.updateObjData(mDataFromNative, message);
     }
 
-    // --- native function ---
+    // --- Native Method Declarations ---
+
     public native String sayHello();
 
     public native void objectCallBack();
 
     public native void clearObjData();
 
+    public native int calculate(int a, int b);
+
+    public native String getSystemInfo();
+
     public static native void clearClazzData();
 
     public static native void classCallBack();
 
     /**
-     * Singleton Bill Pugh
+     * Singleton helper using Bill Pugh initialization
      */
     private static class Helper {
-
-        public static final NativeUtils INSTANCE = new NativeUtils();
+        private static final NativeUtils INSTANCE = new NativeUtils();
     }
 }

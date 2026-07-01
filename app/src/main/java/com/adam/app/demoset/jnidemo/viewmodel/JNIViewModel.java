@@ -26,74 +26,106 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.adam.app.demoset.jnidemo.NativeUtils;
+import com.adam.app.demoset.jnidemo.domain.usecase.JniUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JNIViewModel - Refactored to follow GRASP Principles (Creator & Information Expert).
+ * 
+ * The ViewModel is now completely decoupled from Repository implementations.
+ * It interacts solely with the JniUseCase enum, which manages its own dependencies.
+ */
 public class JNIViewModel extends ViewModel {
-    // live date: logs
-    private MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
+    
+    // LiveData for logging messages to the UI
+    private final MutableLiveData<List<String>> mLogs = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<String>> getLogs() {
         return mLogs;
     }
 
-    // live data: object state
-    private MutableLiveData<String> mObjData = new MutableLiveData<>("mDataFromNative : unChange");
+    // LiveData for instance-based data from Native
+    private final MutableLiveData<String> mObjData = new MutableLiveData<>("mDataFromNative : unChange");
     public LiveData<String> getObjData() {
         return mObjData;
     }
 
-    // live data: class state
-    private MutableLiveData<String> mClazzData = new MutableLiveData<>("sDataFromNative : false");
+    // LiveData for class-based (static) data from Native
+    private final MutableLiveData<String> mClazzData = new MutableLiveData<>("sDataFromNative : false");
     public LiveData<String> getClazzData() {
         return mClazzData;
     }
 
-    // NativeUtils
-    private NativeUtils mNativeUtils = NativeUtils.newInstance();
+    public JNIViewModel() {
+        // No repository initialization needed here.
+        // JniUseCase handles its own Information Expert / Creator responsibilities.
+    }
 
     /**
-     * addLog
-     * @param msg String
+     * Appends a message to the UI log list.
+     * @param msg The message to log.
      */
     public void addLog(String msg) {
         List<String> logs = mLogs.getValue();
-        logs.add(msg);
-        mLogs.setValue(logs);
+        if (logs != null) {
+            logs.add(msg);
+            mLogs.setValue(logs);
+        }
     }
 
-    // --- jni callback update ---
+    // --- Native Callback Methods ---
+
+    /**
+     * Updates instance data when notified by Native layer.
+     */
     public void updateObjData(String data, String message) {
         mObjData.setValue("mDataFromNative : " + data);
         addLog(message);
     }
 
+    /**
+     * Updates class data when notified by Native layer.
+     */
     public void updateClazzData(boolean data, String message) {
         mClazzData.setValue("sDataFromNative : " + data);
         addLog(message);
     }
 
+    // --- UI Action Methods (Using Unified JniUseCase Enum) ---
+    
+    public void sayHello() {
+        String result = (String) JniUseCase.GET_HELLO.execute();
+        addLog("Native Response: " + result);
+    }
 
-    // --- Buttons  action ---
     public void objectCallback() {
-        addLog("objectCallback is called");
-        mNativeUtils.objectCallBack();
+        addLog("Action: Triggering instance-level callback...");
+        JniUseCase.TRIGGER_OBJECT_CALLBACK.execute();
     }
 
     public void classCallback() {
-        addLog("classCallback is called");
-        NativeUtils.classCallBack();
+        addLog("Action: Triggering class-level callback...");
+        JniUseCase.TRIGGER_CLASS_CALLBACK.execute();
     }
 
     public void clearObject() {
-        addLog("clearObject is called");
-        mNativeUtils.clearObjData();
+        addLog("Action: Resetting instance data...");
+        JniUseCase.CLEAR_OBJECT.execute();
     }
 
     public void clearClass() {
-        addLog("clearClass is called");
-        NativeUtils.clearClazzData();
+        addLog("Action: Resetting class data...");
+        JniUseCase.CLEAR_CLASS.execute();
     }
-
+    
+    public void performCalculation(int a, int b) {
+        int result = (int) JniUseCase.PERFORM_CALCULATION.execute(a, b);
+        addLog("JNI Calculation: " + a + " + " + b + " = " + result);
+    }
+    
+    public void fetchSystemInfo() {
+        String info = (String) JniUseCase.GET_SYSTEM_INFO.execute();
+        addLog("System Architecture: " + info);
+    }
 }

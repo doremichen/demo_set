@@ -5,7 +5,7 @@ project(DemoJni)
 
 # Specifies build list and target
 add_library( # target name
-             demo-jni
+             demo-native
 
              # set lib type
              SHARED
@@ -25,10 +25,10 @@ find_library( # Define name of variable
               log)
 
 target_link_libraries( # target
-                       demo-jni
+                       demo-native
 
                        # link lib list
                        ${log-lib})
 
 # Support 16 KB page sizes
-target_link_options(demo-jni PRIVATE "-Wl,-z,max-page-size=16384")
+target_link_options(demo-native PRIVATE "-Wl,-z,max-page-size=16384")

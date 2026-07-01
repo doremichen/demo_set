@@ -853,4 +853,7 @@
     <string name="demo_graphics_effect_wave">波浪特效 (2D)</string>
     <string name="demo_graphics_effect_spiral">螺旋特效 (2D)</string>
     <string name="demo_graphics_effect_3d">3D 立方體 (GL ES 3.0)</string>
+    <string name="demo_jni_say_hello_btn">JNI 招呼</string>
+    <string name="demo_jni_calculate_btn">計算(5+7)</string>
+    <string name="demo_jni_sys_info_btn">系統資訊</string>
 </resources>

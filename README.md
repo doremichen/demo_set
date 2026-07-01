@@ -159,18 +159,21 @@ The ML Kit module showcases an optimized **State-Driven Strategy Pattern** integ
 
 # 🔥 Highlight: JNI Architecture Demo
 
-The JNI module demonstrates:
+The JNI module demonstrates a full **Clean Architecture** implementation for cross-layer communication:
 
-* Native ↔ Java method calls
-* Static vs Instance field access
-* Callback from C++ to Java
-* Integration with **MVVM architecture**
+* **Domain-Driven Design**: Business logic is encapsulated in the `JniUseCase` enumeration, ensuring single-responsibility and easy extension.
+* **GRASP Principles**: Implements **Creator** and **Information Expert** patterns by allowing the Use Case layer to manage Repository lifecycles.
+* **Native ↔ Java Interop**:
+    * Static vs Instance field access via JNI reflection.
+    * Parameterized calculations performed in C++.
+    * System property retrieval (`ro.product.cpu.abi`) from the Native layer.
+* **Architecture Flow**:
 
 ```
-JNI → NativeUtils → ViewModel → LiveData → UI
+JNI (Native) → Data (NativeUtils/Repository) → Domain (Use Cases) → UI (ViewModel)
 ```
 
-This ensures a **clean separation of concerns** and avoids tight coupling with Activity.
+This ensures a **clean separation of concerns**, making the JNI logic testable and independent of the Android UI framework.
 
 ---
 
@@ -233,7 +236,7 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
 
 *   **Dependency Injection (Hilt)**: Migration from manual DI to **Google Hilt** to standardize component lifecycles and simplify dependency management across modules.
-*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic from the Data and UI layers, enhancing testability.
+*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic from the Data and UI layers. (✅ Partially implemented in JNI module).
 *   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds, build time optimization, and encapsulated feature ownership.
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks** to ensure performance and UI stability.
 
