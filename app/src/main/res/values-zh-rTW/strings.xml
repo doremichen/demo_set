@@ -497,6 +497,10 @@
     <!-- compose ui -->
     <!-- 標題 -->
     <string name="demo_compose_title">Compose 服務監控</string>
+    <string name="demo_compose_instruction_title">Jetpack Compose 技術實踐 (進階)</string>
+    <string name="demo_compose_instruction_content"><![CDATA[• 狀態單向流 (UDF) 控制服務生命週期\n• LazyColumn 配合穩定 Key 值優化列表\n• 響應式佈局 (BoxWithConstraints) 實現跨設備適配\n• Material 3 動態色彩與自定義動畫指示器]]></string>
+    <string name="demo_compose_logs_label">日誌</string>
+    <string name="demo_compose_quick_controls_label">快速控制</string>
 
     <!-- 狀態 -->
     <string name="demo_compose_service_running">服務執行中：</string>
@@ -521,6 +525,16 @@
     <string name="demo_compose_log_send">指令已送出</string>
     <string name="demo_compose_service_status_label">服務狀態</string>
     <string name="demo_compose_controls_title">控制</string>
+
+    <!-- Flow Lab -->
+    <string name="demo_flow_lab_title">現代 Flow 實驗室</string>
+    <string name="demo_flow_event_logs">事件日誌</string>
+    <string name="demo_flow_counter_format">計數器：%1$d</string>
+    <string name="demo_flow_toast_msg">來自 SharedFlow 的即時訊息！時間：%1$s</string>
+    <string name="demo_flow_log_increment">增加計數</string>
+    <string name="demo_flow_log_event">觸發 Toast 事件</string>
+    <string name="demo_flow_log_clear">清除日誌</string>
+    <string name="demo_flow_log_toast_received">收到 Toast 事件：%1$s</string>
     <string name="demo_handlerthread_demo_title">HandlerThread 技術演示</string>
     <string name="demo_handlerthread_demo_instruction">本單元展示 Android HandlerThread 的核心應用。透過在背景執行緒建立 Looper，實現非同步任務處理並安全地回傳數據至 UI 執行緒。</string>
     <string name="demo_handlerthread_task_procedure_times">背景任務進度計數</string>

@@ -30,48 +30,60 @@ import com.adam.app.demoset.composeui.model.LogEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * ViewModel for the DemoCompose UI, managing the state of a simulated service.
+ */
 class DemoComposeViewModel : ViewModel() {
-    // state flow: ui state
+
+    // UI State exposed as a StateFlow for the Compose UI to collect.
     private val _uiState = MutableStateFlow(DemoUiState())
     val uiState: StateFlow<DemoUiState> = _uiState
 
+    /**
+     * Simulates starting the service.
+     */
     fun startService() {
         update { state -> state.copy(isServiceRunning = true) }
         addLog(R.string.demo_compose_log_start)
     }
 
+    /**
+     * Simulates stopping the service.
+     */
     fun stopService() {
         update { state -> state.copy(isServiceRunning = false) }
         addLog(R.string.demo_compose_log_stop)
     }
 
+    /**
+     * Simulates binding to the service.
+     */
     fun bindService() {
         update { state -> state.copy(isBound = true) }
         addLog(R.string.demo_compose_log_bind)
     }
 
+    /**
+     * Simulates unbinding from the service.
+     */
     fun unbindService() {
         update { state -> state.copy(isBound = false) }
         addLog(R.string.demo_compose_log_unbind)
     }
 
     /**
-     * add log
+     * Adds a log entry to the UI state.
      */
     private fun addLog(@StringRes resId: Int) {
-        update { state -> state.copy(logs = listOf(
-            LogEntry(
-                resId = resId
-            )
-        ) + state.logs) }
+        update { state -> 
+            state.copy(logs = listOf(LogEntry(resId = resId)) + state.logs) 
+        }
     }
 
     /**
-     * update service running state
+     * Helper to update the UI state atomically.
      */
     private fun update(block: (DemoUiState) -> DemoUiState) {
         _uiState.value = block(_uiState.value)
     }
-
-
 }

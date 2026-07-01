@@ -495,6 +495,10 @@
     <!-- compose ui -->
     <!-- Title -->
     <string name="demo_compose_title">Compose Service Monitor</string>
+    <string name="demo_compose_instruction_title">Jetpack Compose Practice (Advanced)</string>
+    <string name="demo_compose_instruction_content"><![CDATA[• Unidirectional Data Flow (UDF) for Service lifecycle\n• Optimized LazyColumn with stable keys\n• Adaptive Layout (BoxWithConstraints) for cross-device support\n• Material 3 Dynamic Color & custom animation indicators]]></string>
+    <string name="demo_compose_logs_label">Logs</string>
+    <string name="demo_compose_quick_controls_label">Quick Controls</string>
 
     <!-- State -->
     <string name="demo_compose_service_running">Service Running: </string>
@@ -519,6 +523,16 @@
     <string name="demo_compose_log_send">Command Sent</string>
     <string name="demo_compose_service_status_label">Service Status</string>
     <string name="demo_compose_controls_title">Controls</string>
+
+    <!-- Flow Lab -->
+    <string name="demo_flow_lab_title">Modern Flow Lab</string>
+    <string name="demo_flow_event_logs">Event Logs</string>
+    <string name="demo_flow_counter_format">Counter: %1$d</string>
+    <string name="demo_flow_toast_msg">Instant message from SharedFlow! Time: %1$s</string>
+    <string name="demo_flow_log_increment">Increment counter</string>
+    <string name="demo_flow_log_event">Trigger toast event</string>
+    <string name="demo_flow_log_clear">Clear log</string>
+    <string name="demo_flow_log_toast_received">Toast Event Received: %1$s</string>
     <string name="demo_handlerthread_demo_title">HandlerThread Tech Demo</string>
     <string name="demo_handlerthread_demo_instruction">This section demonstrates the core application of Android HandlerThread. By establishing a Looper in the background thread, asynchronous task processing is achieved and data is safely sent back to the UI thread.</string>
     <string name="demo_handlerthread_task_procedure_times">Background task progress count</string>

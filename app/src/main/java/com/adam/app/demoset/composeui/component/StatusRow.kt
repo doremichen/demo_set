@@ -22,40 +22,60 @@
 
 package com.adam.app.demoset.composeui.component
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.adam.app.demoset.composeui.DemoComposeDimens
 
 @Composable
 fun StatusRow (
     label: String,
     value: Boolean
 ) {
-    val color = if (value)
-        MaterialTheme.colorScheme.primary
-    else
-        MaterialTheme.colorScheme.error
+    // Enhancement: Added color transition animation for a smoother UI feel.
+    val targetColor = if (value) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+    val animatedColor by animateColorAsState(
+        targetValue = targetColor,
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "ColorAnimation"
+    )
 
     Row(
-    modifier = Modifier
-    .fillMaxWidth()
-    .padding(vertical = 4.dp),
-    horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = DemoComposeDimens.ExtraTinyPadding),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            // Enhancement: Added a custom-drawn circular status indicator.
+            Canvas(modifier = Modifier.size(DemoComposeDimens.TinyPadding)) {
+                drawCircle(color = animatedColor)
+            }
+            Spacer(modifier = Modifier.width(DemoComposeDimens.TinyPadding))
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
         Text(
             text = booleanText(value),
-            color = color,
+            color = animatedColor,
             style = MaterialTheme.typography.bodyMedium
         )
     }

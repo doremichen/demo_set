@@ -53,17 +53,21 @@ Native Layer
 
 ## 🔹 UI Demos
 
-* Material Design Components
-* DataBinding / ViewBinding
-* Animation & GIF rendering
+* **Jetpack Compose (Advanced)**: Full implementation of declarative UI with:
+    * **Material 3 & Dynamic Color**: Interface automatically adapts to the system's color scheme (Android 12+).
+    * **Adaptive Layouts**: Responsive architecture using `BoxWithConstraints` that dynamically switches between mobile (single column) and tablet/foldable (split-pane) layouts.
+    * **UDF (Unidirectional Data Flow)**: Strict state management using ViewModels and StateFlow.
+* **Modern Flow Lab**: A dedicated environment for **Kotlin Coroutines & Flow**:
+    * **StateFlow**: Used for persistent UI state.
+    * **SharedFlow**: Handling "Hot" streams for one-time events like Toasts or Navigation.
+    * **Lifecycle-aware Collection**: Utilizing `repeatOnLifecycle` for safe data consumption.
 * **Advanced Graphics (Strategy Pattern)**: A unified graphics engine demonstrating the transition from 2D Canvas to 3D hardware acceleration:
     * **2D Canvas**: Real-time path animations, dynamic shaders (`LinearGradient`), and mathematical transformations (Sine waves & Spirals).
     * **3D OpenGL ES**: Hardware-accelerated rendering using **OpenGL ES 3.0**, featuring programmable pipelines and rotating primitive geometries.
-    * **Engine Orchestration**: Centralized **GraphicsController** and **Strategy Pattern** implementation for seamless effect switching and efficient lifecycle-aware resource cleanup.
+* DataBinding / ViewBinding
+* Animation & GIF rendering
 * Floating Dialog / Floating Window
 * Table Layout rendering
-* Compose UI
-* StateFlow / SharedFlow
 * Paging 3
 
 ---
@@ -180,6 +184,16 @@ The Security module demonstrates enterprise-level data protection strategies:
 
 ---
 
+# 🔥 Highlight: Advanced Compose & Modern Flow
+
+The latest updates demonstrate a complete transition to **Modern Android Development (MAD)**:
+
+*   **Responsive Engine**: The Compose UI detects device posture and screen size. On wide-screen devices (Tablets/Foldables), the UI automatically restructures from a vertical stack to a **multi-column Dashboard** for enhanced productivity.
+*   **Reactive Pipeline**: Leveraging the power of `Flow`, the app maintains a "Single Source of Truth" in the ViewModel. UI components react to state changes with zero-latency, while `SharedFlow` ensures side-effects (like Toasts) are only processed when the UI is in the foreground.
+*   **Micro-animations**: Instead of static assets, the UI uses **Compose Canvas** and **Animation APIs** to create light-weight, high-performance visual feedback (e.g., the pulsating service status indicators).
+
+---
+
 # 🏗️ Design Principles
 
 * **Separation of Concerns**
@@ -216,8 +230,12 @@ The Security module demonstrates enterprise-level data protection strategies:
 
 # 📌 Future Roadmap
 
-Planned upgrades:
-* **Vulkan Integration**: Exploring Vulkan API for low-overhead graphics processing.
+Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
+
+*   **Dependency Injection (Hilt)**: Migration from manual DI to **Google Hilt** to standardize component lifecycles and simplify dependency management across modules.
+*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic from the Data and UI layers, enhancing testability.
+*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds, build time optimization, and encapsulated feature ownership.
+*   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks** to ensure performance and UI stability.
 
 ---
 

@@ -23,7 +23,7 @@
 package com.adam.app.demoset.composeui.model
 
 data class LogEntry(
-    val id: Long = System.nanoTime(), // 使用奈秒作為唯一標識
+    val id: Long = System.nanoTime(), // Use nanoTime for uniqueness
     val resId: Int
 )
 

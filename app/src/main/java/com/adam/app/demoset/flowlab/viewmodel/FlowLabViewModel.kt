@@ -35,53 +35,53 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+/**
+ * ViewModel for FlowLab, demonstrating the usage of StateFlow and SharedFlow.
+ */
 class FlowLabViewModel : ViewModel() {
-    // --- StateFlow: used to control UI state ---
+
+    // --- StateFlow: Persistent state used to drive UI (e.g., counters) ---
     private val _counterState = MutableStateFlow(0)
     val counterState: StateFlow<Int> = _counterState.asStateFlow()
 
-    // --- ShareFlow: Used to single event ---
-    private val _toastEvent = MutableSharedFlow<String>()
-    val toastEvent: SharedFlow<String> = _toastEvent.asSharedFlow()
+    // --- SharedFlow: Hot stream for one-time events (e.g., Toast notifications) ---
+    private val _toastEvent = MutableSharedFlow<Long>() // Emits current timestamp
+    val toastEvent: SharedFlow<Long> = _toastEvent.asSharedFlow()
 
-    // --- live data: log ---
-    private val _logs = MutableStateFlow<List<String>>(ArrayList())
+    // --- StateFlow: Log list for the console-like UI ---
+    private val _logs = MutableStateFlow<List<String>>(emptyList())
     val logs: StateFlow<List<String>> = _logs.asStateFlow()
 
-
     /**
-     * add log
+     * Adds a new log entry with a timestamp.
      */
     fun addLog(log: String) {
-        val logs = _logs.value?.toMutableList() ?: ArrayList()
+        val currentLogs = _logs.value.toMutableList()
         val timestamp = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()).format(Date())
-        logs.add("\n[$timestamp] $log")
-        _logs.value = logs
+        currentLogs.add("[$timestamp] $log")
+        _logs.value = currentLogs
     }
 
     /**
-     * increment counter
+     * Increments the internal counter state.
      */
     fun incrementCounter() {
-        addLog("increment counter")
-        _counterState.value = _counterState.value + 1
+        _counterState.value += 1
     }
 
     /**
-     * trigger toast event
+     * Triggers a one-time event via SharedFlow.
      */
     fun triggerEvent() {
-        addLog("trigger toast event")
         viewModelScope.launch {
-            _toastEvent.emit("來自 SharedFlow 的即時訊息！時間：${System.currentTimeMillis()}")
+            _toastEvent.emit(System.currentTimeMillis())
         }
     }
 
     /**
-     * clear log
+     * Clears all log entries.
      */
     fun clearLog() {
-        addLog("clear log")
-        _logs.value = ArrayList()
+        _logs.value = emptyList()
     }
 }
