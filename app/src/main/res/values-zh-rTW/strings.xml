@@ -9,6 +9,7 @@
     <string name="category_ipc">程序通訊</string>
     <string name="category_ai">人工智慧 / 機器學習</string>
     <string name="category_dynamic">動態交付 (Dynamic Delivery)</string>
+    <string name="category_performance">效能與診斷</string>
     <!-- title string -->
     <string name="title_demo_shutdown">關機範例</string>
     <string name="title_demo_file_expore">檔案瀏覽範例</string>

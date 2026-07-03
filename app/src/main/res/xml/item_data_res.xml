@@ -298,18 +298,18 @@
         app:clsname="com.adam.app.demoset.shutdown.DemoShutdownActivity"
         app:pkgname="com.adam.app.demoset"/>
 
-    <!-- Performance -->
-    <data app:category="@string/category_system"
+    <!-- Performance & Diagnostics -->
+    <data app:category="@string/category_performance"
         app:titleRes="@string/title_demo_leakcanary"
         app:clsname="com.adam.app.demoset.performance.presentation.leak.LeakDemoActivity"
         app:pkgname="com.adam.app.demoset"/>
 
-    <data app:category="@string/category_system"
+    <data app:category="@string/category_performance"
         app:titleRes="@string/title_demo_startup"
         app:clsname="com.adam.app.demoset.performance.presentation.startup.StartupDemoActivity"
         app:pkgname="com.adam.app.demoset"/>
 
-    <data app:category="@string/category_system"
+    <data app:category="@string/category_performance"
         app:titleRes="@string/title_demo_benchmark"
         app:clsname="com.adam.app.demoset.performance.presentation.benchmark.BenchmarkDemoActivity"
         app:pkgname="com.adam.app.demoset"/>

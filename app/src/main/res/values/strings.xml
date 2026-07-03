@@ -9,6 +9,7 @@
     <string name="category_ipc">IPC</string>
     <string name="category_ai">AI / ML</string>
     <string name="category_dynamic">Dynamic Delivery</string>
+    <string name="category_performance">Performance &amp; Diagnostics</string>
     <!-- title string-->
     <string name="title_demo_shutdown">Demo Shutdown</string>
     <string name="title_demo_file_expore">Demo FileExplore</string>
