@@ -1,0 +1,50 @@
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.google.hilt)
+}
+
+android {
+    namespace 'com.adam.app.demoset.sysmonitor'
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+    
+    // Hilt
+    implementation libs.hilt.android
+    annotationProcessor libs.hilt.compiler
+
+    // Lifecycle
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.livedata.ktx
+
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+}

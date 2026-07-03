@@ -843,6 +843,7 @@
     <string name="power_msg_system_intent_denied">系統 Intent 執行失敗：需要 android.permission.SHUTDOWN 權限 (僅限系統 App)。</string>
 
     <!-- 進階繪圖範例 -->
+    <string name="title_demo_sys_monitor">系統監控儀表板 (模組化展示)</string>
     <string name="title_demo_graphics">進階繪圖範例</string>
     <string name="demo_graphics_instruction_title">繪圖引擎與著色器</string>
     <string name="demo_graphics_instruction">本模組展示了 Android 繪圖技術從 2D Canvas 到 3D 硬體加速的演進。

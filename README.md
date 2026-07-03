@@ -44,6 +44,19 @@ Native Layer
 
 # 🧩 Feature Modules
 
+## 📊 System Monitor (Modularization Strategy)
+
+* **Feature-based Modularization**: A standalone Android Library module (`:features:sysmonitor`) demonstrating how to decouple features from the main app.
+* **Full Clean Architecture**:
+    * **Domain Layer**: Contains pure business logic and contracts (`UseCase`, `Repository Interface`).
+    * **Data Layer**: Direct interaction with Android System APIs (`BatteryManager`, `StatFs`, `ActivityManager`).
+    * **Presentation Layer**: Reactive UI using **DataBinding** and **HiltViewModel**.
+* **System Insights**: Real-time monitoring of **Battery Level**, **Internal Storage**, and **Memory Utilization**.
+* **Modern UI/UX**:
+    * **FitsSystemWindows**: Full support for edge-to-edge display and system bar insets.
+    * **Material 3 Design**: Card-based layout with elevation and real-time progress indicators.
+    * **I18n & Dark Mode**: Full support for English/Traditional Chinese and adaptive system themes.
+
 ## 🔐 Android Security (Encryption)
 
 * **Device Administrator**: Demonstrates requesting elevated privileges to perform system-level tasks like immediate screen locking and credential confirmation via **DevicePolicyManager**.
@@ -147,6 +160,70 @@ Native Layer
 * Flashlight control
 * CameraX API (Modern lifecycle-aware)
 * **USB Host / Mass Storage (OTG)**: File management on external USB drives using `libaums`.
+
+---
+
+# 🔥 Highlight: Modularization Strategy vs. Dynamic Feature
+
+The project demonstrates two distinct modularization approaches to handle scale and delivery requirements:
+
+| Feature | **System Monitor** (`:features:sysmonitor`) | **Dynamic Feature** (`:features:dynamic_feature`) |
+| :--- | :--- | :--- |
+| **Plugin Type** | `com.android.library` (Android Library) | `com.android.dynamic-feature` |
+| **Delivery** | **Static Integration**: Compiled into the main APK/Bundle. Available immediately upon installation. | **On-Demand**: Downloaded from Play Store at runtime. Reduces initial APK size. |
+| **Dependency** | `:app` depends on `:features:sysmonitor`. | `:features:dynamic_feature` depends on `:app` (Reverse). |
+| **Primary Goal** | Compilation speed, code visibility, and architectural decoupling (Lego-brick approach). | Storage optimization and modular feature roll-out. |
+| **Tech Stack** | Java, Hilt, Clean Architecture, UseCases. | Kotlin, Play Core SplitCompat, AAB. |
+
+---
+
+# 🛠️ Gradle Configuration Notes
+
+To ensure proper integration of these modular strategies, specific Gradle configurations are required:
+
+### 1. Static Modularization (`:features:sysmonitor`)
+* **`app/build.gradle`**: Must explicitly declare a dependency on the library module.
+  ```gradle
+  dependencies {
+      implementation project(':features:sysmonitor')
+  }
+  ```
+* **`features:sysmonitor/build.gradle`**: Uses the standard library plugin.
+  ```gradle
+  plugins {
+      id 'com.android.library'
+  }
+  ```
+
+### 2. Dynamic Delivery (`:features:dynamic_feature`)
+* **`app/build.gradle`**: Must register the dynamic feature module using the `dynamicFeatures` property.
+  ```gradle
+  android {
+      // ...
+      dynamicFeatures = [':features:dynamic_feature']
+  }
+  ```
+* **`features:dynamic_feature/build.gradle`**: Uses the specialized dynamic-feature plugin and **must depend on the app module** (Dependency Inversion).
+  ```gradle
+  plugins {
+      id 'com.android.dynamic-feature'
+  }
+  dependencies {
+      implementation project(':app')
+  }
+  ```
+
+---
+
+# 🔥 Highlight: Modularization Strategy & System Monitor
+
+The System Monitor module serves as the primary demonstration of the **Modularization Strategy** for scaling large Android projects:
+
+*   **Static Library Integration**: Demonstrates the "Lego-brick" approach where features are developed in isolation as independent modules (`com.android.library`) and statically integrated into the `:app` shell at compile time.
+*   **Encapsulated Logic (DIP)**: The UI layer depends only on the `Domain` layer interfaces. The concrete implementation is hidden in the `Data` layer and provided via **Hilt Dependency Injection**, preventing leaking system API details into the ViewModel.
+*   **UseCase Pattern**: Business logic is abstracted into `GetSystemStatusUseCase`, ensuring the ViewModel remains a thin coordinator between the Domain and UI.
+*   **Zero Magic Numbers**: Clean coding standards with named constants for all system intervals, conversion factors, and data formats.
+*   **Robust Resource Handling**: Carefully handled `ColorStateList` and `Theme` attributes to prevent inflation crashes across different OEM Android skins (e.g., Samsung OneUI).
 
 ---
 
@@ -257,7 +334,7 @@ Planned upgrades to align with **Modern Android Development (MAD)** standards an
 
 *   **Dependency Injection (Hilt)**: Standardizing component lifecycles and simplifying dependency management (✅ Implemented in Bluetooth/BLE module).
 *   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth & JNI modules).
-*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership.
+*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership. (✅ Implemented in System Monitor module).
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 
 ---

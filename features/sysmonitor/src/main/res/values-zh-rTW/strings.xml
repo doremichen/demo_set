@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">系統監控</string>
+    <string name="sys_monitor_title">系統狀態儀表板</string>
+    <string name="battery_level">電池電量：</string>
+    <string name="memory_usage">記憶體使用率：</string>
+    <string name="storage_label">儲存空間</string>
+    <string name="storage_usage">儲存空間使用率：</string>
+    <string name="last_update">最後更新日期：</string>
+    <string name="sys_monitor_description">此儀表板提供裝置系統健康狀況的即時資訊，包括電池狀態與記憶體使用率。本功能展示了模組化策略，將系統層級邏輯與 UI 層完全隔離。</string>
+    <string name="battery_label">電池</string>
+    <string name="memory_label">記憶體</string>
+</resources>

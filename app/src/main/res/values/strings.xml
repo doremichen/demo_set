@@ -842,6 +842,7 @@
     <string name="power_msg_system_intent_denied">System Intent failed: android.permission.SHUTDOWN required. (System App only)</string>
 
     <!-- Advanced Graphics -->
+    <string name="title_demo_sys_monitor">System Monitor (Modularization)</string>
     <string name="title_demo_graphics">Advanced Graphics</string>
     <string name="demo_graphics_instruction_title">Graphics Engine &amp; Shaders</string>
     <string name="demo_graphics_instruction">This module demonstrates the evolution of Android graphics from 2D Canvas to 3D hardware acceleration.

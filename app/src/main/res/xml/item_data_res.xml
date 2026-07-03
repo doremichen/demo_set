@@ -9,6 +9,12 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_service"
         app:clsname="com.adam.app.demoset.demoService.DemoServiceActivity"
         app:pkgname="com.adam.app.demoset"/>
@@ -17,6 +23,12 @@
     <data app:category="@string/category_ui"
         app:titleRes="@string/title_demo_animation"
         app:clsname="com.adam.app.demoset.animation.DemoGifAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -47,6 +59,12 @@
     <data app:category="@string/category_hardware"
         app:titleRes="@string/title_demo_ble"
         app:clsname="com.adam.app.demoset.bluetooth.view.DemoBLEActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -94,6 +112,12 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_alarm"
         app:clsname="com.adam.app.demoset.alarm.DemoAlarmAct"
         app:pkgname="com.adam.app.demoset"/>
@@ -102,6 +126,12 @@
     <data app:category="@string/category_ipc"
         app:titleRes="@string/title_demo_binder_Call"
         app:clsname="com.adam.app.demoset.binder.DemoBinderAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -135,8 +165,20 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_system_ui"
         app:clsname="com.adam.app.demoset.systemUI.DemoSysUIAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -147,14 +189,32 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_work_manager_legacy_1"
         app:clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_work_manager_legacy_2"
         app:clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -171,8 +231,20 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_handler_thread"
         app:clsname="com.adam.app.demoset.myHandlerThread.DemoMyHandlerThreadAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -191,6 +263,12 @@
     <data app:category="@string/category_ui"
         app:titleRes="@string/title_demo_binding"
         app:clsname="com.adam.app.demoset.databinding.DemoBindingAct"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
@@ -272,6 +350,12 @@
 
     <!-- System -->
     <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_permission_model"
         app:clsname="com.adam.app.demoset.permissions.PermissionDemoActivity"
         app:pkgname="com.adam.app.demoset"/>
@@ -290,6 +374,12 @@
     <data app:category="@string/category_dynamic"
         app:titleRes="@string/title_demo_dynamic_delivery"
         app:clsname="com.adam.app.demoset.dynamicdelivery.DynamicDeliveryActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
+    <!-- System -->
+    <data app:category="@string/category_system"
+        app:titleRes="@string/title_demo_sys_monitor"
+        app:clsname="com.adam.app.demoset.sysmonitor.view.SysMonitorActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
