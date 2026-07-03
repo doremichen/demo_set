@@ -837,6 +837,26 @@ public abstract class Utils {
         Utils.info(Utils.class, "=================================");
     }
 
-
+    /**
+     * Gets the required Bluetooth permissions based on the Android version.
+     *
+     * @return An array of permission strings.
+     */
+    public static String[] getBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return new String[]{
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        } else {
+            return new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+        }
+    }
 }
 

@@ -855,4 +855,9 @@
     <string name="demo_jni_say_hello_btn">Say Hello</string>
     <string name="demo_jni_calculate_btn">Calc (5+7)</string>
     <string name="demo_jni_sys_info_btn">Sys Info</string>
+    <string name="demo_bt_state_on">Bluetooth state ON</string>
+    <string name="demo_bt_state_off">Bluetooth state OFF</string>
+    <string name="demo_bt_service_status">Service status: %1$s</string>
+    <string name="demo_bt_permissions_denied">Permissions denied</string>
+    <string name="demo_bt_permission_denied_title">Permission denied</string>
 </resources>

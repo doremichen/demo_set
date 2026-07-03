@@ -20,25 +20,17 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset;
+package com.adam.app.demoset.bluetooth.di;
 
-import android.app.Application;
-import android.content.Context;
-
-import com.google.android.play.core.splitcompat.SplitCompat;
-
-import dagger.hilt.android.HiltAndroidApp;
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
 
 /**
- * Custom Application class that enables SplitCompat for Dynamic Delivery.
+ * Hilt module for providing Bluetooth related dependencies.
  */
-@HiltAndroidApp
-public class DemoApplication extends Application {
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        // Enable SplitCompat to allow access to dynamic feature modules immediately after installation
-        SplitCompat.install(this);
-    }
+@Module
+@InstallIn(SingletonComponent.class)
+public class BluetoothModule {
+    // BluetoothRepository is provided via constructor injection with @Singleton
 }

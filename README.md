@@ -17,19 +17,24 @@ This project is designed not only as a collection of demos, but as an **architec
 
 # 🧠 Architecture Overview
 
-This project follows a layered design inspired by **MVVM + System Architecture**:
+This project follows a layered design inspired by **Clean Architecture + MVVM**:
 
 ```
 UI Layer
- ├── Activity / Fragment
- ├── ViewBinding / DataBinding
+ ├── Activity / Fragment (ViewBinding / DataBinding)
+ ├── Adapter (RecyclerView + ListAdapter + DiffUtil)
  │
 ViewModel Layer
+ ├── Hilt @HiltViewModel
  ├── LiveData / State handling / Flows
  │
-Domain / Repository Layer
- ├── Repository Pattern (Room, DataStore)
- ├── Service / WorkManager / Binder
+Domain Layer
+ ├── Use Cases (Business Logic)
+ │
+Data / Repository Layer
+ ├── Repository Pattern (Google Hilt @Singleton)
+ ├── Room / DataStore / SQLite
+ ├── Service / WorkManager / BroadcastReceiver
  │
 Native Layer
  ├── JNI / C++
@@ -145,6 +150,20 @@ Native Layer
 
 ---
 
+# 🔥 Highlight: Modern Bluetooth & BLE Architecture
+
+The Bluetooth module has been fully refactored using **Clean Architecture** and **Modern Android Development (MAD)** principles:
+
+*   **Hilt Dependency Injection**: Standardized lifecycle management for `BluetoothRepository`, `ViewModel`, and `BroadcastReceiver`.
+*   **MVVM + Data Binding**: Complete decoupling of UI from business logic. Optimized list rendering using `RecyclerView` with `ListAdapter` and `DiffUtil` for smooth UI updates.
+*   **State-Driven Design**: Uses a centralized `BtState` enum to manage device lifecycle (Scanning, Connecting, etc.) reactively via LiveData.
+*   **Law of Demeter (LoD)**: Strict encapsulation where the UI only interacts with the ViewModel, preventing "Dot Hell" and complex dependency chains.
+*   **Security & Stability**: 
+    *   **Permission Safety**: Robust runtime permission handling for Android 12+ (S).
+    *   **Memory Leak Prevention**: Centralized `ScanCallback` management in Repository (Singleton) to prevent Activity-leak scenarios.
+
+---
+
 # 🔥 Highlight: ML Kit & Strategy Pattern
 
 The ML Kit module showcases an optimized **State-Driven Strategy Pattern** integrated with **CameraX**:
@@ -220,6 +239,7 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 
 * Java / Kotlin
 * Android SDK / Jetpack
+* **Google Hilt (Dependency Injection)**
 * ViewBinding / **DataBinding**
 * LiveData / ViewModel
 * **Room / SQLCipher**
@@ -235,10 +255,10 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 
 Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
 
-*   **Dependency Injection (Hilt)**: Migration from manual DI to **Google Hilt** to standardize component lifecycles and simplify dependency management across modules.
-*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic from the Data and UI layers. (✅ Partially implemented in JNI module).
-*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds, build time optimization, and encapsulated feature ownership.
-*   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks** to ensure performance and UI stability.
+*   **Dependency Injection (Hilt)**: Standardizing component lifecycles and simplifying dependency management (✅ Implemented in Bluetooth/BLE module).
+*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth & JNI modules).
+*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership.
+*   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 
 ---
 

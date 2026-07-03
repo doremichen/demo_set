@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.hilt)
     alias(libs.plugins.google.ksp)
     id 'kotlin-kapt'
 }
@@ -217,6 +218,10 @@ dependencies {
 
     // LeakCanary
     debugImplementation libs.leakcanary.android
+
+    // Hilt
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     // Testing
     testImplementation libs.junit

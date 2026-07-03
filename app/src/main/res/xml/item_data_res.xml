@@ -40,13 +40,13 @@
     <!-- Hardware -->
     <data app:category="@string/category_hardware"
         app:titleRes="@string/title_demo_bluetooth"
-        app:clsname="com.adam.app.demoset.bluetooth.DemoBTAct"
+        app:clsname="com.adam.app.demoset.bluetooth.view.DemoBTAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- Hardware -->
     <data app:category="@string/category_hardware"
         app:titleRes="@string/title_demo_ble"
-        app:clsname="com.adam.app.demoset.bluetooth.DemoBLEActivity"
+        app:clsname="com.adam.app.demoset.bluetooth.view.DemoBLEActivity"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->

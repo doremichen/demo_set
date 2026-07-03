@@ -163,7 +163,7 @@
             android:label="@string/title_activity_demo_service"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".bluetooth.DemoBLEActivity"
+            android:name=".bluetooth.view.DemoBLEActivity"
             android:exported="false"
             android:label="@string/title_demo_ble"
             android:screenOrientation="nosensor" />
@@ -231,7 +231,7 @@
             android:label="@string/title_activity_demo_floation_window_activity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".bluetooth.DemoBTAct"
+            android:name=".bluetooth.view.DemoBTAct"
             android:exported="true"
             android:label="@string/title_activity_demo_bt_activity"
             android:screenOrientation="nosensor" />

@@ -20,25 +20,42 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset;
-
-import android.app.Application;
-import android.content.Context;
-
-import com.google.android.play.core.splitcompat.SplitCompat;
-
-import dagger.hilt.android.HiltAndroidApp;
+package com.adam.app.demoset.bluetooth.model;
 
 /**
- * Custom Application class that enables SplitCompat for Dynamic Delivery.
+ * Enum representing the various states of Bluetooth operations.
  */
-@HiltAndroidApp
-public class DemoApplication extends Application {
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        // Enable SplitCompat to allow access to dynamic feature modules immediately after installation
-        SplitCompat.install(this);
-    }
+public enum BtState {
+    /**
+     * Bluetooth is turned off.
+     */
+    OFF,
+    /**
+     * Bluetooth is turned on.
+     */
+    ON,
+    /**
+     * Bluetooth is currently scanning for devices.
+     */
+    SCANNING,
+    /**
+     * Bluetooth is idle (not scanning or connecting).
+     */
+    IDLE,
+    /**
+     * A connection to a device is being established.
+     */
+    CONNECTING,
+    /**
+     * Successfully connected to a device.
+     */
+    CONNECTED,
+    /**
+     * Disconnected from a device.
+     */
+    DISCONNECTED,
+    /**
+     * An error occurred during an operation.
+     */
+    ERROR
 }

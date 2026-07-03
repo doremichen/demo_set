@@ -856,4 +856,9 @@
     <string name="demo_jni_say_hello_btn">JNI 招呼</string>
     <string name="demo_jni_calculate_btn">計算(5+7)</string>
     <string name="demo_jni_sys_info_btn">系統資訊</string>
+    <string name="demo_bt_state_on">藍牙狀態開啟</string>
+    <string name="demo_bt_state_off">藍牙狀態關閉</string>
+    <string name="demo_bt_service_status">服務狀態: %1$s</string>
+    <string name="demo_bt_permissions_denied">權限被拒絕</string>
+    <string name="demo_bt_permission_denied_title">權限被拒絕</string>
 </resources>

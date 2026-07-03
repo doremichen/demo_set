@@ -20,25 +20,49 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset;
+package com.adam.app.demoset.bluetooth.model;
 
-import android.app.Application;
-import android.content.Context;
+import android.bluetooth.BluetoothDevice;
 
-import com.google.android.play.core.splitcompat.SplitCompat;
-
-import dagger.hilt.android.HiltAndroidApp;
+import androidx.annotation.NonNull;
 
 /**
- * Custom Application class that enables SplitCompat for Dynamic Delivery.
+ * BtDeviceItem device + connect status
  */
-@HiltAndroidApp
-public class DemoApplication extends Application {
+public class BtDeviceItem {
+    private BluetoothDevice mDevice;
+    private boolean mIsConnected;
 
+    public BtDeviceItem(BluetoothDevice device) {
+        this.mDevice = device;
+        this.mIsConnected = false;
+    }
+
+    public BluetoothDevice getDevice() {
+        return mDevice;
+    }
+
+    public void setDevice(BluetoothDevice device) {
+        this.mDevice = device;
+    }
+
+    public boolean isConnected() {
+        return mIsConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        mIsConnected = connected;
+    }
+
+    /**
+     * toString
+     */
+    @NonNull
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        // Enable SplitCompat to allow access to dynamic feature modules immediately after installation
-        SplitCompat.install(this);
+    public String toString() {
+        return "BtDeviceItem{" +
+                "device=" + mDevice.getName() +
+                ", isConnected=" + mIsConnected +
+                '}';
     }
 }

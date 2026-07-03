@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Adam Chen
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +29,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="?android:attr/colorBackground"
-    tools:context=".bluetooth.DemoBTAct">
+    tools:context=".bluetooth.view.DemoBTAct">
 
     <FrameLayout
         android:id="@+id/app_bar_wrapper"
@@ -78,14 +100,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scan_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="?attr/colorOutlineVariant"
-                android:dividerHeight="0.5dp"
                 android:padding="8dp"
-                android:clipToPadding="false"/>
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_bt_scan_layout" />
 
             <TextView
                 android:id="@+id/nodata_scan_list"
@@ -129,14 +151,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/paired_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="?attr/colorOutlineVariant"
-                android:dividerHeight="0.5dp"
                 android:padding="8dp"
-                android:clipToPadding="false"/>
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_bt_scan_layout" />
 
             <TextView
                 android:id="@+id/nodata_paired_list"
