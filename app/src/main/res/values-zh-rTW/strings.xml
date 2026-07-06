@@ -465,7 +465,10 @@
     <string name="demo_floating_window_function_label">互動開發演示</string>
     <string name="demo_floating_window_function_instruction">這是一個進階的懸浮視窗 Demo。開啟後，螢幕中央會出現一個圓形視圖。你可以透過「長按並移動」來改變它的位置。這展示了 WindowManager 與自定義 Touch Strategy 的結合應用。</string>
     <string name="demo_flash_light_function_label">功能開發技術展示</string>
-    <string name="demo_flash_light_instruction">本 Demo 實作了兩種背景相機控制模式：\n1. JobIntentService：用於立即性的硬體操作。\n2. WorkManager (Jetpack)：用於確保任務可靠執行並觀察狀態變化 (觀察者模式)。</string>
+    <string name="demo_flash_light_instruction">本 Demo 實作了多種現代 Android 開發技術：\n1. MVVM 架構與 Data Binding。\n2. 雙重任務模式：JobIntentService 與 WorkManager。\n3. LiveData 狀態觀察與響應式介面。</string>
+    <string name="demo_flashlight_tech_title">核心架構實踐</string>
+    <string name="demo_flashlight_tech_desc">• MVVM 模式：透過 ViewModel 解耦 UI 與邏輯。\n• Data Binding：響應式 UI 與數據自動同步。\n• 異步任務調度 (Dual Engine)：\n  - JobIntentService: 針對即時開關操作的快速回應。\n  - WorkManager: 具備狀態感知的可靠背景處理任務。\n• 現代權限處理：使用 ActivityResult API 管理相機訪問。\n• 實時監測：利用 LiveData 觀察背景任務執行進度。</string>
+    <string name="demo_flashlight_work_status_label">WorkManager 任務狀態</string>
     <string name="demo_camera_front_lens">前鏡頭</string>
     <string name="demo_camera_rear_lens">後鏡頭</string>
     <string name="demo_camera_title">Camera2 API 影像串流與拍攝演示</string>

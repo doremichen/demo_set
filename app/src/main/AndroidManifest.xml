@@ -251,7 +251,7 @@
             android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".flashlight.DemoFlashLightAct"
+            android:name=".flashlight.ui.DemoFlashLightAct"
             android:exported="true"
             android:label="@string/title_activity_demo_flash_light"
             android:screenOrientation="nosensor" />
@@ -465,7 +465,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".flashlight.FlashLightService"
+            android:name=".flashlight.domain.FlashLightService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".binder.service.MyAidlService"

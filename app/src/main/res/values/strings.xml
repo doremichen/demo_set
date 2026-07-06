@@ -464,7 +464,10 @@
     <string name="demo_floating_window_function_label">Interaction Demo</string>
     <string name="demo_floating_window_function_instruction">This is an advanced floating window demo. Once launched, a circular view appears in the center of the screen. You can change its position by "long-pressing and moving". This demonstrates the combined application of WindowManager and a custom Touch Strategy.</string>
     <string name="demo_flash_light_function_label">Function instruction: </string>
-    <string name="demo_flash_light_instruction">This demo implements two background camera control modes: 1. JobIntentService: for immediate hardware operations. 2. WorkManager (Jetpack): for ensuring reliable task execution and observing state changes (observer pattern).</string>
+    <string name="demo_flash_light_instruction">This demo implements several modern Android development techniques:\n1. MVVM Architecture &amp; Data Binding.\n2. Dual-mode task: JobIntentService &amp; WorkManager.\n3. LiveData state observation and reactive UI.</string>
+    <string name="demo_flashlight_tech_title">Core Architecture Implementation</string>
+    <string name="demo_flashlight_tech_desc">• MVVM Pattern: Decoupling UI and logic via ViewModel.\n• Data Binding: Reactive UI and automatic data sync.\n• Async Task Scheduling (Dual Engine):\n  - JobIntentService: Fast hardware response.\n  - WorkManager: Reliable background execution.\n• Permission: Modern ActivityResultLauncher API.\n• State Awareness: Real-time monitoring via LiveData.</string>
+    <string name="demo_flashlight_work_status_label">WorkManager Task Status</string>
     <string name="demo_camera_front_lens">Front lens</string>
     <string name="demo_camera_rear_lens">Rear lens</string>
     <string name="demo_camera_title">Camera2 API Video Streaming and Shooting Demonstration</string>

@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2026 Adam Chen
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.adam.app.demoset.flashlight.domain;
+
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
+
+import com.adam.app.demoset.flashlight.data.FlashLightMetadata;
+import com.adam.app.demoset.utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Flashlight Service (Legacy JobIntentService)
+ * Located in domain/controller as it coordinates hardware actions.
+ */
+public class FlashLightService extends JobIntentService {
+
+    private static final int JOB_ID = 0x0316;
+
+    public static void execute(Context context, String cmd) {
+        Intent work = new Intent();
+        work.putExtra(FlashLightMetadata.KEY_COMMEND, cmd);
+        // Use application context to avoid keeping a reference to an Activity
+        JobIntentService.enqueueWork(context.getApplicationContext(), FlashLightService.class, JOB_ID, work);
+    }
+
+    private abstract class FlashLightAction {
+        public void handler() {
+            CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            try {
+                String cameraId = manager.getCameraIdList()[0];
+                manager.setTorchMode(cameraId, isEnabled());
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        protected abstract boolean isEnabled();
+    }
+
+    private class On extends FlashLightAction {
+        @Override
+        protected boolean isEnabled() { return true; }
+    }
+
+    private class Off extends FlashLightAction {
+        @Override
+        protected boolean isEnabled() { return false; }
+    }
+
+    private class FlashFightSwitchContext {
+        private final Map<String, FlashLightAction> mMap = new HashMap<String, FlashLightAction>() {{
+            put(FlashLightMetadata.CMD_FLASH_LIGHT_ON, new On());
+            put(FlashLightMetadata.CMD_FLASH_LIGHT_OFF, new Off());
+        }};
+
+        private void process(String enabled) {
+            FlashLightAction action = mMap.get(enabled);
+            if (action != null) {
+                action.handler();
+            }
+        }
+    }
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+        Utils.info(this, "onHandleWork enter");
+        String cmd = intent.getStringExtra(FlashLightMetadata.KEY_COMMEND);
+        new FlashFightSwitchContext().process(cmd);
+    }
+}
