@@ -251,9 +251,19 @@
             android:label="@string/title_activity_demo_share_action_provider"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".flashlight.ui.DemoFlashLightAct"
+            android:name=".flashlight.ui.FlashLightWelcomeAct"
             android:exported="true"
             android:label="@string/title_activity_demo_flash_light"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".flashlight.ui.FlashLightLegacyAct"
+            android:exported="false"
+            android:label="手電筒 - 舊版"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".flashlight.ui.FlashLightModernAct"
+            android:exported="false"
+            android:label="手電筒 - 新版"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".lockscreen.DemoDeviceAdminAct"

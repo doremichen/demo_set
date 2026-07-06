@@ -25,35 +25,31 @@ package com.adam.app.demoset.flashlight.ui;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.work.WorkInfo;
-
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.flashlight.data.FlashLightMetadata;
-import com.adam.app.demoset.flashlight.domain.FlashLightService;
-import com.adam.app.demoset.flashlight.viewmodel.FlashLightViewModel;
-import com.adam.app.demoset.utils.Utils;
 import com.adam.app.demoset.databinding.ActivityDemoFlashLightBinding;
+import com.adam.app.demoset.flashlight.data.FlashLightMetadata;
+import com.adam.app.demoset.flashlight.viewmodel.ModernViewModel;
 import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
 
-public class DemoFlashLightAct extends AppCompatActivity {
+/**
+ * Modern Flashlight Activity
+ * Uses WorkManager for hardware control.
+ */
+public class FlashLightModernAct extends AppCompatActivity {
 
-    private static final boolean USE_SERVICE = true;
-    private FlashLightViewModel mFlViewModel;
+    private ModernViewModel mViewModel;
 
-    private final ActivityResultLauncher<String> mRequestPermissionLauncher =
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    Utils.showToast(this, "Permission granted");
-                } else {
-                    Utils.showToast(this, "Permission not granted");
+                if (!isGranted) {
+                    Utils.showToast(this, getString(R.string.flashlight_permission_denied));
                     this.finish();
                 }
             });
@@ -61,34 +57,27 @@ public class DemoFlashLightAct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActivityDemoFlashLightBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_demo_flash_light);
         binding.setLifecycleOwner(this);
 
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.toolbar.setTitle(R.string.flashlight_act_title_modern);
+
         UIUtils.applySystemBarInsets(binding.getRoot(), binding.appBarWrapper);
 
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
-
-        this.mFlViewModel = new ViewModelProvider(this).get(FlashLightViewModel.class);
-        binding.setViewModel(mFlViewModel);
+        mViewModel = new ViewModelProvider(this).get(ModernViewModel.class);
 
         boolean isFlash = getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        mRequestPermissionLauncher.launch(Manifest.permission.CAMERA);
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
 
-        this.mFlViewModel.getWorkInfos().observe(this, workInfos -> {
+        mViewModel.getWorkInfos().observe(this, workInfos -> {
             if (workInfos != null && !workInfos.isEmpty()) {
                 WorkInfo workInfo = workInfos.get(0);
-                String status = workInfo.getState().name();
-                binding.tvWorkStatus.setText(status);
-                if (workInfo.getState().isFinished()) {
-                    Utils.info(this, "onUpdate");
-                }
+                binding.tvWorkStatus.setText(workInfo.getState().name());
             }
         });
 
         if (isFlash) {
-            Utils.showToast(this, "the flash light is available");
-
             String status = System.getProperty(FlashLightMetadata.PROP_FLASH_LIGHT_ENABLE);
             if (FlashLightMetadata.CMD_FLASH_LIGHT_ON.equals(status)) {
                 binding.switchFlashlight.setChecked(true);
@@ -96,30 +85,9 @@ public class DemoFlashLightAct extends AppCompatActivity {
 
             binding.switchFlashlight.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 String action = (isChecked) ? FlashLightMetadata.CMD_FLASH_LIGHT_ON : FlashLightMetadata.CMD_FLASH_LIGHT_OFF;
-                Utils.showToast(DemoFlashLightAct.this, "action: " + action);
                 System.setProperty(FlashLightMetadata.PROP_FLASH_LIGHT_ENABLE, action);
-                
-                if (USE_SERVICE) {
-                    FlashLightService.execute(DemoFlashLightAct.this, action);
-                } else {
-                    mFlViewModel.enableFlashlight(isChecked);
-                }
+                mViewModel.toggleFlashlight(isChecked);
             });
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        this.getMenuInflater().inflate(R.menu.action_exit, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.demo_exit) {
-            this.finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

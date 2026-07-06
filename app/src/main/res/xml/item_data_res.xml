@@ -89,7 +89,7 @@
     <!-- Hardware -->
     <data app:category="@string/category_hardware"
         app:titleRes="@string/title_demo_flash_light"
-        app:clsname="com.adam.app.demoset.flashlight.ui.DemoFlashLightAct"
+        app:clsname="com.adam.app.demoset.flashlight.ui.FlashLightWelcomeAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- Hardware -->

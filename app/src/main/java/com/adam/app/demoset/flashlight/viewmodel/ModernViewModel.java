@@ -23,48 +23,35 @@
 package com.adam.app.demoset.flashlight.viewmodel;
 
 import android.app.Application;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-
 import com.adam.app.demoset.flashlight.data.FlashLightMetadata;
-import com.adam.app.demoset.flashlight.domain.FlashLightWork;
-import com.adam.app.demoset.utils.Utils;
-
+import com.adam.app.demoset.flashlight.domain.usecase.FlashLightUseCase;
+import com.adam.app.demoset.flashlight.domain.usecase.ModernToggleUseCase;
 import java.util.List;
 
 /**
- * Flashlight ViewModel
+ * ViewModel for Modern Flashlight implementation
  */
-public class FlashLightViewModel extends AndroidViewModel {
+public class ModernViewModel extends AndroidViewModel {
+    private final FlashLightUseCase mUseCase;
+    private final LiveData<List<WorkInfo>> mWorkInfos;
 
-    private final WorkManager mWorkManger;
-    private final LiveData<List<WorkInfo>> mListOfWork;
-
-    public FlashLightViewModel(@NonNull Application application) {
+    public ModernViewModel(@NonNull Application application) {
         super(application);
-        this.mWorkManger = WorkManager.getInstance(application);
-        this.mListOfWork = this.mWorkManger.getWorkInfosByTagLiveData(FlashLightMetadata.TAG_FLASH_LIGHT_WORK);
+        this.mUseCase = new ModernToggleUseCase();
+        this.mWorkInfos = WorkManager.getInstance(application)
+                .getWorkInfosByTagLiveData(FlashLightMetadata.TAG_FLASH_LIGHT_WORK);
+    }
+
+    public void toggleFlashlight(boolean enabled) {
+        mUseCase.execute(getApplication(), enabled);
     }
 
     public LiveData<List<WorkInfo>> getWorkInfos() {
-        return mListOfWork;
-    }
-
-    public void enableFlashlight(boolean enabled) {
-        Utils.info(this, "enableFlashlight");
-        OneTimeWorkRequest.Builder flashListReqBuilder = new OneTimeWorkRequest.Builder(FlashLightWork.class);
-        Data inputData = new Data.Builder()
-                .putBoolean(FlashLightMetadata.KEY_ON, enabled)
-                .build();
-        
-        flashListReqBuilder.setInputData(inputData);
-        flashListReqBuilder.addTag(FlashLightMetadata.TAG_FLASH_LIGHT_WORK);
-        this.mWorkManger.enqueue(flashListReqBuilder.build());
+        return mWorkInfos;
     }
 }
