@@ -488,6 +488,13 @@
     <string name="demo_share_provide_demo_title">Demo System share mechanism</string>
     <string name="demo_share_demo_instruction_1">This page demonstrates the implementation of ShareActionProvider. It encapsulates plain text content using Intent.ACTION_SEND and automatically retrieves a list of applications within the system that can receive this data format.</string>
     <string name="demo_share_demo_instruction_2">Please click the share icon on the ActionBar to test.</string>
+    <string name="share_type_label">Share Content Type</string>
+    <string name="share_type_text">Plain Text</string>
+    <string name="share_type_image">Sample Image</string>
+    <string name="share_input_hint">Enter content to share...</string>
+    <string name="share_preview_label">Preview Area</string>
+    <string name="share_tech_evol_title">Share Provider Architecture</string>
+    <string name="share_tech_evol_desc">This demo showcases:\n• Clean Architecture: Decoupling logic from UI.\n• MVVM + Data Binding: Reactive UI synchronization.\n• FileProvider: Securely sharing internal files.\n• Dynamic ShareIntent: Updating ShareActionProvider on the fly.</string>
     <string name="demo_jni_info">"JNI info: %1$s"</string>
     <string name="demo_jni_demo_title">JNI Core Mechanism Demo</string>
     <string name="demo_jin_instruction">This page demonstrates how Android calls low-level C++ libraries via the NDK. It includes: \n1. Java calling Native methods; \n2. Native posting data back to the Instance via reflection; \n3. Native updating Static (Class) variables.</string>

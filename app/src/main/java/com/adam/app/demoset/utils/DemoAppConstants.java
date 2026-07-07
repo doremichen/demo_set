@@ -196,4 +196,14 @@ public final class DemoAppConstants {
     @DemoItem("Dynamic Delivery")
     public static final String MODULE_NAME_DYNAMIC = "dynamic_feature";
 
+    // --- Share Provider ---
+    @DemoItem("Share Provider")
+    public static final String MIME_TYPE_TEXT = "text/plain";
+    @DemoItem("Share Provider")
+    public static final String MIME_TYPE_IMAGE = "image/*";
+    @DemoItem("Share Provider")
+    public static final String SHARE_CACHE_DIR = "images";
+    @DemoItem("Share Provider")
+    public static final String SHARE_FILE_NAME = "share_sample.jpg";
+
 }

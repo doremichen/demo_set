@@ -19,6 +19,9 @@
     <files-path
         name="shared_images"
         path="images/"/>
+    <cache-path
+        name="cached_images"
+        path="images/"/>
     <files-path
         name="shared_videos"
         path="videos/"/>

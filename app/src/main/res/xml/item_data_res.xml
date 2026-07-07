@@ -64,7 +64,7 @@
     <!-- IPC -->
     <data app:category="@string/category_ipc"
         app:titleRes="@string/title_demo_share_provide_action"
-        app:clsname="com.adam.app.demoset.shareprovider.DemoShareProvidAct"
+        app:clsname="com.adam.app.demoset.shareprovider.presentation.ui.DemoShareProvideAct"
         app:pkgname="com.adam.app.demoset"/>
 
 

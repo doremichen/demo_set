@@ -110,6 +110,7 @@ Native Layer
 * Binder communication
 * Messenger-based Service
 * ContentProvider sharing
+* ShareActionProvider (Clean Architecture refactor)
 * JNI (Java ↔ Native bridge)
 
 ---
@@ -304,6 +305,18 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 
 ---
 
+# 🔥 Highlight: Share Provider & Clean Architecture
+
+The Share Provider demo showcases a modern implementation of the Android sharing mechanism integrated with **Clean Architecture**:
+
+*   **UseCase-Driven Sharing**: Sharing logic is encapsulated in `GetShareIntentUseCase`, decoupling the intent construction (MIME types, flags) from the UI layer.
+*   **ViewModel as UI Controller**: The Activity is stripped of business logic, delegating the management of `ShareActionProvider` directly to the `ShareViewModel`.
+*   **Reactive Intent Updates**: Uses `MediatorLiveData` (or internal observers) to reactively regenerate the sharing `Intent` as the user types text or toggles content types (Text vs. Image).
+*   **Secure File Sharing**: Demonstrates the use of **FileProvider** to safely share internal app files (from `cacheDir`) with external applications, adhering to Android's strict security model.
+*   **Data Binding & I18n**: Fully utilizes Data Binding for real-time UI previews and supports multi-language (English/Traditional Chinese) localized strings.
+
+---
+
 # 🏗️ Design Principles
 
 * **Separation of Concerns**
@@ -344,7 +357,7 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
 
 *   **Dependency Injection (Hilt)**: Standardizing component lifecycles and simplifying dependency management (✅ Implemented in Bluetooth/BLE module).
-*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth, JNI, and System UI modules).
+*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth, JNI, System UI, and Share Provider modules).
 *   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership. (✅ Implemented in System Monitor module).
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 

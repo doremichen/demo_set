@@ -489,6 +489,13 @@
     <string name="demo_share_provide_demo_title">系統分享機制演示</string>
     <string name="demo_share_demo_instruction_1">本頁面展示 ShareActionProvider 實作。\n透過 Intent.ACTION_SEND 封裝純文字內容，並自動檢索系統內可接收該資料格式的應用程式清單。</string>
     <string name="demo_share_demo_instruction_2">請點擊 ActionBar 上的分享圖示進行測試</string>
+    <string name="share_type_label">分享內容類型</string>
+    <string name="share_type_text">純文字</string>
+    <string name="share_type_image">範例圖片</string>
+    <string name="share_input_hint">輸入要分享的內容...</string>
+    <string name="share_preview_label">預覽區域</string>
+    <string name="share_tech_evol_title">分享供應器架構</string>
+    <string name="share_tech_evol_desc">本範例展示了：\n• 乾淨架構：邏輯與 UI 徹底解耦。\n• MVVM + Data Binding：響應式 UI 同步。\n• FileProvider：安全地分享應用程式內部檔案。\n• 動態分享 Intent：即時更新 ShareActionProvider 內容。</string>
     <string name="demo_jni_info">"JNI 資訊: %1$s"</string>
     <string name="demo_jni_demo_title">JNI 核心機制演示</string>
     <string name="demo_jin_instruction">此頁面展示 Android 如何透過 NDK 調用 C++ 底層函式庫。包含：\n1. Java 調用 Native 方法\n2. Native 透過反射回傳資料至 Instance\n3. Native 更新 Static (Class) 變數</string>
