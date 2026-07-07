@@ -307,7 +307,7 @@
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
-            android:name=".systemUI.DemoSysUIAct"
+            android:name=".systemUI.ui.DemoSysUIAct"
             android:exported="true"
             android:label="@string/title_activity_demo_system_ui"
             android:screenOrientation="nosensor" />

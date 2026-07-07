@@ -253,6 +253,17 @@ The ML Kit module showcases an optimized **State-Driven Strategy Pattern** integ
 
 ---
 
+# 🔥 Highlight: System UI & Immersive Mode Architecture
+
+The System UI demo has been refactored to demonstrate **Clean Architecture** and **Modern Android Development** practices:
+
+*   **WindowInsetsControllerCompat**: Utilizes the modern `WindowInsetsControllerCompat` API for managing system bar visibility and appearance, ensuring compatibility across different Android versions.
+*   **MVVM + Data Binding**: Decouples UI logic from the Activity. The `SystemUIViewModel` manages the UI state, while Data Binding reactively updates the view components.
+*   **Clean Architecture (Domain Layer)**: Business logic for toggling system modes is encapsulated in the `ToggleSystemUIModeUseCase`, making it platform-independent and testable.
+*   **Edge-to-Edge Integration**: Demonstrates how to handle system bar insets properly using `ViewCompat.setOnApplyWindowInsetsListener` to prevent UI elements from being obscured by system bars.
+
+---
+
 # 🔥 Highlight: JNI Architecture Demo
 
 The JNI module demonstrates a full **Clean Architecture** implementation for cross-layer communication:
@@ -333,7 +344,7 @@ The latest updates demonstrate a complete transition to **Modern Android Develop
 Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
 
 *   **Dependency Injection (Hilt)**: Standardizing component lifecycles and simplifying dependency management (✅ Implemented in Bluetooth/BLE module).
-*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth & JNI modules).
+*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth, JNI, and System UI modules).
 *   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership. (✅ Implemented in System Monitor module).
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 

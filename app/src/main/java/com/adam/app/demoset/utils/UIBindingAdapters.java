@@ -74,4 +74,16 @@ public class UIBindingAdapters {
             }
         }
     }
+
+    /**
+     * Set text color from theme attribute.
+     */
+    @BindingAdapter("textColorAttr")
+    public static void setTextColorAttr(TextView view, int attrResId) {
+        if (attrResId == 0) return;
+        TypedValue typedValue = new TypedValue();
+        if (view.getContext().getTheme().resolveAttribute(attrResId, typedValue, true)) {
+            view.setTextColor(typedValue.data);
+        }
+    }
 }
