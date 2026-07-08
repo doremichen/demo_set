@@ -264,6 +264,11 @@
         app:clsname="com.adam.app.demoset.biometric.DemoBiometricAct"
         app:pkgname="com.adam.app.demoset"/>
 
+    <data app:category="@string/category_security"
+        app:titleRes="@string/title_demo_privacy_capture"
+        app:clsname="com.adam.app.demoset.privacy.ui.PrivacyCaptureActivity"
+        app:pkgname="com.adam.app.demoset"/>
+
     <!-- UI -->
     <data app:category="@string/category_ui"
         app:titleRes="@string/title_demo_navigation"

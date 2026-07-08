@@ -884,4 +884,21 @@
     <string name="demo_bt_service_status">Service status: %1$s</string>
     <string name="demo_bt_permissions_denied">Permissions denied</string>
     <string name="demo_bt_permission_denied_title">Permission denied</string>
+
+    <!-- Privacy & Screen Capture -->
+    <string name="title_demo_privacy_capture">Screen Recording Detection</string>
+    <string name="privacy_capture_instruction_title">Advanced Privacy Safeguards</string>
+    <string name="privacy_capture_instruction">This demo demonstrates the <b>Screen Capture Callback API</b> (Android 14+). It allows apps to detect when the screen is being recorded or cast. \n\nFeatures:\n• Real-time detection of recording/casting.\n• <b>FLAG_SECURE</b> integration to hide content from captures.\n• Reactive UI updates via StateFlow and Hilt.</string>
+    <string name="privacy_capture_status_label">Current State: </string>
+    <string name="privacy_capture_status_safe">SAFE (Not Recording)</string>
+    <string name="privacy_capture_status_capturing">⚠️ SCREEN RECORDING DETECTED</string>
+    <string name="privacy_capture_sensitive_content">SENSITIVE DATA: 1234-5678-9012</string>
+    <string name="privacy_capture_toggle_secure_flag">Enable FLAG_SECURE (Prevent Capture)</string>
+    <string name="privacy_capture_api_unavailable">Screen Capture Detection requires Android 14+ (API 34).</string>
+    <string name="privacy_capture_btn_start">Start Detection</string>
+    <string name="privacy_capture_btn_stop">Stop Detection</string>
+    <string name="privacy_capture_msg_monitoring_started">Screen recording detection started</string>
+    <string name="privacy_capture_msg_monitoring_stopped">Screen recording detection stopped</string>
+    <string name="privacy_capture_msg_event_reported">Screen capture activity reported!</string>
+    <string name="privacy_capture_btn_reset">Clear Status</string>
 </resources>

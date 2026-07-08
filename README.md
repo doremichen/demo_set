@@ -40,8 +40,6 @@ Native Layer
  ├── JNI / C++
 ```
 
----
-
 # 🧩 Feature Modules
 
 ## 📊 System Monitor (Modularization Strategy)
@@ -66,6 +64,15 @@ Native Layer
 * **EncryptedSharedPreferences**: Secure Key-Value storage using **Jetpack Security** with hardware-backed master keys.
 * **Biometric Authentication**: Modern fingerprint and face unlock integration using the **BiometricPrompt API** with fallback to device credentials.
 * **Hacker View**: Visualization of raw encrypted ciphertext vs. safe decrypted views for security contrast.
+
+## 🛡️ Privacy & Screen Capture (Android 14/15)
+
+*   **Advanced Privacy Safeguards**: A comprehensive system to detect when the screen is being captured or recorded.
+*   **Version-Aware Strategy Pattern**:
+    *   **Android 14 (API 34)**: Utilizes `ScreenCaptureCallback` primarily for screenshot detection.
+    *   **Android 15 (API 35)**: Integrates the new `ScreenRecordingCallback` for precise video recording state monitoring.
+*   **Security Enforcement**: Integrated with **FLAG_SECURE** to dynamically protect sensitive UI components from appearing in captures.
+*   **Reactive Feedback**: Real-time UI updates using **Data Binding** and **Hilt** to notify users of active recording sessions.
 
 ---
 
@@ -354,11 +361,17 @@ The Share Provider demo showcases a modern implementation of the Android sharing
 
 # 📌 Future Roadmap
 
-Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices:
+Planned upgrades to align with **Modern Android Development (MAD)** standards and architectural best practices (Targeting Android 15, 16, and 17):
 
-*   **Dependency Injection (Hilt)**: Standardizing component lifecycles and simplifying dependency management (✅ Implemented in Bluetooth/BLE module).
-*   **Clean Architecture Refactoring**: Introducing a formal **Domain Layer (Use Cases)** to further decouple business logic. (✅ Implemented in Bluetooth, JNI, System UI, and Share Provider modules).
-*   **Modularization Strategy**: Transitioning to a **Feature-based Modular Architecture** to demonstrate multi-module builds and encapsulated feature ownership. (✅ Implemented in System Monitor module).
+*   **On-Device Generative AI (AICore)**: Integrating **Gemini Nano** via the Google AI Edge SDK for localized text summarization and smart replies without internet dependency.
+*   **Privacy Space & Sandbox Awareness**: Demonstrating app behavior adaptation for Android 15's **Private Space**, ensuring sensitive data is correctly isolated when the profile is locked.
+*   **Edge-to-Edge & Predictive Back (Phase II)**: Full migration to the mandatory **Edge-to-Edge** layout (Android 15 default) and implementing **Predictive Back Gestures** with custom cross-activity animations.
+*   **Unified Health Data (Health Connect)**: Migrating fragmented health/fitness sensor data tracking to the centralized **Health Connect API** as the industry standard.
+*   **Advanced Privacy Safeguards**:
+    *   **Screen Recording Detection**: ✅ Implemented using Strategy Pattern for Android 14 and 15 (API 35).
+    *   **Photo Picker (Cloud Integration)**: Moving away from `READ_EXTERNAL_STORAGE` to the privacy-centric **Photo Picker** with support for cloud-provider media.
+*   **Modern Background Execution**: Refactoring legacy Foreground Services to use **User-initiated data transfer jobs** and the updated **JobScheduler** constraints to comply with stricter Android 15+ battery policies.
+*   **Satellite Connectivity Lab**: Exploring the **Non-Terrestrial Network (NTN)** APIs for satellite messaging detection and status monitoring.
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 
 ---

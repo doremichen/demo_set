@@ -885,4 +885,21 @@
     <string name="demo_bt_service_status">服務狀態: %1$s</string>
     <string name="demo_bt_permissions_denied">權限被拒絕</string>
     <string name="demo_bt_permission_denied_title">權限被拒絕</string>
+
+    <!-- Privacy & Screen Capture -->
+    <string name="title_demo_privacy_capture">螢幕錄影偵測</string>
+    <string name="privacy_capture_instruction_title">進階隱私安全保護</string>
+    <string name="privacy_capture_instruction">本範例展示了 <b>螢幕擷取回調 API (Android 14+)</b>。它允許應用程式偵測螢幕何時正在被錄製或投射。\n\n功能特色：\n• 即時偵測錄影/投射狀態。\n• 整合 <b>FLAG_SECURE</b> 以在擷取內容中隱藏介面。\n• 透過 LiveData 與 Hilt 實現響應式 UI 更新。</string>
+    <string name="privacy_capture_status_label">目前狀態：</string>
+    <string name="privacy_capture_status_safe">安全 (未在錄影中)</string>
+    <string name="privacy_capture_status_capturing">⚠️ 偵測到螢幕錄影中</string>
+    <string name="privacy_capture_sensitive_content">敏感資料：1234-5678-9012</string>
+    <string name="privacy_capture_toggle_secure_flag">啟用 FLAG_SECURE (禁止擷取)</string>
+    <string name="privacy_capture_api_unavailable">螢幕錄影偵測需要 Android 14 (API 34) 以上版本。</string>
+    <string name="privacy_capture_btn_start">開啟偵測</string>
+    <string name="privacy_capture_btn_stop">關閉偵測</string>
+    <string name="privacy_capture_msg_monitoring_started">螢幕錄影偵測已啟動</string>
+    <string name="privacy_capture_msg_monitoring_stopped">螢幕錄影偵測已停止</string>
+    <string name="privacy_capture_msg_event_reported">偵測到螢幕擷取事件！</string>
+    <string name="privacy_capture_btn_reset">清除狀態</string>
 </resources>
