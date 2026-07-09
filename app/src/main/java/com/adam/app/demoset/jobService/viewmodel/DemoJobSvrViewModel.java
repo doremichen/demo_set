@@ -22,12 +22,10 @@
 
 package com.adam.app.demoset.jobService.viewmodel;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
+import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -35,36 +33,45 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.jobService.SecurJobService;
-import com.adam.app.demoset.utils.DemoAppConstants;
+import com.adam.app.demoset.jobService.domain.ManageDataTransferUseCase;
 import com.adam.app.demoset.utils.Utils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BooleanSupplier;
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 
 /**
- * ViewModel for DemoJobSvrAct.
- * Manages the state and logic for scheduling JobService with various constraints.
+ * ViewModel for Background Execution Evolution Demo.
+ * Manages states for Legacy FGS vs. Modern Job scenarios.
  */
+@HiltViewModel
 public class DemoJobSvrViewModel extends AndroidViewModel {
 
-    // TAG
-    private static final String TAG = DemoJobSvrViewModel.class.getSimpleName();
+    private final ManageDataTransferUseCase mUseCase;
 
     private final MutableLiveData<Boolean> mIsIdleRequired = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> mIsChargingRequired = new MutableLiveData<>(false);
-    private final MutableLiveData<NetworkOption> mNetworkOption = new MutableLiveData<>(NetworkOption.NONE);
-    private final MutableLiveData<TriggerStrategy> mTriggerStrategy = new MutableLiveData<>(TriggerStrategy.PERIODIC);
-    private final MutableLiveData<Integer> mTriggerInterval = new MutableLiveData<>(0);
-    private final MutableLiveData<String> mIntervalText = new MutableLiveData<>("");
-    private final MutableLiveData<Boolean> mCanSetTrigger = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> mIsModernMode = new MutableLiveData<>(true);
+    private final MutableLiveData<Boolean> mIsUserInitiated = new MutableLiveData<>(true);
+    private final MutableLiveData<Integer> mNetworkTypeId = new MutableLiveData<>(R.id.radio_net_any);
+    private final MutableLiveData<Boolean> mIsWifiEnabled = new MutableLiveData<>(true);
+    
+    private final MutableLiveData<Integer> mProgress = new MutableLiveData<>(0);
+    private final MutableLiveData<String> mStatusText = new MutableLiveData<>("");
 
-    private int mJobId = DemoAppConstants.JOB_ID_SECUR;
-
-    public DemoJobSvrViewModel(@NonNull Application application) {
+    @Inject
+    public DemoJobSvrViewModel(@NonNull Application application, ManageDataTransferUseCase useCase) {
         super(application);
-        updateIntervalText(0);
+        this.mUseCase = useCase;
+        this.mStatusText.setValue(application.getString(R.string.bg_exec_status_idle));
+        checkWifiState();
+    }
+
+    private void checkWifiState() {
+        WifiManager wifiManager = (WifiManager) getApplication().getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            mIsWifiEnabled.setValue(wifiManager.isWifiEnabled());
+        }
     }
 
     public MutableLiveData<Boolean> getIsIdleRequired() {
@@ -75,216 +82,91 @@ public class DemoJobSvrViewModel extends AndroidViewModel {
         return mIsChargingRequired;
     }
 
-    public MutableLiveData<NetworkOption> getNetworkOption() {
-        return mNetworkOption;
+    public LiveData<Boolean> getIsModernMode() {
+        return mIsModernMode;
     }
 
-    public MutableLiveData<TriggerStrategy> getTriggerStrategy() {
-        return mTriggerStrategy;
+    public LiveData<Boolean> getIsUserInitiated() {
+        return mIsUserInitiated;
     }
 
-    public MutableLiveData<Integer> getTriggerInterval() {
-        return mTriggerInterval;
+    public MutableLiveData<Integer> getNetworkTypeId() {
+        return mNetworkTypeId;
     }
 
-    public LiveData<String> getIntervalText() {
-        return mIntervalText;
+    public LiveData<Boolean> getIsWifiEnabled() {
+        return mIsWifiEnabled;
     }
 
-    public void onIdleChanged(boolean checked) {
-        mIsIdleRequired.setValue(checked);
+    public LiveData<Integer> getProgress() {
+        return mProgress;
     }
 
-    public void onChargingChanged(boolean checked) {
-        mIsChargingRequired.setValue(checked);
+    public LiveData<String> getStatusText() {
+        return mStatusText;
     }
 
-    public void onNetworkTypeChanged(int checkedId) {
-        mNetworkOption.setValue(NetworkOption.fromResId(checkedId));
+    public void setModernMode(boolean modern) {
+        mIsModernMode.setValue(modern);
     }
 
-    public void onTriggerTypeSelected(int position) {
-        mTriggerStrategy.setValue(TriggerStrategy.fromIndex(position));
-        updateIntervalText(mTriggerInterval.getValue());
-    }
-
-    public void onIntervalChanged(int progress) {
-        mTriggerInterval.setValue(progress);
-        updateIntervalText(progress);
-        mCanSetTrigger.setValue(progress > 0);
-    }
-
-    private void updateIntervalText(Integer progress) {
-        if (progress == null || progress <= 0) {
-            mIntervalText.setValue(getApplication().getString(R.string.label_interval_no_set));
-            return;
+    public void setUserInitiated(boolean userInitiated) {
+        mIsUserInitiated.setValue(userInitiated);
+        // User-initiated jobs CANNOT have idle constraint.
+        if (userInitiated) {
+            mIsIdleRequired.setValue(false);
         }
+    }
 
-        TriggerStrategy strategy = mTriggerStrategy.getValue();
-        if (strategy != null) {
-            mIntervalText.setValue(progress + strategy.getUnitLabel());
-        }
+    public void setNetworkTypeId(int id) {
+        mNetworkTypeId.setValue(id);
     }
 
     /**
-     * Schedules a job based on current UI constraints.
+     * Starts the background task based on current settings.
      */
-    public void scheduleJob() {
-        Utils.info(this, "scheduleJob");
-        if (!shouldSetJobRequirements()) {
-            Utils.showToast(getApplication(), "No Jobinfo ConstraintSet");
-            return;
-        }
+    public void startTask() {
+        boolean isModern = Boolean.TRUE.equals(mIsModernMode.getValue());
+        boolean isUI = Boolean.TRUE.equals(mIsUserInitiated.getValue());
 
-        JobInfo.Builder builder = new JobInfo.Builder(mJobId++,
-                new ComponentName(getApplication().getPackageName(), SecurJobService.class.getName()));
+        Utils.info(this, "startTask. Mode: " + (isModern ? "Modern" : "Legacy"));
+        
+        Integer typeId = mNetworkTypeId.getValue();
+        int networkType = (typeId != null && typeId == R.id.radio_net_unmetered) 
+                ? JobInfo.NETWORK_TYPE_UNMETERED 
+                : JobInfo.NETWORK_TYPE_ANY;
 
-        JobConfigApplier configApplier = new JobConfigApplier(builder);
-        configApplier.applyNetwork(mNetworkOption.getValue())
-                .applyDeviceIdle(mIsIdleRequired.getValue())
-                .applyCharging(mIsChargingRequired.getValue())
-                .applyTrigger(mCanSetTrigger.getValue(), mTriggerStrategy.getValue(), mTriggerInterval.getValue());
-
-        JobScheduler jobScheduler = (JobScheduler) getApplication().getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        if (jobScheduler != null) {
-            jobScheduler.schedule(configApplier.build());
-            Utils.info(this, "Job scheduled. ID: " + (mJobId - 1));
-        }
-    }
-
-    /**
-     * Cancels all scheduled jobs.
-     */
-    public void cancelAllJobs() {
-        Utils.info(this, "scheduleJob");
-        JobScheduler jobScheduler = (JobScheduler) getApplication().getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        if (jobScheduler != null) {
-            jobScheduler.cancelAll();
-            Utils.info(this, "All jobs cancelled");
-        }
-    }
-
-    private boolean shouldSetJobRequirements() {
-        List<BooleanSupplier> conditions = Arrays.asList(
-                () -> mNetworkOption.getValue() != null && mNetworkOption.getValue() != NetworkOption.NONE,
-                () -> Boolean.TRUE.equals(mIsIdleRequired.getValue()),
-                () -> Boolean.TRUE.equals(mIsChargingRequired.getValue()),
-                () -> Boolean.TRUE.equals(mCanSetTrigger.getValue())
+        mUseCase.executeStart(
+                isModern,
+                isUI,
+                networkType,
+                Boolean.TRUE.equals(mIsChargingRequired.getValue()),
+                Boolean.TRUE.equals(mIsIdleRequired.getValue())
         );
 
-        return conditions.stream().anyMatch(BooleanSupplier::getAsBoolean);
-    }
-
-    /**
-     * Helper class to abstract the JobInfo configuration process.
-     */
-    private static class JobConfigApplier {
-        private final JobInfo.Builder mBuilder;
-
-        JobConfigApplier(JobInfo.Builder builder) {
-            this.mBuilder = builder;
-        }
-
-        @SuppressLint("WrongConstant")
-        JobConfigApplier applyNetwork(NetworkOption option) {
-            if (option != null) {
-                mBuilder.setRequiredNetworkType(option.getNetworkType());
-            }
-            return this;
-        }
-
-        JobConfigApplier applyDeviceIdle(Boolean idle) {
-            if (idle != null) {
-                mBuilder.setRequiresDeviceIdle(idle);
-            }
-            return this;
-        }
-
-        JobConfigApplier applyCharging(Boolean charging) {
-            if (charging != null) {
-                mBuilder.setRequiresCharging(charging);
-            }
-            return this;
-        }
-
-        JobConfigApplier applyTrigger(Boolean canSet, TriggerStrategy strategy, Integer progress) {
-            if (Boolean.TRUE.equals(canSet) && strategy != null && progress != null) {
-                long intervalMs = progress * 1000L;
-                strategy.apply(mBuilder, intervalMs);
-            }
-            return this;
-        }
-
-        JobInfo build() {
-            return mBuilder.build();
+        if (isModern && !isUI) {
+            // Deferred Job: Inform user it's scheduled
+            String msg = getApplication().getString(R.string.bg_exec_status_waiting);
+            mStatusText.setValue(msg);
+            Utils.showToast(getApplication(), msg);
         }
     }
 
     /**
-     * Enum for Network selection options.
+     * Stops the running task.
      */
-    public enum NetworkOption {
-        NONE(R.id.no_network_opt, JobInfo.NETWORK_TYPE_NONE),
-        ANY(R.id.any_network_opt, JobInfo.NETWORK_TYPE_ANY),
-        UNMETERED(R.id.wifi_network_opt, JobInfo.NETWORK_TYPE_UNMETERED);
-
-        private final int resId;
-        private final int networkType;
-
-        NetworkOption(int resId, int networkType) {
-            this.resId = resId;
-            this.networkType = networkType;
-        }
-
-        public int getNetworkType() {
-            return networkType;
-        }
-
-        public static NetworkOption fromResId(int resId) {
-            for (NetworkOption option : values()) {
-                if (option.resId == resId) {
-                    return option;
-                }
-            }
-            return NONE;
-        }
+    public void stopTask() {
+        Utils.info(this, "stopTask");
+        mUseCase.executeStop();
+        mStatusText.setValue(getApplication().getString(R.string.bg_exec_status_cancelled));
+        mProgress.setValue(0);
     }
 
-    /**
-     * Strategy ENUM for different trigger types.
-     */
-    public enum TriggerStrategy {
-        PERIODIC {
-            @Override
-            void apply(JobInfo.Builder builder, long intervalMs) {
-                builder.setPeriodic(intervalMs * 60);
-            }
-            @Override
-            String getUnitLabel() { return " min"; }
-        },
-        OVERRIDE_DEADLINE {
-            @Override
-            void apply(JobInfo.Builder builder, long intervalMs) {
-                builder.setOverrideDeadline(intervalMs);
-            }
-            @Override
-            String getUnitLabel() { return " s"; }
-        },
-        MINIMUM_LATENCY {
-            @Override
-            void apply(JobInfo.Builder builder, long intervalMs) {
-                builder.setMinimumLatency(intervalMs);
-            }
-            @Override
-            String getUnitLabel() { return " s"; }
-        };
+    public void updateStatus(String status) {
+        mStatusText.postValue(status);
+    }
 
-        abstract void apply(JobInfo.Builder builder, long intervalMs);
-        abstract String getUnitLabel();
-
-        public static TriggerStrategy fromIndex(int index) {
-            TriggerStrategy[] values = values();
-            return (index >= 0 && index < values.length) ? values[index] : PERIODIC;
-        }
+    public void updateProgress(int progress) {
+        mProgress.postValue(progress);
     }
 }

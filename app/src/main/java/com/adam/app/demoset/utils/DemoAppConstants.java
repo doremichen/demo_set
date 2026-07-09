@@ -112,6 +112,12 @@ public final class DemoAppConstants {
 
     @DemoItem("Job Service")
     public static final int JOB_ID_SECUR = 1001;
+    @DemoItem("Job Service")
+    public static final String ACTION_TRANSFER_UPDATE = "com.adam.app.demoset.action.TRANSFER_UPDATE";
+    @DemoItem("Job Service")
+    public static final String KEY_PROGRESS = "progress";
+    @DemoItem("Job Service")
+    public static final String KEY_STATUS = "status";
 
     // --- UI Demo Items ---
     @DemoItem("UI/Navigation")

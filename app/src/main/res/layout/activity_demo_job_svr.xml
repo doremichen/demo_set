@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2026 Adam Chen
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="com.adam.app.demoset.jobService.viewmodel.DemoJobSvrViewModel" />
@@ -13,18 +36,17 @@
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface">
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorSurface">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="@string/label_hello_job_service_demo"
+                app:title="@string/bg_exec_title"
                 app:titleCentered="true" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -32,28 +54,58 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/welcome_demo_job_svr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:text="Hidden Welcome" />
-
-                <!-- Device Requirements Card -->
+                <!-- Header -->
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
+                    android:id="@+id/header_card"
+                    style="@style/Widget.Material3.CardView.Elevated"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="16dp">
+                    app:cardCornerRadius="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bg_exec_title"
+                            android:textAppearance="?attr/textAppearanceTitleLarge"
+                            android:textColor="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/bg_exec_desc"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Job Type / Mode Selection -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mode_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:contentPadding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/header_card">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -63,17 +115,127 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/label_require_jobsvr"
+                            android:text="@string/bg_exec_label_job_type"
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textColor="?attr/colorPrimary" />
 
-                        <com.google.android.material.materialswitch.MaterialSwitch
-                            android:id="@+id/switch_idle"
+                        <!-- UI Mode (Legacy vs Modern) -->
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggle_group_mode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:checked="@={viewModel.isIdleRequired}"
-                            android:text="@string/label_switch_idle" />
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_mode_legacy"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checkable="true"
+                                android:text="@string/bg_exec_mode_legacy" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_mode_modern"
+                                style="@style/Widget.Material3.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:checkable="true"
+                                android:text="@string/bg_exec_mode_modern" />
+
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <!-- Job Sub-Type (Only visible for Modern Job) -->
+                        <RadioGroup
+                            android:id="@+id/radio_group_job_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:visibility="@{viewModel.isModernMode ? View.VISIBLE : View.GONE}">
+
+                            <RadioButton
+                                android:id="@+id/radio_job_user_initiated"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:onClick="@{() -> viewModel.setUserInitiated(true)}"
+                                android:text="@string/bg_exec_type_user_initiated" />
+
+                            <RadioButton
+                                android:id="@+id/radio_job_deferred"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="@{() -> viewModel.setUserInitiated(false)}"
+                                android:text="@string/bg_exec_type_deferred" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Constraints Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/constraints_card"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="@{viewModel.isModernMode ? View.VISIBLE : View.GONE}"
+                    app:cardCornerRadius="12dp"
+                    app:contentPadding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mode_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bg_exec_label_constraints"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textColor="?attr/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/bg_exec_label_network"
+                            android:textAppearance="?attr/textAppearanceLabelLarge" />
+
+                        <RadioGroup
+                            android:id="@+id/radio_group_network"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:checkedButton="@={viewModel.networkTypeId}"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radio_net_any"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lable_option_any_network" />
+
+                            <RadioButton
+                                android:id="@+id/radio_net_unmetered"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:enabled="@{viewModel.isWifiEnabled}"
+                                android:text="@string/label_option_wifi_network" />
+                        </RadioGroup>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/bg_exec_label_device"
+                            android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switch_charging"
@@ -82,150 +244,80 @@
                             android:checked="@={viewModel.isChargingRequired}"
                             android:text="@string/label_switch_charging" />
 
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_idle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checked="@={viewModel.isIdleRequired}"
+                            android:enabled="@{!viewModel.isModernMode || !viewModel.isUserInitiated}"
+                            android:text="@string/label_switch_idle" />
+
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Network Card -->
+                <!-- Status Card -->
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_network_type_require"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorPrimary" />
-
-                        <RadioGroup
-                            android:id="@+id/network_option"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:onCheckedChanged="@{(group, checkedId) -> viewModel.onNetworkTypeChanged(checkedId)}"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/no_network_opt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:checked="true"
-                                android:text="@string/label_option_none_network" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/any_network_opt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/lable_option_any_network" />
-
-                            <com.google.android.material.radiobutton.MaterialRadioButton
-                                android:id="@+id/wifi_network_opt"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_option_wifi_network" />
-                        </RadioGroup>
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Trigger Interval Card -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardElevation="2dp"
-                    app:contentPadding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/label_set_trigger_interval_type"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorPrimary" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <Spinner
-                                android:id="@+id/spinner_set_interval"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
-
-                            <TextView
-                                android:id="@+id/interval_unit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:text="@{viewModel.intervalText}"
-                                android:textAppearance="?attr/textAppearanceBodyLarge"
-                                android:textStyle="bold"
-                                tools:text="10 s" />
-                        </LinearLayout>
-
-                        <SeekBar
-                            android:id="@+id/seekbar_time_interval"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:onProgressChanged="@{(seekBar, progress, fromUser) -> viewModel.onIntervalChanged(progress)}"
-                            android:progress="@{viewModel.triggerInterval}" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Action Buttons -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_start_job"
-                    android:layout_width="match_parent"
+                    android:id="@+id/status_card"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:onClick="@{() -> viewModel.scheduleJob()}"
-                    android:text="@string/start_service"
-                    app:icon="@android:drawable/ic_media_play" />
+                    app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                    app:cardCornerRadius="12dp"
+                    app:contentPadding="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraints_card">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.statusText}"
+                            android:textAppearance="?attr/textAppearanceTitleSmall"
+                            tools:text="Status: Idle" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progress_indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:progress="@{viewModel.progress}"
+                            app:trackThickness="8dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Actions -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:onClick="@{() -> viewModel.startTask()}"
+                    android:text="@string/bg_exec_btn_start"
+                    app:icon="@android:drawable/ic_media_play"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/status_card" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_stop_job"
+                    android:id="@+id/btn_stop"
                     style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:onClick="@{() -> viewModel.cancelAllJobs()}"
-                    android:text="@string/stop_service"
-                    app:icon="@android:drawable/ic_delete" />
+                    android:onClick="@{() -> viewModel.stopTask()}"
+                    android:text="@string/bg_exec_btn_stop"
+                    app:icon="@android:drawable/ic_delete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_start" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_exit"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/label_exit" />
-
-                <!-- Legacy ListView (Hidden for now as we replaced it with buttons) -->
-                <ListView
-                    android:id="@+id/list_demo_permission"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:visibility="gone" />
-
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

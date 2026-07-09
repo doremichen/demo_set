@@ -22,10 +22,12 @@
 
 package com.adam.app.demoset.jobService;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -34,87 +36,107 @@ import androidx.lifecycle.ViewModelProvider;
 import com.adam.app.demoset.R;
 import com.adam.app.demoset.databinding.ActivityDemoJobSvrBinding;
 import com.adam.app.demoset.jobService.viewmodel.DemoJobSvrViewModel;
+import com.adam.app.demoset.utils.DemoAppConstants;
 import com.adam.app.demoset.utils.UIUtils;
 import com.adam.app.demoset.utils.Utils;
 
+import java.lang.ref.WeakReference;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
- * Demo Job Service Activity
- * Refactored to MVVM with Material 3 components.
+ * Demo Background Execution Evolution Activity.
  */
+@AndroidEntryPoint
 public class DemoJobSvrAct extends AppCompatActivity {
 
     private ActivityDemoJobSvrBinding mBinding;
     private DemoJobSvrViewModel mViewModel;
-
-    // Spinner trigger type constants
-    private static final int SPINNER_SET_PERIODIC = 0;
-
-    /**
-     * Spinner display items
-     */
-    private final String[] mSpinnerItems = {
-            "setPeriodic",
-            "setOverrideDeadline",
-            "setMinimumLatency"
-    };
+    private TransferReceiver mReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialize Data Binding and ViewModel
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_demo_job_svr);
         mViewModel = new ViewModelProvider(this).get(DemoJobSvrViewModel.class);
-        
+
         mBinding.setViewModel(mViewModel);
         mBinding.setLifecycleOwner(this);
 
-        // Apply window insets for edge-to-edge support
         UIUtils.applySystemBarInsets(mBinding.rootLayout, mBinding.toolbar);
 
-        buildSpinner();
-        setupActionButtons();
+        initViews();
+    }
+
+    private void initViews() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        mBinding.toggleGroupMode.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            // check if the button is checked
+            if (!isChecked) {
+                return;
+            }
+
+            Utils.info(this, "Mode selected: " + checkedId);
+            mViewModel.setModernMode(checkedId == R.id.btn_mode_modern);
+        });
+
+        mBinding.toggleGroupMode.clearChecked();
+        mBinding.toggleGroupMode.check(R.id.btn_mode_modern);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mReceiver = new TransferReceiver(mViewModel);
+        IntentFilter filter = new IntentFilter(DemoAppConstants.ACTION_TRANSFER_UPDATE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(mReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(mReceiver, filter);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mReceiver != null) {
+            unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     /**
-     * Set up the trigger interval type spinner
+     * Static inner class for BroadcastReceiver to avoid memory leaks.
      */
-    private void buildSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, mSpinnerItems);
-        mBinding.spinnerSetInterval.setAdapter(adapter);
+    private static class TransferReceiver extends BroadcastReceiver {
+        private final WeakReference<DemoJobSvrViewModel> mViewModelRef;
 
-        mBinding.spinnerSetInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mViewModel.onTriggerTypeSelected(position);
+        TransferReceiver(DemoJobSvrViewModel viewModel) {
+            this.mViewModelRef = new WeakReference<>(viewModel);
+        }
 
-                // Show information dialog when "Periodic" is selected
-                if (position == SPINNER_SET_PERIODIC) {
-                    Utils.DialogButton okButton = new Utils.DialogButton(
-                            getResources().getString(R.string.label_ok_btn),
-                            null);
-                    Utils.showAlertDialog(DemoJobSvrAct.this,
-                            R.string.label_dialog_info,
-                            R.string.label_job_spinner_info,
-                            okButton);
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            DemoJobSvrViewModel viewModel = mViewModelRef.get();
+            if (viewModel != null && intent != null) {
+                int progress = intent.getIntExtra(DemoAppConstants.KEY_PROGRESS, 0);
+                String status = intent.getStringExtra(DemoAppConstants.KEY_STATUS);
+                viewModel.updateProgress(progress);
+                if (status != null) {
+                    viewModel.updateStatus(status);
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });
-    }
-
-    /**
-     * Set up direct button listeners
-     */
-    private void setupActionButtons() {
-        // Start and Stop are handled via XML Data Binding to ViewModel
-        
-        // Handle Exit button
-        mBinding.btnExit.setOnClickListener(v -> finish());
+        }
     }
 }

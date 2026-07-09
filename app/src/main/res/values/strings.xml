@@ -901,4 +901,25 @@
     <string name="privacy_capture_msg_monitoring_stopped">Screen recording detection stopped</string>
     <string name="privacy_capture_msg_event_reported">Screen capture activity reported!</string>
     <string name="privacy_capture_btn_reset">Clear Status</string>
+
+    <!-- Background Execution Evolution -->
+    <string name="bg_exec_title">Background Execution Evolution Lab</string>
+    <string name="bg_exec_desc">Comparing Legacy Foreground Services (API 26+) vs. Modern User-Initiated Jobs (API 35+). Android 15 favors system-managed jobs for better power efficiency.</string>
+    <string name="bg_exec_mode_legacy">Legacy (FGS)</string>
+    <string name="bg_exec_mode_modern">Modern (Job)</string>
+    <string name="bg_exec_type_user_initiated">User-Initiated Job</string>
+    <string name="bg_exec_type_deferred">Deferred Job (Maintenance)</string>
+    <string name="bg_exec_label_job_type">Job Execution Type</string>
+    <string name="bg_exec_label_constraints">Execution Constraints</string>
+    <string name="bg_exec_label_network">Network Requirement</string>
+    <string name="bg_exec_label_device">Device Requirements</string>
+    <string name="bg_exec_label_data_size">Estimated Data Size: %1$d MB</string>
+    <string name="bg_exec_status_idle">Status: Idle</string>
+    <string name="bg_exec_status_running">Status: Running (%1$d%%)</string>
+    <string name="bg_exec_status_waiting">Status: Waiting for constraints...</string>
+    <string name="bg_exec_status_success">Status: Success</string>
+    <string name="bg_exec_status_cancelled">Status: Cancelled</string>
+    <string name="bg_exec_btn_start">Start Execution</string>
+    <string name="bg_exec_btn_stop">Stop Execution</string>
+    <string name="bg_exec_msg_job_failed">Background job scheduling failed!</string>
 </resources>

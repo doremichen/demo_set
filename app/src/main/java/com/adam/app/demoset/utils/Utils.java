@@ -95,6 +95,19 @@ public abstract class Utils {
 
     public static volatile String sImagePath;
 
+    /**
+     * Sends an internal broadcast to update the data transfer status.
+     * Shared by background services.
+     */
+    public static void sendTransferUpdate(Context context, int progress, String status) {
+        if (context == null) return;
+        Intent intent = new Intent(DemoAppConstants.ACTION_TRANSFER_UPDATE);
+        intent.putExtra(DemoAppConstants.KEY_PROGRESS, progress);
+        intent.putExtra(DemoAppConstants.KEY_STATUS, status);
+        intent.setPackage(context.getPackageName());
+        context.getApplicationContext().sendBroadcast(intent);
+    }
+
     // reference: https://github.com/orhanobut/logger/tree/master
     static {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder().

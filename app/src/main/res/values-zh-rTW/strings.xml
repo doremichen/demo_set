@@ -902,4 +902,25 @@
     <string name="privacy_capture_msg_monitoring_stopped">螢幕錄影偵測已停止</string>
     <string name="privacy_capture_msg_event_reported">偵測到螢幕擷取事件！</string>
     <string name="privacy_capture_btn_reset">清除狀態</string>
+
+    <!-- Background Execution Evolution -->
+    <string name="bg_exec_title">背景執行演進實驗室</string>
+    <string name="bg_exec_desc">對比傳統前台服務 (API 26+) 與現代使用者啟動的作業 (API 35+)。Android 15 偏好系統託管的作業以提升電力效率。</string>
+    <string name="bg_exec_mode_legacy">傳統 (FGS)</string>
+    <string name="bg_exec_mode_modern">現代 (Job)</string>
+    <string name="bg_exec_type_user_initiated">使用者啟動 (User-Initiated)</string>
+    <string name="bg_exec_type_deferred">延後執行 (Deferred/Maintenance)</string>
+    <string name="bg_exec_label_job_type">工作執行類型</string>
+    <string name="bg_exec_label_constraints">執行約束條件</string>
+    <string name="bg_exec_label_network">網路需求</string>
+    <string name="bg_exec_label_device">裝置狀態需求</string>
+    <string name="bg_exec_label_data_size">預估傳輸大小：%1$d MB</string>
+    <string name="bg_exec_status_idle">狀態：閒置</string>
+    <string name="bg_exec_status_running">狀態：執行中 (%1$d%%)</string>
+    <string name="bg_exec_status_waiting">狀態：等待約束條件達成...</string>
+    <string name="bg_exec_status_success">狀態：執行成功</string>
+    <string name="bg_exec_status_cancelled">狀態：已取消</string>
+    <string name="bg_exec_btn_start">開始執行</string>
+    <string name="bg_exec_btn_stop">停止執行</string>
+    <string name="bg_exec_msg_job_failed">背景作業排程失敗！</string>
 </resources>

@@ -101,7 +101,6 @@ Native Layer
 
 * **Dynamic Delivery**: Exploration of Split Install & Dynamic Feature Modules.
 * Started / Bound Service
-* JobScheduler / JobService
 * WorkManager (Modern background tasks)
 * AlarmManager
 * HandlerThread
@@ -109,6 +108,12 @@ Native Layer
 * System UI control
 * Quick Settings Tile
 * **Notification Management**: Advanced notification demos including intent handling and result callbacks.
+* **Background Execution Evolution (Android 15)**:
+    *   **Legacy vs. Modern Comparison**: Side-by-side demonstration of traditional **Foreground Services (FGS)** vs. the new **User-initiated Data Transfer Jobs**.
+    *   **Scenario-based Execution**:
+        *   **User-initiated Job**: Immediate high-priority data transfer with system-managed notifications.
+        *   **Deferred Maintenance Job**: Intelligent scheduling based on constraints like **Idle**, **Charging**, and **Wi-Fi** availability.
+    *   **Safety & Optimization**: Automatic validation to prevent illegal constraint combinations (e.g., UI jobs cannot have Idle constraints).
 
 ---
 
@@ -365,12 +370,13 @@ Planned upgrades to align with **Modern Android Development (MAD)** standards an
 
 *   **On-Device Generative AI (AICore)**: Integrating **Gemini Nano** via the Google AI Edge SDK for localized text summarization and smart replies without internet dependency.
 *   **Privacy Space & Sandbox Awareness**: Demonstrating app behavior adaptation for Android 15's **Private Space**, ensuring sensitive data is correctly isolated when the profile is locked.
-*   **Edge-to-Edge & Predictive Back (Phase II)**: Full migration to the mandatory **Edge-to-Edge** layout (Android 15 default) and implementing **Predictive Back Gestures** with custom cross-activity animations.
+*   **Predictive Back Gestures (Modern UI)**: Implementing the new system back navigation pattern for Android 14+ with custom cross-activity and cross-fragment animations.
+*   **Edge-to-Edge Layout (Phase II)**: Full migration to the mandatory Edge-to-Edge display standard required by Android 15.
 *   **Unified Health Data (Health Connect)**: Migrating fragmented health/fitness sensor data tracking to the centralized **Health Connect API** as the industry standard.
 *   **Advanced Privacy Safeguards**:
     *   **Screen Recording Detection**: ✅ Implemented using Strategy Pattern for Android 14 and 15 (API 35).
     *   **Photo Picker (Cloud Integration)**: Moving away from `READ_EXTERNAL_STORAGE` to the privacy-centric **Photo Picker** with support for cloud-provider media.
-*   **Modern Background Execution**: Refactoring legacy Foreground Services to use **User-initiated data transfer jobs** and the updated **JobScheduler** constraints to comply with stricter Android 15+ battery policies.
+*   **Modern Background Execution**: ✅ Refactored legacy Foreground Services to use **User-initiated data transfer jobs** and updated **JobScheduler** constraints for Android 15.
 *   **Satellite Connectivity Lab**: Exploring the **Non-Terrestrial Network (NTN)** APIs for satellite messaging detection and status monitoring.
 *   **Automated Testing Suite**: Implementing a comprehensive testing strategy including **Screenshot Testing**, **Hilt-based Unit Tests**, and **Macrobenchmarks**.
 
