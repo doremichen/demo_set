@@ -53,6 +53,9 @@ import com.adam.app.demoset.video.viewmodel.VideoRecordViewModel;
 
 import java.io.File;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class DemoVideoRecordAct extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSION_CODE = 0x2467;
@@ -63,9 +66,6 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
     private ActivityDemoVideoRecordBinding mBinding;
     private VideoRecordViewModel mViewModel;
-    private boolean mIsAllow;
-    private String mFilePath;
-
     // texture view listener
     private final TextureView.SurfaceTextureListener mTextureViewListener = new TextureView.SurfaceTextureListener() {
         @Override
@@ -86,8 +86,11 @@ public class DemoVideoRecordAct extends AppCompatActivity {
         }
 
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {}
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        }
     };
+    private boolean mIsAllow;
+    private String mFilePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +110,8 @@ public class DemoVideoRecordAct extends AppCompatActivity {
 
         UIUtils.hideSystemBar(getWindow());
 
-        mBinding.timer.setOnChronometerTickListener(chronometer -> 
-            mViewModel.updateTimer(SystemClock.elapsedRealtime())
+        mBinding.timer.setOnChronometerTickListener(chronometer ->
+                mViewModel.updateTimer(SystemClock.elapsedRealtime())
         );
 
         if (Utils.askPermission(this, RECORD_PERMISSION, REQUEST_PERMISSION_CODE)) {
@@ -131,17 +134,17 @@ public class DemoVideoRecordAct extends AppCompatActivity {
             mBinding.timer.stop();
         });
 
-        mViewModel.getErrorResult().observe(this, result -> 
-            Utils.showAlertDialog(this, getString(R.string.demo_video_record_error_camera, result),
-                    (dialog, which) -> finish())
+        mViewModel.getErrorResult().observe(this, result ->
+                Utils.showAlertDialog(this, getString(R.string.demo_video_record_error_camera, result),
+                        (dialog, which) -> finish())
         );
 
-        mViewModel.getFailResId().observe(this, resId -> 
-            Utils.showAlertDialog(this, getString(resId), null)
+        mViewModel.getFailResId().observe(this, resId ->
+                Utils.showAlertDialog(this, getString(resId), null)
         );
 
-        mViewModel.getInfoResId().observe(this, resId -> 
-            Utils.showToast(this, getString(resId))
+        mViewModel.getInfoResId().observe(this, resId ->
+                Utils.showToast(this, getString(resId))
         );
 
         mViewModel.getFilePath().observe(this, path -> mFilePath = path);
@@ -248,7 +251,7 @@ public class DemoVideoRecordAct extends AppCompatActivity {
             Utils.showToast(this, getString(R.string.demo_video_record_no_file));
             return null;
         }
-        
+
         Uri contentUri = FileProvider.getUriForFile(this, DemoAppConstants.AUTHORITY_FILE_PROVIDER, file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

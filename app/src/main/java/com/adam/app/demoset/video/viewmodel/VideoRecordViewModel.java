@@ -25,7 +25,6 @@ package com.adam.app.demoset.video.viewmodel;
 import android.app.Application;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.util.Size;
 import android.view.TextureView;
 
 import androidx.annotation.NonNull;
@@ -33,16 +32,40 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.adam.app.demoset.video.controller.VideoRecordManager;
+import com.adam.app.demoset.video.domain.repository.VideoRecordListener;
+import com.adam.app.demoset.video.domain.usecase.CameraUseCase;
+import com.adam.app.demoset.video.domain.usecase.RecordUseCase;
+import com.adam.app.demoset.video.domain.usecase.StartPreviewUseCase;
 
 import java.io.File;
 
-public class VideoRecordViewModel extends AndroidViewModel implements VideoRecordManager.RecordListener {
+import javax.inject.Inject;
 
-    private final VideoRecordManager mManager;
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+/**
+ * ViewModel for video recording, following Clean Architecture.
+ * Interacts with Use Cases to perform business logic.
+ */
+@HiltViewModel
+public class VideoRecordViewModel extends AndroidViewModel implements VideoRecordListener {
+
+    private static final String INITIAL_TIMER_TEXT = "00:00:00";
+    private static final String VIDEO_FOLDER_NAME = "videos";
+    private static final String VIDEO_EXTENSION = ".mp4";
+
+    // Time constants
+    private static final int MILLIS_IN_HOUR = 3600000;
+    private static final int MILLIS_IN_MINUTE = 60000;
+    private static final int MILLIS_IN_SECOND = 1000;
+    private static final int TIME_UNIT_MAX = 10;
+
+    private final CameraUseCase mCameraUseCase;
+    private final RecordUseCase mRecordUseCase;
+    private final StartPreviewUseCase mStartPreviewUseCase;
 
     private final MutableLiveData<Boolean> mIsRecording = new MutableLiveData<>(false);
-    private final MutableLiveData<String> mTimerText = new MutableLiveData<>("00:00:00");
+    private final MutableLiveData<String> mTimerText = new MutableLiveData<>(INITIAL_TIMER_TEXT);
     private final MutableLiveData<Boolean> mCanPlay = new MutableLiveData<>(false);
     private final MutableLiveData<String> mFilePath = new MutableLiveData<>();
     private final MutableLiveData<Integer> mErrorResult = new MutableLiveData<>();
@@ -51,30 +74,39 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
 
     private long mBaseTime;
 
-    public VideoRecordViewModel(@NonNull Application application) {
+    @Inject
+    public VideoRecordViewModel(@NonNull Application application,
+                                CameraUseCase cameraUseCase,
+                                RecordUseCase recordUseCase,
+                                StartPreviewUseCase startPreviewUseCase) {
         super(application);
-        mManager = VideoRecordManager.getInstance();
-        mManager.registerListener(this);
+        this.mCameraUseCase = cameraUseCase;
+        this.mRecordUseCase = recordUseCase;
+        this.mStartPreviewUseCase = startPreviewUseCase;
+        this.mCameraUseCase.registerListener(this);
     }
 
     public void startCameraThread() {
-        mManager.startCameraThread();
+        mCameraUseCase.startThread();
     }
 
     public void stopCameraThread() {
-        mManager.stopCameraThread();
+        mCameraUseCase.stopThread();
     }
 
     public void openCamera(TextureView textureView) {
-        mManager.openCamera(getApplication(), textureView);
+        mCameraUseCase.openCamera(getApplication(), textureView);
     }
 
     public void closeCamera() {
-        mManager.closeCamera();
+        mCameraUseCase.closeCamera();
     }
 
+    /**
+     * Toggles the recording state.
+     */
     public void toggleRecord() {
-        if (mManager.isRecording()) {
+        if (mRecordUseCase.isRecording()) {
             stopRecording();
             return;
         }
@@ -82,35 +114,39 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
     }
 
     private void startRecording() {
-        mManager.startRecord(getApplication());
+        mRecordUseCase.startRecord(getApplication());
         mBaseTime = SystemClock.elapsedRealtime();
         mIsRecording.setValue(true);
         mCanPlay.setValue(false);
     }
 
     private void stopRecording() {
-        mManager.stopRecord();
+        mRecordUseCase.stopRecord();
         mIsRecording.setValue(false);
         mCanPlay.setValue(true);
     }
 
+    /**
+     * Updates the recording timer based on current time.
+     *
+     * @param currentTime The current elapsed realtime.
+     */
     public void updateTimer(long currentTime) {
         long time = currentTime - mBaseTime;
-        int h = (int) (time / 3600000);
-        int m = (int) (time - h * 3600000) / 60000;
-        int s = (int) (time - h * 3600000 - m * 60000) / 1000;
-        String hh = h < 10 ? "0" + h : h + "";
-        String mm = m < 10 ? "0" + m : m + "";
-        String ss = s < 10 ? "0" + s : s + "";
+        int h = (int) (time / MILLIS_IN_HOUR);
+        int m = (int) (time - h * MILLIS_IN_HOUR) / MILLIS_IN_MINUTE;
+        int s = (int) (time - h * MILLIS_IN_HOUR - m * MILLIS_IN_MINUTE) / MILLIS_IN_SECOND;
+
+        String hh = h < TIME_UNIT_MAX ? "0" + h : String.valueOf(h);
+        String mm = m < TIME_UNIT_MAX ? "0" + m : String.valueOf(m);
+        String ss = s < TIME_UNIT_MAX ? "0" + s : String.valueOf(s);
+
         mTimerText.setValue(TextUtils.concat(hh, ":", mm, ":", ss).toString());
     }
 
-    public Size getPreviewSize() {
-        return mManager.getPreviewSize();
-    }
 
     public void configureTransform(int width, int height, int rotation) {
-        mManager.configureTransform(width, height, rotation);
+        mCameraUseCase.configureTransform(width, height, rotation);
     }
 
     public LiveData<Boolean> isRecording() {
@@ -142,6 +178,13 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
     }
 
     @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Prevent memory leaks by unregistering the listener
+        mCameraUseCase.unregisterListener(this);
+    }
+
+    @Override
     public void onError(int result) {
         mErrorResult.postValue(result);
     }
@@ -159,11 +202,11 @@ public class VideoRecordViewModel extends AndroidViewModel implements VideoRecor
     @Override
     public String getPath() {
         File fileDir = getApplication().getFilesDir();
-        File outputDir = new File(fileDir, "videos");
+        File outputDir = new File(fileDir, VIDEO_FOLDER_NAME);
         if (!outputDir.exists() && !outputDir.mkdirs()) {
             return null;
         }
-        String fileName = System.currentTimeMillis() + ".mp4";
+        String fileName = System.currentTimeMillis() + VIDEO_EXTENSION;
         File outputFile = new File(outputDir, fileName);
         String path = outputFile.getPath();
         mFilePath.postValue(path);

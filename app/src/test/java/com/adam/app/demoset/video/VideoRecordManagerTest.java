@@ -24,12 +24,12 @@ package com.adam.app.demoset.video;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import android.os.Build;
 
-import com.adam.app.demoset.video.controller.VideoRecordManager;
+import com.adam.app.demoset.video.data.repository.VideoRepositoryImpl;
+import com.adam.app.demoset.video.domain.repository.VideoRecordListener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,53 +40,49 @@ import org.robolectric.annotation.Config;
 import java.lang.reflect.Field;
 
 /**
- * Unit tests for VideoRecordManager.
+ * Unit tests for VideoRepositoryImpl.
  */
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.P)
 public class VideoRecordManagerTest {
 
-    private VideoRecordManager manager;
+    private VideoRepositoryImpl repository;
 
     @Before
     public void setUp() throws Exception {
-        manager = VideoRecordManager.getInstance();
-        resetSingleton();
+        repository = new VideoRepositoryImpl();
+        resetInternalState();
     }
 
-    private void resetSingleton() throws Exception {
-        Field deviceField = VideoRecordManager.class.getDeclaredField("mDevice");
+    private void resetInternalState() throws Exception {
+        Field deviceField = VideoRepositoryImpl.class.getDeclaredField("mDevice");
         deviceField.setAccessible(true);
-        deviceField.set(manager, null);
+        deviceField.set(repository, null);
 
-        Field recorderField = VideoRecordManager.class.getDeclaredField("mRecorder");
+        Field recorderField = VideoRepositoryImpl.class.getDeclaredField("mRecorder");
         recorderField.setAccessible(true);
-        recorderField.set(manager, null);
-
-        Field stateField = VideoRecordManager.class.getDeclaredField("mRecordState");
-        stateField.setAccessible(true);
+        recorderField.set(repository, null);
     }
 
     @Test
-    public void testGetInstance() {
-        assertNotNull(VideoRecordManager.getInstance());
-        assertTrue(VideoRecordManager.getInstance() == VideoRecordManager.getInstance());
+    public void testInitialization() {
+        assertNotNull(repository);
     }
 
     @Test
     public void testThreadManagement() {
-        manager.startCameraThread();
-        manager.stopCameraThread();
+        repository.startCameraThread();
+        repository.stopCameraThread();
     }
 
     @Test
     public void testIsRecording_Default() {
-        assertFalse(manager.isRecording());
+        assertFalse(repository.isRecording());
     }
 
     @Test
     public void testRegisterListener() {
-        VideoRecordManager.RecordListener mockListener = mock(VideoRecordManager.RecordListener.class);
-        manager.registerListener(mockListener);
+        VideoRecordListener mockListener = mock(VideoRecordListener.class);
+        repository.registerListener(mockListener);
     }
 }

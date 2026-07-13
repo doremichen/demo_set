@@ -382,6 +382,45 @@ Planned upgrades to align with **Modern Android Development (MAD)** standards an
 
 ---
 
+# 💉 Dependency Injection with Hilt
+
+This project utilizes **Google Hilt** for standardized dependency injection across all modules. This ensures better modularity, easier testing, and lifecycle-aware dependency management.
+
+### 🏗️ Hilt Architecture & Workflow
+
+1.  **Application Entry Point**: The app is initialized with `@HiltAndroidApp` in `DemoApplication.java`. This triggers Hilt's code generation and creates the `SingletonComponent`.
+2.  **Entry Points**: Activities and Fragments are annotated with `@AndroidEntryPoint` to enable member injection.
+3.  **ViewModel Injection**: ViewModels use `@HiltViewModel` and `@Inject` constructors, allowing Hilt to provide dependencies like `UseCases` or `Repositories` automatically.
+4.  **Clean Architecture Flow**:
+    *   **UI (Activity/Fragment)** → Injects **ViewModel**.
+    *   **ViewModel** → Injects **UseCases**.
+    *   **UseCase** → Injects **Repository (Interface)**.
+    *   **Module** → Binds **Repository (Interface)** to **Repository (Implementation)**.
+
+### 🧩 Hilt Modules & Binding Strategies
+
+#### `@Binds` vs `@Provides`: Choosing the Right Tool
+
+| Feature | **`@Binds`** | **`@Provides`** |
+| :--- | :--- | :--- |
+| **Logic** | **Zero Logic**: Simply maps an implementation to an interface. | **Complex Logic**: Can include initialization, conditional logic, or builder patterns. |
+| **Class Source** | **Internal**: Use it for classes you wrote and can annotate with `@Inject`. | **External/Complex**: Necessary for 3rd-party libraries (e.g., Retrofit, Room) or objects requiring custom setup. |
+| **Performance** | **Higher**: Dagger generates less code (no factory class for the binding). | **Standard**: Dagger generates a factory class to execute the provider method. |
+| **Definition** | An `abstract` method in an `interface` or `abstract class`. | A concrete `static` (preferred) or instance method. |
+
+### 🛠️ Development Techniques & Best Practices
+
+*   **Constructor Injection**: Always prefer `@Inject constructor(...)` over member injection. It makes dependencies explicit and ensures the class is always in a valid state.
+*   **Interface Binding**: Use `@Binds` in an `abstract` module to map interfaces (Domain Layer) to implementations (Data Layer). This keeps the Domain Layer pure and independent of Android-specific implementation details.
+*   **Scoping for Single Source of Truth**:
+    *   Use `@Singleton` for Repositories and Database instances to maintain a single state across the app.
+    *   Use `@ActivityRetainedScoped` for components that should survive configuration changes but not the entire app lifecycle.
+*   **Qualifiers for Multiple Implementations**: When providing multiple instances of the same type (e.g., different OkHttp interceptors), use custom `@Qualifier` annotations to distinguish them.
+*   **Memory Leak Prevention**: While Hilt manages lifecycles, always manually unregister listeners or observers in `onCleared()` (ViewModels) or `onDestroy()` (Activities) if they are held by long-lived `@Singleton` objects.
+*   **Testing**: Leverage `HiltAndroidRule` in instrumented tests to swap production modules with test doubles using `@TestInstallIn`.
+
+---
+
 # 👨‍💻 Author
 
 Adam Chen

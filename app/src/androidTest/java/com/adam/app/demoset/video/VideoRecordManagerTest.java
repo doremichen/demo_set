@@ -37,7 +37,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.adam.app.demoset.R;
-import com.adam.app.demoset.video.controller.VideoRecordManager;
+import com.adam.app.demoset.video.data.repository.VideoRepositoryImpl;
+import com.adam.app.demoset.video.domain.repository.VideoRepository;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,7 +51,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Advanced Instrumented tests for VideoRecordManager.
+ * Instrumented tests migrated to VideoRepository.
  */
 @RunWith(AndroidJUnit4.class)
 public class VideoRecordManagerTest {
@@ -67,7 +68,7 @@ public class VideoRecordManagerTest {
             Manifest.permission.RECORD_AUDIO
     );
 
-    private VideoRecordManager manager;
+    private VideoRepository repository;
 
     @BeforeClass
     public static void keepScreenAwake() {
@@ -96,7 +97,8 @@ public class VideoRecordManagerTest {
 
     @Before
     public void setUp() {
-        manager = VideoRecordManager.getInstance();
+        // For testing purposes, we instantiate the implementation
+        repository = new VideoRepositoryImpl();
         activityRule.getScenario().onActivity(activity -> {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
@@ -110,13 +112,13 @@ public class VideoRecordManagerTest {
             TextureView textureView = activity.findViewById(R.id.surface_record);
             
             if (textureView.isAvailable()) {
-                manager.openCamera(activity, textureView);
+                repository.openCamera(activity, textureView);
                 latch.countDown();
             } else {
                 textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
                     @Override
                     public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
-                        manager.openCamera(activity, textureView);
+                        repository.openCamera(activity, textureView);
                         latch.countDown();
                     }
                     @Override public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surface, int width, int height) {}
@@ -132,17 +134,17 @@ public class VideoRecordManagerTest {
     @Test
     public void testRecordState_Consistency() {
         activityRule.getScenario().onActivity(activity -> {
-            assertFalse(manager.isRecording());
-            manager.closeCamera();
-            assertFalse(manager.isRecording());
+            assertFalse(repository.isRecording());
+            repository.closeCamera();
+            assertFalse(repository.isRecording());
         });
     }
 
     @Test
     public void testStopRecord_WhenNotActive() {
         activityRule.getScenario().onActivity(activity -> {
-            manager.stopRecord();
-            assertFalse(manager.isRecording());
+            repository.stopRecord();
+            assertFalse(repository.isRecording());
         });
     }
 }
