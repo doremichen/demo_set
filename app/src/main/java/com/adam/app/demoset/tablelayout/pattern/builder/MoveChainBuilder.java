@@ -22,18 +22,21 @@
 
 package com.adam.app.demoset.tablelayout.pattern.builder;
 
-import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.CenterMoveHandler;
-import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.CornerMoveHandler;
-import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.EdgeMoveHandler;
-import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.MoveHandler;
+import com.adam.app.demoset.tablelayout.pattern.chainofresponsibility.CenterMoveHandler;
+import com.adam.app.demoset.tablelayout.pattern.chainofresponsibility.CornerMoveHandler;
+import com.adam.app.demoset.tablelayout.pattern.chainofresponsibility.EdgeMoveHandler;
+import com.adam.app.demoset.tablelayout.pattern.chainofresponsibility.MoveHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Builder for move handler chain.
+ */
 public class MoveChainBuilder {
 
-    // list of handler
-    private List<MoveHandler> handlers = new ArrayList<>();
+    /** List of handlers in the chain */
+    private final List<MoveHandler> mHandlers = new ArrayList<>();
 
     public static MoveChainBuilder forDifficulty(Difficulty difficulty) {
         MoveChainBuilder builder = new MoveChainBuilder();
@@ -55,28 +58,28 @@ public class MoveChainBuilder {
     }
 
     public MoveChainBuilder addHandler(MoveHandler handler) {
-        handlers.add(handler);
+        mHandlers.add(handler);
         return this;
     }
 
     /**
-     * build the chain
+     * Builds the chain.
      *
-     * @return the first handler
+     * @return The first handler in the chain.
      */
     public MoveHandler build() {
-        if (handlers.isEmpty()) {
+        if (mHandlers.isEmpty()) {
             return null;
         }
 
-        for (int i = 0; i < handlers.size() - 1; i++) {
-            handlers.get(i).setNext(handlers.get(i + 1));
+        for (int i = 0; i < mHandlers.size() - 1; i++) {
+            mHandlers.get(i).setNext(mHandlers.get(i + 1));
         }
-        return handlers.get(0);
+        return mHandlers.get(0);
     }
 
     /**
-     * difficulty of the game
+     * Difficulty levels of the game.
      */
     public enum Difficulty {
         EASY, MEDIUM, HARD

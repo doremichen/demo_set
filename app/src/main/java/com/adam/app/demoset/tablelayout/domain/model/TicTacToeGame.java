@@ -20,62 +20,73 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.tablelayout.model;
+package com.adam.app.demoset.tablelayout.domain.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TicTacToeModel {
+/**
+ * TicTacToe game logic entity.
+ */
+public class TicTacToeGame {
 
-    // constants
+    /** Empty cell symbol */
     public static final char EMPTY = '\0';
+    
+    /** Player mark symbol */
     public static final char PLAYER = 'X';
+    
+    /** Computer mark symbol */
     public static final char COMPUTER = 'O';
-    // win pattern
-    private static final int[][] WIN_PATTERN = {
+    
+    /** Maximum board size */
+    public static final int BOARD_SIZE = 9;
+
+    /** Winning patterns for TicTacToe */
+    private static final int[][] WIN_PATTERNS = {
             {0, 1, 2}, {3, 4, 5}, {6, 7, 8},  // horizontal
             {0, 3, 6}, {1, 4, 7}, {2, 5, 8},  // vertical
             {0, 4, 8}, {2, 4, 6}              // diagonal
     };
-    // game board
-    private final char[] mBoard = new char[9];
-    // cell wins
-    private final List<Integer> mCellWins = new ArrayList<>();
+
+    /** Game board state */
+    private final char[] mBoard = new char[BOARD_SIZE];
+    
+    /** List of indices that form the winning combination */
+    private final List<Integer> mWinningIndices = new ArrayList<>();
 
     /**
-     * constructor
+     * Default constructor initializes the game board.
      */
-
-
-    public TicTacToeModel() {
+    public TicTacToeGame() {
         reset();
     }
 
     /**
-     * reset the board
+     * Resets the game board to its initial state.
      */
     public void reset() {
         Arrays.fill(mBoard, EMPTY);
-        mCellWins.clear();
+        mWinningIndices.clear();
     }
 
     /**
-     * get the cell
+     * Gets the symbol at a specific index.
      *
-     * @param index the index of the cell
-     * @return data of the cell
+     * @param index The cell index.
+     * @return The symbol at the index.
      */
     public char getCell(int index) {
         return mBoard[index];
     }
 
     /**
-     * set the cell
+     * Sets the symbol at a specific index if it's empty.
      *
-     * @param index the index of the cell
-     * @param mark  the mark of the cell
-     * @return true if the cell is set, false otherwise
+     * @param index The cell index.
+     * @param mark  The mark to set.
+     * @return true if successfully set, false if the cell was not empty.
      */
     public boolean setCell(int index, char mark) {
         if (mBoard[index] == EMPTY) {
@@ -86,9 +97,9 @@ public class TicTacToeModel {
     }
 
     /**
-     * check if the cell is full
+     * Checks if the board is completely filled.
      *
-     * @return true if the cell is full, false otherwise
+     * @return true if full, false otherwise.
      */
     public boolean isFull() {
         for (char c : mBoard) {
@@ -100,78 +111,74 @@ public class TicTacToeModel {
     }
 
     /**
-     * check if the cell is empty
+     * Checks if a specific cell is empty.
      *
-     * @param index the index of the cell
-     * @return true if the cell is empty, false otherwise
+     * @param index The cell index.
+     * @return true if empty, false otherwise.
      */
     public boolean isEmpty(int index) {
         return mBoard[index] == EMPTY;
     }
 
     /**
-     * get the board
+     * Returns a copy of the current board state.
      *
-     * @return the board
+     * @return The board array.
      */
     public char[] getBoard() {
-        return mBoard;
+        return mBoard.clone();
     }
 
     /**
-     * get the cell wins
+     * Gets the indices of the winning combination.
      *
-     * @return the cell wins
+     * @return List of winning indices.
      */
-    public List<Integer> getCellWins() {
-        return mCellWins;
+    public List<Integer> getWinningIndices() {
+        return new ArrayList<>(mWinningIndices);
     }
 
-
     /**
-     * check if the player wins
+     * Checks if a player with the given mark has won.
      *
-     * @param mark the mark of the player
-     * @return true if the player wins, false otherwise
+     * @param mark The mark to check.
+     * @return true if won, false otherwise.
      */
     public boolean checkWin(char mark) {
-        // check
-        for (int[] pattern : WIN_PATTERN) {
+        for (int[] pattern : WIN_PATTERNS) {
             if (mBoard[pattern[0]] == mark && mBoard[pattern[1]] == mark && mBoard[pattern[2]] == mark) {
-                mCellWins.add(pattern[0]);
-                mCellWins.add(pattern[1]);
-                mCellWins.add(pattern[2]);
+                mWinningIndices.clear();
+                mWinningIndices.add(pattern[0]);
+                mWinningIndices.add(pattern[1]);
+                mWinningIndices.add(pattern[2]);
                 return true;
             }
         }
-
         return false;
     }
 
     /**
-     * check if the computer wins
+     * Finds a winning move for the given player if one exists.
      *
-     * @param player the mark of the player
-     * @return the index of the cell which will win the game
+     * @param mark The mark to check.
+     * @return The index of the winning move, or -1 if none found.
      */
-    public int findWinningMove(char player) {
-        for (int[] pattern : WIN_PATTERN) {
+    public int findWinningMove(char mark) {
+        for (int[] pattern : WIN_PATTERNS) {
             int a = pattern[0];
             int b = pattern[1];
             int c = pattern[2];
-            // check if the move is possible
-            if (mBoard[a] == EMPTY && mBoard[b] == player && mBoard[c] == player) {
+            
+            if (mBoard[a] == EMPTY && mBoard[b] == mark && mBoard[c] == mark) {
                 return a;
             }
-            if (mBoard[b] == EMPTY && mBoard[a] == player && mBoard[c] == player) {
+            if (mBoard[b] == EMPTY && mBoard[a] == mark && mBoard[c] == mark) {
                 return b;
             }
-            if (mBoard[c] == EMPTY && mBoard[a] == player && mBoard[b] == player) {
+            if (mBoard[c] == EMPTY && mBoard[a] == mark && mBoard[b] == mark) {
                 return c;
             }
         }
-
         return -1;
     }
-
 }

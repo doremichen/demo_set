@@ -20,15 +20,20 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility;
+package com.adam.app.demoset.tablelayout.pattern.chainofresponsibility;
 
-import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
+import com.adam.app.demoset.tablelayout.domain.model.TicTacToeGame;
 
+/**
+ * Handler for corner moves.
+ */
 public class CornerMoveHandler extends MoveHandler {
+    
+    /** Corner indices */
     private static final int[] CORNERS = {0, 2, 6, 8};
 
     @Override
-    protected int findMove(TicTacToeModel model) {
+    protected int findMove(TicTacToeGame model) {
         return chooseRandomAvailableCell(model, CORNERS);
     }
 }

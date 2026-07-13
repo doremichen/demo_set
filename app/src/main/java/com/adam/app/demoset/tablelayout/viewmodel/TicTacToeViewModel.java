@@ -22,183 +22,115 @@
 
 package com.adam.app.demoset.tablelayout.viewmodel;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.adam.app.demoset.R;
+import com.adam.app.demoset.tablelayout.domain.model.TicTacToeGame;
+import com.adam.app.demoset.tablelayout.domain.usecase.TicTacToeUseCase;
 import com.adam.app.demoset.utils.Utils;
-import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
-import com.adam.app.demoset.tablelayout.pattern.builder.MoveChainBuilder;
-import com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility.MoveHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class TicTacToeViewModel extends AndroidViewModel {
+import javax.inject.Inject;
 
-    // TAG
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
+/**
+ * ViewModel for TicTacToe game.
+ */
+@HiltViewModel
+public class TicTacToeViewModel extends ViewModel {
+
+    /** Tag for logging */
     private static final String TAG = "TicTacToeViewModel";
+    
+    /** Delay for auto-reset in milliseconds */
+    private static final long RESET_DELAY_MS = 3000L;
 
+    /** Application context */
     private final Context mContext;
+    
+    /** TicTacToe use case entry point */
+    private final TicTacToeUseCase mUseCase;
 
-    // model
-    private final TicTacToeModel mModel;
-    // Live data
-    private final MutableLiveData<char[]> mBoardLiveData = new MutableLiveData<>(null);
-    private final MutableLiveData<String> mMessageLiveData = new MutableLiveData<>("");
-    private final MutableLiveData<List<Integer>> mWinningCellsLiveData = new MutableLiveData<>(null);
-    private boolean mIsGameOver = false;
-
-    public TicTacToeViewModel(@NonNull Application application) {
-        super(application);
-        mContext = application.getApplicationContext();
-        mModel = new TicTacToeModel();
-        // initial status message
-        String msg = mContext.getString(R.string.demo_tablelayout_status_message);
-        mMessageLiveData.setValue(msg);
+    /**
+     * Constructor with dependency injection.
+     */
+    @Inject
+    public TicTacToeViewModel(@ApplicationContext Context context,
+                              TicTacToeUseCase useCase) {
+        mContext = context;
+        mUseCase = useCase;
+        
+        // Initial setup
+        mUseCase.startNewGame(mContext.getString(R.string.demo_tablelayout_status_message));
     }
 
     public LiveData<char[]> getBoardLiveData() {
-        return mBoardLiveData;
+        return mUseCase.getBoard();
     }
 
     public LiveData<String> getMessageLiveData() {
-        return mMessageLiveData;
+        return mUseCase.getMessage();
     }
 
     public LiveData<List<Integer>> getWinningCellsLiveData() {
-        return mWinningCellsLiveData;
+        return mUseCase.getWinningCells();
     }
 
-
     /**
-     * start new game
+     * Starts a new game.
      */
     public void startNewGame() {
-        mModel.reset();
-        mIsGameOver = false;
-        mBoardLiveData.setValue(mModel.getBoard());
-        mMessageLiveData.setValue(mContext.getString(R.string.demo_tablelayout_game_start_msg));
+        mUseCase.startNewGame(mContext.getString(R.string.demo_tablelayout_game_start_msg));
     }
 
     /**
-     * player move
+     * Handles player move.
      *
-     * @param index cell index
+     * @param index Cell index.
      */
     public void playerMove(int index) {
         Utils.log(TAG, "playerMove: " + index);
-        // check game over or not empty in cell by index
-        if (mIsGameOver || !mModel.isEmpty(index)) {
-            // SHOW TOAST
+        boolean moved = mUseCase.makeMove(index, TicTacToeGame.PLAYER,
+                mContext.getString(R.string.demo_tablelayout_player_win_msg),
+                mContext.getString(R.string.demo_tablelayout_tie_msg));
+        
+        if (!moved) {
             Utils.showToast(mContext, "Game over or this cell is not empty");
             return;
         }
-
-        boolean end = handleMove(index, TicTacToeModel.PLAYER, mContext.getString(R.string.demo_tablelayout_player_win_msg));
-        if (end) return;
-
-        // computer move
+        
+        if (mUseCase.isGameOver()) {
+            resetLater();
+            return;
+        }
+        
         computerMove();
     }
 
     /**
-     * computer move
+     * Handles computer move.
      */
     private void computerMove() {
-        Utils.log(TAG, "computerMove: ");
-        List<Integer> empty = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            if (mModel.isEmpty(i)) empty.add(i);
+        mUseCase.computerMove(mContext.getString(R.string.demo_tablelayout_computer_win_msg),
+                mContext.getString(R.string.demo_tablelayout_tie_msg));
+        
+        if (mUseCase.isGameOver()) {
+            resetLater();
         }
-        if (empty.isEmpty()) return;
-        // step1: find player winner cell possibility
-        int blockIndex = mModel.findWinningMove(TicTacToeModel.PLAYER);
-        if (blockIndex != -1) {
-            handleMove(blockIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
-            return;
-        }
-        // step2: find computer winner cell possibility
-        int winIndex = mModel.findWinningMove(TicTacToeModel.COMPUTER);
-        if (winIndex != -1) {
-            handleMove(winIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
-            return;
-        }
-
-        // step3: prefer center -> corner -> edges
-        preferMove();
-
-    }
-
-    private void preferMove() {
-
-        // move handle
-        MoveHandler chain = MoveChainBuilder
-                .forDifficulty(MoveChainBuilder.Difficulty.HARD)
-                .build();
-
-        int moveIndex = chain.handle(mModel);
-        if (moveIndex != -1) {
-            handleMove(moveIndex, TicTacToeModel.COMPUTER, mContext.getString(R.string.demo_tablelayout_computer_win_msg));
-        }
-
     }
 
     /**
-     * handle player move
-     *
-     * @param index  cell index
-     * @param player player char
-     * @param s      message
-     * @return true if game over else false
-     */
-    private boolean handleMove(int index, char player, String s) {
-        Utils.log(TAG, "handleMove: " + index);
-        // put in cell
-        boolean end = mModel.setCell(index, player);
-        if (!end) {
-            // show toast
-            Utils.showToast(mContext, "This cell is not empty");
-            return false;
-        }
-        Utils.log(TAG, "update board!!!");
-
-        // update bord
-        mBoardLiveData.setValue(mModel.getBoard());
-
-        // check winner
-        if (mModel.checkWin(player)) {
-            mIsGameOver = true;
-            mMessageLiveData.setValue(s);
-            mWinningCellsLiveData.setValue(mModel.getCellWins());
-            resetLater();
-            return true;
-        }
-
-        // check tie
-        if (mModel.isFull()) {
-            mIsGameOver = true;
-            mMessageLiveData.setValue(mContext.getString(R.string.demo_tablelayout_tie_msg));
-            resetLater();
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * reset game after 2 seconds
+     * Resets game after a delay.
      */
     private void resetLater() {
-        new Handler(Looper.getMainLooper()).postDelayed(this::startNewGame, 3000L);
+        new Handler(Looper.getMainLooper()).postDelayed(this::startNewGame, RESET_DELAY_MS);
     }
-
-
 }

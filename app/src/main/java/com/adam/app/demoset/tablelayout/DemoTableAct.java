@@ -35,6 +35,12 @@ import com.adam.app.demoset.databinding.ActivityDemoTableBinding;
 import com.adam.app.demoset.tablelayout.viewmodel.TicTacToeViewModel;
 import com.adam.app.demoset.utils.UIUtils;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+/**
+ * Activity for TicTacToe TableLayout demo.
+ */
+@AndroidEntryPoint
 public class DemoTableAct extends AppCompatActivity {
 
     // button array size 9

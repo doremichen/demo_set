@@ -20,16 +20,20 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility;
+package com.adam.app.demoset.tablelayout.pattern.chainofresponsibility;
 
-import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
+import com.adam.app.demoset.tablelayout.domain.model.TicTacToeGame;
 
-public class CenterMoveHandler extends MoveHandler {
+/**
+ * Handler for edge moves.
+ */
+public class EdgeMoveHandler extends MoveHandler {
 
-    private static final int CENTER = 4;
+    /** Edge indices */
+    private static final int[] EDGE_MOVES = {1, 3, 5, 7};
 
     @Override
-    protected int findMove(TicTacToeModel model) {
-        return (model.isEmpty(CENTER))? CENTER : -1;
+    protected int findMove(TicTacToeGame model) {
+        return chooseRandomAvailableCell(model, EDGE_MOVES);
     }
 }

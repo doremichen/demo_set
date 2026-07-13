@@ -20,16 +20,33 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility;
+package com.adam.app.demoset.tablelayout.di;
 
-import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
+import com.adam.app.demoset.tablelayout.data.repository.GameRepositoryImpl;
+import com.adam.app.demoset.tablelayout.domain.repository.GameRepository;
 
-public class EdgeMoveHandler extends MoveHandler {
+import javax.inject.Singleton;
 
-    private static final int[] EDGE_MOVES = {0, 2, 6, 8};
+import dagger.Binds;
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.components.SingletonComponent;
 
-    @Override
-    protected int findMove(TicTacToeModel model) {
-        return chooseRandomAvailableCell(model, EDGE_MOVES);
-    }
+/**
+ * Hilt module for game dependencies.
+ * Installed in SingletonComponent as repositories should live beyond ViewModel lifecycle.
+ */
+@Module
+@InstallIn(SingletonComponent.class)
+public abstract class GameModule {
+
+    /**
+     * Binds the GameRepository interface to its implementation.
+     *
+     * @param repositoryImpl The implementation instance.
+     * @return The bound interface.
+     */
+    @Binds
+    @Singleton
+    public abstract GameRepository bindGameRepository(GameRepositoryImpl repositoryImpl);
 }

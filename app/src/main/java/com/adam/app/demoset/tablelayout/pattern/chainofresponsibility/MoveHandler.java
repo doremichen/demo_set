@@ -20,24 +20,30 @@
  * SOFTWARE.
  */
 
-package com.adam.app.demoset.tablelayout.pattern.chain_of_responsibility;
+package com.adam.app.demoset.tablelayout.pattern.chainofresponsibility;
 
-import com.adam.app.demoset.tablelayout.model.TicTacToeModel;
+import com.adam.app.demoset.tablelayout.domain.model.TicTacToeGame;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Abstract handler for move calculation chain.
+ */
 public abstract class MoveHandler {
+    /** Next handler in the chain */
     protected MoveHandler mNext;
-    private static final Random RANDOM = new Random();
+    
+    /** Random generator for cell selection */
+    private static final Random S_RANDOM = new Random();
 
     public MoveHandler setNext(MoveHandler next) {
         mNext = next;
         return next;
     }
 
-    public int handle(TicTacToeModel model) {
+    public int handle(TicTacToeGame model) {
         int move = findMove(model);
         if (move != -1) {
             return move;
@@ -49,12 +55,12 @@ public abstract class MoveHandler {
         return -1;
     }
 
-    protected abstract int findMove(TicTacToeModel model);
+    protected abstract int findMove(TicTacToeGame model);
 
     /**
-     * chooseRandomAvailableCell
+     * Choose a random available cell from the given positions.
      */
-    protected int chooseRandomAvailableCell(TicTacToeModel model, int[] positions) {
+    protected int chooseRandomAvailableCell(TicTacToeGame model, int[] positions) {
         List<Integer> available = new ArrayList<>();
         for (int pos: positions) {
             if (model.isEmpty(pos)) {
@@ -62,7 +68,7 @@ public abstract class MoveHandler {
             }
         }
         if (available.isEmpty()) return -1;
-        return available.get(RANDOM.nextInt(available.size()));
+        return available.get(S_RANDOM.nextInt(available.size()));
     }
 
 }

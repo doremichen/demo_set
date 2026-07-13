@@ -23,9 +23,11 @@
 package com.adam.app.demoset.utils;
 
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -33,7 +35,21 @@ import androidx.databinding.BindingAdapter;
 import com.adam.app.demoset.animation.view.GifView;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.List;
+
 public class UIBindingAdapters {
+
+    /** Tag for logging */
+    private static final String TAG = "UIBindingAdapters";
+
+    /** Player X symbol */
+    private static final char PLAYER_X = 'X';
+
+    /** Player O symbol */
+    private static final char PLAYER_O = 'O';
+
+    /** Empty cell symbol */
+    private static final char EMPTY_SYMBOL = '\0';
 
     @BindingAdapter(value = {"android:onClick", "hideKeyboardOnClick"}, requireAll = false)
     public static void setHideKeyboardOnClick(View view, View.OnClickListener listener, boolean hide) {
@@ -85,5 +101,48 @@ public class UIBindingAdapters {
         if (view.getContext().getTheme().resolveAttribute(attrResId, typedValue, true)) {
             view.setTextColor(typedValue.data);
         }
+    }
+
+    /**
+     * Binds the board cell state to a button.
+     *
+     * @param button       The button to bind.
+     * @param board        The game board state.
+     * @param index        The cell index.
+     * @param winningCells The list of winning cell indices.
+     */
+    @BindingAdapter(value = {"board", "cellIndex", "winningCells"}, requireAll = true)
+    public static void bindBoardCell(Button button, char[] board, int index, List<Integer> winningCells) {
+        Utils.log(TAG, "bindBoardCell: " + index);
+
+        // Input validation
+        if (board == null || index < 0 || index >= board.length) {
+            // Clear button info on invalid state
+            button.setText("");
+            button.setBackgroundColor(Color.LTGRAY);
+            return;
+        }
+
+        // Display the mark
+        char symbol = board[index];
+        button.setText((symbol == EMPTY_SYMBOL) ? "" : String.valueOf(symbol));
+
+        // Determine colors based on cell state
+        int baseColor = Color.LTGRAY;
+        int textColor = Color.BLACK;
+
+        if (symbol == PLAYER_X) {
+            textColor = Color.BLUE;
+        } else if (symbol == PLAYER_O) {
+            textColor = Color.RED;
+        }
+
+        // Highlight if this cell is part of a winning combination
+        if (winningCells != null && winningCells.contains(index)) {
+            baseColor = Color.YELLOW;
+        }
+
+        button.setBackgroundColor(baseColor);
+        button.setTextColor(textColor);
     }
 }
