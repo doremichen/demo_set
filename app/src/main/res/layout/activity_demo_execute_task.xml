@@ -1,120 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="?android:attr/colorBackground"
-    tools:context=".workmanager.DemoExecuteTaskAct">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/app_header"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.adam.app.demoset.workmanager.presentation.WorkManagerViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <ScrollView
+        android:id="@+id/root_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:strokeWidth="0dp">
-
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/label_image_view_description"
-                android:scaleType="centerCrop"
-                android:src="@drawable/test" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_image_blur"
-            android:textColor="?attr/colorOnSurface"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorSurfaceVariant">
-
-            <RadioGroup
-                android:id="@+id/radio_blur_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:checkedButton="@+id/radio_blur_lv_1"
-                android:orientation="vertical">
-
-                <RadioButton android:id="@+id/radio_blur_lv_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/radioButton_title_blurred" />
-
-                <RadioButton android:id="@+id/radio_blur_lv_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/radioButton_more_blurred" />
-
-                <RadioButton android:id="@+id/radio_blur_lv_3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/radioButton_the_most_blurred" />
-            </RadioGroup>
-        </com.google.android.material.card.MaterialCardView>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="?android:attr/colorBackground">
 
         <LinearLayout
+            android:id="@+id/app_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleSmall"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/label_image_view_description"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/test" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:text="@string/label_image_blur"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
-            <Button
-                android:id="@+id/cancel_button"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/action_cnacel"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
 
-            <Button
-                android:id="@+id/go_button"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/radio_blur_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:checkedButton="@+id/radio_blur_lv_1"
+                    android:orientation="vertical">
+
+                    <RadioButton android:id="@+id/radio_blur_lv_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/radioButton_title_blurred" />
+
+                    <RadioButton android:id="@+id/radio_blur_lv_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/radioButton_more_blurred" />
+
+                    <RadioButton android:id="@+id/radio_blur_lv_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/radioButton_the_most_blurred" />
+                </RadioGroup>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action_execute" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/see_file_button"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/action_result"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
+                <Button
+                    android:id="@+id/cancel_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/action_cnacel"
+                    android:onClick="@{() -> viewModel.cancelWork()}"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <Button
+                    android:id="@+id/go_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_execute" />
+
+                <Button
+                    android:id="@+id/see_file_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/action_result"
+                    android:visibility="@{viewModel.outputUri != null ? View.VISIBLE : View.GONE}"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</layout>

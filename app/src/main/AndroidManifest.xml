@@ -316,7 +316,7 @@
             android:label="@string/title_activity_demo_system_ui"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".workmanager.DemoWorkMangerAct"
+            android:name=".workmanager.presentation.DemoWorkMangerAct"
             android:exported="true"
             android:label="@string/title_activity_demo_work_manager"
             android:screenOrientation="nosensor" />
@@ -340,15 +340,15 @@
             android:screenOrientation="nosensor"
             android:theme="@style/Theme.DemoSet.NoActionBar" />
         <activity
-            android:name=".workmanager.DemoWorkManagerMainAct"
+            android:name=".workmanager.presentation.DemoWorkManagerMainAct"
             android:exported="true"
             android:label="@string/title_activity_demo_work_manager_main"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".workmanager.DemoExecuteTaskAct"
+            android:name=".workmanager.presentation.DemoExecuteTaskAct"
             android:exported="true"
             android:label="@string/title_activity_execute_task_activity"
-            android:parentActivityName=".workmanager.DemoWorkManagerMainAct"
+            android:parentActivityName=".workmanager.presentation.DemoWorkManagerMainAct"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".usb_storage.view.DemoUsbActivity"

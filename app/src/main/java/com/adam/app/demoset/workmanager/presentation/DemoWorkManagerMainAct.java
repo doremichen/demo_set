@@ -1,0 +1,93 @@
+/*
+ * Copyright (c) 2026 Adam Chen
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.adam.app.demoset.workmanager.presentation;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.adam.app.demoset.R;
+import com.adam.app.demoset.databinding.ActivityDemoWorkManagerMainBinding;
+import com.adam.app.demoset.utils.DemoAppConstants;
+import com.adam.app.demoset.utils.UIUtils;
+import com.adam.app.demoset.utils.Utils;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+/**
+ * Main activity for WorkManager demo.
+ */
+@AndroidEntryPoint
+public class DemoWorkManagerMainAct extends AppCompatActivity {
+
+    private ActivityDemoWorkManagerMainBinding mBinding;
+    private ActivityResultLauncher<String> mGetContent;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = ActivityDemoWorkManagerMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
+        UIUtils.applySystemBarInsets(mBinding.rootLayout, mBinding.tvTitle);
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        Utils.showToast(this, "Uri: " + uri);
+                        Utils.info(this, "Uri: " + uri);
+                        // Start execute picture activity
+                        Intent intent = new Intent(this, DemoExecuteTaskAct.class);
+                        intent.putExtra(DemoAppConstants.THE_SELECTED_IMAGE, uri.toString());
+                        this.startActivity(intent);
+                    }
+                });
+
+        mBinding.btnSelectImg.setOnClickListener(v -> onSelectImg());
+    }
+
+    private void onSelectImg() {
+        Utils.info(this, "onSelectImg enter");
+        mGetContent.launch("image/*");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.getMenuInflater().inflate(R.menu.action_exit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.demo_exit) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}

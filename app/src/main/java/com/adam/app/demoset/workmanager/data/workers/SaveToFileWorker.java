@@ -1,0 +1,99 @@
+/*
+ * Copyright (c) 2026 Adam Chen
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package com.adam.app.demoset.workmanager.data.workers;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.work.Data;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
+import com.adam.app.demoset.utils.DemoAppConstants;
+import com.adam.app.demoset.utils.Utils;
+
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * Worker to save blurred image to permanent storage.
+ */
+public class SaveToFileWorker extends Worker {
+
+    private static final String TITLE = "Blurred Image";
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss z", Locale.getDefault());
+
+    public SaveToFileWorker(@NonNull Context context,
+                            @NonNull WorkerParameters workerParams) {
+        super(context, workerParams);
+    }
+
+    @NonNull
+    @Override
+    public Result doWork() {
+        Utils.info(this, "doWork enter");
+        Context appCtx = getApplicationContext();
+
+        Utils.makeStatusNotification(appCtx, "Saving data!!!");
+        Utils.delay(DemoAppConstants.DELAY_TIME_MILLIS);
+
+        // get resolver
+        ContentResolver resolver = appCtx.getContentResolver();
+
+        String imageUri = getInputData().getString(DemoAppConstants.THE_SELECTED_IMAGE);
+        Utils.info(this, "imageUri = " + imageUri);
+        try {
+            Bitmap picture = BitmapFactory.decodeStream(resolver.openInputStream(Uri.parse(imageUri)));
+
+            String outputUri = MediaStore.Images.Media.insertImage(
+                    resolver, picture, TITLE, DATE_FORMAT.format(new Date())
+            );
+
+            Utils.info(this, "outputUri = " + outputUri);
+            // Check exists
+            if (TextUtils.isEmpty(outputUri)) {
+                return Result.failure();
+            }
+
+            // Return output for the temp file
+            Data outputData = new Data.Builder()
+                    .putString(DemoAppConstants.THE_SELECTED_IMAGE, outputUri)
+                    .build();
+            Utils.makeStatusNotification(appCtx, "Save success");
+            return Result.success(outputData);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Utils.makeStatusNotification(appCtx, "File no found");
+        }
+        return Result.failure();
+    }
+}

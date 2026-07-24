@@ -148,19 +148,19 @@
     <!-- System -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_work_manager"
-        app:clsname="com.adam.app.demoset.workmanager.DemoExecuteTaskAct"
+        app:clsname="com.adam.app.demoset.workmanager.presentation.DemoExecuteTaskAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_work_manager_legacy_1"
-        app:clsname="com.adam.app.demoset.workmanager.DemoWorkMangerAct"
+        app:clsname="com.adam.app.demoset.workmanager.presentation.DemoWorkMangerAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
     <data app:category="@string/category_system"
         app:titleRes="@string/title_demo_work_manager_legacy_2"
-        app:clsname="com.adam.app.demoset.workmanager.DemoWorkManagerMainAct"
+        app:clsname="com.adam.app.demoset.workmanager.presentation.DemoWorkManagerMainAct"
         app:pkgname="com.adam.app.demoset"/>
 
     <!-- System -->
